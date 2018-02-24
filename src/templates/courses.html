@@ -1,0 +1,95 @@
+$def with (page, languages, categories)
+$var currentPage: courses
+
+$ currentLang = page['lang']
+<script>
+  var ${"$"}_URL = {
+    currentLang  : "$(page['lang'])",
+    currentCat   : "$(page['cat'])",
+    currentCatId : "$(page['catId'])"
+  };
+</script>
+
+<div class="page-head">
+  <div class="inner container">
+
+    <!-- Filter courses written with given language -->
+    <div class="btn-group filter-source dropdown">
+  
+      <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        $if currentLang in languages:
+          $if "url" in languages[currentLang]:
+            <img class="flag-circle" src="$(languages[currentLang]['url'])" alt="">
+          $(LANG.languages[currentLang])
+        <span class="caret"></span>
+      </button>
+  
+      <ul class="dropdown-menu">
+        $for lang, item in sorted(languages.items(), key=lambda x: LANG.languages[x[0]]):
+         <li>
+           <a href="/fr/courses/$lang/">
+            $if "url" in item:
+              <img class="flag-circle" src="$(item['url'])" alt="">
+            $(LANG.languages[lang])
+           </a>
+         </li>
+      </ul>
+    </div>
+
+    <!-- Page title-->
+    <h1 class="page-breadcrumb">
+      $(LANG.menu["courses"])
+      $if page["catId"]:
+        - $(LANG.categories[page['catId']])
+    </h1>
+  </div>
+</div>
+
+<div class="inner container container-main">
+  
+  <!-- List of categories -->
+  $def tree(list):
+    $for item in list:
+      $if "code" in item:
+        $ id   = item['id']
+        $ code = item['code']
+        $ name = LANG.categories[id]
+
+        <li data-category-id="$id">
+            $if "children" in item:
+                <a href="/fr/courses/$currentLang/$code/" title="$:name">
+                    <span class="ico expand-icon ico-s"></span>
+                    $:name
+                </a>
+                <ul>
+                  <li>
+                    <a data-category-leaf="" href="/fr/courses/$currentLang/$code/">
+                      $(LANG.misc['languages_all']) $:name
+                    </a>
+                    </li>
+                    $:tree(item["children"])
+                </ul>
+            $else:
+                <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
+                    $:name
+                </a>
+        </li>
+
+  <ul class="categories-list" data-role="tree-navigation">$:tree(categories)</ul>
+
+  <!-- List of courses -->
+  <div id="content" class="courses-container"></div>
+
+  <!-- Loader -->
+  <div id="content-loader" class="infinite-scroller">
+    <span class="infinite-scroller-loader loading-spinner"></span>
+    <a class="infinite-scroller-trigger prev" style="display: none">
+      <span class="ico ico-arr-left"></span>
+      <span class="page"></span>
+    </a>
+    <a class="infinite-scroller-trigger next" style="display: none">
+      <span class="ico ico-arr-right"></span>
+      <span class="page"></span>
+    </a>
+  </div>
+</div>

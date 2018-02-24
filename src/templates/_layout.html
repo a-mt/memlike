@@ -1,0 +1,42 @@
+$def with (tpl)
+
+$if "currentPage" in tpl:
+  $ currentPage = tpl.currentPage
+$else:
+  $ currentPage = ""
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Memrise</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" charset="utf-8"/>
+  </head>
+  <body>
+    <header>
+      <div class="inner">
+        <ul class="header-nav inner">
+          $for k, item in MENU.items():
+            <li class="header-nav-item plain $('is-active' if k == currentPage else None)">
+              <a href="$(item['url'])" class="nav-item-btn">
+                <span class="nav-item-btn-text">$(LANG.menu[k])</span>
+              </a>
+            </li>
+        </ul>
+      </div>
+    </header>
+
+    $:tpl
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      window.i18n = {
+        error: "$(LANG.misc['error'])",
+        page: "$(LANG.misc['page'])"
+     };
+    </script>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

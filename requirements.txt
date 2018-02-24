@@ -1,0 +1,6 @@
+python-dotenv
+web.py
+PyMySQL
+sqlalchemy
+pylibmc
+beautifulsoup4
