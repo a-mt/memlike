@@ -1,6 +1,7 @@
 import requests
 import time
 from cache import mc
+from bs4 import BeautifulSoup
 
 class Memrise:
     def courses(self, lang="french", page=1, cat="", query=""):
@@ -29,5 +30,35 @@ class Memrise:
                 mc.set(cache_key, courses, time=60*60*24)
 
         return courses
+
+    def categories(self, lang="french"):
+
+        cache_key  = lang + "_categories"
+        categories = mc.get(cache_key)
+
+        # Query memrise
+        if categories == None:
+            html = requests.get("https://www.memrise.com/fr/courses/" + lang + "/").text.encode('utf-8').strip()
+
+            # Parse HTML
+            DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+            ul  = DOM.find_all('ul',{'class':'categories-list'}).pop()
+
+            def parseCategories(ul):
+                for li in ul.findChildren():
+                    if not 'data-category-id' in li.attrs:
+                        continue
+
+                    id = li.attrs['data-category-id']
+                    categories[id] = True
+
+                    if li.ul:
+                        parseCategories(li.ul)
+
+            categories = {}
+            parseCategories(ul)
+            mc.set(cache_key, categories, time=60*60*24)
+
+        return categories
 
 memrise = Memrise()

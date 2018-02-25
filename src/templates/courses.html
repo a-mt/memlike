@@ -1,4 +1,4 @@
-$def with (page, languages, categories)
+$def with (page, languages, categories, catHaveCourse)
 $var currentPage: courses
 
 $ currentLang = page['lang']
@@ -50,7 +50,7 @@ $ currentLang = page['lang']
   <!-- List of categories -->
   $def tree(list):
     $for item in list:
-      $if "code" in item:
+      $if "code" in item and item['id'] in catHaveCourse:
         $ id   = item['id']
         $ code = item['code']
         $ name = LANG.categories[id]
