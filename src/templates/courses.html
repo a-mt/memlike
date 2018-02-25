@@ -37,45 +37,67 @@ $ currentLang = page['lang']
     </div>
 
     <!-- Page title-->
-    <h1 class="page-breadcrumb">
-      $(LANG.menu["courses"])
-      $if page["catId"]:
-        - $(LANG.categories[page['catId']])
-    </h1>
+    <div class="page-breadcrumb">
+      <h1>$(LANG.menu["courses"])</h1>
+
+      <h2 toggle=".filter-category">
+        $if page["catId"]:
+          $:(LANG.categories[page['catId']])
+        $else:
+          $(LANG.misc['all'])
+      </h2>
+    </div>
+
+    <!-- List of categories -->
+    $def tree(list):
+      $for item in list:
+        $if "code" in item and item['id'] in catHaveCourse:
+          $ id   = item['id']
+          $ code = item['code']
+          $ name = LANG.categories[id]
+          $ children = []
+
+          $if "children" in item:
+            $ children = filter(lambda x: x['id'] in catHaveCourse, item["children"])
+
+          <li data-category-id="$id">
+              $if len(children) > 0:
+                  <a href="/fr/courses/$currentLang/$code/" title="$:name">
+                      <span class="ico expand-icon ico-s"></span>
+                      $:name
+                  </a>
+                  <ul>
+                    <li>
+                      <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" class="$('active' if item['id'] == page['catId'] else None)">
+                        $(LANG.misc['all']) $:name
+                      </a>
+                      </li>
+                      $:tree(children)
+                  </ul>
+              $else:
+                  <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
+                      $:name
+                  </a>
+          </li>
+
+    <div class="slider hide filter-category">
+      <ul class="categories-list" data-role="tree-navigation">$:tree(categories)</ul>
+    </div>
+
   </div>
 </div>
 
 <div class="inner container container-main">
-  
-  <!-- List of categories -->
-  $def tree(list):
-    $for item in list:
-      $if "code" in item and item['id'] in catHaveCourse:
-        $ id   = item['id']
-        $ code = item['code']
-        $ name = LANG.categories[id]
 
-        <li data-category-id="$id">
-            $if "children" in item:
-                <a href="/fr/courses/$currentLang/$code/" title="$:name">
-                    <span class="ico expand-icon ico-s"></span>
-                    $:name
-                </a>
-                <ul>
-                  <li>
-                    <a data-category-leaf="" href="/fr/courses/$currentLang/$code/">
-                      $(LANG.misc['languages_all']) $:name
-                    </a>
-                    </li>
-                    $:tree(item["children"])
-                </ul>
-            $else:
-                <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
-                    $:name
-                </a>
-        </li>
-
-  <ul class="categories-list" data-role="tree-navigation">$:tree(categories)</ul>
+  <!-- Search course -->
+  <form method="GET">
+    <div class="btn-group pull-right search-box">
+      <input name="q" placeholder="$(LANG.misc['search'])..." value="$(page['q'])" type="text">
+      <button type="submit" class="btn-default btn-ico">
+          <span class="ico ico-search"></span>
+      </button>
+    </div>
+  </form>
 
   <!-- List of courses -->
   <div id="content" class="courses-container"></div>

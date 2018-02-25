@@ -10,6 +10,7 @@ urls = (
 
 class courses:
     def GET(self, path=""):
+        _GET = web.input(q="")
 
         parts = path.strip('/').split('/')
         lang  = parts[0]
@@ -31,7 +32,8 @@ class courses:
         return GLOBALS['render'].courses({
             "lang"  : lang,
             "cat"   : cat,
-            "catId" : catId
+            "catId" : catId,
+            "q"     : _GET.q
         }, languages, categories, catHaveCourse)
 
 app = web.application(urls, locals())

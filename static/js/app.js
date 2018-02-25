@@ -5,6 +5,10 @@ $(document).ready(function(){
   Object.freeze(window.$_GET);
   Object.freeze(window.$_URL);
 
+  $('h2[toggle]').on('click', function(e){
+    $($(this).attr('toggle')).toggleClass('hide');
+  });
+
   courses();
   categories();
 });
@@ -54,7 +58,11 @@ function courses() {
         has_next     = data.has_next;
         current_page = page;
 
-        content.html(data.content);
+        if(data.content.trim() == "" && current_page == 1) {
+          content.html('<div class="empty-box">' + window.i18n.courses_none + '</div>');
+        } else {
+          content.html(data.content);
+        }
         paging.hide();
 
         if(current_page == 1) {
@@ -115,7 +123,7 @@ function courses() {
 
 function categories() {
   if(window.$_URL.currentCatId) {
-    $('li[data-category-id="' + window.$_URL.currentCatId + '"]')
+    $('.categories-list a.active')
       .parents('li[data-category-id]')
       .addClass('open');
   }

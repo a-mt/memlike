@@ -2,7 +2,9 @@
 misc = {
   "error": "Something went wrong. Please try again later",
   "page": "Page %",
-  "languages_all": "All"
+  "all": "All",
+  "search": "Search",
+  "courses_none": "No courses found"
 };
 
 menu = {
