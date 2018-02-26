@@ -1,16 +1,20 @@
 /* global $ */
 $(document).ready(function(){
   window.$_GET = param();
-
   Object.freeze(window.$_GET);
-  Object.freeze(window.$_URL);
+
+  if(window.$_URL) {
+    Object.freeze(window.$_URL);
+  }
 
   $('h2[toggle]').on('click', function(e){
     $($(this).attr('toggle')).toggleClass('hide');
   });
 
-  courses();
-  categories();
+  if($('.courses-container').length) {
+    courses();
+    categories();
+  }
 });
 
 /* Get the value of a parameters of the given url (current location if false)
@@ -44,7 +48,7 @@ function courses() {
 
   function query(page, pushState) {
     content.html('');
-    paging.hide().filter('.infinite-scroller-loader').show();
+    paging.hide().filter('.paging-loader').show();
 
     $.ajax({
       url: '/ajax/courses',
@@ -59,7 +63,7 @@ function courses() {
         current_page = page;
 
         if(data.content.trim() == "" && current_page == 1) {
-          content.html('<div class="empty-box">' + window.i18n.courses_none + '</div>');
+          content.html('<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>');
         } else {
           content.html(data.content);
         }

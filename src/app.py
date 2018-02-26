@@ -21,6 +21,7 @@ load_dotenv(dotenv_path)
 web.config.debug = False # to be able to use session
 urls = (
     '/fr/courses', controllers.courses.app,
+    '/course', controllers.course.app,
     '/ajax', controllers.ajax.app,
     '/', controllers.index.app
 )
@@ -28,6 +29,7 @@ urls = (
 app      = web.application(urls, globals())
 session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": "french"})
 render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
+prender  = web.template.render('src/templates/', globals=GLOBALS)
 
 def debug(x):
     return '<pre class="debug">' + pprint.pformat(x, indent=4) \
@@ -39,11 +41,18 @@ def debug(x):
 
 # Variables accessible globally in templates
 GLOBALS['render']  = render
+GLOBALS['prender'] = prender
 GLOBALS['sorted']  = sorted
+GLOBALS['str']     = str
 GLOBALS['debug']   = debug
 GLOBALS['session'] = session
 GLOBALS['MENU']    = menu
 GLOBALS['LANG']    = imp.load_source('french', 'src/locales/french.py')
+
+def notfound():
+    return web.notfound(prender._404())
+
+app.notfound = notfound
 
 # Load database engine
 # engine  = sqlalchemy.create_engine(environ.get("DATABASE_URL"), pool_recycle=3600, connect_args={'connect_timeout': 10})

@@ -1,0 +1,97 @@
+$def with (course, level, items)
+$var currentPage: courses
+
+<div class="course-header">
+  <div class="inner">
+
+    <!-- Photo -->
+    <img class="course-photo" src="$(course['photo'])" alt="$(course['title'])">
+    <div class="course-details">
+          
+      <!-- Categories -->
+      <ul class="course-breadcrumb">
+        $ baseUrl = ""
+        $for i, cat in enumerate(course['breadcrumb']):
+          <li>
+            $if i == 0:
+              $ baseUrl = '/fr/courses/' + cat["name"]
+              <a href="$baseUrl">$(LANG.categories[cat['id']])</a>
+            $else:
+              <i class="ico ico-grey ico-arr-right ico-s"></i>
+              <a href="$baseUrl/$(cat['name'])">$(LANG.categories[cat['id']])</a>
+          </li>
+      </ul>
+  
+      <!-- Title + description -->
+      <h1>$(course['title'])</h1>
+      <p class="description">$(course['description'])</p>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-head">
+  <div class="inner">
+    $if level:
+      <a href="$(course['url'])" class="pill">
+        <i class="ico ico-list"></i>
+        $(LANG.misc['levels']) ($(len(course['levels'])))
+      </a>
+
+      <button type="button" class="pill active">
+        $(level['index']) - $(level['name'])
+      </button>
+    $else:
+      <button type="button" class="pill active">
+        <i class="ico ico-list ico-white"></i>
+        $(LANG.misc['levels']) ($(len(course['levels'])))
+      </button>
+  </div>
+</div>
+
+<div class="inner">
+$if items:
+  <!-- Level details -->
+  <ul class="things">
+    $for item in items['learnables']:
+      <li class="thing">
+        <div class="item">$(item['item']['value'])</div>
+        <div class="definition">
+          $if item['definition']['kind'] == "text":
+            $(item['definition']['value'])
+        </div>
+      </li>
+  </ul>
+
+  <!-- Pagination -->
+  <div id="content-loader" class="paging clearfix">
+    $if level['index'] > 1:
+      $ idx = level['index']-1
+
+      <a href="$(course['url'])$idx" class="paging-trigger prev">
+        <span class="ico ico-arr-left"></span>
+        <span class="page">$idx &ndash; $(course['levels'][str(idx)])</span>
+      </a>
+    $if level['index'] < len(course['levels']):
+      $ idx = level['index']+1
+
+      <a href="$(course['url'])$idx" class="paging-trigger next">
+        <span class="page">$idx &ndash; $(course['levels'][str(idx)])</span>
+        <span class="ico ico-arr-right"></span>
+      </a>
+  </div>
+
+$else:
+  <!-- List of levels -->
+  <ul class="levels">
+    $for idx in sorted(course['levels'].keys(), key=int):
+      <li class="level-box">
+        <div class="level-card">
+          <span class="level-index">$idx</span>
+        </div>
+        <a class="level" href="$(course['url'])$idx">
+          <span class="level-title">$(course['levels'][idx])</span>
+        </a>
+      </li>
+  </ul>
+</div>

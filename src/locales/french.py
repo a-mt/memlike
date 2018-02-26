@@ -4,7 +4,10 @@ misc = {
   "page": "Page %",
   "all": "Tout",
   "search": "Rechercher",
-  "courses_none": "Aucun cours trouvé"
+  "courses_none": "Aucun cours trouvé",
+  "404": "La page que tu cherches n'existe pas.",
+  "back_home": "Retour à l'accueil",
+  "levels": "Niveaux"
 };
 
 menu = {
