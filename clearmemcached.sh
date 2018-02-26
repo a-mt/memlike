@@ -1,0 +1,1 @@
+echo flush_all > /dev/tcp/127.0.0.1/11211
