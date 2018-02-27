@@ -7,19 +7,28 @@ $(document).ready(function(){
     Object.freeze(window.$_URL);
   }
 
+  // Slide up/down elements
   $('h2[toggle]').on('click', function(e){
     $($(this).attr('toggle')).toggleClass('hide');
   });
 
+  // Page /courses events
   if($('.courses-container').length) {
     courses();
     categories();
   }
+
+  // Audio tag toggle play/pause
+  if($('.course-container').length) {
+    audioPlayer.init();
+    imgZoom.init();
+  }
 });
 
-/* Get the value of a parameters of the given url (current location if false)
- * Doesn't support array parameters
- */
+//+--------------------------------------------------------
+//| Get the value of a parameters of the given url (current location if false)
+//| Doesn't support array parameters
+//+--------------------------------------------------------
 function param(href) {
     if(typeof href == 'undefined' || href === false) {
         href = window.location.href;
@@ -38,6 +47,9 @@ function param(href) {
     return vars;
 }
 
+//+--------------------------------------------------------
+//| Browse courses using AJAX
+//+--------------------------------------------------------
 function courses() {
   var url      = window.location.href.replace(/[?#].*/, ''),
   current_page = parseInt(window.$_GET.page) || 1,
@@ -97,7 +109,7 @@ function courses() {
       }
     });
   }
-  
+
   $(window).on('popstate', function(event) {
       var state = event.originalEvent.state;
 
@@ -125,6 +137,9 @@ function courses() {
   query(current_page, true);
 }
 
+//+--------------------------------------------------------
+//| Show/hide child categories
+//+--------------------------------------------------------
 function categories() {
   if(window.$_URL.currentCatId) {
     $('.categories-list a.active')
@@ -142,4 +157,109 @@ function categories() {
 
     $(this).toggleClass('open');
   });
+}
+
+//+--------------------------------------------------------
+//| Play/pause audio tag
+//+--------------------------------------------------------
+var audioPlayer = {
+  target: false,
+  isPlaying: false,
+
+  init: function(){
+    $('.course-container').on('click', '.audio-player', audioPlayer.play);
+  },
+
+  // Play the target (this) audio element
+  play: function() {
+
+    // Toggle play/pause
+    if(audioPlayer.target === this) {
+      if(audioPlayer.isPlaying) {
+        this.pause();
+        this.classList.remove("active");
+      } else {
+        this.play();
+        this.classList.add("active");
+      }
+      audioPlayer.isPlaying = !audioPlayer.isPlaying;
+
+    // Pause any other player and play current target
+    } else {
+      if(audioPlayer.isPlaying) {
+        audioPlayer.target.pause();
+        audioPlayer.target.classList.remove("active");
+      }
+      this.play();
+      this.classList.add("active");
+      audioPlayer.target    = this;
+      audioPlayer.isPlaying = true;
+    }
+  }
+};
+
+//+--------------------------------------------------------
+//| View image full size
+//+--------------------------------------------------------
+var imgZoom = {
+  container: false,
+  n: 0,
+  i: 0,
+
+  init: function() {
+    imgZoom.n = $('.course-container .text-image').each(function(i){
+      $(this).attr('id', 'imgZoom-' + i)
+             .data('i', i);
+    }).length;
+
+    $('.course-container').on('click', '.text-image', imgZoom.open);
+  },
+  createContainer: function() {
+    var div = $('<div id="imgZoom" style="display: none">').appendTo(document.body);
+
+    // Backgroud=nd
+    $('<div class="backdrop">')
+      .appendTo(div)
+      .on('click', imgZoom.close);
+
+    // Modal
+    $('<div class="modal">')
+      .appendTo(div)
+
+      // Handle prev/next events
+      .on('click', '.slideshow-trigger', function(){
+        var i = ($(this).hasClass('prev') ? imgZoom.i - 1 : imgZoom.i + 1);
+        imgZoom.open.call(document.getElementById('imgZoom-' + i));
+      });
+
+    imgZoom.container = div;
+  },
+  open: function() {
+    if(!imgZoom.container) {
+      imgZoom.createContainer();
+    }
+
+    // Img & legend
+    var legend = $(this).closest('.thing').find('.text').html(),
+          html = `<figure>
+            <img class="zoom" src="${this.getAttribute('src')}">
+            ${legend ? `<figcaption>${legend}</figcaption>` : ""}
+          </figure>`;
+
+    // Prev & next
+    imgZoom.i = $(this).data('i');
+    if(imgZoom.i > 0) {
+      html += '<div class="slideshow-trigger prev"></div>';
+    }
+    if(imgZoom.i + 1 < imgZoom.n) {
+      html += '<div class="slideshow-trigger next"></div>';
+    }
+
+    // Render
+    $('.modal', imgZoom.container).html(html);
+    imgZoom.container.show();
+  },
+  close: function() {
+    imgZoom.container && imgZoom.container.hide();
+  }
 }

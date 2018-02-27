@@ -15,10 +15,10 @@ $var currentPage: courses
           <li>
             $if i == 0:
               $ baseUrl = '/fr/courses/' + cat["name"]
-              <a href="$baseUrl">$(LANG.categories[cat['id']])</a>
+              <a href="$baseUrl">$:(LANG.categories[cat['id']])</a>
             $else:
               <i class="ico ico-grey ico-arr-right ico-s"></i>
-              <a href="$baseUrl/$(cat['name'])">$(LANG.categories[cat['id']])</a>
+              <a href="$baseUrl/$(cat['name'])">$:(LANG.categories[cat['id']])</a>
           </li>
       </ul>
   
@@ -49,17 +49,31 @@ $var currentPage: courses
   </div>
 </div>
 
-<div class="inner">
+$def thing(item, attr):
+  $ it = item[attr]
+  <div class="$(attr) $(item[attr]['kind'])">
+    $if it['kind'] == "text":
+      $(it['value'])
+    $elif it['kind'] == "image":
+      <div class="media-list">
+        $for img in it['value']:
+          <img src="$img" class="text-image">
+      </div>
+    $elif it['kind'] == "audio":
+      <div class="media-list">
+        $for song in it['value']:
+          <audio src="$(song['normal'])" class="audio-player ico ico-l ico-audio"></audio>
+      </div>
+  </div>
+
+<div id="content" class="inner course-container">
 $if items:
   <!-- Level details -->
   <ul class="things">
     $for item in items['learnables']:
       <li class="thing">
-        <div class="item">$(item['item']['value'])</div>
-        <div class="definition">
-          $if item['definition']['kind'] == "text":
-            $(item['definition']['value'])
-        </div>
+        $:thing(item, 'item')
+        $:thing(item, 'definition')
       </li>
   </ul>
 
@@ -90,7 +104,7 @@ $else:
           <span class="level-index">$idx</span>
         </div>
         <a class="level" href="$(course['url'])$idx">
-          <span class="level-title">$(course['levels'][idx])</span>
+          <span class="level-title">$:(course['levels'][idx].replace("/", "<wbr>/"))</span>
         </a>
       </li>
   </ul>

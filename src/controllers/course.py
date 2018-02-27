@@ -4,13 +4,14 @@ from _globals import GLOBALS
 from requests.exceptions import HTTPError
 
 urls = (
+  "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
 )
 
 class level:
-    def GET(self, idCourse, path, lvl):
+    def GET(self, idCourse, path, lvl, path2=""):
         try:
             items  = memrise.level(idCourse, lvl)
             course = memrise.course(idCourse)
