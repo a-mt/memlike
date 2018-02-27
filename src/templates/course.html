@@ -1,5 +1,6 @@
 $def with (course, level, items)
 $var currentPage: courses
+$var title: $(course['title']) $("- " + str(level['index']) if level else None)
 
 <div class="course-header">
   <div class="inner">
