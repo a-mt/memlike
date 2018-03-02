@@ -12,11 +12,11 @@ $ currentLang = page['lang']
 </script>
 
 <div class="page-head">
-  <div class="inner container">
+  <div class="inner inner-small">
 
     <!-- Filter courses written with given language -->
     <div class="btn-group filter-source dropdown">
-  
+
       <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         $if currentLang in languages:
           $if "url" in languages[currentLang]:
@@ -38,7 +38,7 @@ $ currentLang = page['lang']
     </div>
 
     <!-- Page title-->
-    <div class="page-breadcrumb">
+    <div class="page-title">
       <h1>$(LANG.menu["courses"])</h1>
 
       <h2 toggle=".filter-category">
@@ -88,31 +88,34 @@ $ currentLang = page['lang']
   </div>
 </div>
 
-<div class="inner container container-main">
+<main>
+  <div class="inner inner-small">
 
-  <!-- Search course -->
-  <form method="GET">
-    <div class="btn-group pull-right search-box">
-      <input name="q" placeholder="$(LANG.misc['search'])..." value="$(page['q'])" type="text">
-      <button type="submit" class="btn-default btn-ico">
-          <span class="ico ico-search"></span>
-      </button>
+    <!-- Search course -->
+    <form method="GET">
+      <div class="btn-group pull-right search-box">
+        <input name="q" placeholder="$(LANG.misc['search'])..." value="$(page['q'])" type="text">
+        <button type="submit" class="btn-default btn-ico">
+            <span class="ico ico-search"></span>
+        </button>
+      </div>
+    </form>
+
+    <!-- List of courses -->
+    <div id="courses-container"></div>
+
+    <!-- Pagination -->
+    <div id="content-loader" class="paging clearfix">
+      <span class="paging-loader loading-spinner"></span>
+      <a class="paging-trigger prev" style="display: none">
+        <span class="ico ico-arr-left"></span>
+        <span class="page"></span>
+      </a>
+      <a class="paging-trigger next" style="display: none">
+        <span class="page"></span>
+        <span class="ico ico-arr-right"></span>
+      </a>
     </div>
-  </form>
 
-  <!-- List of courses -->
-  <div id="content" class="courses-container"></div>
-
-  <!-- Pagination -->
-  <div id="content-loader" class="paging clearfix">
-    <span class="paging-loader loading-spinner"></span>
-    <a class="paging-trigger prev" style="display: none">
-      <span class="ico ico-arr-left"></span>
-      <span class="page"></span>
-    </a>
-    <a class="paging-trigger next" style="display: none">
-      <span class="page"></span>
-      <span class="ico ico-arr-right"></span>
-    </a>
   </div>
-</div>
+</main>

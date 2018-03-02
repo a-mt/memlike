@@ -1,0 +1,126 @@
+$def with (user, currentTab, levels)
+$var title: $(user['username'])
+
+<script>
+  var ${"$"}_URL = {
+    username  : "$(user['username'])"
+  };
+</script>
+
+<div class="page-banner page-banner-small">
+  <div class="inner">
+
+    <!-- Photo -->
+    <img class="page-photo page-photo-small" src="$(user['photo'])" alt="$(user['username'])">
+    <div class="page-details">
+
+      <!-- Username -->
+      <h1 class="big">$(user['username'])</h1>
+    </div>
+
+  </div>
+</div>
+
+<div class="page-head">
+  <div class="inner">
+  $for tab in [('stats', '/'), ('followers', '/mempals/followers/'), ('following', '/mempals/following/')]:
+    $ name, url = tab
+    $if currentTab == name:
+      <button type="button" class="pill active">
+        $(LANG.misc[name])
+        $if name != "stats":
+          ($(user['stats'][name] if name in user['stats'] else 0))
+      </button>
+    $else:
+      <a href="$(user['url'])$url" class="pill">
+        $(LANG.misc[name])
+        $if name != "stats":
+          ($(user['stats'][name] if name in user['stats'] else 0))
+      </a>
+  </div>
+</div>
+
+<main id="user-container">
+  <div class="inner">
+  $if currentTab == "stats":
+    <!-- Stats -->
+    <div class="nicebox">
+      <ul class="page-stats">
+        $for stat in ["following", "followers", "words", "points"]:
+          $if stat in user['stats']:
+            <li>
+              <strong>$(user['stats'][stat])</strong> $(LANG.misc[stat])
+            </li>
+      </ul>
+    </div>
+
+    <!-- Level progress -->
+    <div class="user-progress nicebox">
+      <div>
+
+        <!-- Graphic -->
+        <div class="level-progress">
+
+          <!-- Persona -->
+          $ nextLvl = (user['rank'] + 1 < len(levels))
+          <div class="level-persona">
+            <img src="https://d2rhekw5qr4gcj.cloudfront.net/img/icons/ranks/ziggy_$(user['rank']).svg" title="$(LANG.misc['rank'].replace('%', str(user['rank'])))" height="125px" class="current">
+            $if nextLvl:
+              <img src="https://d2rhekw5qr4gcj.cloudfront.net/img/icons/ranks/ziggy_$(user['rank']+1).svg" title="$(LANG.misc['rank'].replace('%', str(user['rank']+1)))" height="125px" class="hide next">
+          </div>
+
+        <!-- Progress bar -->
+        $if user['stats']['points']:
+          $ points = floatval(user['stats']['points'])
+          $if nextLvl:
+            $ nextPoints = levels[user['rank']]
+            $ percent    = points / nextPoints * 100
+            $ counter    = number_format(int(points)) + " / " + number_format(nextPoints)
+          $else:
+            $ nextPoints = points
+            $ percent    = 100
+            $ counter    = number_format(int(points))
+
+          <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$nextPoints">
+            <div class="counter">$counter</div>
+            <div class="progress-bar-active" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
+              <div class="counter">$counter</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text -->
+        <div class="level-info">
+          <h3>$(LANG.misc['level_current'])</h3> <p>$(LANG.misc['rank'].replace('%', str(user['rank'])))</p>
+          $if nextLvl:
+            <h3>$(LANG.misc['level_next'])</h3> <p>$(LANG.misc['rank'].replace('%', str(user['rank']+1)))</p>
+        </div>
+      </div>
+
+    </div>
+  $else:
+
+    <!-- List of mempals -->
+    <div id="mempals-container" data-tab="$currentTab"></div>
+
+    <!-- Pagination -->
+    <div id="content-loader" class="paging clearfix">
+      <span class="paging-loader loading-spinner"></span>
+      <a class="paging-trigger first" style="display: none">
+        <span class="page"></span>
+      </a>
+      <a class="paging-trigger prev" style="display: none">
+        <span class="ico ico-arr-left"></span>
+        <span class="page"></span>
+      </a>
+      <a class="paging-trigger last" style="display: none">
+        <span class="page"></span>
+      </a>
+      <a class="paging-trigger next" style="display: none">
+        <span class="page"></span>
+        <span class="ico ico-arr-right"></span>
+      </a>
+    </div>
+
+  </div><!-- end .inner -->
+</main>

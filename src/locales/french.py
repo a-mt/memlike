@@ -7,7 +7,17 @@ misc = {
   "courses_none": "Aucun cours trouvé",
   "404": "La page que tu cherches n'existe pas.",
   "back_home": "Retour à l'accueil",
-  "levels": "Niveaux"
+  "levels": "Niveaux",
+  "rank": "Niveau %",
+  "following": "Abonnements",
+  "followers": "Abonnés",
+  "words": "Mots",
+  "points": "Points",
+  "stats": "Stats",
+  "level_current": "Niveau actuel",
+  "level_next": "Prochain niveau",
+  "following_none": "% ne suis personne",
+  "followers_none": "Personne ne suis %"
 };
 
 menu = {

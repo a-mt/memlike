@@ -1,4 +1,4 @@
-import requests
+import requests, re
 import time
 from cache import mc
 from bs4 import BeautifulSoup, Tag
@@ -6,6 +6,9 @@ from variables import categories_code
 
 class Memrise:
 
+    #+-----------------------------------------------------
+    #| AUTH
+    #+-----------------------------------------------------
     def get_auth(self, force=False):
         """
             Retrieve sessionid
@@ -64,6 +67,9 @@ class Memrise:
         else:
             return None
 
+    #+-----------------------------------------------------
+    #| COURSES
+    #+-----------------------------------------------------
     def courses(self, lang="french", page=1, cat="", query=""):
         """
             Retrieve the list of courses for the given language, category, query string and page
@@ -102,6 +108,9 @@ class Memrise:
 
         return courses
 
+    #+-----------------------------------------------------
+    #| CATEGORIES
+    #+-----------------------------------------------------
     def categories(self, lang="french"):
         """
             Retrieve  the list of categories that have courses for the given language
@@ -140,6 +149,9 @@ class Memrise:
 
         return categories
 
+    #+-----------------------------------------------------
+    #| COURSE
+    #+-----------------------------------------------------
     def course(self, id):
         """
             Retrieve the info about a course
@@ -223,6 +235,9 @@ class Memrise:
 
         return course
 
+    #+-----------------------------------------------------
+    #| COURSE > LEVEL
+    #+-----------------------------------------------------
     def level(self, idCourse, lvl):
         """
             Retrieve the info about a course's level
@@ -254,5 +269,156 @@ class Memrise:
 
             mc.set(cache_key, level, time=60*60*24)
         return level
+
+    #+-----------------------------------------------------
+    #| USER
+    #+-----------------------------------------------------
+    def user(self, username):
+        """
+            Retrieve the info about a user
+            Is cached via memcached for 1hour
+
+            @throws requests.exceptions.HTTPError
+            @param string username
+            @return dict - {username, photo, rank, stats}
+        """
+        cache_key = "user_" + username
+        user      = mc.get(cache_key)
+
+        if user == None:
+            print 'GET ' + cache_key
+            response = requests.get("https://www.memrise.com/user/" + username + "/")
+            response.raise_for_status()
+
+            html = response.text.encode('utf-8').strip()
+            DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+            user = {
+                "username": username,
+                "photo"   : "",
+                "rank"    : 0,
+                "stats"   : {}
+            }
+
+            div = DOM.find(id="page-head")
+            if div != None:
+
+                # Get avatar
+                item = div.find('img', {'class':'avatar'})
+                if item != None:
+                    user['photo'] = item.attrs['src']
+
+                # Get rank
+                item = div.find('img', {'class':'rank-icon'})
+                if item != None:
+                    result = re.search('/([^/]*)_(\d+)\.(.*)$', item.attrs['src'])
+                    if result:
+                        user['rank'] = int(result.group(2))
+
+                # Get stats (num followers, following, words, points)
+                div = div.find(attrs={'class' : 'profile-stats'})
+                for child in div.children:
+                    if not isinstance(child, Tag):
+                        continue
+
+                    text   = child.text.strip()
+                    result = re.search('([0-9,]+)([\n\w ]*)', text)
+                    if result:
+                        user["stats"][result.group(2).strip().lower()] = result.group(1)
+
+            mc.set(cache_key, user, time=60*60)
+        return user
+
+    def user_followers(self, username, page=1):
+        return self._user_mempals("followers", username, page)
+
+    def user_following(self, username, page=1):
+        return self._user_mempals("following", username, page)
+
+    def _user_mempals(self, mempals, username, page=1):
+        """
+            Retrieve the list of followers of a user or followed users
+            Is cached via memcached for 1hour
+
+            @throws requests.exceptions.HTTPError
+            @param string mempals - followers  following
+            @param string username
+            @param integer page - [1]
+            @return dict - {page, lastpage, users}
+        """
+        if not isinstance(page, int):
+            if page.isdigit():
+                page = int(page)
+            else:
+                page = 1
+
+        cache_key    = "user_" + username + "_" + mempals
+        cache_paging = True
+        data         = mc.get(cache_key)
+
+        # Check we dont cache the last page multiple times
+        if data != None:
+            cache_paging = False
+            if page > data:
+                page = data
+            data = mc.get(cache_key + "_" + str(page))
+
+        # Get the given page
+        if data == None:
+            print 'GET ' + cache_key + '_' + str(page)
+            response = requests.get("https://www.memrise.com/user/" + username + "/mempals/" + mempals + "/?page=" + str(page))
+            response.raise_for_status()
+
+            html = response.text.encode('utf-8').strip()
+            DOM   = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+            data  = {
+                "page": page,
+                "lastpage": 0,
+                "users": []
+            }
+
+            # Get list of followers
+            div   = DOM.find(id="content")
+            if div != None:
+                users = div.find_all(attrs={'class': 'user-box'})
+                for user in users:
+                    username = user.find(attrs={'class': 'username'})
+                    img      = user.find('img')
+                    if username == None:
+                        continue
+
+                    item = {
+                        "name" : username.text.strip(),
+                        "photo": img.attrs['src'] if img else ""
+                    }
+                    data["users"].append(item)
+
+            # Get current page + max page number
+            div  = DOM.find('ul', {'class':'pagination'})
+            currentPage = page
+            lastpage    = 0
+
+            if div != None:
+                for child in div.children:
+                    if not isinstance(child, Tag):
+                        continue
+
+                    text = child.text.strip()
+                    if not re.match('[0-9]+', text):
+                        continue
+
+                    lastpage = int(text)
+                    if 'class' in child.attrs and 'active' in child.attrs['class']:
+                        currentPage = lastpage
+
+                data['page']    = currentPage
+                data['lastpage'] = lastpage
+
+                if cache_paging:
+                    mc.set(cache_key, data['lastpage'], time=60*60)
+
+            mc.set(cache_key + '_' + str(currentPage), data, time=60*60)
+
+        data['has_next'] = data['page'] < data['lastpage']
+        return data
 
 memrise = Memrise()

@@ -13,15 +13,20 @@ $(document).ready(function(){
   });
 
   // Page /courses events
-  if($('.courses-container').length) {
+  if($('#courses-container').length) {
     courses();
     categories();
   }
 
   // Audio tag toggle play/pause
-  if($('.course-container').length) {
+  if($('#course-container').length) {
     audioPlayer.init();
     imgZoom.init();
+  }
+
+  // Page /user event
+  if($('#user-container').length) {
+    user();
   }
 });
 
@@ -51,45 +56,70 @@ function param(href) {
 //| Browse courses using AJAX
 //+--------------------------------------------------------
 function courses() {
+  var content  = $("#courses-container"),
+      paging   = $("#content-loader").children();
+
+  _paginate('/ajax/courses', {
+      lang: window.$_URL.currentLang,
+      cat : window.$_URL.currentCat,
+      q   : window.$_GET.q
+  }, content, paging, function(data, current_page) {
+    if(data.content.trim() == "" && current_page == 1) {
+      return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
+    } else {
+      return data.content;
+    }
+  });
+}
+
+/**
+ * @param string ajax_url
+ * @param Object data          - POST parameters
+ * @param JqueryObject content - container
+ * @param JqueryObject paging  - pagination
+ * @param function tpl         - callback to format response to HTML
+ */
+function _paginate(ajax_url, data, content, paging, tpl) {
   var url      = window.location.href.replace(/[?#].*/, ''),
   current_page = parseInt(window.$_GET.page) || 1,
   has_next     = true;
-
-  var content  = $("#content"),
-      paging   = $("#content-loader").children();
 
   function query(page, pushState) {
     content.html('');
     paging.hide().filter('.paging-loader').show();
 
+    data.page = page;
     $.ajax({
-      url: '/ajax/courses',
-      data: {
-        lang: window.$_URL.currentLang,
-        cat : window.$_URL.currentCat,
-        q   : window.$_GET.q,
-        page: page
-      },
+      url: ajax_url,
+      data: data,
       success: function(data) {
+        var lastpage = data.lastpage || 0;
+
         has_next     = data.has_next;
         current_page = page;
 
-        if(data.content.trim() == "" && current_page == 1) {
-          content.html('<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>');
-        } else {
-          content.html(data.content);
-        }
+        content.html(tpl(data, current_page));
         paging.hide();
 
         if(current_page == 1) {
           paging.filter('.prev').hide();
         } else {
+          if(lastpage && current_page > 2) {
+            paging.filter('.first').show()
+                .attr('href', '?page=' + 1)
+                .find('.page').html(window.i18n.page.replace('%', 1));
+          }
           paging.filter('.prev').show()
                 .attr('href', '?page=' + (current_page - 1))
                 .find('.page').html(window.i18n.page.replace('%', current_page - 1));
         }
 
         if(has_next) {
+          if(lastpage && current_page + 1 < lastpage) {
+            paging.filter('.last').show()
+                .attr('href', '?page=' + lastpage)
+                .find('.page').html(window.i18n.page.replace('%', lastpage));
+          }
           paging.filter('.next')
                 .attr('href', '?page=' + (current_page + 1))
                 .show().find('.page').html(window.i18n.page.replace('%', current_page + 1));
@@ -104,7 +134,7 @@ function courses() {
       error: function(xhr) {
         console.error(xhr.status + " " + xhr.statusText);
 
-        $('#content').html(window.i18n.error);
+        content.html(window.i18n.error);
         paging.hide();
       }
     });
@@ -262,4 +292,35 @@ var imgZoom = {
   close: function() {
     imgZoom.container && imgZoom.container.hide();
   }
+}
+
+//+--------------------------------------------------------
+//| Browse followers/following users using AJAX
+//+--------------------------------------------------------
+function user() {
+  var content  = $("#mempals-container");
+  if(!content.length) {
+    return;
+  }
+  var paging = $("#content-loader").children(),
+      tab    = content.data('tab'),
+      url    = '/ajax/user/' + window.$_URL.username + '/' + tab;
+
+  _paginate(url, {}, content, paging, function(data){
+    if(!data.users.length) {
+      return '<div class="empty-box"><p>' + window.i18n[tab + '_none'].replace('%', window.$_URL.username) + '</p></div>';
+    }
+
+    var html = '';
+    for(var i=0; i<data.users.length; i++) {
+      html += '<a class="user-box" href="/user/' + data.users[i].name + '">' +
+                (data.users[i].photo ? `<div class="small-photo"><img src="${data.users[i].photo}" alt></div>` : "") +
+                '<span title="' + data.users[i].name + '">' + data.users[i].name + '</span>'
+              + '</a>';
+    }
+    html += '<span class="user-box is-empty"></span>';
+    html += '<span class="user-box is-empty"></span>';
+    html += '<span class="user-box is-empty"></span>';
+    return html;
+  });
 }

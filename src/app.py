@@ -6,11 +6,9 @@ from variables import menu
 from _globals import GLOBALS
 
 # Import web server
+import web, controllers
 import imp
-import web, sqlalchemy
-import controllers
-
-import pprint
+import pprint, re
 
 # Load .env file
 pwd = path.dirname(__file__)
@@ -22,6 +20,7 @@ web.config.debug = False # to be able to use session
 urls = (
     '/fr/courses', controllers.courses.app,
     '/course', controllers.course.app,
+    '/user', controllers.user.app,
     '/ajax', controllers.ajax.app,
     '/', controllers.index.app
 )
@@ -39,26 +38,25 @@ def debug(x):
         .replace(">", "&gt;") \
         .replace('"', '&quot;') + '</pre>';
 
+# Methods accessible globally in templates
+GLOBALS['render']        = render
+GLOBALS['prender']       = prender
+
+GLOBALS['sorted']        = sorted
+GLOBALS['str']           = str
+GLOBALS['number_format'] = lambda x: "{:,}".format(x)
+GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))
+GLOBALS['debug']         = debug
+
 # Variables accessible globally in templates
-GLOBALS['render']  = render
-GLOBALS['prender'] = prender
-GLOBALS['sorted']  = sorted
-GLOBALS['str']     = str
-GLOBALS['debug']   = debug
-GLOBALS['session'] = session
-GLOBALS['MENU']    = menu
-GLOBALS['LANG']    = imp.load_source('french', 'src/locales/french.py')
+GLOBALS['session']       = session
+GLOBALS['MENU']          = menu
+GLOBALS['LANG']          = imp.load_source('french', 'src/locales/french.py')
 
 def notfound():
     return web.notfound(prender._404())
 
 app.notfound = notfound
-
-# Load database engine
-# engine  = sqlalchemy.create_engine(environ.get("DATABASE_URL"), pool_recycle=3600, connect_args={'connect_timeout': 10})
-# connection = engine.connect()
-# connection.execute("select 1").fetchall()
-# connection.close()
 
 if __name__ == "__main__":
 

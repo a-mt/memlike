@@ -13,6 +13,10 @@ img {
   vertical-align: middle;
   border: 0;
 }
+img.hide {
+  filter: brightness(0);
+  opacity: .2;
+}
 a {
   color: inherit;
   text-decoration: none;
@@ -247,7 +251,7 @@ body {
   width: 960px;
   margin: auto;
 }
-.container {
+.inner-small {
   width: 750px;
 }
 
@@ -286,7 +290,7 @@ body {
   background: white;
   padding: 10px 0;
 }
-.page-breadcrumb h1 {
+.page-title h1 {
   color: #423c3c;
   margin: 0px;
   font-weight: bold;
@@ -294,17 +298,25 @@ body {
   padding: 0 0 0 15px;
   display: inline-block;
 }
-.page-breadcrumb h2 {
+h2 {
   font-size: 20px;
-  padding: 0 0 0 15px;
+  margin: 0 0 10px 0;
   font-weight: bold;
   color: #999;
+}
+h3 {
   margin: 0 0 10px 0;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+.page-title h2 {
+  padding: 0 0 0 15px;
   cursor: pointer;
   display: inline-block;
   position: relative;
 }
-.page-breadcrumb h2::before {
+.page-title h2::before {
   content: "-";
   position: absolute;
   left: 2.5px;
@@ -317,6 +329,11 @@ body {
 }
 h1 {
   font-size: 25px;
+}
+h1.big {
+  font-size: 30px;
+  line-height: 30px;
+  margin-bottom: 30px;
 }
 
 /*-------------------------------------------------------
@@ -384,6 +401,11 @@ a > .expand-icon { /* ico-s icon-arr-right */
   background-position: -12px -12px;
 }
 
+.ico-arr-left + .ico-arr-left,
+.ico-arr-right + .ico-arr-right {
+  margin: 0 -10px;
+}
+
 /*-------------------------------------------------------
  * PAGINATION
  *-------------------------------------------------------*/
@@ -392,6 +414,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   align-self: stretch;
   width: 100%;
   text-align: center;
+  margin-top: 20px;
   margin-bottom: 30px;
 }
 .paging-trigger {
@@ -404,14 +427,17 @@ a > .expand-icon { /* ico-s icon-arr-right */
   padding: 15px;
   cursor: pointer;
 }
-.paging-trigger.prev {
-    width: 50%;
-    float: left;
+.paging-trigger.first,
+.paging-trigger.last {
+  background: white;
 }
-.paging-trigger.next {
-    width: 50%;
-    float: right;
-}
+.paging-trigger.prev { width: 50%; float: left; }
+.paging-trigger.next { width: 50%; float: right; }
+.paging-trigger.first { width: 15%; float: left; }
+.paging-trigger.last { width: 15%; float: right; }
+.paging-trigger.first:not([style*="display: none"]) + .paging-trigger.prev { width: 35%; }
+.paging-trigger.last:not([style*="display: none"]) + .paging-trigger.next { width: 35%; }
+
 .paging-trigger:hover {
   background: rgba(255,255,255,0.1);
 }
@@ -534,7 +560,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   width: 80px;
 }
 
-.courses-container {
+#courses-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -609,17 +635,29 @@ a > .expand-icon { /* ico-s icon-arr-right */
  * COURSE
  *-------------------------------------------------------*/
 
- .course-header {
+ .page-banner {
   background-color: #825fb6;
   background-image: linear-gradient(to bottom, #825fb6, #5f3b96);
   min-height: 200px;
   color: white;
   padding: 5px;
 }
-.course-header > .inner {
+.page-banner-small {
+  min-height: 80px;
+}
+.page-banner > .inner {
  display: flex;
 }
-.course-header .course-photo {
+@media (max-width: 650px) {
+  .page-banner > .inner {
+     flex-wrap: wrap;
+     justify-content: center;
+  }
+  h1.big {
+    text-align: center;
+  }
+}
+.page-photo {
   width: 200px;
   height: 200px;
   background-color: #fff;
@@ -627,21 +665,25 @@ a > .expand-icon { /* ico-s icon-arr-right */
   box-shadow: rgba(0,0,0,0.08) 0 1px 2px;
   border: 1px solid #e4e4e4;
 }
-.course-details {
-  margin-left: 15px;
+.page-photo-small {
+  width: 80px;
+  height: 80px;
 }
-
-.course-breadcrumb {
+.page-details {
+  margin-left: 15px;
+  flex-grow: 1;
+}
+.page-breadcrumb {
   list-style: none;
   padding: 0;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(36,123,170,0.5);
   box-shadow: 0 1px 0 0 rgba(255,255,255,0.2);
 }
-.course-breadcrumb li {
+.page-breadcrumb li {
   display: inline;
 }
-.course-breadcrumb a {
+.page-breadcrumb a {
   font-weight: bold;
 }
 
@@ -747,6 +789,139 @@ a > .expand-icon { /* ico-s icon-arr-right */
   max-height: 100px;
   max-width: 100px;
   cursor: pointer
+}
+
+/*-------------------------------------------------------
+ * USER
+ *-------------------------------------------------------*/
+
+.page-stats {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+.page-stats li {
+  padding: 10px 20px;
+  margin: 1px;
+  flex-grow: 1;
+}
+.page-stats strong {
+  font-size: 30px;
+  line-height: 30px;
+  display: block;
+}
+
+.nicebox {
+  margin: 5px auto;
+  border-radius: 5px;
+  box-shadow: rgba(0,0,0,0.08) 0 1px 2px;
+  border: 1px solid #e4e4e4;
+  background-color: #fff;
+  padding: 10px;
+}
+.user-progress img.current {
+  float: left;
+  margin: 0 10px;
+}
+.user-progress img.next {
+  float: right;
+  margin: 0 10px;
+}
+.progress-bar {
+  background-color: rgba(0, 0, 0, 0.07);
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+}
+.progress-bar-active {
+  border-radius: 4px;
+  background-color: #02a0fb;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+.level-progress {
+  min-width: 237px;
+  max-width: 500px;
+  flex-grow: 1;
+}
+.level-info {
+  margin-top: 10px;
+  min-width: 200px;
+  padding-left: 20px;
+}
+.level-persona {
+  display: flex;
+  justify-content: space-around;
+}
+@media (min-width: 350px) {
+  .user-progress > div {
+    display: flex;
+    justify-content: center;
+  }
+}
+#mempals-container {
+  min-height: 200px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.user-box {
+  margin: 2px;
+  min-width: 215px;
+  width: 32%;
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  padding: 10px;
+  background: white;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: all .3s;
+}
+.user-box:hover {
+  border-color: #ccc;
+  background: #f4f4f4;
+}
+.user-box .small-photo {
+  width: 60px;
+  height: 60px;
+  padding: 1px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(0,0,0,0.08) 0 1px 2px;
+  border: 1px solid #e4e4e4;
+  display: inline-block;
+  margin-right: 5px;
+}
+.user-box img {
+  width: 60px;
+  height: 60px;
+  display: inline-block;
+}
+.user-box span {
+  line-height: 60px;
+}
+.is-empty {
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  border: 0;
 }
 
 /*-------------------------------------------------------
