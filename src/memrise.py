@@ -94,7 +94,9 @@ class Memrise:
 
         # Query memrise
         if courses == None:
-            print 'GET ' + cache_key
+            if cache_key:
+                print 'GET ' + cache_key
+
             url  = 'https://www.memrise.com/ajax/browse/?s_cat=' + lang
             if cat != "":
                 url += "&cat=" + cat
@@ -273,6 +275,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
+    # https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
     def user(self, username):
         """
             Retrieve the info about a user
@@ -287,7 +290,7 @@ class Memrise:
 
         if user == None:
             print 'GET ' + cache_key
-            response = requests.get("https://www.memrise.com/user/" + username + "/")
+            response = requests.get("https://www.memrise.com/user/" + username + "/courses/teaching/")
             response.raise_for_status()
 
             html = response.text.encode('utf-8').strip()
@@ -323,7 +326,23 @@ class Memrise:
                     text   = child.text.strip()
                     result = re.search('([0-9,]+)([\n\w ]*)', text)
                     if result:
-                        user["stats"][result.group(2).strip().lower()] = result.group(1)
+                        tab = result.group(2).strip().lower()
+                        user["stats"][tab] = result.group(1)
+
+            div = DOM.find(id="content")
+            if div != None:
+
+                # Get nb courses
+                item = div.find('div',{'class','btn-group'})
+                if item != None:
+                    for child in item.children:
+                        if not isinstance(child, Tag):
+                            continue
+
+                        result = re.search('\(([0-9,]+)\)', child.text)
+                        if result:
+                            tab = child.attrs['href'].strip('/').split('/')[-1]
+                            user["stats"][tab] = result.group(1)
 
             mc.set(cache_key, user, time=60*60)
         return user
@@ -420,5 +439,51 @@ class Memrise:
 
         data['has_next'] = data['page'] < data['lastpage']
         return data
+
+    #+-----------------------------------------------------
+    #| USER's COURSES
+    #+-----------------------------------------------------
+    def user_teaching(self, username):
+        return self.user_courses("teaching", username)
+
+    def user_learning(self, username):
+        return self.user_courses("learning", username)
+
+    def user_courses(self, tab, username):
+        """
+            Retrieve the courses of an user
+            Is cached via memcached for 1hour
+
+            @throws requests.exceptions.HTTPError
+            @param string tab      - teaching | learning
+            @param string username
+            @return dict - {content, nbCourse}
+        """
+        cache_key = "user_" + username + "_" + tab
+        courses   = mc.get(cache_key)
+
+        if courses == None:
+            print 'GET ' + cache_key
+            response = requests.get("https://www.memrise.com/user/" + username + "/courses/" + tab + "/")
+            response.raise_for_status()
+
+            html = response.text.encode('utf-8').strip()
+            DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+            courses = {
+                "nbCourse": 0,
+                "content": []
+            }
+
+            # Get list of courses
+            div = DOM.find(id="content")
+            if div != "None":
+                content = div.find_all("div",{"class":"course-box-wrapper"})
+
+                for wrapper in content:
+                    courses["content"].append(str(wrapper))
+                    courses["nbCourse"] += 1
+
+            mc.set(cache_key, courses, time=60*60)
+        return courses
 
 memrise = Memrise()

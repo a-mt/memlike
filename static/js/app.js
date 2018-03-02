@@ -26,7 +26,8 @@ $(document).ready(function(){
 
   // Page /user event
   if($('#user-container').length) {
-    user();
+    user_mempals();
+    user_courses();
   }
 });
 
@@ -292,12 +293,12 @@ var imgZoom = {
   close: function() {
     imgZoom.container && imgZoom.container.hide();
   }
-}
+};
 
 //+--------------------------------------------------------
 //| Browse followers/following users using AJAX
 //+--------------------------------------------------------
-function user() {
+function user_mempals() {
   var content  = $("#mempals-container");
   if(!content.length) {
     return;
@@ -322,5 +323,28 @@ function user() {
     html += '<span class="user-box is-empty"></span>';
     html += '<span class="user-box is-empty"></span>';
     return html;
+  });
+}
+
+//+--------------------------------------------------------
+//| Browse user's courses using AJAX
+//+--------------------------------------------------------
+function user_courses() {
+  var content  = $("#usercourses-container");
+  if(!content.length) {
+    return;
+  }
+  var paging = $("#content-loader").children(),
+      tab    = content.data('tab'),
+      url    = '/ajax/user/' + window.$_URL.username + '/' + tab;
+
+  _paginate(url, {}, content, paging, function(data){
+    if(data.content.length == 0) {
+      return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
+    }
+    return data.content.join('')
+          + '<div class="course-box is-empty"></div>'
+          + '<div class="course-box is-empty"></div>'
+          + '<div class="course-box is-empty"></div>';
   });
 }

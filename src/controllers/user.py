@@ -5,8 +5,10 @@ from variables import levels
 from requests.exceptions import HTTPError
 
 urls = (
-  "/([^/]+)/mempals/(followers)/", "user",
-  "/([^/]+)/mempals/(following)/", "user",
+  "/([^/]+)/courses/(teaching)/?", "user",
+  "/([^/]+)/courses/(learning)/?", "user",
+  "/([^/]+)/mempals/(followers)/?", "user",
+  "/([^/]+)/mempals/(following)/?", "user",
   "/(.*)", "user"
 )
 
@@ -16,7 +18,6 @@ class user:
 
         try:
             user = memrise.user(username)
-            user['url'] = web.ctx['homepath'] + '/' + username
         except HTTPError as e:
             print e
             return GLOBALS['prender']._404()

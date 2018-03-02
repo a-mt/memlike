@@ -23,7 +23,7 @@ $var title: $(user['username'])
 
 <div class="page-head">
   <div class="inner">
-  $for tab in [('stats', '/'), ('followers', '/mempals/followers/'), ('following', '/mempals/following/')]:
+  $for tab in [('stats', '/'), ('followers', '/mempals/followers/'), ('following', '/mempals/following/'), ('teaching', '/courses/teaching/'), ('learning', '/courses/learning/')]:
     $ name, url = tab
     $if currentTab == name:
       <button type="button" class="pill active">
@@ -32,7 +32,7 @@ $var title: $(user['username'])
           ($(user['stats'][name] if name in user['stats'] else 0))
       </button>
     $else:
-      <a href="$(user['url'])$url" class="pill">
+      <a href="/user/$(user['username'])$url" class="pill">
         $(LANG.misc[name])
         $if name != "stats":
           ($(user['stats'][name] if name in user['stats'] else 0))
@@ -101,7 +101,10 @@ $var title: $(user['username'])
   $else:
 
     <!-- List of mempals -->
-    <div id="mempals-container" data-tab="$currentTab"></div>
+    $if currentTab == "following" or currentTab == "followers":
+      <div id="mempals-container" data-tab="$currentTab"></div>
+    $else:
+      <div id="usercourses-container" data-tab="$currentTab"></div>
 
     <!-- Pagination -->
     <div id="content-loader" class="paging clearfix">

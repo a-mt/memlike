@@ -18,7 +18,9 @@ misc = {
   "level_current": "Current level",
   "level_next": "Next level",
   "following_none": "% doesn't follow anyone",
-  "followers_none": "No one follows %"
+  "followers_none": "No one follows %",
+  "learning": "Learning",
+  "teaching": "Teaching"
 };
 
 menu = {
