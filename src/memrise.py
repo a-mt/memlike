@@ -21,10 +21,18 @@ class Memrise:
         sessionid = mc.get(cache_key)
 
         if force or sessionid == None:
-            print 'GET ' + cache_key
+            with mc.lock(cache_key) as retries:
 
-            sessionid = self.auth()
-            mc.set(cache_key, sessionid, time=31*60*60*24)
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    sessionid = mc.get(cache_key)
+                    if sessionid:
+                        return sessionid
+
+                print 'GET ' + cache_key
+
+                sessionid = self.auth()
+                mc.set(cache_key, sessionid, time=31*60*60*24)
 
         return sessionid
 
@@ -94,19 +102,27 @@ class Memrise:
 
         # Query memrise
         if courses == None:
-            if cache_key:
-                print 'GET ' + cache_key
+            with mc.lock(cache_key) as retries:
 
-            url  = 'https://www.memrise.com/ajax/browse/?s_cat=' + lang
-            if cat != "":
-                url += "&cat=" + cat
-            if query != "":
-                url += "&q=" + query
-            url += '&page=' + str(page) + '&_=' + str(time.time())
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    courses = mc.get(cache_key)
+                    if courses:
+                        return courses
 
-            courses = requests.get(url, headers={"Accept-Language": "fr;q=0.8,en-US;q=0.5,en;q=0.3"}).text
-            if cache_key:
-                mc.set(cache_key, courses, time=60*60*24)
+                if cache_key:
+                    print 'GET ' + cache_key
+
+                url  = 'https://www.memrise.com/ajax/browse/?s_cat=' + lang
+                if cat != "":
+                    url += "&cat=" + cat
+                if query != "":
+                    url += "&q=" + query
+                url += '&page=' + str(page) + '&_=' + str(time.time())
+
+                courses = requests.get(url, headers={"Accept-Language": "fr;q=0.8,en-US;q=0.5,en;q=0.3"}).text
+                if cache_key:
+                    mc.set(cache_key, courses, time=60*60*24)
 
         return courses
 
@@ -127,27 +143,35 @@ class Memrise:
 
         # Query memrise
         if categories == None:
-            print 'GET ' + cache_key
-            html = requests.get("https://www.memrise.com/fr/courses/" + lang + "/").text.encode('utf-8').strip()
+            with mc.lock(cache_key) as retries:
 
-            # Parse HTML
-            DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            ul  = DOM.find_all('ul',{'class':'categories-list'}).pop()
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    categories = mc.get(cache_key)
+                    if categories:
+                        return categories
 
-            def parseCategories(ul):
-                for li in ul.findChildren():
-                    if not 'data-category-id' in li.attrs:
-                        continue
+                print 'GET ' + cache_key
+                html = requests.get("https://www.memrise.com/fr/courses/" + lang + "/").text.encode('utf-8').strip()
 
-                    id = li.attrs['data-category-id']
-                    categories[id] = True
+                # Parse HTML
+                DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                ul  = DOM.find_all('ul',{'class':'categories-list'}).pop()
 
-                    if li.ul:
-                        parseCategories(li.ul)
+                def parseCategories(ul):
+                    for li in ul.findChildren():
+                        if not 'data-category-id' in li.attrs:
+                            continue
 
-            categories = {}
-            parseCategories(ul)
-            mc.set(cache_key, categories, time=60*60*24)
+                        id = li.attrs['data-category-id']
+                        categories[id] = True
+
+                        if li.ul:
+                            parseCategories(li.ul)
+
+                categories = {}
+                parseCategories(ul)
+                mc.set(cache_key, categories, time=60*60*24)
 
         return categories
 
@@ -167,73 +191,81 @@ class Memrise:
         course    = mc.get(cache_key)
 
         if course == None:
-            print 'GET ' + cache_key
-            response = requests.get("https://www.memrise.com/course/" + id)
-            response.raise_for_status()
-            html = response.text.encode('utf-8').strip()
+            with mc.lock(cache_key) as retries:
 
-            # Parse HTML
-            DOM    = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            course = {
-                "id"         : id,
-                "title"      : "",
-                "url"        : "",
-                "author"     : "",
-                "description": "",
-                "photo"      : "",
-                "levels"     : {},
-                "breadcrumb" : []
-            }
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    course = mc.get(cache_key)
+                    if course:
+                        return course
 
-            div = DOM.find('div',{'class','course-wrapper'})
-            if div != None:
+                print 'GET ' + cache_key
+                response = requests.get("https://www.memrise.com/course/" + id)
+                response.raise_for_status()
+                html = response.text.encode('utf-8').strip()
 
-                # Title
-                item = div.find(itemprop="name")
-                if item != None:
-                    course['title'] = item.text
+                # Parse HTML
+                DOM    = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                course = {
+                    "id"         : id,
+                    "title"      : "",
+                    "url"        : "",
+                    "author"     : "",
+                    "description": "",
+                    "photo"      : "",
+                    "levels"     : {},
+                    "breadcrumb" : []
+                }
 
-                # Description
-                item = div.find(itemprop="about")
-                if item != None:
-                    course['description'] = item.text
+                div = DOM.find('div',{'class','course-wrapper'})
+                if div != None:
 
-                # Author (only when logged in :/)
-                item = div.find(itemprop="author")
-                if item != None:
-                    course['author'] = item.find(itemprop="additionalName").text
+                    # Title
+                    item = div.find(itemprop="name")
+                    if item != None:
+                        course['title'] = item.text
 
-                # Categories
-                item = div.find('div',{'class','course-breadcrumb'})
-                if item != None:
-                    for child in item.find_all('a'):
-                        cat = child.attrs['href'].strip('/').split('/').pop()
+                    # Description
+                    item = div.find(itemprop="about")
+                    if item != None:
+                        course['description'] = item.text
 
-                        if cat in categories_code:
-                            course["breadcrumb"].append({
-                                "id"  : categories_code[cat],
-                                "name": cat
-                            })
+                    # Author (only when logged in :/)
+                    item = div.find(itemprop="author")
+                    if item != None:
+                        course['author'] = item.find(itemprop="additionalName").text
 
-                # Photo + url
-                item = div.find('a',{'class','course-photo'})
-                if item != None:
-                    course["url"]   = item.attrs['href']
-                    course["photo"] = item.img.attrs['src']
+                    # Categories
+                    item = div.find('div',{'class','course-breadcrumb'})
+                    if item != None:
+                        for child in item.find_all('a'):
+                            cat = child.attrs['href'].strip('/').split('/').pop()
 
-            # List of levels
-            div = DOM.find('div',{'class':'levels'})
-            if div != None:
+                            if cat in categories_code:
+                                course["breadcrumb"].append({
+                                    "id"  : categories_code[cat],
+                                    "name": cat
+                                })
 
-                for child in div.children:
-                    if not isinstance(child, Tag):
-                        continue
+                    # Photo + url
+                    item = div.find('a',{'class','course-photo'})
+                    if item != None:
+                        course["url"]   = item.attrs['href']
+                        course["photo"] = item.img.attrs['src']
 
-                    name = child.find('div',{'class':'level-title'}).text.strip()
-                    idx  = child.find('div',{'class':'level-index'}).text.strip()
-                    course["levels"][idx] = name
+                # List of levels
+                div = DOM.find('div',{'class':'levels'})
+                if div != None:
 
-            mc.set(cache_key, course, time=60*60*24)
+                    for child in div.children:
+                        if not isinstance(child, Tag):
+                            continue
+
+                        name = child.find('div',{'class':'level-title'}).text.strip()
+                        idx  = child.find('div',{'class':'level-index'}).text.strip()
+                        course["levels"][idx] = name
+
+                mc.set(cache_key, course, time=60*60*24)
 
         return course
 
@@ -250,26 +282,33 @@ class Memrise:
             @param integer lvl
             @return dict - Retrieved JSON
         """
-
         cache_key = "course_" + idCourse + "_" + lvl
         level     = mc.get(cache_key)
 
         if level == None:
-            sessionid = self.get_auth()
-            print 'GET ' + cache_key
+            with mc.lock(cache_key) as retries:
 
-            url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=preview"
-            response = requests.get(url, cookies={"sessionid": sessionid})
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    level = mc.get(cache_key)
+                    if level:
+                        return level
 
-            # Try reauthenticate
-            if response.status_code == 403:
-                sessionid = self.get_auth(True)
-                response  = requests.get(url, cookies={"sessionid": sessionid})
+                sessionid = self.get_auth()
+                print 'GET ' + cache_key
 
-            response.raise_for_status()
-            level = response.json()
+                url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=preview"
+                response = requests.get(url, cookies={"sessionid": sessionid})
 
-            mc.set(cache_key, level, time=60*60*24)
+                # Try reauthenticate
+                if response.status_code == 403:
+                    sessionid = self.get_auth(True)
+                    response  = requests.get(url, cookies={"sessionid": sessionid})
+
+                response.raise_for_status()
+                level = response.json()
+
+                mc.set(cache_key, level, time=60*60*24)
         return level
 
     #+-----------------------------------------------------
@@ -289,62 +328,70 @@ class Memrise:
         user      = mc.get(cache_key)
 
         if user == None:
-            print 'GET ' + cache_key
-            response = requests.get("https://www.memrise.com/user/" + username + "/courses/teaching/")
-            response.raise_for_status()
+            with mc.lock(cache_key) as retries:
 
-            html = response.text.encode('utf-8').strip()
-            DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            user = {
-                "username": username,
-                "photo"   : "",
-                "rank"    : 0,
-                "stats"   : {}
-            }
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    user = mc.get(cache_key)
+                    if user:
+                        return user
 
-            div = DOM.find(id="page-head")
-            if div != None:
+                print 'GET ' + cache_key
+                response = requests.get("https://www.memrise.com/user/" + username + "/courses/teaching/")
+                response.raise_for_status()
 
-                # Get avatar
-                item = div.find('img', {'class':'avatar'})
-                if item != None:
-                    user['photo'] = item.attrs['src']
+                html = response.text.encode('utf-8').strip()
+                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                user = {
+                    "username": username,
+                    "photo"   : "",
+                    "rank"    : 0,
+                    "stats"   : {}
+                }
 
-                # Get rank
-                item = div.find('img', {'class':'rank-icon'})
-                if item != None:
-                    result = re.search('/([^/]*)_(\d+)\.(.*)$', item.attrs['src'])
-                    if result:
-                        user['rank'] = int(result.group(2))
+                div = DOM.find(id="page-head")
+                if div != None:
 
-                # Get stats (num followers, following, words, points)
-                div = div.find(attrs={'class' : 'profile-stats'})
-                for child in div.children:
-                    if not isinstance(child, Tag):
-                        continue
+                    # Get avatar
+                    item = div.find('img', {'class':'avatar'})
+                    if item != None:
+                        user['photo'] = item.attrs['src']
 
-                    text   = child.text.strip()
-                    result = re.search('([0-9,]+)([\n\w ]*)', text)
-                    if result:
-                        tab = result.group(2).strip().lower()
-                        user["stats"][tab] = result.group(1)
+                    # Get rank
+                    item = div.find('img', {'class':'rank-icon'})
+                    if item != None:
+                        result = re.search('/([^/]*)_(\d+)\.(.*)$', item.attrs['src'])
+                        if result:
+                            user['rank'] = int(result.group(2))
 
-            div = DOM.find(id="content")
-            if div != None:
-
-                # Get nb courses
-                item = div.find('div',{'class','btn-group'})
-                if item != None:
-                    for child in item.children:
+                    # Get stats (num followers, following, words, points)
+                    div = div.find(attrs={'class' : 'profile-stats'})
+                    for child in div.children:
                         if not isinstance(child, Tag):
                             continue
 
-                        result = re.search('\(([0-9,]+)\)', child.text)
+                        text   = child.text.strip()
+                        result = re.search('([0-9,]+)([\n\w ]*)', text)
                         if result:
-                            tab = child.attrs['href'].strip('/').split('/')[-1]
+                            tab = result.group(2).strip().lower()
                             user["stats"][tab] = result.group(1)
 
-            mc.set(cache_key, user, time=60*60)
+                div = DOM.find(id="content")
+                if div != None:
+
+                    # Get nb courses
+                    item = div.find('div',{'class','btn-group'})
+                    if item != None:
+                        for child in item.children:
+                            if not isinstance(child, Tag):
+                                continue
+
+                            result = re.search('\(([0-9,]+)\)', child.text)
+                            if result:
+                                tab = child.attrs['href'].strip('/').split('/')[-1]
+                                user["stats"][tab] = result.group(1)
+
+                mc.set(cache_key, user, time=60*60)
         return user
 
     def user_followers(self, username, page=1):
@@ -382,60 +429,69 @@ class Memrise:
             data = mc.get(cache_key + "_" + str(page))
 
         # Get the given page
+        cache_key_page = cache_key + "_" + str(page)
         if data == None:
-            print 'GET ' + cache_key + '_' + str(page)
-            response = requests.get("https://www.memrise.com/user/" + username + "/mempals/" + mempals + "/?page=" + str(page))
-            response.raise_for_status()
+            with mc.lock(cache_key_page) as retries:
 
-            html = response.text.encode('utf-8').strip()
-            DOM   = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            data  = {
-                "page": page,
-                "lastpage": 0,
-                "users": []
-            }
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    data = mc.get(cache_key_page)
+                    if data:
+                        return data
 
-            # Get list of followers
-            div   = DOM.find(id="content")
-            if div != None:
-                users = div.find_all(attrs={'class': 'user-box'})
-                for user in users:
-                    username = user.find(attrs={'class': 'username'})
-                    img      = user.find('img')
-                    if username == None:
-                        continue
+                print 'GET ' + cache_key_page
+                response = requests.get("https://www.memrise.com/user/" + username + "/mempals/" + mempals + "/?page=" + str(page))
+                response.raise_for_status()
 
-                    item = {
-                        "name" : username.text.strip(),
-                        "photo": img.attrs['src'] if img else ""
-                    }
-                    data["users"].append(item)
+                html = response.text.encode('utf-8').strip()
+                DOM   = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                data  = {
+                    "page": page,
+                    "lastpage": 0,
+                    "users": []
+                }
 
-            # Get current page + max page number
-            div  = DOM.find('ul', {'class':'pagination'})
-            currentPage = page
-            lastpage    = 0
+                # Get list of followers
+                div   = DOM.find(id="content")
+                if div != None:
+                    users = div.find_all(attrs={'class': 'user-box'})
+                    for user in users:
+                        username = user.find(attrs={'class': 'username'})
+                        img      = user.find('img')
+                        if username == None:
+                            continue
 
-            if div != None:
-                for child in div.children:
-                    if not isinstance(child, Tag):
-                        continue
+                        item = {
+                            "name" : username.text.strip(),
+                            "photo": img.attrs['src'] if img else ""
+                        }
+                        data["users"].append(item)
 
-                    text = child.text.strip()
-                    if not re.match('[0-9]+', text):
-                        continue
+                # Get current page + max page number
+                div  = DOM.find('ul', {'class':'pagination'})
+                currentPage = page
+                lastpage    = 0
 
-                    lastpage = int(text)
-                    if 'class' in child.attrs and 'active' in child.attrs['class']:
-                        currentPage = lastpage
+                if div != None:
+                    for child in div.children:
+                        if not isinstance(child, Tag):
+                            continue
 
-                data['page']    = currentPage
-                data['lastpage'] = lastpage
+                        text = child.text.strip()
+                        if not re.match('[0-9]+', text):
+                            continue
 
-                if cache_paging:
-                    mc.set(cache_key, data['lastpage'], time=60*60)
+                        lastpage = int(text)
+                        if 'class' in child.attrs and 'active' in child.attrs['class']:
+                            currentPage = lastpage
 
-            mc.set(cache_key + '_' + str(currentPage), data, time=60*60)
+                    data['page']    = currentPage
+                    data['lastpage'] = lastpage
+
+                    if cache_paging:
+                        mc.set(cache_key, data['lastpage'], time=60*60)
+
+                mc.set(cache_key + '_' + str(currentPage), data, time=60*60)
 
         data['has_next'] = data['page'] < data['lastpage']
         return data
@@ -463,27 +519,35 @@ class Memrise:
         courses   = mc.get(cache_key)
 
         if courses == None:
-            print 'GET ' + cache_key
-            response = requests.get("https://www.memrise.com/user/" + username + "/courses/" + tab + "/")
-            response.raise_for_status()
+            with mc.lock(cache_key) as retries:
 
-            html = response.text.encode('utf-8').strip()
-            DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            courses = {
-                "nbCourse": 0,
-                "content": []
-            }
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    courses = mc.get(cache_key)
+                    if courses:
+                        return courses
 
-            # Get list of courses
-            div = DOM.find(id="content")
-            if div != "None":
-                content = div.find_all("div",{"class":"course-box-wrapper"})
+                print 'GET ' + cache_key
+                response = requests.get("https://www.memrise.com/user/" + username + "/courses/" + tab + "/")
+                response.raise_for_status()
 
-                for wrapper in content:
-                    courses["content"].append(str(wrapper))
-                    courses["nbCourse"] += 1
+                html = response.text.encode('utf-8').strip()
+                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                courses = {
+                    "nbCourse": 0,
+                    "content": []
+                }
 
-            mc.set(cache_key, courses, time=60*60)
+                # Get list of courses
+                div = DOM.find(id="content")
+                if div != "None":
+                    content = div.find_all("div",{"class":"course-box-wrapper"})
+
+                    for wrapper in content:
+                        courses["content"].append(str(wrapper))
+                        courses["nbCourse"] += 1
+
+                mc.set(cache_key, courses, time=60*60)
         return courses
 
 memrise = Memrise()
