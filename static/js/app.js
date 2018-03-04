@@ -19,7 +19,7 @@ $(document).ready(function(){
   }
 
   // Audio tag toggle play/pause
-  if($('#course-container').length) {
+  if($('#course-container, #learn-container').length) {
     audioPlayer.init();
     imgZoom.init();
   }
@@ -197,8 +197,19 @@ var audioPlayer = {
   target: false,
   isPlaying: false,
 
+  reset: function() {
+    if(audioPlayer.isPlaying) {
+      audioPlayer.target.pause();
+      audioPlayer.target.classList.remove("active");
+    }
+    audioPlayer.target    = false;
+    audioPlayer.isPlaying = false;
+  },
+
   init: function(){
-    $('.course-container').on('click', '.audio-player', audioPlayer.play);
+    audioPlayer.reset();
+
+    $('main').on('click', '.audio-player', audioPlayer.play);
   },
 
   // Play the target (this) audio element
@@ -237,13 +248,15 @@ var imgZoom = {
   n: 0,
   i: 0,
 
-  init: function() {
-    imgZoom.n = $('.course-container .text-image').each(function(i){
+  reset: function() {
+    imgZoom.n = $('main .text-image').each(function(i){
       $(this).attr('id', 'imgZoom-' + i)
              .data('i', i);
     }).length;
-
-    $('.course-container').on('click', '.text-image', imgZoom.open);
+  },
+  init: function() {
+    imgZoom.reset();
+    $('main').on('click', '.text-image', imgZoom.open);
   },
   createContainer: function() {
     var div = $('<div id="imgZoom" style="display: none">').appendTo(document.body);
@@ -309,7 +322,8 @@ function user_mempals() {
 
   _paginate(url, {}, content, paging, function(data){
     if(!data.users.length) {
-      return '<div class="empty-box"><p>' + window.i18n[tab + '_none'].replace('%', window.$_URL.username) + '</p></div>';
+      var msg = window.i18n[tab + '_none'].replace('%', '<span class="grey">' + window.$_URL.username + '</span>');
+      return '<div class="empty-box"><p>' + msg + '</p></div>';
     }
 
     var html = '';

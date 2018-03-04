@@ -20,7 +20,13 @@ misc = {
   "following_none": "% doesn't follow anyone",
   "followers_none": "No one follows %",
   "learning": "Learning",
-  "teaching": "Teaching"
+  "teaching": "Teaching",
+  "learn_level": "Learn this level",
+  "learn_course": "Learn this course",
+  "preview_level": "View this level",
+  "preview_course": "View this course",
+  "learn": "Learn",
+  "preview": "View"
 };
 
 menu = {

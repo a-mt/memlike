@@ -32,7 +32,7 @@ $var title: $(course['title']) $("- " + str(level['index']) if level else None)
 </div>
 
 <div class="page-head">
-  <div class="inner">
+  <div class="inner clearfix">
     $if level:
       <a href="$(course['url'])" class="pill">
         <i class="ico ico-list"></i>
@@ -42,11 +42,19 @@ $var title: $(course['title']) $("- " + str(level['index']) if level else None)
       <button type="button" class="pill active">
         $(level['index']) - $(level['name'])
       </button>
+
+      <a href="$(course['url'] + str(level['index']))/garden/preview" class="pill green">
+        $(LANG.misc['preview_level'])
+      </a>
     $else:
       <button type="button" class="pill active">
         <i class="ico ico-list ico-white"></i>
         $(LANG.misc['levels']) ($(len(course['levels'])))
       </button>
+
+      <a href="$(course['url'])garden/preview" class="pill green">
+        $(LANG.misc['preview_course'])
+      </a>
   </div>
 </div>
 
