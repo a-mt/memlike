@@ -12,14 +12,13 @@ class Memrise:
     def get_auth(self, force=False):
         """
             Retrieve sessionid
-            Is cached via memcached for 31days
+            Is cached via memcached for 1day
 
             @param boolean force - [False] Force cache refresh
             @return string       - sessionid
         """
         cache_key = "login"
         sessionid = mc.get(cache_key)
-
         if force or sessionid == None:
             with mc.lock(cache_key) as retries:
 
@@ -32,7 +31,7 @@ class Memrise:
                 print 'GET ' + cache_key
 
                 sessionid = self.auth()
-                mc.set(cache_key, sessionid, time=31*60*60*24)
+                mc.set(cache_key, sessionid, time=60*60*24)
 
         return sessionid
 
@@ -374,6 +373,12 @@ class Memrise:
                         result = re.search('([0-9,]+)([\n\w ]*)', text)
                         if result:
                             tab = result.group(2).strip().lower()
+
+                            # force plural
+                            if tab == "follower":
+                                tab = "followers"
+                            elif tab == "word":
+                                tab = "words"
                             user["stats"][tab] = result.group(1)
 
                 div = DOM.find(id="content")
