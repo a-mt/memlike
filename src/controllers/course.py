@@ -4,13 +4,17 @@ from _globals import GLOBALS
 from requests.exceptions import HTTPError
 
 urls = (
+  # Learn
   "/(\d+)/(.*)/(\d+)/garden/(preview)", "learn",
   "/(\d+)/(.*)/(\d+)/garden/(learn)", "learn",
   "/(\d+)/(.*)/(\d+)/(\d+)", "view",
   "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
+
+  # View course
   "/(\d+)/(.*)/garden/(preview)", "learn",
   "/(\d+)/(.*)/garden/(learn)", "learn",
+  "/(\d+)/(.*)/leaderboard", "leaderboard",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
 )
@@ -47,7 +51,7 @@ class level:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, {
+        return GLOBALS['render'].course(course, "level", {
             "name": course['levels'][lvl],
             "index": int(lvl)
         }, items)
@@ -60,6 +64,19 @@ class course:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, False, False)
+        return GLOBALS['render'].course(course, "levels", False, False)
+
+class leaderboard:
+    def GET(self, idCourse, path=""):
+        _GET = web.input(period="week")
+        try:
+            course      = memrise.course(idCourse)
+            leaderboard = memrise.leaderboard(idCourse, _GET.period)
+        except HTTPError as e:
+            print e
+            return GLOBALS['prender']._404()
+
+        return GLOBALS['render'].course(course, "leaderboard", _GET.period, leaderboard)
+
 
 app = web.application(urls, locals())

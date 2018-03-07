@@ -316,6 +316,48 @@ class Memrise:
         return level
 
     #+-----------------------------------------------------
+    #| COURSE > LEADERBOARD
+    #+-----------------------------------------------------
+    def leaderboard(self, idCourse, period):
+        """
+            Retrieve the learderboard of a course (50 first)
+            Is cached via memcached for 1hour
+
+            @throws requests.exceptions.HTTPError
+            @param integer idCourse
+            @param string period - month, week, alltime
+            @return dict - Retrieved JSON
+        """
+        cache_key = "course_" + idCourse + "_learderboard_" + period
+        ldboard   = mc.get(cache_key)
+
+        if ldboard == None:
+            with mc.lock(cache_key) as retries:
+
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    ldboard = mc.get(cache_key)
+                    if ldboard:
+                        return ldboard
+
+                sessionid = self.get_auth()
+                print 'GET ' + cache_key
+
+                url      = "https://www.memrise.com/ajax/leaderboard/course/" + idCourse + "/?period=" + period + "&how_many=50"
+                response = requests.get(url, cookies={"sessionid": sessionid})
+
+                # Try reauthenticate
+                if response.status_code == 403:
+                    sessionid = self.get_auth(True)
+                    response  = requests.get(url, cookies={"sessionid": sessionid})
+
+                response.raise_for_status()
+                ldboard = response.json()
+
+                mc.set(cache_key, ldboard, time=60*60*24)
+        return ldboard
+
+    #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
     # https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621

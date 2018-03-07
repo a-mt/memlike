@@ -86,6 +86,12 @@ figure, figcaption {
 .btn:hover {
   background-color: #f2f2f2;
 }
+.btn.active {
+  text-shadow: 0 1px 0 #15a1ec;
+  background-color: #73c7f4;
+  color: #fff;
+  border-color: #15a1ec;
+}
 .caret {
   display: inline-block;
   width: 0;
@@ -101,9 +107,12 @@ figure, figcaption {
   display: inline-block;
   vertical-align: middle;
   margin-bottom: 10px;
+  list-style: none;
+  padding: 0;
 }
-.btn-group > .btn {
-  float: left;
+.btn-group > * {
+  display: inline-block;
+  margin-right: -4px;
 }
 .btn + .btn {
   margin-left: -1px;
@@ -111,13 +120,19 @@ figure, figcaption {
 .dropdown-toggle {
   cursor: pointer;
 }
-.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:not(:last-of-type) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
+.btn-group > .btn:not(:first-child),
 .btn-group > .dropdown-toggle:not(:first-child) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
+}
+.btn-small {
+  font-size: 12px;
+  height: 30px;
+  line-height: 10px;
 }
 
 .dropdown-menu {
@@ -192,9 +207,6 @@ input[type="text"] {
 .btn-group .btn-default:last-child {
   border-radius: 0 6px 6px 0;
   margin-left: -1px;
-}
-.btn-group > * {
-  float: left;
 }
 
 .pill {
@@ -462,6 +474,9 @@ h1.big {
 .ico-thin-arr-right {
   background-position: -54px -162px;
   transform: rotate(180deg);
+}
+.ico-trophy {
+  background-position:-72px -72px
 }
 
 a > .expand-icon { /* ico-s icon-arr-right */
@@ -1260,4 +1275,43 @@ table.learn {
 }
 .neverMissed {
   color:#23b26d
+}
+
+/*-------------------------------------------------------
+ * LEADERBOARD
+ *-------------------------------------------------------*/
+
+.leaderboard {
+  margin: 10px 5px;
+  padding: 0;
+}
+.leaderboard-controls {
+  text-align: center;
+  padding: 10px;
+}
+.leaderboard-controls .btn-group {
+  margin: 0;
+}
+.leaderboard-content {
+  list-style: none;
+  background: #F3F4F3;
+  padding: 0;
+  margin: 0;
+}
+.leaderboard-content li {
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  line-height: 45px;
+}
+.leaderboard-content img {
+  border-radius: 50%;
+  height: 45px;
+  width: 45px;
+}
+.row-pic, .row-pic strong {
+  margin-right: 10px;
+}
+.row-points {
+  float: right;
+  font-weight: 600;
 }

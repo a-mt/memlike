@@ -1,6 +1,12 @@
-$def with (course, level, items)
+$def with (course, tab, level, items)
 $var currentPage: courses
-$var title: $(course['title']) $("- " + str(level['index']) if level else None)
+
+$if tab == "level":
+  $var title: $(course['title']) - $(level['index'])
+$elif tab == "leaderboard":
+  $var title: $(course['title']) - $(LANG.misc['leaderboard'])
+$else:
+  $var title: $(course['title'])
 
 <div class="page-banner">
   <div class="inner">
@@ -33,7 +39,7 @@ $var title: $(course['title']) $("- " + str(level['index']) if level else None)
 
 <div class="page-head">
   <div class="inner clearfix">
-    $if level:
+    $if tab == "level":
       <!-- Link to levels list -->
       <a href="$(course['url'])" class="pill">
         <i class="ico ico-list"></i>
@@ -62,12 +68,31 @@ $var title: $(course['title']) $("- " + str(level['index']) if level else None)
         </ul>
       </div>
 
+    $elif tab == "leaderboard":
+      <!-- Levels name -->
+      <a href="$(course['url'])" class="pill">
+        <i class="ico ico-list"></i>
+        $(LANG.misc['levels']) ($(len(course['levels'])))
+      </a>
+
+      <!-- Link to leaderboard -->
+      <button type="button" class="pill active">
+        <i class="ico ico-trophy ico-white"></i>
+        $(LANG.misc['leaderboard'])
+      </button>
+
     $else:
       <!-- Levels name -->
       <button type="button" class="pill active">
         <i class="ico ico-list ico-white"></i>
         $(LANG.misc['levels']) ($(len(course['levels'])))
       </button>
+
+      <!-- Link to leaderboard -->
+      <a href="$(course['url'])leaderboard" class="pill">
+        <i class="ico ico-trophy"></i>
+        $(LANG.misc['leaderboard'])
+      </a>
 
       <!-- Links to garden learn / preview -->
       <div class="dropdown go-learn">
@@ -108,7 +133,7 @@ $def thing(item, attr):
 <main>
   <div id="course-container" class="inner">
 
-    $if items:
+    $if tab == "level":
       <!-- Level details -->
       <ul class="things">
         $for item in items['learnables']:
@@ -135,6 +160,33 @@ $def thing(item, attr):
             <span class="page">$idx &ndash; $(course['levels'][str(idx)])</span>
             <span class="ico ico-arr-right"></span>
           </a>
+      </div>
+
+    $elif tab == "leaderboard":
+      <div class="leaderboard nicebox">
+        <div class="leaderboard-controls">
+          <div class="btn-group">
+            $for period in ['week', 'month', 'alltime']:
+              <a class="btn btn-small $('active' if level == period else None)" href="?period=$period">$(LANG.misc[period])</a>
+          </div>
+        </div>
+
+        <!-- List of scores -->
+        <ul class="leaderboard-content">
+          $for item in items['rows']:
+            <li class="leaderboard-row">
+              <span class="row-pic">
+                <strong>$(item['position']).</strong>
+                <img src="$(item['photo'])">
+              </span>
+              <span class="row-username">
+                <span data-role="hovercard" data-user-id="$(item['uid'])" data-direction="right">$(item['username'])</span>
+              </span>
+              <span class="row-points $('best' if item['position'] == 1 else None)">
+                <span>$(number_format(item['points']))</span>
+              </span>
+            </li>
+        </ul>
       </div>
 
     $else:

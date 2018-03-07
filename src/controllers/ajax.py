@@ -6,9 +6,10 @@ from math import ceil
 urls = (
   "", "api",
   "/courses", "courses",
-  "/course/(\d+)/(\d+)", "level",
-  "/course/(\d+)/(\d+)/(preview)", "level",
-  "/course/(\d+)/(\d+)/(learn)", "level",
+  "/course/(\d+)/(\d+)", "course_level",
+  "/course/(\d+)/(\d+)/(preview)", "course_level",
+  "/course/(\d+)/(\d+)/(learn)", "course_level",
+  "/course/(\d+)/leaderboard", "course_leaderboard",
   "/course/(\d+)", "course",
   "/user/([^/]+)", "user",
   "/user/([^/]+)/(followers)", "user_mempals",
@@ -25,6 +26,7 @@ class api:
         return json.dumps({
             "courses": "/ajax/courses?{lang, cat, q, page}",
             "course": "/ajax/course/{id}",
+            "course_leaderboard": "/ajax/course/{id}/leaderboard?{period}",
             "course_level": "/ajax/course/{id}/{level}",
             "course_level_learn": "/ajax/course/{id}/{level}/learn",
             "user": "/ajax/user/{username}",
@@ -64,9 +66,14 @@ class course:
     def GET(self, id):
         return _response(lambda: memrise.course(id))
 
-class level:
+class course_level:
     def GET(self, idCourse, lvl, slug="preview"):
         return _response(lambda: memrise.level(idCourse, lvl, slug))
+
+class course_leaderboard:
+    def GET(self, idCourse):
+        _GET = web.input(period="week")
+        return _response(lambda: memrise.leaderboard(idCourse, _GET.period))
 
 class user:
     def GET(self, username):

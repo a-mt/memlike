@@ -27,7 +27,11 @@ misc = {
   "memorize": "Mémoriser",
   "wrong_answer": "Incorrect",
   "correct_answer": "Correct",
-  "your_answer_was": "Vous avez répondu"
+  "your_answer_was": "Vous avez répondu",
+  "leaderboard": "Classement",
+  "week": "Semaine",
+  "month": "Mois",
+  "alltime": "Général"
 };
 
 menu = {
