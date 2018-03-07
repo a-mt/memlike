@@ -7,6 +7,8 @@ urls = (
   "", "api",
   "/courses", "courses",
   "/course/(\d+)/(\d+)", "level",
+  "/course/(\d+)/(\d+)/(preview)", "level",
+  "/course/(\d+)/(\d+)/(learn)", "level",
   "/course/(\d+)", "course",
   "/user/([^/]+)", "user",
   "/user/([^/]+)/(followers)", "user_mempals",
@@ -24,6 +26,7 @@ class api:
             "courses": "/ajax/courses?{lang, cat, q, page}",
             "course": "/ajax/course/{id}",
             "course_level": "/ajax/course/{id}/{level}",
+            "course_level_learn": "/ajax/course/{id}/{level}/learn",
             "user": "/ajax/user/{username}",
             "user_followers": "/ajax/user/{username}/followers?{page}",
             "user_following": "/ajax/user/{username}/following?{page}",
@@ -62,8 +65,8 @@ class course:
         return _response(lambda: memrise.course(id))
 
 class level:
-    def GET(self, idCourse, lvl):
-        return _response(lambda: memrise.level(idCourse, lvl))
+    def GET(self, idCourse, lvl, slug="preview"):
+        return _response(lambda: memrise.level(idCourse, lvl, slug))
 
 class user:
     def GET(self, username):

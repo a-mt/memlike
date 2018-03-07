@@ -4,6 +4,9 @@ from cache import mc
 from bs4 import BeautifulSoup, Tag
 from variables import categories_code
 
+def get_time():
+    return '%d' % (time.time() * 1000)
+
 class Memrise:
 
     #+-----------------------------------------------------
@@ -117,7 +120,7 @@ class Memrise:
                     url += "&cat=" + cat
                 if query != "":
                     url += "&q=" + query
-                url += '&page=' + str(page) + '&_=' + str(time.time())
+                url += '&page=' + str(page) + '&_=' + get_time()
 
                 courses = requests.get(url, headers={"Accept-Language": "fr;q=0.8,en-US;q=0.5,en;q=0.3"}).text
                 if cache_key:
@@ -271,7 +274,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, lvl):
+    def level(self, idCourse, lvl, slug="preview"):
         """
             Retrieve the info about a course's level
             Is cached via memcached for 24hours
@@ -281,7 +284,7 @@ class Memrise:
             @param integer lvl
             @return dict - Retrieved JSON
         """
-        cache_key = "course_" + idCourse + "_" + lvl
+        cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
         level     = mc.get(cache_key)
 
         if level == None:
@@ -296,7 +299,9 @@ class Memrise:
                 sessionid = self.get_auth()
                 print 'GET ' + cache_key
 
-                url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=preview"
+                url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=" + slug
+                if slug != "preview":
+                    url += "&_=" + get_time()
                 response = requests.get(url, cookies={"sessionid": sessionid})
 
                 # Try reauthenticate

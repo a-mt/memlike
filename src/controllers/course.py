@@ -5,9 +5,12 @@ from requests.exceptions import HTTPError
 
 urls = (
   "/(\d+)/(.*)/(\d+)/garden/(preview)", "learn",
+  "/(\d+)/(.*)/(\d+)/garden/(learn)", "learn",
+  "/(\d+)/(.*)/(\d+)/(\d+)", "view",
   "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
   "/(\d+)/(.*)/garden/(preview)", "learn",
+  "/(\d+)/(.*)/garden/(learn)", "learn",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
 )
@@ -17,14 +20,23 @@ class learn:
         if not kind:
             kind = lvl
             lvl  = False
-
         try:
             course = memrise.course(idCourse)
         except HTTPError as e:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].learn(course, kind, lvl)
+        return GLOBALS['render'].learn(course, kind, lvl, False)
+
+class view:
+    def GET(self, idCourse, path, lvl, thing):
+        try:
+            course = memrise.course(idCourse)
+        except HTTPError as e:
+            print e
+            return GLOBALS['prender']._404()
+
+        return GLOBALS['render'].learn(course, "preview", lvl, thing)
 
 class level:
     def GET(self, idCourse, path, lvl, path2=""):

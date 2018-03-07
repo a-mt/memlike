@@ -22,10 +22,12 @@ misc = {
   "teaching": "Enseigne",
   "learn_level": "Apprendre ce niveau",
   "learn_course": "Apprendre ce cours",
-  "preview_level": "Visualiser ce niveau",
-  "preview_course": "Visualiser ce cours",
   "learn": "Apprendre",
-  "preview": "Visualiser"
+  "preview": "Visualiser",
+  "memorize": "Mémoriser",
+  "wrong_answer": "Incorrect",
+  "correct_answer": "Correct",
+  "your_answer_was": "Vous avez répondu"
 };
 
 menu = {

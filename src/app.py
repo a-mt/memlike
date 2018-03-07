@@ -8,7 +8,7 @@ from _globals import GLOBALS
 # Import web server
 import web, controllers
 import imp
-import pprint, re
+import pprint, re, time
 
 # Load .env file
 pwd = path.dirname(__file__)

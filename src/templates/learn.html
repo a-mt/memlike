@@ -1,4 +1,4 @@
-$def with(course, type, lvl)
+$def with(course, type, lvl, thing)
 $var title: $(LANG.misc[type]) ~ $(course['title'])
 $var js: //cdnjs.cloudflare.com/ajax/libs/preact/8.2.7/preact.min.js, /static/js/learn.js
 
@@ -19,7 +19,8 @@ $var header: <header class="white">
     idCourse  : $(course['id']),
     lvl       : $:(lvl if lvl else '"1-'+str(len(course['levels'])) + '"'),
     type      : "$type",
-    url       : "$url"
+    url       : "$url",
+    thing     : $(thing if thing else 0)
   };
 </script>
 

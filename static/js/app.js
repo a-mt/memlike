@@ -1,6 +1,7 @@
 /* global $ */
 $(document).ready(function(){
   window.$_GET = param();
+  Object.freeze(window.i18n);
   Object.freeze(window.$_GET);
 
   if(window.$_URL) {

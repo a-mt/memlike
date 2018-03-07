@@ -34,27 +34,57 @@ $var title: $(course['title']) $("- " + str(level['index']) if level else None)
 <div class="page-head">
   <div class="inner clearfix">
     $if level:
+      <!-- Link to levels list -->
       <a href="$(course['url'])" class="pill">
         <i class="ico ico-list"></i>
         $(LANG.misc['levels']) ($(len(course['levels'])))
       </a>
 
+      <!-- Level name -->
       <button type="button" class="pill active">
         $(level['index']) - $(level['name'])
       </button>
 
-      <a href="$(course['url'] + str(level['index']))/garden/preview" class="pill green">
-        $(LANG.misc['preview_level'])
-      </a>
+      <!-- Links to garden learn / preview -->
+      <div class="dropdown go-learn">
+        <button class="dropdown-toggle pill green" data-toggle="dropdown" aria-expanded="false">$(LANG.misc['learn_level'])</button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="$(course['url'] + str(level['index']))/garden/learn">
+              $(LANG.misc['memorize'])
+            </a>
+          </li>
+          <li>
+            <a href="$(course['url'] + str(level['index']))/garden/preview">
+              $(LANG.misc['preview'])
+            </a>
+          </li>
+        </ul>
+      </div>
+
     $else:
+      <!-- Levels name -->
       <button type="button" class="pill active">
         <i class="ico ico-list ico-white"></i>
         $(LANG.misc['levels']) ($(len(course['levels'])))
       </button>
 
-      <a href="$(course['url'])garden/preview" class="pill green">
-        $(LANG.misc['preview_course'])
-      </a>
+      <!-- Links to garden learn / preview -->
+      <div class="dropdown go-learn">
+        <button class="dropdown-toggle pill green" data-toggle="dropdown" aria-expanded="false">$(LANG.misc['learn_course'])</button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="$(course['url'])garden/learn">
+              $(LANG.misc['memorize'])
+            </a>
+          </li>
+          <li>
+            <a href="$(course['url'])garden/preview">
+              $(LANG.misc['preview'])
+            </a>
+          </li>
+        </ul>
+      </div>
   </div>
 </div>
 
@@ -85,6 +115,7 @@ $def thing(item, attr):
           <li class="thing">
             $:thing(item, 'item')
             $:thing(item, 'definition')
+            <a href="$(course['url'])$(str(level['index']))/$(item['learnable_id'])" class="ico ico-thin-arr-right view-detail"></a>
           </li>
       </ul>
 
