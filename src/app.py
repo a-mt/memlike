@@ -22,11 +22,13 @@ urls = (
     '/course', controllers.course.app,
     '/user', controllers.user.app,
     '/ajax', controllers.ajax.app,
+    '/login', controllers.login.app,
+    '/logout', 'logout',
     '/', controllers.index.app
 )
 
 app      = web.application(urls, globals())
-session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": "french"})
+session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": "french", "loggedin": False})
 render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
 prender  = web.template.render('src/templates/', globals=GLOBALS)
 
@@ -53,10 +55,26 @@ GLOBALS['session']       = session
 GLOBALS['MENU']          = menu
 GLOBALS['LANG']          = imp.load_source('french', 'src/locales/french.py')
 
+class logout():
+    def GET(self):
+        GLOBALS['session'].loggedin = False
+        raise web.seeother('/')
+
 def notfound():
     return web.notfound(prender._404())
 
 app.notfound = notfound
+
+def flash():
+    if "flash" in session:
+        print(session.flash)
+    if "flash" in session:
+        web.flash = session.flash
+        del session.flash
+    else:
+        web.flash = {}
+
+app.add_processor(web.loadhook(flash))
 
 if __name__ == "__main__":
 

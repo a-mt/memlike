@@ -28,12 +28,19 @@ $else:
       <header>
         <div class="inner">
           <ul class="header-nav inner">
-            $for k, item in MENU.items():
-              <li class="header-nav-item plain $('is-active' if k == currentPage else None)">
-                <a href="$(item['url'])" class="nav-item-btn">
-                  <span class="nav-item-btn-text">$(LANG.menu[k])</span>
-                </a>
-              </li>
+            $for item in MENU:
+              $if item['slug'] == "login" and session.loggedin:
+                <li class="header-nav-item plain $(item['slug'])">
+                  <a href="/user/$(session.loggedin['username'])">
+                    <img src="$(session.loggedin['photo'])" class="profile-avatar">
+                  </a>
+                </li>
+              $else:
+                <li class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
+                  <a href="$(item['url'])" class="nav-item-btn">
+                    <span class="nav-item-btn-text">$(LANG.menu[item['slug']])</span>
+                  </a>
+                </li>
           </ul>
         </div>
       </header>

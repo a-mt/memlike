@@ -14,7 +14,7 @@ class Memrise:
     #+-----------------------------------------------------
     def get_auth(self, force=False):
         """
-            Retrieve sessionid
+            Retrieve sessionid to retrieve content (using our own account)
             Is cached via memcached for 1day
 
             @param boolean force - [False] Force cache refresh
@@ -33,15 +33,19 @@ class Memrise:
 
                 print 'GET ' + cache_key
 
-                sessionid = self.auth()
+                sessionid = self.login("66b1d91e8e", "66b1d91e8e66b1d91e8e!")
                 mc.set(cache_key, sessionid, time=60*60*24)
 
         return sessionid
 
-    def auth(self):
+    def login(self, username, password):
         """
-            Authenticate on Memrise (no caching)
+            Authenticate on Memrise (no caching) with the given username and password
+            Throws 403 if the username or password isn't right
 
+            @throws requests.exceptions.HTTPError
+            @param string username
+            @param string password
             @return string - sessionid
         """
         data     = {}
@@ -60,8 +64,8 @@ class Memrise:
                     data[input.attrs['name']] = input.attrs['value']
 
         # Login
-        data["username"] = "66b1d91e8e"
-        data["password"] = "66b1d91e8e66b1d91e8e!"
+        data["username"] = username
+        data["password"] = password
 
         headers = {
             "Origin": "https://www.memrise.com",
@@ -76,6 +80,38 @@ class Memrise:
             return response.cookies['sessionid']
         else:
             return None
+
+    def whoami(self, sessionid):
+        """
+            Retrieve the username and photo of current user
+
+            @throws requests.exceptions.HTTPError
+            @param string sessionid
+            @return dict - {sessionid, username, photo}
+        """
+        response  = requests.get("https://www.memrise.com/settings/", cookies={"sessionid": sessionid})
+        response.raise_for_status()
+
+        html = response.text.encode('utf-8').strip()
+        DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+        data = {
+            "sessionid": sessionid
+        }
+
+        div  = DOM.find(id="content")
+        if div != None:
+
+            # Get username
+            item = div.find(id="id_username")
+            if item != None:
+                data["username"] = item.attrs["value"]
+
+            # Get photo
+            item = div.find('div', {'class':'thumbnail'})
+            if item != None:
+                data["photo"] = item.img.attrs["src"]
+
+        return data
 
     #+-----------------------------------------------------
     #| COURSES

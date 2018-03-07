@@ -66,6 +66,13 @@ figure, figcaption {
   display: inline-block;
   font: 16px/16px "Open Sans",Sans-Serif;
 }
+.header-nav .login {
+  float: right;
+}
+.page-banner .logout {
+  float: right;
+  margin-top: 20px;
+}
 
 .btn {
   font-weight: normal;
@@ -91,6 +98,15 @@ figure, figcaption {
   background-color: #73c7f4;
   color: #fff;
   border-color: #15a1ec;
+}
+.btn.green {
+  color: #fff;
+  border: 1px solid #699f30;
+  background-color: #83ca38;
+}
+.btn.green:hover {
+  background-color: #76b336;
+  color: #ebebeb;
 }
 .caret {
   display: inline-block;
@@ -133,6 +149,12 @@ figure, figcaption {
   font-size: 12px;
   height: 30px;
   line-height: 10px;
+}
+.btn-pink {
+  background: #Fa42a2;
+  background: linear-gradient(-180deg, #FA42A2 0%, #E22F8D 100%);
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.03);
+  border-color: transparent;
 }
 
 .dropdown-menu {
@@ -180,13 +202,17 @@ figure, figcaption {
   display: table;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   box-sizing: border-box;
   border-radius: 6.2px;
   padding: 8px 15px;
   border: 1px solid #e4e4e4;
   font-size: 14px;
   height: 38px;
+}
+input:invalid {
+  border: 1px solid #ff756b;
 }
 .btn-default {
   background: #fff;
@@ -896,6 +922,13 @@ a > .expand-icon { /* ico-s icon-arr-right */
  * USER
  *-------------------------------------------------------*/
 
+.header-nav .profile-avatar {
+  box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.24);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
 .page-stats {
   list-style: none;
   padding: 0;
@@ -1314,4 +1347,26 @@ table.learn {
 .row-points {
   float: right;
   font-weight: 600;
+}
+
+/*-------------------------------------------------------
+ * LOGIN
+ *-------------------------------------------------------*/
+
+form.login {
+  max-width: 400px;
+  margin-top: 30px;
+}
+form.login input {
+ display: block;
+ width: 100%;
+}
+form.login label {
+ font-weight: 600;
+}
+form.login div:not(:last-child) {
+ margin-bottom: 20px;
+}
+form .error {
+ color: red;
 }

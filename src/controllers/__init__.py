@@ -1,1 +1,1 @@
-from . import index, courses, course, user, ajax
+from . import index, courses, course, user, ajax, login

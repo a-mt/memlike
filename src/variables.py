@@ -1,11 +1,8 @@
-menu = {
-    "index": {
-        "url": "/"
-    },
-    "courses": {
-        "url": "/fr/courses/"
-    }
-}
+menu = [
+    { "slug": "index", "url": "/"},
+    { "slug": "courses", "url": "/fr/courses/" },
+    { "slug": "login", "url": "/login" }
+]
 
 languages = {
     "afrikaans": {

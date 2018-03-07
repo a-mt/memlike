@@ -32,12 +32,17 @@ misc = {
   "leaderboard": "Leaderboard",
   "week": "Week",
   "month": "Month",
-  "alltime": "All time"
+  "alltime": "All time",
+  "username": "Username",
+  "password": "Password",
+  "login": "Connexion"
 };
 
 menu = {
   "index": "Home",
-  "courses": "Courses"
+  "courses": "Courses",
+  "login": "Log in",
+  "logout": "Log out"
 };
 
 languages = {
@@ -399,4 +404,9 @@ categories = {
   "963": "English (US)",
   "964": "Spanish (Mexico)",
   "965": "Australian"
+};
+
+err = {
+  "required": "This field is required",
+  "wrong_credentials": "Username or password is wrong"
 };

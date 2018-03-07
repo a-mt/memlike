@@ -31,12 +31,17 @@ misc = {
   "leaderboard": "Classement",
   "week": "Semaine",
   "month": "Mois",
-  "alltime": "Général"
+  "alltime": "Général",
+  "username": "Nom d'utilisateur",
+  "password": "Mot de passe",
+  "login": "Login"
 };
 
 menu = {
   "index": "Accueil",
-  "courses": "Cours"
+  "courses": "Cours",
+  "login": "S'identifier",
+  "logout": "Se déconnecter"
 };
 
 languages = {
@@ -398,4 +403,9 @@ categories = {
   "963": "Anglais (USA)",
   "964": "Espagnol (Mexique)",
   "965": "Australian"
+}
+
+err = {
+  "required": "Ce champs est obligatoire",
+  "wrong_credentials": "Le nom d'utilisateur ou le mot de passe est erroné"
 };
