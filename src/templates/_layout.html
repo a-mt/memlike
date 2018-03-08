@@ -41,6 +41,17 @@ $else:
                     <span class="nav-item-btn-text">$(LANG.menu[item['slug']])</span>
                   </a>
                 </li>
+
+            <!-- Choose lang -->
+            <li class="header-nav-item lang">
+              <ul id="choose-lang">
+              $for lang in locales:
+                <li class="$('active' if lang['slug'] == session.lang else None)">
+                  <a href="/lang/$(lang['slug'])"><img src="$(lang['photo'])" title="$(lang['name'])" height="20"></a>
+                </li>
+              </ul>
+            </li>
+
           </ul>
         </div>
       </header>

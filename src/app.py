@@ -2,18 +2,20 @@
 from os import path, environ
 from dotenv import load_dotenv
 from subprocess import Popen, PIPE
-from variables import menu
+from variables import menu, locales
 from _globals import GLOBALS
 
 # Import web server
 import web, controllers
-import imp
+from lang import Lang
 import pprint, re, time
 
 # Load .env file
 pwd = path.dirname(__file__)
 dotenv_path = path.join(pwd, '..', '.env')
 load_dotenv(dotenv_path)
+
+DEFAULT_LANG = "french"
 
 # Configure web server
 web.config.debug = False # to be able to use session
@@ -24,11 +26,13 @@ urls = (
     '/ajax', controllers.ajax.app,
     '/login', controllers.login.app,
     '/logout', 'logout',
+    '/lang/(.*)', 'switchLang',
     '/', controllers.index.app
 )
 
 app      = web.application(urls, globals())
-session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": "french", "loggedin": False})
+session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False})
+lang     = Lang(app, session)
 render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
 prender  = web.template.render('src/templates/', globals=GLOBALS)
 
@@ -52,13 +56,32 @@ GLOBALS['debug']         = debug
 
 # Variables accessible globally in templates
 GLOBALS['session']       = session
+GLOBALS['LANG']          = lang
 GLOBALS['env']           = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
 GLOBALS['MENU']          = menu
-GLOBALS['LANG']          = imp.load_source('french', 'src/locales/french.py')
+GLOBALS['locales']       = locales
 
 class logout():
     def GET(self):
         GLOBALS['session'].loggedin = False
+        raise web.seeother('/')
+
+class switchLang():
+    def GET(self, name):
+
+        # Check that languages exists
+        for l in locales:
+            if l['slug'] == name:
+                session['lang'] = name
+                break
+
+        # Redirect to referer
+        if 'HTTP_REFERER' in web.ctx.environ:
+            referer = re.search('(https?://[^/]+)(.*)$', web.ctx.environ['HTTP_REFERER'])
+
+            if referer.group(1) + ':80' == web.ctx.home:
+                raise web.seeother(referer.group(2))
+
         raise web.seeother('/')
 
 def notfound():

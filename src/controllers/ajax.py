@@ -2,6 +2,7 @@ import web, json
 from memrise import memrise
 from requests.exceptions import HTTPError
 from math import ceil
+from _globals import GLOBALS
 
 urls = (
   "", "api",
@@ -58,7 +59,7 @@ def _response(call):
 
 class courses:
     def GET(self):
-        _GET = web.input(lang="french", cat="", q="", page=1)
+        _GET = web.input(lang=GLOBALS['session'].lang, cat="", q="", page=1)
 
         return _response(lambda: memrise.courses(_GET.lang, _GET.page, _GET.cat, _GET.q))
 

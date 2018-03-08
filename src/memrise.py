@@ -116,16 +116,16 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
-    def courses(self, lang="french", page=1, cat="", query=""):
+    def courses(self, lang, page=1, cat="", query=""):
         """
             Retrieve the list of courses for the given language, category, query string and page
             Is cached via memcached for 24hours (except if query != "")
 
-            @param string lang  - ["french"]
-            @param integer page - [1]
-            @param string cat   - [""]
-            @param string query - [""]
-            @return string      - Retrieved JSON
+            @param string lang
+            @param integer[optional] page - [1]
+            @param string[optional] cat   - [""]
+            @param string[optional] query - [""]
+            @return string                - Retrieved JSON
         """
         if not isinstance(page, int) and not page.isdigit():
             page = 0
@@ -167,12 +167,12 @@ class Memrise:
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang="french"):
+    def categories(self, lang):
         """
             Retrieve  the list of categories that have courses for the given language
             Is cached via memcached for 24hours
 
-            @param string lang - ["french"]
+            @param string lang
             @return dict       - {<idCourse>: True}
         """
 

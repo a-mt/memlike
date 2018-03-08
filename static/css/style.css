@@ -66,13 +66,6 @@ figure, figcaption {
   display: inline-block;
   font: 16px/16px "Open Sans",Sans-Serif;
 }
-.header-nav .login {
-  float: right;
-}
-.page-banner .logout {
-  float: right;
-  margin-top: 20px;
-}
 
 .btn {
   font-weight: normal;
@@ -359,7 +352,7 @@ body {
 .header-nav {
   margin: 12px 0;
 }
-.header-nav-item:hover {
+.header-nav-item.plain:hover {
   background: rgba(0,0,0,0.05);
   box-shadow: inset 0px 1px 3px 0px rgba(0,0,0,0.1);
 }
@@ -369,6 +362,29 @@ body {
 }
 .nav-item-btn {
   font-weight: 600;
+}
+
+.header-nav .login,
+.header-nav .lang {
+  float: right;
+}
+.page-banner .logout {
+  float: right;
+  margin-top: 20px;
+}
+
+#choose-lang {
+  list-style: none;
+  padding: 0;
+}
+#choose-lang li {
+  display: inline-block;
+  margin: 5px;
+  filter: brightness(.7);
+}
+#choose-lang li:hover,
+#choose-lang li.active {
+  filter: none;
 }
 
 .empty-box {
