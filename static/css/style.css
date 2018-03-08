@@ -440,6 +440,22 @@ h1.big {
   margin-bottom: 30px;
 }
 
+footer {
+  background: white;
+  box-shadow: 0 1px 0 white;
+  padding: 20px 5px;
+  border-top: solid 1px #e6e6e6;
+  color: #37586d;
+}
+.github {
+  float: right;
+  opacity: .3;
+  transition: opacity .3s;
+}
+.github:hover {
+  opacity: 1;
+}
+
 /*-------------------------------------------------------
  * ICONS
  *-------------------------------------------------------*/

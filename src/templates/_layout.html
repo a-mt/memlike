@@ -47,6 +47,13 @@ $else:
 
     $:tpl
 
+    <footer class="clearfix">
+      $if env['GITHUB_REPO']:
+        <a class="github" href="$(env['GITHUB_REPO'])" title="Fork me on Github">
+          <img src="https://cdn.rawgit.com/a-mt/4eee1459b499f6970e667f39c12b9e63/raw/146f66fcf3794a0fcd5a7a810341124825246fa1/Octicons-mark-github.svg" alt="Fork me on Github" height="30">
+        </a>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
     <script>

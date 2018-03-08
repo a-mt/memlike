@@ -12,7 +12,7 @@ import pprint, re, time
 
 # Load .env file
 pwd = path.dirname(__file__)
-dotenv_path = path.join(pwd, '.env')
+dotenv_path = path.join(pwd, '..', '.env')
 load_dotenv(dotenv_path)
 
 # Configure web server
@@ -52,6 +52,7 @@ GLOBALS['debug']         = debug
 
 # Variables accessible globally in templates
 GLOBALS['session']       = session
+GLOBALS['env']           = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
 GLOBALS['MENU']          = menu
 GLOBALS['LANG']          = imp.load_source('french', 'src/locales/french.py')
 
