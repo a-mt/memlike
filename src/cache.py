@@ -31,6 +31,9 @@ class Lock:
         return tries
 
     def __exit__(self, type, value, traceback):
+        if not self.cache_key:
+            return
+
         self.mc.delete('lock:' + self.cache_key)
 
 class Client(pylibmc.Client):
