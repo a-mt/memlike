@@ -125,9 +125,11 @@ class user_dashboard():
         web.header('Transfer-Encoding','chunked')
 
         sessionid = GLOBALS['session']['loggedin']['sessionid']
+        offset    = 0
         try:
             for courses in memrise.whatistudy(sessionid):
-                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses)['__body__'] })
+                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__'] })
+                offset += len(courses)
         except Exception as e:
             print(e)
             raise web.InternalError()

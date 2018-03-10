@@ -1,7 +1,18 @@
-$def with (courses)
+$def with (courses, offset)
 
-$for course in courses:
-  <div class="course-box">
+$for i, course in enumerate(courses):
+  $ idCat = str(course['target']['id'])
+  $if idCat in LANG.categories:
+    $ category = LANG.categories[idCat]
+  $else:
+    $ category = course['target']['name']
+
+  <div class="course-box"
+        data-i="$(offset + i)"
+        data-progress="$(course['percent_complete'])"
+        data-title="$(course['name'])"
+        data-review="$(course['review'])"
+        data-category="$(category)">
 
     <!-- Progress-->
     <div class="course-progress" title="$(course['learned'])/$(course['num_things'] - course['ignored'])">
@@ -33,7 +44,9 @@ $for course in courses:
 
         <!-- Author + category -->
         <div class="clearfix">
-          <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(course['target']['name'])">$(course['target']['name'])</a>
+          <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
+            $:category
+          </a>
         </div>
 
         <!-- Title -->

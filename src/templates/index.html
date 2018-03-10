@@ -3,10 +3,30 @@ $var title: $(LANG.menu["index"])
 
 <main>
   $if session['loggedin']:
+
     <div class="page-head">
-      <div class="inner"><h1>$:(LANG.misc['dashboard'])</h1></div>
+      <div class="inner">
+
+        <!-- Sort by -->
+        <div id="dashboard-sort" class="filter-source" style="display: none">
+          Trier par
+          <select autocomplete="off">
+            <option value="i" data-numeric="1">Appris récemment</option>
+            <option value="title">Ordre alphabétique</option>
+            <option value="category">Catégorie</option>
+            <option value="progress" data-numeric="1" data-desc="1">Progrès</option>
+            <option value="review" data-numeric="1" data-desc="1">Révision</option>
+          </select>
+        </div>
+
+        <!-- Title -->
+        <div class="page-title">
+          <h1>$:(LANG.misc['dashboard'])</h1>
+        </div>
+      </div>
     </div>
 
+    <!-- Courses -->
     <div id="dashboard" class="inner"></div>
     <div id="content-loader" class="loading-spinner"></div>
 </main>

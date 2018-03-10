@@ -375,10 +375,44 @@ function user_courses() {
 
 var Dashboard = {
   container: false,
+  sort: "i",
 
   init: function() {
     Dashboard.container = $('#dashboard');
+    Dashboard.sort      = $('#dashboard-sort');
     Dashboard.getCourses();
+
+    $('select', Dashboard.sort).on('change', function(){
+      var sort = this.value;
+
+      if(sort != Dashboard.sort) {
+        var option = $("option:selected", this);
+
+        Dashboard.sort = sort;
+        Dashboard.sortCourses(sort, option.attr('data-numeric'), option.attr('data-desc'));
+      }
+    });
+  },
+
+  sortCourses: function(sort, isNumeric, desc) {
+    var courses = Dashboard.container.children();
+
+    if(isNumeric) {
+      courses.sort(function(a, b){
+        if(desc) {
+          [b,a] = [a,b];
+        }
+        return parseFloat(a.getAttribute('data-' + sort)) - parseFloat(b.getAttribute('data-' + sort));
+      });
+    } else {
+      courses.sort(function(a, b){
+        if(desc) {
+          [b,a] = [a,b];
+        }
+        return a.getAttribute('data-' + sort).localeCompare(b.getAttribute('data-' + sort));
+      });
+    }
+    Dashboard.container.append(courses);
   },
 
   getCourses: function() {
@@ -409,14 +443,19 @@ var Dashboard = {
     runner.done(function(data) {
      if(data == '{"content": "\\n"}') {
        Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+     } else {
+       Dashboard.sort.show();
      }
     });
     runner.always(function(data) {
      $('#content-loader').remove();
     });
-    runner.fail(function(error){
+    runner.fail(function(xhr){
+      if(xhr.readyState == 0 || xhr.status == 0) { // request has been canceled (change page)
+        return;
+      }
       Dashboard.container.html(window.i18n.error);
-      console.log('Error: ', error);
+      console.log('Error: ', xhr);
     });
   }
 };
