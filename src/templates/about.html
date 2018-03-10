@@ -1,0 +1,44 @@
+$var title: $(LANG.menu["about"])
+
+<main>
+  <div class="page-head">
+    <div class="inner">
+      <h1>$(LANG.menu["about"])</h1>
+    </div>
+  </div>
+  <br>
+  <div class="inner">
+    <div class="empty-box align-left">
+    $if session.lang == "french":
+        Parce que j'étais frusté avec Memrise (principalement pour des problèmes d'ergonomie) tout en étant toujours interéssé par son contenu, j'ai développé ma propre interface.
+        Et aussi pour m'amuser.
+        J'ai ajouté les fonctionnalités qui m'intéressaient personnellement, mais libre à vous d'en faire usage.
+        Ou de forker le projet sur Github pour ajouter vos propres fonctionnalités si vous êtes développeur (lien dans le footer).<br>
+        <br>
+        Identifiez-vous pour que vos progrès soient envoyés à Memrise. Ce n'est pas obligatoire.<br>
+        Le site lui-même n'enregistre aucune données, que ce soit vos actions ou vos identifiants.<br>
+        <br>
+        La plupart des données récupérées sur Memrise sont mis en cache, les changements faits sur Memrise peuvent donc ne pas être visibles tout de suite ici.
+        <ul>
+          <li>Cours: mis en cache pendant 24 heures</li>
+          <li>Utilisateurs: 1 heure</li>
+          <li>Utilisateur identifié: pas de cache</li>
+        </ul>
+    $else:
+        Because I got quite frustrated with Memrise (mainly ergonomic issues) but was still interested with its content, I developed my own interface to it.
+        And for fun too.
+        I only added the features that I'm personnaly interested in, but feel free to use it.
+        Or to fork it on Github to add your own features if you're a developer (link in footer).<br>
+        <br>
+        Log in if you want to send your progress to Memrise. It isn't required.<br>
+        This website doesn't save any data by itself, nor what you do nor your credentials.<br>
+        <br>
+        Most data retrieved from Memrise are cached, so the changes you make on Memrise may not be visible here right away.
+        <ul>
+          <li>Courses: cached for 24 hours</li>
+          <li>Users: 1 hour</li>
+          <li>Logged-in user: no cache</li>
+        </ul>
+    </div>
+  </div>
+</main>

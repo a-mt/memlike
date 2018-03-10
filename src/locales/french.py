@@ -54,7 +54,8 @@ menu = {
   "courses": "Cours",
   "login": "S'identifier",
   "logout": "Se déconnecter",
-  "dashboard": "Tableau de bord"
+  "dashboard": "Tableau de bord",
+  "about": "À propos"
 };
 
 languages = {

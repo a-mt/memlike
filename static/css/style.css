@@ -328,8 +328,8 @@ input:invalid {
 html, body {
   height: 100%;
 }
-main {
-  min-height: calc(100% - 50px);
+#body {
+  min-height: calc(100% - 75px);
 }
 body {
   background: #F3F4F3;
@@ -362,7 +362,7 @@ body {
   width: 750px;
 }
 
-.header-nav {
+header .header-nav {
   margin: 12px 0;
 }
 .header-nav-item.plain:hover {
@@ -375,6 +375,11 @@ body {
 }
 .nav-item-btn {
   font-weight: 600;
+}
+@media (max-width: 320px) {
+  .nav-item-btn {
+    padding: 10px 16px;
+  }
 }
 
 .header-nav .login,
@@ -476,13 +481,22 @@ footer {
   border-top: solid 1px #e6e6e6;
   color: #37586d;
 }
-.github {
+footer > * {
   float: right;
-  opacity: .3;
+}
+footer a {
+  opacity: .5;
   transition: opacity .3s;
 }
-.github:hover {
+.github {
+  opacity: .3;
+}
+footer a:hover,
+footer .active a {
   opacity: 1;
+}
+.align-left {
+  text-align: left;
 }
 
 /*-------------------------------------------------------
@@ -548,6 +562,9 @@ footer {
 }
 .ico-trophy {
   background-position:-72px -72px
+}
+.ico-question.ico-l {
+  background-position:-128px 0px;
 }
 
 a > .expand-icon { /* ico-s icon-arr-right */

@@ -6,12 +6,16 @@ from memrise import memrise
 urls = (
   "home/leaderboard", "leaderboard",
   "home", "index",
+  "about", "about",
   "", "index"
 )
 
 class index:
     def GET(self):
-        return GLOBALS['render'].index("courses", False, False)
+        if not GLOBALS['session']['loggedin']:
+            return GLOBALS['render'].index()
+        else:
+            return GLOBALS['render'].dashboard("courses", False, False)
 
 class leaderboard:
     def GET(self):
@@ -26,6 +30,10 @@ class leaderboard:
             print e
             return GLOBALS['render'].Forbidden()
 
-        return GLOBALS['render'].index("leaderboard", _GET.period, leaderboard)
+        return GLOBALS['render'].dashboard("leaderboard", _GET.period, leaderboard)
+
+class about:
+    def GET(self):
+        return GLOBALS['render'].about()
 
 app = web.application(urls, locals())

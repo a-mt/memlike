@@ -1,0 +1,79 @@
+$def with (currentTab, currentPeriod, items)
+
+$var currentPage: index
+$var title: $(LANG.menu["index"])
+
+<main>
+  <div class="page-head">
+    <div class="inner">
+
+      <!-- Sort by -->
+      $if currentTab == "courses":
+        <div id="dashboard-sort" class="filter-source" style="display: none">
+          $:(LANG.misc['order_by'])
+          <select autocomplete="off">
+            <option value="i" data-numeric="1">$:(LANG.misc['order_recent'])</option>
+            <option value="title">$:(LANG.misc['order_title'])</option>
+            <option value="category">$:(LANG.misc['order_category'])</option>
+            <option value="progress" data-numeric="1" data-desc="1">$:(LANG.misc['order_progress'])</option>
+            <option value="review" data-numeric="1" data-desc="1">$:(LANG.misc['order_review'])</option>
+          </select>
+        </div>
+        <div class="loading-spinner right"></div>
+
+      <!-- Sub-navigation -->
+      <div class="page-title">
+        $for tab in [('courses', '/home'), ('leaderboard', '/home/leaderboard')]:
+          $ name, url = tab
+
+          $if name == "leaderboard":
+            $ icon = '<i class="ico ico-trophy"></i>'
+          $else:
+            $ icon = None
+
+          $if currentTab == name:
+            <button type="button" class="pill active">$:icon $(LANG.misc[name])</button>
+          $else:
+            <a href="$url" class="pill">$:icon $(LANG.misc[name])</a>
+      </div>
+    </div>
+  </div>
+
+  $if currentTab == "courses":
+    <!-- Courses -->
+    <div id="dashboard" class="inner"></div>
+    <div id="content-loader" class="loading-spinner"></div>
+
+  $else:
+    <div class="inner">
+      <!-- Leaderboard -->
+      <div class="leaderboard nicebox">
+        <div class="leaderboard-controls">
+          <div class="btn-group">
+            $for period in ['week', 'month', 'alltime']:
+              <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$period">$(LANG.misc[period])</a>
+          </div>
+        </div>
+
+        <!-- List of scores -->
+        <ul class="leaderboard-content">
+          $for item in items['rows']:
+            <li class="leaderboard-row $('current' if item['username'] == session['loggedin']['username'] else None)">
+              <a href="/user/$(item['username'])/">
+                <span class="row-pic">
+                  <strong>$(item['position']).</strong>
+                  <img src="$(item['photo'])">
+                </span>
+                <span class="row-username">
+                  <span data-role="hovercard" data-user-id="$(item['uid'])" data-direction="right">$(item['username'])</span>
+                </span>
+                <span class="row-points $('best' if item['position'] == 1 else None)">
+                  <span>$(number_format(item['points']))</span>
+                </span>
+              </a>
+            </li>
+        </ul>
+      </div>
+    </div>
+
+</main>
