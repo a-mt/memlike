@@ -38,7 +38,7 @@ $else:
               $else:
                 <li class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
                   <a href="$(item['url'])" class="nav-item-btn">
-                    <span class="nav-item-btn-text">$(LANG.menu[item['slug']])</span>
+                    <span class="nav-item-btn-text">$(LANG.menu["dashboard"] if item["slug"] == "index" and session.loggedin else LANG.menu[item['slug']])</span>
                   </a>
                 </li>
 

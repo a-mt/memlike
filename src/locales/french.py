@@ -40,14 +40,21 @@ misc = {
   "course_duration": "Ce cours prend à peu près %",
   "empty_dashboard": "Vous n'apprenez aucun cours",
   "browse_courses": "Trouver un cours",
-  "dashboard": "Tableau de bord"
+  "order_by": "Trier par",
+  "order_recent": "Appris récemment",
+  "order_title": "Titre",
+  "order_category": "Catégorie",
+  "order_progress": "Progrès",
+  "order_review": "Révision",
+  "courses": "Cours"
 };
 
 menu = {
   "index": "Accueil",
   "courses": "Cours",
   "login": "S'identifier",
-  "logout": "Se déconnecter"
+  "logout": "Se déconnecter",
+  "dashboard": "Tableau de bord"
 };
 
 languages = {

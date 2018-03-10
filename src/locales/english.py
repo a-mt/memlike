@@ -41,14 +41,21 @@ misc = {
   "course_duration": "This course takes about %",
   "empty_dashboard": "You're not learning any course",
   "browse_courses": "Find a course",
-  "dashboard": "Dashboard"
+  "order_by": "Order by",
+  "order_recent": "Recently learned",
+  "order_title": "Title",
+  "order_category": "Category",
+  "order_progress": "Progress",
+  "order_review": "Review",
+  "courses": "Courses"
 };
 
 menu = {
   "index": "Home",
   "courses": "Courses",
   "login": "Log in",
-  "logout": "Log out"
+  "logout": "Log out",
+  "dashboard": "Dashboard"
 };
 
 languages = {

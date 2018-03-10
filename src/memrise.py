@@ -139,6 +139,20 @@ class Memrise:
             if not 'has_more_courses' in data or not data['has_more_courses']:
                 break
 
+    def user_leaderboard(self, sessionid, period):
+        """
+            Retrieve the learderboard of the current user (50 first)
+
+            @throws requests.exceptions.HTTPError
+            @param string sessionid
+            @param string period - month, week, alltime
+            @return dict - Retrieved JSON
+        """
+        url      = "https://www.memrise.com/ajax/leaderboard/mempals/?period=" + period + "&how_many=50"
+        response = requests.get(url, cookies={"sessionid": sessionid})
+        response.raise_for_status()
+        return response.json()
+
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------

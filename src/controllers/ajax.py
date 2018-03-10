@@ -17,7 +17,8 @@ urls = (
   "/user/([^/]+)/(following)", "user_mempals",
   "/user/([^/]+)/(teaching)", "user_courses",
   "/user/([^/]+)/(learning)", "user_courses",
-  "/dashboard", "user_dashboard"
+  "/dashboard", "user_dashboard",
+  "/leaderboard", "user_leaderboard"
 )
 NBPERPAGE = 15
 
@@ -36,7 +37,8 @@ class api:
             "user_following": "/ajax/user/{username}/following?{page}",
             "user_teaching": "/ajax/user/{username}/teaching?{page}",
             "user_learning": "/ajax/user/{username}/learning?{page}",
-            "user_dashboard": "/ajax/dashboard {cookies.sessionid}"
+            "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
+            "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}"
         })
 
 def _error(e):
@@ -133,5 +135,14 @@ class user_dashboard():
         except Exception as e:
             print(e)
             raise web.InternalError()
+
+class user_leaderboard():
+    def GET(self):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        _GET = web.input(period="week")
+        return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
 
 app = web.application(urls, locals())

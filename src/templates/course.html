@@ -174,17 +174,19 @@ $def thing(item, attr):
         <!-- List of scores -->
         <ul class="leaderboard-content">
           $for item in items['rows']:
-            <li class="leaderboard-row">
-              <span class="row-pic">
-                <strong>$(item['position']).</strong>
-                <img src="$(item['photo'])">
-              </span>
-              <span class="row-username">
-                <span data-role="hovercard" data-user-id="$(item['uid'])" data-direction="right">$(item['username'])</span>
-              </span>
-              <span class="row-points $('best' if item['position'] == 1 else None)">
-                <span>$(number_format(item['points']))</span>
-              </span>
+            <li class="leaderboard-row $('current' if session['loggedin'] and item['username'] == session['loggedin']['username'] else None)">
+              <a href="/user/$(item['username'])/">
+                <span class="row-pic">
+                  <strong>$(item['position']).</strong>
+                  <img src="$(item['photo'])">
+                </span>
+                <span class="row-username">
+                  <span data-role="hovercard" data-user-id="$(item['uid'])" data-direction="right">$(item['username'])</span>
+                </span>
+                <span class="row-points $('best' if item['position'] == 1 else None)">
+                  <span>$(number_format(item['points']))</span>
+                </span>
+              </a>
             </li>
         </ul>
       </div>

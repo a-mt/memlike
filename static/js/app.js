@@ -448,7 +448,7 @@ var Dashboard = {
      }
     });
     runner.always(function(data) {
-     $('#content-loader').remove();
+     $('.loading-spinner').remove();
     });
     runner.fail(function(xhr){
       if(xhr.readyState == 0 || xhr.status == 0) { // request has been canceled (change page)
