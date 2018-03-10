@@ -113,6 +113,32 @@ class Memrise:
 
         return data
 
+    def whatistudy(self, sessionid):
+        """
+            Retrieve the list of courses of current user
+
+            @throws requests.exceptions.HTTPError
+            @param string sessionid
+            @return dict
+        """
+        nbperpage = 4
+        offset    = 0
+        courses   = []
+
+        while True:
+            url       = "https://www.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset=" + str(offset) + "&limit=" + str(nbperpage-1) + "&get_review_count=true"
+            response  = requests.get(url, cookies={"sessionid": sessionid})
+            response.raise_for_status()
+
+            data      = response.json()
+            yield data['courses']
+
+            courses  += data['courses']
+            offset   += nbperpage
+
+            if not 'has_more_courses' in data or not data['has_more_courses']:
+                break
+
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------

@@ -9,6 +9,7 @@ from _globals import GLOBALS
 import web, controllers
 from lang import Lang
 import pprint, re, time
+from math import ceil
 
 # Load .env file
 pwd = path.dirname(__file__)
@@ -50,6 +51,7 @@ GLOBALS['prender']       = prender
 
 GLOBALS['sorted']        = sorted
 GLOBALS['str']           = str
+GLOBALS['ceil']          = ceil
 GLOBALS['number_format'] = lambda x: "{:,}".format(x)
 GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))
 GLOBALS['debug']         = debug

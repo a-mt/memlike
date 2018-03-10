@@ -30,6 +30,11 @@ $(document).ready(function(){
     user_mempals();
     user_courses();
   }
+
+  // Dashboard
+  if($('#dashboard').length) {
+    Dashboard.init();
+  }
 });
 
 //+--------------------------------------------------------
@@ -363,3 +368,55 @@ function user_courses() {
           + '<div class="course-box is-empty"></div>';
   });
 }
+
+//+--------------------------------------------------------
+//| Dashboard
+//+--------------------------------------------------------
+
+var Dashboard = {
+  container: false,
+
+  init: function() {
+    Dashboard.container = $('#dashboard');
+    Dashboard.getCourses();
+  },
+
+  getCourses: function() {
+    var offsetResponse = 0;
+
+    /* global $ */
+    var runner = $.ajax({
+        url: '/ajax/dashboard',
+        data: {},
+        processData: false,
+        xhrFields: {
+            // Getting on progress streaming response
+            onprogress: function(e) {
+                var response = e.target.response;
+
+                if(response.substr(response.length-1, 1) == '}') {
+                  try {
+                    var data = JSON.parse(response.substring(offsetResponse));
+                    offsetResponse = response.length;
+                    Dashboard.container.append(data.content);
+                  } catch(e) { }
+                }
+            }
+        }
+    });
+
+    // Ajax done running
+    runner.done(function(data) {
+     if(data == '{"content": "\\n"}') {
+       Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+     }
+    });
+    runner.always(function(data) {
+     $('#content-loader').remove();
+    });
+    runner.fail(function(error){
+      Dashboard.container.html(window.i18n.error);
+      console.log('Error: ', error);
+    });
+  }
+};

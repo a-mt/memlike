@@ -1,2 +1,12 @@
 $var currentPage: index
 $var title: $(LANG.menu["index"])
+
+<main>
+  $if session['loggedin']:
+    <div class="page-head">
+      <div class="inner"><h1>$:(LANG.misc['dashboard'])</h1></div>
+    </div>
+
+    <div id="dashboard" class="inner"></div>
+    <div id="content-loader" class="loading-spinner"></div>
+</main>

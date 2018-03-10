@@ -34,7 +34,13 @@ misc = {
   "alltime": "Général",
   "username": "Nom d'utilisateur",
   "password": "Mot de passe",
-  "login": "Login"
+  "login": "Login",
+  "course_complete": "Complété",
+  "course_learners": "% personnes apprennent ce cours",
+  "course_duration": "Ce cours prend à peu près %",
+  "empty_dashboard": "Vous n'apprenez aucun cours",
+  "browse_courses": "Trouver un cours",
+  "dashboard": "Tableau de bord"
 };
 
 menu = {

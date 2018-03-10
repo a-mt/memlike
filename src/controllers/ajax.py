@@ -16,7 +16,8 @@ urls = (
   "/user/([^/]+)/(followers)", "user_mempals",
   "/user/([^/]+)/(following)", "user_mempals",
   "/user/([^/]+)/(teaching)", "user_courses",
-  "/user/([^/]+)/(learning)", "user_courses"
+  "/user/([^/]+)/(learning)", "user_courses",
+  "/dashboard", "user_dashboard"
 )
 NBPERPAGE = 15
 
@@ -34,7 +35,8 @@ class api:
             "user_followers": "/ajax/user/{username}/followers?{page}",
             "user_following": "/ajax/user/{username}/following?{page}",
             "user_teaching": "/ajax/user/{username}/teaching?{page}",
-            "user_learning": "/ajax/user/{username}/learning?{page}"
+            "user_learning": "/ajax/user/{username}/learning?{page}",
+            "user_dashboard": "/ajax/dashboard {cookies.sessionid}"
         })
 
 def _error(e):
@@ -113,5 +115,21 @@ class user_courses:
         data['content']  = data["content"][offset:offset+1+NBPERPAGE]
 
         return json.dumps(data)
+
+class user_dashboard():
+    def GET(self):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        web.header('Content-type','text/plain')
+        web.header('Transfer-Encoding','chunked')
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        try:
+            for courses in memrise.whatistudy(sessionid):
+                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses)['__body__'] })
+        except Exception as e:
+            print(e)
+            raise web.InternalError()
 
 app = web.application(urls, locals())
