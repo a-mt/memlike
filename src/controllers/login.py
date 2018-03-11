@@ -46,7 +46,6 @@ class login:
             err['username'] = 'wrong_credentials'
 
             GLOBALS['session'].flash = {"err": err, "data": _POST}
-            print(GLOBALS['session'].flash)
             raise web.seeother('')
 
 app = web.application(urls, locals())

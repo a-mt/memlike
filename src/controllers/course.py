@@ -58,13 +58,18 @@ class level:
 
 class course:
     def GET(self, idCourse, path=""):
+        learning = False
+
         try:
             course = memrise.course(idCourse)
+
+            if int(idCourse) in GLOBALS['session']['learning']:
+                learning = GLOBALS['session']['learning'][int(idCourse)]
         except HTTPError as e:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, "levels", False, False)
+        return GLOBALS['render'].course(course, "levels", learning, False)
 
 class leaderboard:
     def GET(self, idCourse, path=""):

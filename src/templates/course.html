@@ -192,6 +192,41 @@ $def thing(item, attr):
       </div>
 
     $else:
+      $if level:
+        <div class="nicebox overall-summary">
+
+          <!-- Stats -->
+          <ul class="numbers-summary">
+            <li>$:(LANG.misc['number_words'].replace('%', "<strong>" + str(level['num_things'] - level['ignored']) + "</strong>"))</li>
+            <li>$:(LANG.misc['number_ignored'].replace('%', "<strong>" + str(level['ignored']) + "</strong>"))</li>
+            <li>$:(LANG.misc['number_learned'].replace('%', "<strong>" + str(level['learned']) + "</strong>"))</li>
+            <li>$:(LANG.misc['number_review'].replace('%', "<strong>" + str(level['review']) + "</strong>"))</li>
+            <li>$:(LANG.misc['number_complete'].replace('%', "<strong>" + str(level['percent_complete']) + "</strong>%"))</li>
+          </ul>
+
+          <!-- Progress bar -->
+          $ points    = level['learned']
+          $ maxPoints = level['num_things'] - level['ignored']
+          $ counter   = str(points) + "/" + str(maxPoints)
+
+          <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$maxPoints">
+            <div class="counter">$counter</div>
+
+            $if level['percent_complete']:
+              $ percent = level['percent_complete']
+              <div class="progress-bar-active yellow" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
+                <div class="counter">$counter</div>
+              </div>
+
+            $if level['review']:
+              $ percentReview = int(float(points - level['review']) / maxPoints * 100)
+              <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
+                <div class="counter">$counter</div>
+              </div>
+          </div>
+
+        </div>
+
       <!-- List of levels -->
       <ul class="levels">
         $for idx in sorted(course['levels'].keys(), key=int):

@@ -20,6 +20,8 @@ DEFAULT_LANG = "french"
 
 # Configure web server
 web.config.debug = False # to be able to use session
+web.config.session_parameters.cookie_path = '/'
+
 urls = (
     '/fr/courses', controllers.courses.app,
     '/course', controllers.course.app,
@@ -28,11 +30,11 @@ urls = (
     '/login', controllers.login.app,
     '/logout', 'logout',
     '/lang/(.*)', 'switchLang',
-    '/', controllers.index.app
+    '', controllers.index.app
 )
 
 app      = web.application(urls, globals())
-session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False})
+session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
 lang     = Lang(app, session)
 render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
 prender  = web.template.render('src/templates/', globals=GLOBALS)
@@ -66,6 +68,7 @@ GLOBALS['locales']       = locales
 class logout():
     def GET(self):
         GLOBALS['session'].loggedin = False
+        GLOBALS['session'].learning = {}
         raise web.seeother('/')
 
 class switchLang():
@@ -92,8 +95,6 @@ def notfound():
 app.notfound = notfound
 
 def flash():
-    if "flash" in session:
-        print(session.flash)
     if "flash" in session:
         web.flash = session.flash
         del session.flash

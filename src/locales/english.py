@@ -26,6 +26,7 @@ misc = {
   "learn": "Learn",
   "preview": "View",
   "memorize": "Memorize",
+  "review": "Review",
   "wrong_answer": "Incorrect",
   "correct_answer": "Correct",
   "your_answer_was": "Your answer was",
@@ -47,7 +48,12 @@ misc = {
   "order_category": "Category",
   "order_progress": "Progress",
   "order_review": "Review",
-  "courses": "Courses"
+  "courses": "Courses",
+  "number_words": "% words",
+  "number_ignored": "% ignored",
+  "number_learned": "% learned",
+  "number_review": "% to review",
+  "number_complete": "% complete"
 };
 
 menu = {
