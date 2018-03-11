@@ -22,9 +22,7 @@ $else:
     <link rel="stylesheet" href="/static/css/style.css" type="text/css" media="screen" charset="utf-8"/>
   </head>
   <body>
-    $if "header" in tpl:
-      $:tpl.header
-    $else:
+    $if "header" not in tpl:
       <header>
         <div class="inner">
           <ul class="header-nav inner">
@@ -44,8 +42,9 @@ $else:
           </ul>
         </div>
       </header>
-
-    <div id="body">$:tpl</div>
+      <div id="body">$:tpl</div>
+    $else:
+      $:tpl
 
     <footer class="clearfix">
 
