@@ -70,7 +70,7 @@ function courses() {
       lang: window.$_URL.currentLang,
       cat : window.$_URL.currentCat,
       q   : window.$_GET.q
-  }, content, paging, function(data, current_page) {
+  }, (window.$_GET.q ? "?q=" + encodeURIComponent(window.$_GET.q) : ""), content, paging, function(data, current_page) {
     if(data.content.trim() == "" && current_page == 1) {
       return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
     } else {
@@ -82,15 +82,21 @@ function courses() {
 /**
  * @param string ajax_url
  * @param Object data          - POST parameters
+ * @parma string q             - query string to keep when changing page
  * @param JqueryObject content - container
  * @param JqueryObject paging  - pagination
  * @param function tpl         - callback to format response to HTML
  */
-function _paginate(ajax_url, data, content, paging, tpl) {
+function _paginate(ajax_url, data, q, content, paging, tpl) {
   var url      = window.location.href.replace(/[?#].*/, ''),
   current_page = parseInt(window.$_GET.page) || 1,
   has_next     = true;
 
+  if(q) {
+    q += "&";
+  } else {
+    q = "?";
+  }
   function query(page, pushState) {
     content.html('');
     paging.hide().filter('.paging-loader').show();
@@ -113,29 +119,29 @@ function _paginate(ajax_url, data, content, paging, tpl) {
         } else {
           if(lastpage && current_page > 2) {
             paging.filter('.first').show()
-                .attr('href', '?page=' + 1)
+                .attr('href', q + 'page=' + 1)
                 .find('.page').html(window.i18n.page.replace('%', 1));
           }
           paging.filter('.prev').show()
-                .attr('href', '?page=' + (current_page - 1))
+                .attr('href', q + 'page=' + (current_page - 1))
                 .find('.page').html(window.i18n.page.replace('%', current_page - 1));
         }
 
         if(has_next) {
           if(lastpage && current_page + 1 < lastpage) {
             paging.filter('.last').show()
-                .attr('href', '?page=' + lastpage)
+                .attr('href', q + 'page=' + lastpage)
                 .find('.page').html(window.i18n.page.replace('%', lastpage));
           }
           paging.filter('.next')
-                .attr('href', '?page=' + (current_page + 1))
+                .attr('href', q + 'page=' + (current_page + 1))
                 .show().find('.page').html(window.i18n.page.replace('%', current_page + 1));
         } else {
           paging.filter('.next').hide();
         }
 
         if(pushState) {
-          window.history.pushState({ page: current_page, has_next: has_next }, "", url + "?page=" + current_page);
+          window.history.pushState({ page: current_page, has_next: has_next }, "", url + q + "page=" + current_page);
         }
       },
       error: function(xhr) {
@@ -326,7 +332,7 @@ function user_mempals() {
       tab    = content.data('tab'),
       url    = '/ajax/user/' + window.$_URL.username + '/' + tab;
 
-  _paginate(url, {}, content, paging, function(data){
+  _paginate(url, {}, "", content, paging, function(data){
     if(!data.users.length) {
       var msg = window.i18n[tab + '_none'].replace('%', '<span class="grey">' + window.$_URL.username + '</span>');
       return '<div class="empty-box"><p>' + msg + '</p></div>';
@@ -358,7 +364,7 @@ function user_courses() {
       tab    = content.data('tab'),
       url    = '/ajax/user/' + window.$_URL.username + '/' + tab;
 
-  _paginate(url, {}, content, paging, function(data){
+  _paginate(url, {}, "", content, paging, function(data){
     if(data.content.length == 0) {
       return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
     }
