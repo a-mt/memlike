@@ -948,6 +948,12 @@ a > .expand-icon { /* ico-s icon-arr-right */
   transition: transform .3s;
   overflow: hidden;
 }
+.level-box.multimedia .level-card {
+  background-color: #f5f5f5;
+  background-image: url("https://i.imgur.com/ZghvRD8.png");
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
 .level-box:hover .level-card {
   transform: scale(1.1);
   border-color: #ccc;
@@ -978,7 +984,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   display: block;
   font-weight: bold;
   text-align: center;
-  margin-top: 2ch;
+  margin-top: 3ch;
 }
 
 .things {
@@ -1382,6 +1388,17 @@ table.learn {
     max-width: calc(100vw - 40px);
     max-height: calc(100vh - 160px);
   }
+}
+.badge {
+  font-size: 12px;
+  line-height: 14px;
+  color: #666;
+  vertical-align: baseline;
+  white-space: nowrap;
+  background-color: #fff;
+  border: 1px solid #E6E6E6;
+  padding: 3px 9px;
+  border-radius: 10px;
 }
 
 .big.choice {

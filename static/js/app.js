@@ -8,6 +8,17 @@ $(document).ready(function(){
     Object.freeze(window.$_URL);
   }
 
+  if(window.markdown) {
+    window.markdown.decode = function(value) {
+      return window.markdown.toHTML(value)
+              .replace(/([^:])(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '$1<a href="$2" class="link">$2</a>')
+              .replace(/embed:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<a href="$1" class="embed link">$1</a>')
+              .replace(/img:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<img src="$1" class="img">');
+    };
+  } else {
+    window.markdown = {decode: function(value) { return value; }};
+  }
+
   // Slide up/down elements
   $('h2[toggle]').on('click', function(e){
     $($(this).attr('toggle')).toggleClass('hide');
@@ -23,6 +34,7 @@ $(document).ready(function(){
   if($('#course-container, #learn-container').length) {
     audioPlayer.init();
     imgZoom.init();
+    multimedia.init();
   }
 
   // Page /user event
@@ -317,6 +329,23 @@ var imgZoom = {
   },
   close: function() {
     imgZoom.container && imgZoom.container.hide();
+  }
+};
+
+//+--------------------------------------------------------
+//| Render markdown content
+//+--------------------------------------------------------
+
+var multimedia = {
+  init: function() {
+    $('.multimedia-wrapper').each(function(){
+      var varname = this.getAttribute("data-var");
+
+      if(window[varname]) {
+        $(this).html(window.markdown.decode(window[varname]));
+      }
+      $(this).removeClass('loading-spinner');
+    });
   }
 };
 

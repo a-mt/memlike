@@ -1,6 +1,6 @@
 $def with(course, type, lvl, thing)
 $var title: $(LANG.misc[type]) ~ $(course['title'])
-$var js: //cdnjs.cloudflare.com/ajax/libs/preact/8.2.7/preact.min.js, /static/js/learn.js
+$var js: /static/js/markdown.min.js, //cdnjs.cloudflare.com/ajax/libs/preact/8.2.7/preact.min.js, /static/js/learn.js
 $var header: 1
 
 $ url = course['url'] + str(lvl) if lvl else course['url']
@@ -16,12 +16,12 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
 </header>
 
 <script>
-  var ${"$"}_URL = {
-    idCourse  : $(course['id']),
-    lvl       : $:(lvl if lvl else '"1-'+str(len(course['levels'])) + '"'),
-    type      : "$type",
-    url       : "$url",
-    thing     : $(thing if thing else 0)
+  var course = $:(json(course)),
+      ${"$"}_URL = {
+    lvl        : $:(lvl if lvl else '"1-'+str(len(course['levels'])) + '"'),
+    type       : "$type",
+    urlFrom    : "$url",
+    thing      : $(thing if thing else 0)
   };
 </script>
 

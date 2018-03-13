@@ -341,7 +341,12 @@ class Memrise:
 
                         name = child.find('div',{'class':'level-title'}).text.strip()
                         idx  = child.find('div',{'class':'level-index'}).text.strip()
-                        course["levels"][idx] = name
+                        ico  = child.find(attrs={'class':'level-ico'}).attrs['class'].pop()
+
+                        course["levels"][idx] = {
+                            "name": name,
+                            "type": (2 if ico == 'level-ico-multimedia-inactive' or ico == 'level-ico-multimedia' else 1)
+                        }
 
                 mc.set(cache_key, course, time=60*60*24)
 
@@ -352,12 +357,13 @@ class Memrise:
     #+-----------------------------------------------------
     def level(self, idCourse, lvl, slug="preview"):
         """
-            Retrieve the info about a course's level
+            Retrieve the list of items of a level (wont work for multimedia)
             Is cached via memcached for 24hours
 
             @throws requests.exceptions.HTTPError
             @param integer idCourse
             @param integer lvl
+            @param string slug
             @return dict - Retrieved JSON
         """
         cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
@@ -390,6 +396,54 @@ class Memrise:
 
                 mc.set(cache_key, level, time=60*60*24)
         return level
+
+    def level_multimedia(self, urlCourse, lvl):
+        """
+            Retrieve the content of a multimedia level
+            Is cached via memcached for 24hours
+
+            @throws requests.exceptions.HTTPError
+            @param string urlCourse - ex "/course/43238/durham-university-medicine-year-one/"
+            @param integer lvl
+            @return dict - Retrieved JSON
+        """
+        pattern = re.search("/course/(\d+)/", urlCourse)
+        if pattern:
+            idCourse = pattern.group(1)
+        else:
+            return False
+
+        cache_key = "course_" + idCourse + "_" + lvl + "_multimedia"
+        data      = mc.get(cache_key)
+
+        if data == None:
+            with mc.lock(cache_key) as retries:
+
+                # Check if we set memcached while we were waiting for the lock
+                if retries:
+                    data = mc.get(cache_key)
+                    if data:
+                        return data
+
+                url      = "https://www.memrise.com" + urlCourse + lvl + "/"
+                response = requests.get(url)
+                response.raise_for_status()
+
+                # Get response
+                html = response.text.encode('utf-8').strip()
+                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+                data = False
+
+                # Look for value of js variable "level_multimedia"
+                scripts = DOM.html.body.find_all("script", recursive=False)
+                for script in scripts:
+                    text = script.text.strip()
+                    if text and text.startswith("var level_multimedia = "):
+                        data = text[23:].strip(';')
+                        break
+
+                mc.set(cache_key, data, time=60*60*24)
+        return data
 
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD

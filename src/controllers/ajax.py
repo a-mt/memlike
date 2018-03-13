@@ -6,17 +6,21 @@ from _globals import GLOBALS
 
 urls = (
   "", "api",
+
   "/courses", "courses",
-  "/course/(\d+)/(\d+)", "course_level",
-  "/course/(\d+)/(\d+)/(preview)", "course_level",
-  "/course/(\d+)/(\d+)/(learn)", "course_level",
-  "/course/(\d+)/leaderboard", "course_leaderboard",
-  "/course/(\d+)", "course",
+  "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
+  "/course/(\d+)/([^/]+)/(\d+)", "course_level",
+  "/course/(\d+)/([^/]+)/(\d+)/(preview)", "course_level",
+  "/course/(\d+)/([^/]+)/(\d+)/(learn)", "course_level",
+  "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
+  "/course/(\d+)/([^/]+)", "course",
+
   "/user/([^/]+)", "user",
   "/user/([^/]+)/(followers)", "user_mempals",
   "/user/([^/]+)/(following)", "user_mempals",
   "/user/([^/]+)/(teaching)", "user_courses",
   "/user/([^/]+)/(learning)", "user_courses",
+
   "/dashboard", "user_dashboard",
   "/leaderboard", "user_leaderboard",
   "/sync", "user_sync",
@@ -30,15 +34,18 @@ class api:
 
         return json.dumps({
             "courses": "/ajax/courses?{lang, cat, q, page}",
-            "course": "/ajax/course/{id}",
-            "course_leaderboard": "/ajax/course/{id}/leaderboard?{period}",
-            "course_level": "/ajax/course/{id}/{level}",
-            "course_level_learn": "/ajax/course/{id}/{level}/learn",
+            "course": "/ajax/course/{id}/{slug}",
+            "course_leaderboard": "/ajax/course/{id}/{slug}/leaderboard?{period}",
+            "course_level": "/ajax/course/{id}/{slug}/{level}",
+            "course_level_multimedia": "/ajax/course/{id}/{slug}/{level}/media",
+            "course_level_learn": "/ajax/course/{id}/{slug}/{level}/learn",
+
             "user": "/ajax/user/{username}",
             "user_followers": "/ajax/user/{username}/followers?{page}",
             "user_following": "/ajax/user/{username}/following?{page}",
             "user_teaching": "/ajax/user/{username}/teaching?{page}",
             "user_learning": "/ajax/user/{username}/learning?{page}",
+
             "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
             "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}",
             "user_sync": "/ajax/sync {cookies.sessionid}",
@@ -76,15 +83,25 @@ class courses:
         return _response(lambda: memrise.courses(_GET.lang, _GET.page, _GET.cat, _GET.q))
 
 class course:
-    def GET(self, id):
+    def GET(self, id, slug):
         return _response(lambda: memrise.course(id))
 
 class course_level:
-    def GET(self, idCourse, lvl, slug="preview"):
-        return _response(lambda: memrise.level(idCourse, lvl, slug))
+    def GET(self, idCourse, slug, lvl, kind="preview"):
+        return _response(lambda: memrise.level(idCourse, lvl, kind))
+
+class course_level_multimedia:
+    def GET(self, idCourse, slug, lvl):
+        try:
+            data = memrise.level_multimedia("/course/" + idCourse + "/" + slug + "/", lvl)
+        except HTTPError as e:
+            return _error(e)
+
+        web.header('Content-Type', 'text/plain')
+        return data
 
 class course_leaderboard:
-    def GET(self, idCourse):
+    def GET(self, idCourse, slug):
         _GET = web.input(period="week")
         return _response(lambda: memrise.leaderboard(idCourse, _GET.period))
 

@@ -45,21 +45,29 @@ class view:
 class level:
     def GET(self, idCourse, path, lvl, path2=""):
         try:
-            items  = memrise.level(idCourse, lvl)
             course = memrise.course(idCourse)
+            if lvl not in course['levels']:
+                return GLOBALS['prender']._404()
+
+            if course['levels'][lvl]['type'] == 1:
+                items = memrise.level(idCourse, lvl)
+            else:
+                # Type multimedia
+                items = memrise.level_multimedia(course['url'], lvl)
+
         except HTTPError as e:
             print e
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].course(course, "level", {
-            "name": course['levels'][lvl],
+            "name": course['levels'][lvl]['name'],
+            "type": course['levels'][lvl]['type'],
             "index": int(lvl)
         }, items)
 
 class course:
     def GET(self, idCourse, path=""):
         learning = False
-
         try:
             course = memrise.course(idCourse)
 

@@ -1,5 +1,6 @@
 $def with (course, tab, level, items)
 $var currentPage: courses
+$var js: /static/js/markdown.min.js
 
 $if tab == "level":
   $var title: $(course['title']) - $(level['index'])
@@ -52,21 +53,22 @@ $else:
       </button>
 
       <!-- Links to garden learn / preview -->
-      <div class="dropdown go-learn">
-        <button class="dropdown-toggle pill green" data-toggle="dropdown" aria-expanded="false">$(LANG.misc['learn_level'])</button>
-        <ul class="dropdown-menu">
-          <li>
-            <a href="$(course['url'] + str(level['index']))/garden/learn">
-              $(LANG.misc['memorize'])
-            </a>
-          </li>
-          <li>
-            <a href="$(course['url'] + str(level['index']))/garden/preview">
-              $(LANG.misc['preview'])
-            </a>
-          </li>
-        </ul>
-      </div>
+      $if level['type'] != 2:
+        <div class="dropdown go-learn">
+          <button class="dropdown-toggle pill green" data-toggle="dropdown" aria-expanded="false">$(LANG.misc['learn_level'])</button>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="$(course['url'] + str(level['index']))/garden/learn">
+                $(LANG.misc['memorize'])
+              </a>
+            </li>
+            <li>
+              <a href="$(course['url'] + str(level['index']))/garden/preview">
+                $(LANG.misc['preview'])
+              </a>
+            </li>
+          </ul>
+        </div>
 
     $elif tab == "leaderboard":
       <!-- Levels name -->
@@ -135,14 +137,19 @@ $def thing(item, attr):
 
     $if tab == "level":
       <!-- Level details -->
-      <ul class="things">
-        $for item in items['learnables']:
-          <li class="thing">
-            $:thing(item, 'item')
-            $:thing(item, 'definition')
-            <a href="$(course['url'])$(str(level['index']))/$(item['learnable_id'])" class="ico ico-thin-arr-right view-detail"></a>
-          </li>
-      </ul>
+      $if level["type"] == 1:
+        <ul class="things">
+          $for item in items['learnables']:
+            <li class="thing">
+              $:thing(item, 'item')
+              $:thing(item, 'definition')
+              <a href="$(course['url'])$(str(level['index']))/$(item['learnable_id'])" class="ico ico-thin-arr-right view-detail"></a>
+            </li>
+        </ul>
+      $else:
+        <div class="multimedia-wrapper nicebox inner-small loading-spinner" data-var="multimedia0">
+          <script>var multimedia0 = $:(items);</script>
+        </div>
 
       <!-- Pagination -->
       <div id="content-loader" class="paging clearfix">
@@ -151,13 +158,13 @@ $def thing(item, attr):
 
           <a href="$(course['url'])$idx" class="paging-trigger prev">
             <span class="ico ico-arr-left"></span>
-            <span class="page">$idx &ndash; $(course['levels'][str(idx)])</span>
+            <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
           </a>
         $if level['index'] < len(course['levels']):
           $ idx = level['index']+1
 
           <a href="$(course['url'])$idx" class="paging-trigger next">
-            <span class="page">$idx &ndash; $(course['levels'][str(idx)])</span>
+            <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
             <span class="ico ico-arr-right"></span>
           </a>
       </div>
@@ -230,12 +237,13 @@ $def thing(item, attr):
       <!-- List of levels -->
       <ul class="levels">
         $for idx in sorted(course['levels'].keys(), key=int):
-          <li class="level-box">
+          $ level = course['levels'][str(idx)]
+          <li class="level-box $('multimedia' if level['type'] == 2 else 'learn')">
             <div class="level-card">
               <span class="level-index">$idx</span>
             </div>
             <a class="level" href="$(course['url'])$idx">
-              <span class="level-title">$:(course['levels'][idx].replace("/", "<wbr>/"))</span>
+              <span class="level-title">$:(level['name'].replace("/", "<wbr>/"))</span>
             </a>
           </li>
       </ul>

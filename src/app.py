@@ -8,7 +8,7 @@ from _globals import GLOBALS
 # Import web server
 import web, controllers
 from lang import Lang
-import pprint, re, time
+import pprint, re, time, json
 from math import ceil
 
 # Load .env file
@@ -54,6 +54,7 @@ GLOBALS['prender']       = prender
 GLOBALS['sorted']        = sorted
 GLOBALS['str']           = str
 GLOBALS['ceil']          = ceil
+GLOBALS['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
 GLOBALS['number_format'] = lambda x: "{:,}".format(x)
 GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))
 GLOBALS['debug']         = debug

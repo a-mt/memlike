@@ -7,7 +7,8 @@ const { h, Component, render } = window.preact;
 
 /* global $ */
 $(document).ready(function () {
-  render(h(Learn, { idCourse: window.$_URL.idCourse, level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing }), document.getElementById('learn-container'));
+  Object.freeze(window.course);
+  render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing }), document.getElementById('learn-container'));
 });
 
 //+--------------------------------------------------------
@@ -17,6 +18,10 @@ $(document).ready(function () {
 $.fn.random = function () {
   var randomIndex = Math.floor(Math.random() * this.length);
   return $(this[randomIndex]);
+};
+Array.prototype.random = function () {
+  var randomIndex = Math.floor(Math.random() * this.length);
+  return this[randomIndex];
 };
 
 function randomize(arr) {
@@ -48,7 +53,7 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1 };
+    this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1, level_type: 1 };
     if (typeof this.props.level == "string" && this.props.level.indexOf('-')) {
       var range = this.props.level.split('-');
       this.state.level = parseInt(range[0]);
@@ -92,14 +97,15 @@ class Learn extends Component {
 
     // Update level title
     if (!prevState.data || prevState.level != this.state.level) {
-      document.getElementById('level-title').innerHTML = this.state.level + " - " + this.state.data.session.level.title;
+      document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
     }
   }
 
   // Retrieve the current level datas
   getData(level, callback) {
+    var level_type = window.course.levels[level].type;
     $.ajax({
-      url: '/ajax/course/' + this.props.idCourse + '/' + level + '/' + this.props.type,
+      url: '/ajax' + window.course.url + level + '/' + (level_type == 2 ? "media" : this.props.type),
       success: function (data) {
         callback && callback();
 
@@ -108,10 +114,11 @@ class Learn extends Component {
           screen: false,
           error: false,
           level: level,
+          level_type: level_type,
 
           data: data,
           i: 0,
-          n: data.boxes.length
+          n: data.boxes ? data.boxes.length : 1
         });
       }.bind(this),
 
@@ -168,16 +175,20 @@ class Learn extends Component {
     var correct = false;
 
     // Check if we got the right answer
-    if (this.expectChoice == "numeric") {
-      var chosen = this.choices.possible[parseInt(i) - 1];
+    var chosen = this.choices.possible[parseInt(i) - 1];
 
-      for (let j = 0; j < this.choices.right.length; j++) {
-        if (chosen == this.choices.right[j]) {
-          correct = true;
-          break;
-        }
+    for (let j = 0; j < this.choices.right.length; j++) {
+      if (chosen == this.choices.right[j]) {
+        correct = true;
+        break;
       }
     }
+    // getNormalPoints, getSpeedPoints
+    this.choice_feedback(chosen, correct, correct ? 1 : 0);
+  }
+
+  // Answer has been submitted and checked: give feedback
+  choice_feedback(text, correct, score) {
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap),
@@ -194,7 +205,7 @@ class Learn extends Component {
     this.setState({
       recap: recap,
       screen: "correction",
-      correct: correct ? false : { value: chosen, kind: this.choices.type }
+      correct: correct ? false : { value: text, kind: this.choices.type }
     });
     this.expectChoice = false;
     this.choices = false;
@@ -211,7 +222,7 @@ class Learn extends Component {
       });
 
       // Next level or go back to course's page
-    } else if (this.state.screen == "recap") {
+    } else if (this.state.screen == "recap" || this.state.level_type == 2) {
       if (this.state.level < this.state.maxlevel) {
         if (this.state.data) {
           this.setState({
@@ -220,7 +231,7 @@ class Learn extends Component {
           this.getData(this.state.level + 1);
         }
       } else {
-        window.location.href = window.$_URL.url;
+        window.location.href = window.$_URL.urlFrom;
       }
 
       // Recap
@@ -256,6 +267,9 @@ class Learn extends Component {
     }
     if (this.props.thing) {
       return this.render_presentation(this.props.thing);
+    }
+    if (this.state.level_type == 2) {
+      return this.markdown();
     }
     var recap = this.state.screen == "recap",
         item = recap ? false : this.state.data.boxes[this.state.i],
@@ -309,12 +323,25 @@ class Learn extends Component {
   }
   recap() {
     var items = [];
-    for (var id in this.state.recap) {
-      var item = this.state.recap[id];
 
-      items[item.pos] = _extends({}, item, this.state.data.screens[id].presentation);
+    if (this.props.type == "preview") {
+      for (var i = 0; i < this.state.data.boxes.length; i++) {
+        var id = this.state.data.boxes[i].learnable_id;
+
+        items.push(this.state.data.screens[id].presentation);
+      }
+    } else {
+      for (var id in this.state.recap) {
+        var item = this.state.recap[id];
+
+        items[item.pos] = _extends({}, item, this.state.data.screens[id].presentation);
+      }
     }
     return h(Recap, { items: Object.values(items), type: this.props.type });
+  }
+  markdown() {
+    var data = window.markdown.decode(eval(this.state.data));
+    return h('div', { 'class': 'nicebox', dangerouslySetInnerHTML: { __html: data } });
   }
 }
 
@@ -482,6 +509,24 @@ const Presentation = function (props) {
           { 'class': 'more' },
           h(Value, { content: it.value, type: it.kind })
         )
+      )),
+      item.attributes.map(it => h(
+        'tr',
+        null,
+        h(
+          'td',
+          { 'class': 'label' },
+          it.label
+        ),
+        h(
+          'td',
+          { 'class': 'more' },
+          h(
+            'span',
+            { 'class': 'badge' },
+            h(Value, { content: it.value, type: 'text', single: '1' })
+          )
+        )
       ))
     )
   );
@@ -506,7 +551,13 @@ const Sentinel = function (props) {
 
   // Place the right answer somewhere in it
   var rnd = Math.random() * n - 1 | 0;
-  choicesRnd[rnd] = item.answer.value;
+
+  if ($.isArray(item.answer.value)) {
+    var choice = item.answer.value.random();
+    choicesRnd[rnd] = choice.normal || choice;
+  } else {
+    choicesRnd[rnd] = item.answer.value;
+  }
 
   var rightAnswers = [...item.answer.alternatives];
   switch (answerType) {
