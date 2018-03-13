@@ -10,10 +10,9 @@ $(document).ready(function(){
 
   if(window.markdown) {
     window.markdown.decode = function(value) {
-      return window.markdown.toHTML(value)
-              .replace(/([^:])(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '$1<a href="$2" class="link">$2</a>')
-              .replace(/embed:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<a href="$1" class="embed link">$1</a>')
-              .replace(/img:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<img src="$1" class="img">');
+      return window.markdown.toHTML(value.replace(/img:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '![]($1)'))
+              .replace(/([^:>"])(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '$1<a href="$2" class="link">$2</a>')
+              .replace(/embed:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<a href="$1" class="embed link">$1</a>');
     };
   } else {
     window.markdown = {decode: function(value) { return value; }};

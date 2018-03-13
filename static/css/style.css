@@ -1067,6 +1067,31 @@ a > .expand-icon { /* ico-s icon-arr-right */
   text-align: center;
 }
 
+.multimedia-wrapper pre {
+  padding: 9.5px;
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 20px;
+  word-break: break-all;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  background-color: #f5f5f5;
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+.multimedia-wrapper code {
+  padding: 2px 4px;
+  white-space: nowrap;
+  background-color: #f7f7f9;
+  border: 1px solid #e1e1e8;
+}
+.multimedia-wrapper pre code {
+  padding: 0;
+  white-space: pre-wrap;
+  background-color: transparent;
+  border: 0;
+}
+
 /*-------------------------------------------------------
  * USER
  *-------------------------------------------------------*/
