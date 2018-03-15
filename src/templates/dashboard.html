@@ -7,6 +7,20 @@ $var title: $(LANG.menu["index"])
   <div class="page-head">
     <div class="inner">
 
+      <!-- Sub-navigation -->
+      $for tab in [('courses', '/home'), ('leaderboard', '/home/leaderboard')]:
+        $ name, url = tab
+
+        $if name == "leaderboard":
+          $ icon = '<i class="ico ico-trophy"></i>'
+        $else:
+          $ icon = None
+
+        $if currentTab == name:
+          <button type="button" class="pill active">$:icon $(LANG.misc[name])</button>
+        $else:
+          <a href="$url" class="pill">$:icon $(LANG.misc[name])</a>
+
       <!-- Sort by -->
       $if currentTab == "courses":
         <div id="dashboard-sort" class="filter-source" style="display: none">
@@ -20,22 +34,6 @@ $var title: $(LANG.menu["index"])
           </select>
         </div>
         <div class="loading-spinner right"></div>
-
-      <!-- Sub-navigation -->
-      <div class="page-title">
-        $for tab in [('courses', '/home'), ('leaderboard', '/home/leaderboard')]:
-          $ name, url = tab
-
-          $if name == "leaderboard":
-            $ icon = '<i class="ico ico-trophy"></i>'
-          $else:
-            $ icon = None
-
-          $if currentTab == name:
-            <button type="button" class="pill active">$:icon $(LANG.misc[name])</button>
-          $else:
-            <a href="$url" class="pill">$:icon $(LANG.misc[name])</a>
-      </div>
     </div>
   </div>
 

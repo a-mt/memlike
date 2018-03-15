@@ -1,0 +1,30 @@
+$def with (course)
+
+<div class="page-banner">
+  <div class="inner">
+
+    <!-- Photo -->
+    <img class="page-photo" src="$(course['photo'])" alt="$(course['title'])">
+    <div class="page-details">
+
+      <!-- Categories -->
+      <ul class="page-breadcrumb">
+        $ baseUrl = ""
+        $for i, cat in enumerate(course['breadcrumb']):
+          <li>
+            $if i == 0:
+              $ baseUrl = '/fr/courses/' + cat["name"]
+              <a href="$baseUrl">$:(LANG.categories[cat['id']])</a>
+            $else:
+              <i class="ico ico-grey ico-arr-right ico-s"></i>
+              <a href="$baseUrl/$(cat['name'])">$:(LANG.categories[cat['id']])</a>
+          </li>
+      </ul>
+
+      <!-- Title + description -->
+      <h1>$(course['title'])</h1>
+      <p class="description">$(course['description'])</p>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,142 @@
+$def with (course, stats)
+$var currentPage: courses
+$var title: $(course['title'])
+
+$:(prender.inc_course_banner(course))
+
+<div class="page-head">
+  <div class="inner clearfix">
+
+    <!-- Levels name -->
+    <button type="button" class="pill active">
+      <i class="ico ico-list ico-white"></i>
+      $(LANG.misc['levels']) ($(len(course['levels'])))
+    </button>
+
+    <!-- Link to leaderboard -->
+    <a href="$(course['url'])leaderboard" class="pill">
+      <i class="ico ico-trophy"></i>
+      $(LANG.misc['leaderboard'])
+    </a>
+
+    <!-- Links to garden learn / preview -->
+    <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_course'])</button>
+
+  </div>
+</div>
+
+$def thing(item, attr):
+  $ it = item[attr]
+  <div class="$(attr) $(item[attr]['kind'])">
+    $if it['kind'] == "text":
+      $(it['value'])
+    $elif it['kind'] == "image":
+      <div class="media-list">
+        $for img in it['value']:
+          <img src="$img" class="text-image">
+      </div>
+    $elif it['kind'] == "audio":
+      <div class="media-list">
+        $for song in it['value']:
+          <audio src="$(song['normal'])" class="audio-player ico ico-l ico-audio"></audio>
+      </div>
+  </div>
+
+<main>
+  <div id="course-container" class="inner">
+
+    <!-- Stats -->
+    $if stats:
+      <div class="nicebox overall-summary">
+
+        <!-- Text -->
+        <ul class="numbers-summary">
+          <li>$:(LANG.misc['number_words'].replace('%', "<strong>" + str(stats['num_things'] - stats['ignored']) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_ignored'].replace('%', "<strong>" + str(stats['ignored']) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_learned'].replace('%', "<strong>" + str(stats['learned']) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_review'].replace('%', "<strong>" + str(stats['review']) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_complete'].replace('%', "<strong>" + str(stats['percent_complete']) + "</strong>%"))</li>
+        </ul>
+
+        <!-- Progress bar -->
+        $ points    = stats['learned']
+        $ maxPoints = stats['num_things'] - stats['ignored']
+        $ counter   = str(points) + "/" + str(maxPoints)
+
+        <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$maxPoints">
+          <div class="counter">$counter</div>
+
+          $if stats['percent_complete']:
+            $ percent = stats['percent_complete']
+            <div class="progress-bar-active yellow" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
+              <div class="counter">$counter</div>
+            </div>
+
+          $if stats['review']:
+            $ percentReview = int(float(points - stats['review']) / maxPoints * 100)
+            <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
+              <div class="counter">$counter</div>
+            </div>
+        </div>
+
+      </div>
+
+    <!-- List of levels -->
+    <ul class="levels">
+      $for idx in sorted(course['levels'].keys(), key=int):
+        $ level = course['levels'][str(idx)]
+        <li class="level-box $('multimedia' if level['type'] == 2 else 'learn')">
+          <div class="level-card">
+            <span class="level-index">$idx</span>
+          </div>
+          <a class="level" href="$(course['url'])$idx">
+            <span class="level-title">$:(level['name'].replace("/", "<wbr>/"))</span>
+          </a>
+        </li>
+    </ul>
+
+  </div>
+</main>
+
+<!-- Link to garden -->
+<div id="mode-selector">
+  <div class="mode-selector">
+    <h3 class="mode-selector-title">
+      $(course['title'])
+      <div class="mode-selector-close">&times;</div>
+    </h3>
+    <div class="mode-icons">
+      $if stats:
+        $ displayCount = True
+        $ tolearn  = stats['num_things'] - stats['ignored'] - stats['learned']
+        $ toreview = stats['review']
+      $else:
+        $ displayCount = False
+        $ tolearn  = 0
+        $ toreview = 0
+
+      <a href="$(course['url'])/garden/learn" class="mode-icon-wrapper $('disabled' if displayCount and tolearn == 0 else None)">
+        <div class="mode-icon learn">
+          $if displayCount:
+            <div class="mode-counter">$(tolearn)</div>
+        </div>
+        <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
+      </a>
+      <a href="$(course['url'])garden/classic_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+        <div class="mode-icon classic_review">
+          $if displayCount:
+            <div class="mode-counter">$(toreview)</div>
+        </div>
+        <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
+      </a>
+      <a href="$(course['url'])garden/speed_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+        <div class="mode-icon speed_review">&nbsp;</div>
+        <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
+      </a>
+      <a href="$(course['url'])garden/preview" class="mode-icon-wrapper">
+        <div class="mode-icon preview">&nbsp;</div>
+        <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
+      </a>
+    </div>
+  </div>
+</div>

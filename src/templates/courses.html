@@ -41,7 +41,7 @@ $ currentLang = page['lang']
     <div class="page-title">
       <h1>$(LANG.menu["courses"])</h1>
 
-      <h2 toggle=".filter-category">
+      <h2 data-toggle=".filter-category">
         $if page["catId"]:
           $:(LANG.categories[page['catId']])
         $else:

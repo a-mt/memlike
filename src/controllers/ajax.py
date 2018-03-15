@@ -9,9 +9,7 @@ urls = (
 
   "/courses", "courses",
   "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  "/course/(\d+)/([^/]+)/(\d+)", "course_level",
-  "/course/(\d+)/([^/]+)/(\d+)/(preview)", "course_level",
-  "/course/(\d+)/([^/]+)/(\d+)/(learn)", "course_level",
+  "/course/(\d+)/([^/]+)/(\d+)/(preview|learn|classic_review|speed_review)", "course_level",
   "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
   "/course/(\d+)/([^/]+)", "course",
 
@@ -21,10 +19,12 @@ urls = (
   "/user/([^/]+)/(teaching)", "user_courses",
   "/user/([^/]+)/(learning)", "user_courses",
 
+  # logged-in user only
   "/dashboard", "user_dashboard",
   "/leaderboard", "user_leaderboard",
+  "/sync/(\d+)", "user_sync_course",
   "/sync", "user_sync",
-  "/debug", "debug_session"
+  "/session", "debug_session"
 )
 NBPERPAGE = 15
 
@@ -36,9 +36,9 @@ class api:
             "courses": "/ajax/courses?{lang, cat, q, page}",
             "course": "/ajax/course/{id}/{slug}",
             "course_leaderboard": "/ajax/course/{id}/{slug}/leaderboard?{period}",
-            "course_level": "/ajax/course/{id}/{slug}/{level}",
+            "course_level_preview": "/ajax/course/{id}/{slug}/{level}/preview",
             "course_level_multimedia": "/ajax/course/{id}/{slug}/{level}/media",
-            "course_level_learn": "/ajax/course/{id}/{slug}/{level}/learn",
+            "course_level_learn": "/ajax/course/{id}/{slug}/{level}/learn {cookies.sessionid}",
 
             "user": "/ajax/user/{username}",
             "user_followers": "/ajax/user/{username}/followers?{page}",
@@ -48,8 +48,9 @@ class api:
 
             "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
             "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}",
+            "user_sync_course": "/ajax/sync/{id} {cookies.sessionid}",
             "user_sync": "/ajax/sync {cookies.sessionid}",
-            "debug_session": "/ajax/debug"
+            "debug_session": "/ajax/session"
         })
 
 def _error(e):
@@ -83,12 +84,28 @@ class courses:
         return _response(lambda: memrise.courses(_GET.lang, _GET.page, _GET.cat, _GET.q))
 
 class course:
-    def GET(self, id, slug):
-        return _response(lambda: memrise.course(id))
+    def GET(self, idCourse, slug):
+        _GET = web.input(session=False)
+
+        sessionid = False
+        if _GET.session:
+            if not GLOBALS['session']['loggedin']:
+                return web.Forbidden()
+            sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+        return _response(lambda: memrise.course(idCourse, sessionid))
 
 class course_level:
     def GET(self, idCourse, slug, lvl, kind="preview"):
-        return _response(lambda: memrise.level(idCourse, lvl, kind))
+        _GET = web.input(session=False)
+
+        sessionid = False
+        if _GET.session:
+            if not GLOBALS['session']['loggedin']:
+                return web.Forbidden()
+            sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+        return _response(lambda: memrise.level(idCourse, lvl, kind, sessionid))
 
 class course_level_multimedia:
     def GET(self, idCourse, slug, lvl):
@@ -169,6 +186,12 @@ class user_dashboard():
                     c += 1
                 saveSession()
 
+        except HTTPError as e:
+            if e.response.status_code == 403:
+                raise web.Forbidden()
+            else:
+                raise web.NotFound()
+
         except Exception as e:
             print(e)
             raise web.InternalError()
@@ -182,7 +205,7 @@ class user_leaderboard():
         _GET = web.input(period="week")
         return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
 
-class user_sync:
+class user_sync():
     def GET(self):
         c = 0
 
@@ -200,6 +223,16 @@ class user_sync:
                 c += 1
 
         return str(c)
+
+class user_sync_course():
+    def GET(self, idCourse):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        data      = memrise.course_progress(idCourse, sessionid)
+
+        GLOBALS['session']['learning'][idCourse] = data
 
 class debug_session():
     def GET(self):

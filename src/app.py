@@ -10,6 +10,7 @@ import web, controllers
 from lang import Lang
 import pprint, re, time, json
 from math import ceil
+from datetime import datetime
 
 # Load .env file
 pwd = path.dirname(__file__)
@@ -54,6 +55,8 @@ GLOBALS['prender']       = prender
 GLOBALS['sorted']        = sorted
 GLOBALS['str']           = str
 GLOBALS['ceil']          = ceil
+GLOBALS['now']           = lambda: datetime.now()
+GLOBALS['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
 GLOBALS['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
 GLOBALS['number_format'] = lambda x: "{:,}".format(x)
 GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))

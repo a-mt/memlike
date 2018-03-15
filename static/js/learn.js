@@ -8,7 +8,7 @@ const { h, Component, render } = window.preact;
 /* global $ */
 $(document).ready(function () {
   Object.freeze(window.course);
-  render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing }), document.getElementById('learn-container'));
+  render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing, usesession: window.$_URL.usesession }), document.getElementById('learn-container'));
 });
 
 //+--------------------------------------------------------
@@ -106,6 +106,9 @@ class Learn extends Component {
     var level_type = window.course.levels[level].type;
     $.ajax({
       url: '/ajax' + window.course.url + level + '/' + (level_type == 2 ? "media" : this.props.type),
+      data: {
+        session: this.props.usesession
+      },
       success: function (data) {
         callback && callback();
 
@@ -123,8 +126,12 @@ class Learn extends Component {
       }.bind(this),
 
       error: function (xhr) {
-        console.error(xhr.status + " " + xhr.statusText);
-        this.setState({ error: window.i18n.error });
+        if (xhr.status == 403) {
+          this.setState({ error: 403 });
+        } else {
+          console.error(xhr.status + " " + xhr.statusText);
+          this.setState({ error: 500 });
+        }
       }.bind(this)
     });
   }
@@ -135,7 +142,7 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if (this.state.recap) return;
+    if (this.state.recap || this.state.error) return;
     var msg = 'Your changes will be lost.';
 
     e = e || window.event;
@@ -256,11 +263,25 @@ class Learn extends Component {
 
   render(props, state) {
     if (state.error) {
-      return h(
-        'div',
-        null,
-        state.error
-      );
+      if (state.error == 403) {
+        return h(
+          'p',
+          null,
+          window.i18n._403,
+          ' ',
+          h(
+            'a',
+            { href: '/login', 'class': 'link' },
+            window.i18n.login
+          )
+        );
+      } else {
+        return h(
+          'p',
+          null,
+          window.i18n.error
+        );
+      }
     }
     if (!this.state.data) {
       return h('div', { 'class': 'loading-spinner' });

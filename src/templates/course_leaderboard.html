@@ -1,0 +1,57 @@
+$def with (course, currentPeriod, items)
+$var currentPage: courses
+$var title: $(course['title']) - $(LANG.misc['leaderboard'])
+
+$:(prender.inc_course_banner(course))
+
+<div class="page-head">
+  <div class="inner clearfix">
+
+    <!-- Levels name -->
+    <a href="$(course['url'])" class="pill">
+      <i class="ico ico-list"></i>
+      $(LANG.misc['levels']) ($(len(course['levels'])))
+    </a>
+  
+    <!-- Link to leaderboard -->
+    <button type="button" class="pill active">
+      <i class="ico ico-trophy ico-white"></i>
+      $(LANG.misc['leaderboard'])
+    </button>
+
+  </div>
+</div>
+
+<main>
+  <div id="course-container" class="inner">
+
+    <div class="leaderboard nicebox">
+      <div class="leaderboard-controls">
+        <div class="btn-group">
+          $for period in ['week', 'month', 'alltime']:
+            <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$period">$(LANG.misc[period])</a>
+        </div>
+      </div>
+
+      <!-- List of scores -->
+      <ul class="leaderboard-content">
+        $for item in items['rows']:
+          <li class="leaderboard-row $('current' if session['loggedin'] and item['username'] == session['loggedin']['username'] else None)">
+            <a href="/user/$(item['username'])/">
+              <span class="row-pic">
+                <strong>$(item['position']).</strong>
+                <img src="$(item['photo'])">
+              </span>
+              <span class="row-username">
+                <span data-role="hovercard" data-user-id="$(item['uid'])" data-direction="right">$(item['username'])</span>
+              </span>
+              <span class="row-points $('best' if item['position'] == 1 else None)">
+                <span>$(number_format(item['points']))</span>
+              </span>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+  </div>
+</main>

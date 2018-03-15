@@ -6,6 +6,7 @@ misc = {
   "search": "Rechercher",
   "courses_none": "Aucun cours trouvé",
   "404": "La page que tu cherches n'existe pas.",
+  "403": "Votre session a expiré.",
   "back_home": "Retour à l'accueil",
   "levels": "Niveaux",
   "rank": "Niveau %",
@@ -52,7 +53,16 @@ misc = {
   "number_ignored": "% ignorés",
   "number_learned": "% appris",
   "number_review": "% à réviser",
-  "number_complete": "% complété"
+  "number_complete": "% complété",
+  "new_words": "Nouveaux mots",
+  "classic_review": "Révision classique",
+  "speed_review": "Révision rapide",
+  "ignored": "Ignoré",
+  "review_now": "Révise maintenant",
+  "review_in_x_hours": "Révise dans % heures",
+  "review_in_x_days": "Révise dans % jours",
+  "x_hours": "% h",
+  "x_days": "% j"
 };
 
 menu = {

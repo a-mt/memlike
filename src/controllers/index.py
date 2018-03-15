@@ -27,8 +27,11 @@ class leaderboard:
             sessionid   = GLOBALS['session']['loggedin']['sessionid']
             leaderboard = memrise.user_leaderboard(sessionid, _GET.period)
         except HTTPError as e:
-            print e
-            return GLOBALS['render'].Forbidden()
+            if e.response.status_code == 403:
+                return GLOBALS['prender']._403()
+            else:
+                print e
+                return GLOBALS['prender']._404()
 
         return GLOBALS['render'].dashboard("leaderboard", _GET.period, leaderboard)
 

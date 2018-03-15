@@ -21,7 +21,8 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
     lvl        : $:(lvl if lvl else '"1-'+str(len(course['levels'])) + '"'),
     type       : "$type",
     urlFrom    : "$url",
-    thing      : $(thing if thing else 0)
+    thing      : $(thing if thing else 0),
+    usesession : $(1 if session["loggedin"] else 0)
   };
 </script>
 

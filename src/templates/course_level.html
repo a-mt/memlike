@@ -1,0 +1,128 @@
+$def with (course, level, items)
+$var currentPage: courses
+$var js: /static/js/markdown.min.js
+$var title: $(course['title']) - $(level['index'])
+
+$:(prender.inc_course_banner(course))
+
+<div class="page-head">
+  <div class="inner clearfix">
+
+    <!-- Link to levels list -->
+    <a href="$(course['url'])" class="pill">
+      <i class="ico ico-list"></i>
+      $(LANG.misc['levels']) ($(len(course['levels'])))
+    </a>
+
+    <!-- Level name -->
+    <button type="button" class="pill active">
+      $(level['index']) - $(level['name'])
+    </button>
+
+    <!-- Links to garden learn / preview -->
+    $if level['type'] != 2:
+      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_level'])</button>
+
+  </div>
+</div>
+
+<main>
+  <div id="course-container" class="inner">
+    $if level["type"] == 1:
+      $ inc = prender.inc_course_items(course, level, items)
+
+      $ num_things = inc.num_things
+      $ learned  = inc.learned
+      $ ignored  = inc.ignored
+      $ tolearn  = inc.tolearn
+      $ toreview = inc.toreview
+
+      <!-- Stats -->
+      <div class="nicebox overall-summary">
+        $ points    = learned
+        $ maxPoints = num_things - ignored
+        $ counter   = str(points) + "/" + str(maxPoints)
+        $ percent   = int(float(points) / maxPoints * 100) if maxPoints > 0 else 100
+
+        <!-- Text -->
+        <ul class="numbers-summary">
+          <li>$:(LANG.misc['number_words'].replace('%', "<strong>" + str(maxPoints) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_ignored'].replace('%', "<strong>" + str(ignored) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_learned'].replace('%', "<strong>" + str(points) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_review'].replace('%', "<strong>" + str(toreview) + "</strong>"))</li>
+          <li>$:(LANG.misc['number_complete'].replace('%', "<strong>" + str(percent) + "</strong>%"))</li>
+        </ul>
+
+        <!-- Progress bar -->
+        <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$maxPoints">
+          <div class="counter">$counter</div>
+
+          <div class="progress-bar-active yellow" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
+            <div class="counter">$counter</div>
+          </div>
+
+          $if toreview:
+            $ percentReview = int(float(points - toreview) / maxPoints * 100) if maxPoints > 0 else 0
+            <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
+              <div class="counter">$counter</div>
+            </div>
+        </div>
+      </div>
+
+      <!-- List of items -->
+      $:inc
+
+    $else:
+      <div class="multimedia-wrapper nicebox inner-small loading-spinner" data-var="multimedia0">
+        <script>var multimedia0 = $:(items);</script>
+      </div>
+
+    <!-- Pagination -->
+    <div id="content-loader" class="paging clearfix">
+      $if level['index'] > 1:
+        $ idx = level['index']-1
+    
+        <a href="$(course['url'])$idx" class="paging-trigger prev">
+          <span class="ico ico-arr-left"></span>
+          <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
+        </a>
+      $if level['index'] < len(course['levels']):
+        $ idx = level['index']+1
+    
+        <a href="$(course['url'])$idx" class="paging-trigger next">
+          <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
+          <span class="ico ico-arr-right"></span>
+        </a>
+    </div>
+
+  </div>
+</main>
+
+$if level['type'] != 2:
+  <!-- Link to garden -->
+  <div id="mode-selector">
+    <div class="mode-selector">
+      <h3 class="mode-selector-title">
+        $(level['index']) - $(level['name'])
+        <div class="mode-selector-close">&times;</div>
+      </h3>
+      <div class="mode-icons">
+        <a href="$(course['url'])$(level['index'])/garden/learn" class="mode-icon-wrapper $('disabled' if tolearn == 0 else None)">
+          <div class="mode-icon learn"><div class="mode-counter">$(tolearn)</div></div>
+          <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
+        </a>
+        <a href="$(course['url'])$(level['index'])/garden/classic_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+          <div class="mode-icon classic_review"><div class="mode-counter">$(toreview)</div></div>
+          <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
+        </a>
+        <a href="$(course['url'])$(level['index'])/garden/speed_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+          <div class="mode-icon speed_review">&nbsp;</div>
+          <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
+        </a>
+        <a href="$(course['url'])$(level['index'])/garden/preview" class="mode-icon-wrapper">
+          <div class="mode-icon preview">&nbsp;</div>
+          <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
+        </a>
+      </div>
+    </div>
+  </div>

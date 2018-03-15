@@ -6,6 +6,7 @@ misc = {
   "search": "Search",
   "courses_none": "No courses found",
   "404": "The page you're looking for doesn't exist.",
+  "403": "Your session expired.",
   "back_home": "Back home",
   "levels": "Levels",
   "rank": "Level %",
@@ -53,7 +54,16 @@ misc = {
   "number_ignored": "% ignored",
   "number_learned": "% learned",
   "number_review": "% to review",
-  "number_complete": "% complete"
+  "number_complete": "% complete",
+  "new_words": "New words",
+  "classic_review": "Classic review",
+  "speed_review": "Speed review",
+  "ignored": "Ignored",
+  "review_now": "Review now",
+  "review_in_x_hours": "Review in % hours",
+  "review_in_x_days": "Review in % days",
+  "x_hours": "% h",
+  "x_days": "% d"
 };
 
 menu = {

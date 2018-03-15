@@ -18,9 +18,15 @@ $(document).ready(function(){
     window.markdown = {decode: function(value) { return value; }};
   }
 
-  // Slide up/down elements
-  $('h2[toggle]').on('click', function(e){
-    $($(this).attr('toggle')).toggleClass('hide');
+  // Show/hide elements
+  $('h2[data-toggle]').on('click', function(e){
+    $($(this).attr('data-toggle')).toggleClass('hide');
+  });
+  $('button[data-toggle]').on('click', function(e){
+    $($(this).attr('data-toggle')).fadeIn();
+  });
+  $('#mode-selector').on('click', '.mode-selector-close', function(e){
+    $(e.delegateTarget).fadeOut();
   });
 
   // Page /courses events
@@ -488,8 +494,12 @@ var Dashboard = {
       if(xhr.readyState == 0 || xhr.status == 0) { // request has been canceled (change page)
         return;
       }
-      Dashboard.container.html(window.i18n.error);
-      console.log('Error: ', xhr);
+      if(xhr.status == 403) {
+        Dashboard.container.html('<div style="width: 100%">' + window.i18n._403 + ' <a class="link" href="/login">' + window.i18n.login + '</a></div>');
+      } else {
+        Dashboard.container.html('<div style="width: 100%">' + window.i18n.error + '</div>');
+        console.log('Error: ', xhr);
+      }
     });
   }
 };

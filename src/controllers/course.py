@@ -5,15 +5,13 @@ from requests.exceptions import HTTPError
 
 urls = (
   # Learn
-  "/(\d+)/(.*)/(\d+)/garden/(preview)", "learn",
-  "/(\d+)/(.*)/(\d+)/garden/(learn)", "learn",
+  "/(\d+)/(.*)/(\d+)/garden/(preview|learn|classic_review|speed_review)", "learn",
   "/(\d+)/(.*)/(\d+)/(\d+)", "view",
   "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
 
   # View course
-  "/(\d+)/(.*)/garden/(preview)", "learn",
-  "/(\d+)/(.*)/garden/(learn)", "learn",
+  "/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
   "/(\d+)/(.*)/leaderboard", "leaderboard",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
@@ -50,16 +48,22 @@ class level:
                 return GLOBALS['prender']._404()
 
             if course['levels'][lvl]['type'] == 1:
-                items = memrise.level(idCourse, lvl)
+                sessionid = False
+                if GLOBALS['session']['loggedin']:
+                    sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+                items = memrise.level(idCourse, lvl, "preview", sessionid)
             else:
                 # Type multimedia
                 items = memrise.level_multimedia(course['url'], lvl)
 
         except HTTPError as e:
-            print e
-            return GLOBALS['prender']._404()
+            if e.response.status_code == 403:
+                return GLOBALS['prender']._403()
+            else:
+                return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, "level", {
+        return GLOBALS['render'].course_level(course, {
             "name": course['levels'][lvl]['name'],
             "type": course['levels'][lvl]['type'],
             "index": int(lvl)
@@ -77,7 +81,7 @@ class course:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, "levels", learning, False)
+        return GLOBALS['render'].course_summary(course, learning)
 
 class leaderboard:
     def GET(self, idCourse, path=""):
@@ -89,7 +93,7 @@ class leaderboard:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].course(course, "leaderboard", _GET.period, leaderboard)
+        return GLOBALS['render'].course_leaderboard(course, _GET.period, leaderboard)
 
 
 app = web.application(urls, locals())

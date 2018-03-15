@@ -1,0 +1,83 @@
+$def with (course, level, items)
+
+$def thing(item, attr):
+  $ it = item[attr]
+  <div class="column $(attr) $(item[attr]['kind'])">
+    $if it['kind'] == "text":
+      $(it['value'])
+    $elif it['kind'] == "image":
+      <div class="media-list">
+        $for img in it['value']:
+          <img src="$img" class="text-image">
+      </div>
+    $elif it['kind'] == "audio":
+      <div class="media-list">
+        $for song in it['value']:
+          <audio src="$(song['normal'])" class="audio-player ico ico-l ico-audio"></audio>
+      </div>
+  </div>
+
+$ num_things = len(items['learnables'])
+$ learned  = 0
+$ ignored  = 0
+$ tolearn  = 0
+$ toreview = 0
+$ t = now()
+
+<!-- Level details -->
+<ul class="rows">
+  $for i, item in enumerate(items['learnables']):
+    <li class="row thing">
+      $:thing(item, 'item')
+      $:thing(item, 'definition')
+
+      $if i < len(items['thingusers']):
+        $ item = items['thingusers'][i]
+
+        $if item['ignored']:
+          $ ignored += 1
+          <div class="status">$:(LANG.misc['ignored'])</div>
+
+        $elif item['growth_level'] < 6:
+          $ tolearn += 1
+          $ percent = int(item['growth_level'] / 6.0 * 100)
+          <div class="status">
+            <div class="progress"><div class="bar bar-success" style="width:${percent}%"></div></div>
+          </div>
+
+        $else:
+          $ learned += 1
+          $ review = (date(item['next_date']) - t)
+          $ days   = review.days
+          $ hours  = ceil(review.total_seconds() / 3600)
+
+          $if days > 1:
+            $if hours > 0:
+              $ days += 1
+            <div class="status review" title="$:(LANG.misc['review_in_x_days'].replace('%', str(days)))">
+              $:(LANG.misc['x_days'].replace('%', str(days)))
+              <i class="ico-color-water grey"></i>
+            </div>
+          $elif hours > 1:
+            <div class="status review" title="$:(LANG.misc['review_in_x_hours'].replace('%', str(int(hours))))">
+              $:(LANG.misc['x_hours'].replace('%', str(int(hours))))
+              <i class="ico-color-water grey"></i>
+            </div>
+          $else:
+            $ toreview += 1
+            <div class="status review" title="$:(LANG.misc['review_now'])">
+              <i class="ico-color-water"></i>
+            </div>
+      $else:
+        $ tolearn += 1
+        <div class="status"></div>
+
+      <a href="$(course['url'])$(str(level['index']))/$(item['learnable_id'])" class="view-detail" title="$:(LANG.misc['preview'])"></a>
+    </li>
+</ul>
+
+$var num_things = num_things
+$var learned  = learned
+$var ignored  = ignored
+$var tolearn  = tolearn
+$var toreview = toreview

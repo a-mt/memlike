@@ -349,25 +349,88 @@ class Memrise:
                         }
 
                 mc.set(cache_key, course, time=60*60*24)
-
         return course
+
+    def course_progress(self, id, sessionid):
+        """
+            Retrieve the given user progress for a given course
+
+            @throws requests.exceptions.HTTPError
+            @param integer id
+            @param string sessionid
+            @return dict - {ignored, learned, percent_complete, review_num_things}
+        """
+        response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
+        response.raise_for_status()
+        html = response.text.encode('utf-8').strip()
+
+        # Parse HTML
+        DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+        learning = {
+            "ignored": 0,
+            "learned": 0,
+            "percent_complete": 0,
+            "review": 0,
+            "num_things": 0
+        }
+
+        div = DOM.find('div',{'class','progress-box-course'})
+        if div != None:
+
+            # Ignored, learned, total
+            item = div.find('div',{'class':'progress-box-title'})
+            if item != None:
+                text = item.find(text=True, recursive=False)
+                if text:
+                    res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
+                    if res:
+                        learning["learned"]      = int(res.group(1))
+                        learning["num_things"]   = int(res.group(2))
+
+                text = item.find(attrs={"class":"pull-right"})
+                if text:
+                    res = re.search("^(\d+)", text.text.strip())
+                    if res:
+                        learning["ignored"]     = int(res.group(1))
+                        learning["num_things"] += int(res.group(1))
+
+                # Percentage complete
+                if learning["learned"] > 0:
+                    if learning["num_things"] == 0:
+                        learning["percent_complete"] = 100
+                    else:
+                        learning["percent_complete"] = int(float(learning["learned"]) / learning["num_things"] * 100)
+
+            # Review
+            item = div.find('a',{'class':'blue'})
+            if item != None:
+                res = re.search("\((\d+)\)", item.text)
+                if res:
+                    learning["review"] = int(res.group(1))
+
+        return learning
 
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, lvl, slug="preview"):
+    def level(self, idCourse, lvl, slug="preview", sessionid=False):
         """
             Retrieve the list of items of a level (wont work for multimedia)
-            Is cached via memcached for 24hours
+            Is cached via memcached for 24hours if sessionid isn't provided
 
             @throws requests.exceptions.HTTPError
             @param integer idCourse
             @param integer lvl
             @param string slug
+            @param string session
             @return dict - Retrieved JSON
         """
-        cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
-        level     = mc.get(cache_key)
+        if sessionid:
+            cache_key = False
+            level     = None
+        else:
+            cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
+            level     = mc.get(cache_key)
 
         if level == None:
             with mc.lock(cache_key) as retries:
@@ -378,8 +441,9 @@ class Memrise:
                     if level:
                         return level
 
-                sessionid = self.get_auth()
-                print 'GET ' + cache_key
+                if not sessionid:
+                    sessionid = self.get_auth()
+                    print 'GET ' + cache_key
 
                 url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=" + slug
                 if slug != "preview":
@@ -387,14 +451,15 @@ class Memrise:
                 response = requests.get(url, cookies={"sessionid": sessionid})
 
                 # Try reauthenticate
-                if response.status_code == 403:
+                if sessionid == False and response.status_code == 403:
                     sessionid = self.get_auth(True)
                     response  = requests.get(url, cookies={"sessionid": sessionid})
 
                 response.raise_for_status()
                 level = response.json()
 
-                mc.set(cache_key, level, time=60*60*24)
+                if cache_key:
+                    mc.set(cache_key, level, time=60*60*24)
         return level
 
     def level_multimedia(self, urlCourse, lvl):
