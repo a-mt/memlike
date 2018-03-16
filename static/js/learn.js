@@ -53,11 +53,12 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1, level_type: 1 };
-    if (typeof this.props.level == "string" && this.props.level.indexOf('-')) {
-      var range = this.props.level.split('-');
-      this.state.level = parseInt(range[0]);
-      this.state.maxlevel = parseInt(range[1]);
+    this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1, level_type: 1, review_all: false };
+    if (typeof this.props.level == "string") {
+      // all
+      this.state.level = 1;
+      this.state.maxlevel = Object.keys(window.course.levels).length;
+      this.state.review_all = this.props.type == "classic_review" || this.props.type == "speed_review";
     } else {
       this.state.level = parseInt(this.props.level);
       this.state.maxlevel = parseInt(this.props.level);
@@ -105,7 +106,7 @@ class Learn extends Component {
   getData(level, callback) {
     var level_type = window.course.levels[level].type;
     $.ajax({
-      url: '/ajax' + window.course.url + level + '/' + (level_type == 2 ? "media" : this.props.type),
+      url: '/ajax' + window.course.url + (this.state.review_all ? 'all' : level) + '/' + (level_type == 2 ? "media" : this.props.type),
       data: {
         session: this.props.usesession
       },
@@ -167,7 +168,7 @@ class Learn extends Component {
     } else if (this.expectChoice && key >= 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
-      if (char <= this.choices.possible.length) {
+      if (char <= this.choices.length) {
         this.multiple_choice(char);
       }
     }
@@ -179,23 +180,17 @@ class Learn extends Component {
 
   // Multiple choice: User chooses a answer
   multiple_choice(i) {
-    var correct = false;
 
     // Check if we got the right answer
-    var chosen = this.choices.possible[parseInt(i) - 1];
+    var idx = parseInt(i) - 1,
+        choice = this.choices[idx].attributes;
 
-    for (let j = 0; j < this.choices.right.length; j++) {
-      if (chosen == this.choices.right[j]) {
-        correct = true;
-        break;
-      }
-    }
     // getNormalPoints, getSpeedPoints
-    this.choice_feedback(chosen, correct, correct ? 1 : 0);
+    this.choice_feedback(choice.value, choice.isValid, choice.isValid ? 1 : 0, choice.answerType, idx);
   }
 
   // Answer has been submitted and checked: give feedback
-  choice_feedback(text, correct, score) {
+  choice_feedback(text, correct, score, kind, i) {
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap),
@@ -209,13 +204,37 @@ class Learn extends Component {
     }
 
     // Display correction
-    this.setState({
-      recap: recap,
-      screen: "correction",
-      correct: correct ? false : { value: text, kind: this.choices.type }
-    });
-    this.expectChoice = false;
-    this.choices = false;
+    if (this.props.type == "speed_review") {
+
+      if (correct) {
+        $("#choice-" + (i + 1)).addClass("correct");
+      } else {
+        $("#choice-" + (i + 1)).addClass("incorrect");
+
+        for (var j = 0; j < this.choices.length; j++) {
+          if (this.choices[j].attributes.isValid) {
+            $("#choice-" + (j + 1)).addClass("correct");
+            break;
+          }
+        }
+      }
+      this.expectChoice = false;
+      this.choices = false;
+      this.state.recap = recap;
+
+      setTimeout(function () {
+        $(".choice-box").removeClass("correct").removeClass("incorrect");
+        this.getNext();
+      }.bind(this), 500);
+    } else {
+      this.setState({
+        recap: recap,
+        screen: "correction",
+        correct: correct ? false : { value: text, kind: kind }
+      });
+      this.expectChoice = false;
+      this.choices = false;
+    }
   }
 
   // Display next screen
@@ -230,7 +249,7 @@ class Learn extends Component {
 
       // Next level or go back to course's page
     } else if (this.state.screen == "recap" || this.state.level_type == 2) {
-      if (this.state.level < this.state.maxlevel) {
+      if (!this.state.review_all && this.state.level < this.state.maxlevel) {
         if (this.state.data) {
           this.setState({
             data: false
@@ -258,7 +277,7 @@ class Learn extends Component {
 
   setMultipleChoices(choices) {
     this.expectChoice = "numeric";
-    this.choices = choices; // {right, possible}
+    this.choices = choices;
   }
 
   render(props, state) {
@@ -333,9 +352,10 @@ class Learn extends Component {
     );
   }
   render_sentinel(id) {
-    var item = this.state.data.screens[id].multiple_choice;
+    var item = this.state.data.screens[id].multiple_choice,
+        nChoice = this.props.type == "speed_review" ? 4 : 9;
 
-    return h(Sentinel, { item: item, setChoices: this.setMultipleChoices });
+    return h(Sentinel, { item: item, nChoice: nChoice, setChoices: this.setMultipleChoices });
   }
   render_presentation(id, correct) {
     var item = this.state.data.screens[id].presentation;
@@ -565,35 +585,40 @@ const Sentinel = function (props) {
       choicesRnd = randomize([...item.choices]);
 
   // Display 9 choices max
-  if (n > 9) {
-    n = 9;
+  if (n > props.nChoice) {
+    n = props.nChoice;
     choicesRnd = choicesRnd.slice(0, n);
   }
 
   // Place the right answer somewhere in it
-  var rnd = Math.random() * n - 1 | 0;
+  var rnd = Math.random() * n - 1 | 0,
+      isArr = $.isArray(item.answer.value);
 
-  if ($.isArray(item.answer.value)) {
+  if (isArr) {
     var choice = item.answer.value.random();
     choicesRnd[rnd] = choice.normal || choice;
   } else {
     choicesRnd[rnd] = item.answer.value;
   }
 
-  var rightAnswers = [...item.answer.alternatives];
-  switch (answerType) {
-    case "text":
-      rightAnswers.push(item.answer.value);break;
-    case "audio":
-      item.answer.value.forEach(it => {
-        rightAnswers.push(it.normal);
-      });break;
-    case "image":
-      item.answer.value.forEach(it => {
-        rightAnswers.push(it);
-      });break;
+  // Get the list of answers that are acceptable
+  var rightAnswers = [];
+  if (isArr) {
+    for (var i = 0; i < item.answer.value.length; i++) {
+      choice = item.answer.value[i];
+      rightAnswers.push(choice.normal || choice);
+    }
+  } else {
+    choicesRnd[rnd] = item.answer.value;
+    rightAnswers.push(item.answer.value);
   }
-  props.setChoices({ possible: choicesRnd, right: rightAnswers, type: answerType });
+  rightAnswers.push(...item.answer.alternatives);
+
+  // Display our boxes
+  var choices = choicesRnd.map((value, i) => {
+    return h(ChoiceBox, { key: i, i: i + 1, value: value, answerType: answerType, isValid: rightAnswers.includes(value) });
+  });
+  props.setChoices(choices);
 
   return h(
     'div',
@@ -605,23 +630,27 @@ const Sentinel = function (props) {
     ),
     h(
       'div',
-      { 'class': 'medium choices' },
-      choicesRnd.map((it, i) => {
-        return h(
-          'div',
-          { accesskey: i + 1, 'class': 'choice-box nicebox', id: "choice-" + (i + 1) },
-          h(
-            'span',
-            { 'class': 'choice-index' },
-            i + 1,
-            '.'
-          ),
-          h(Value, { content: it, type: answerType, single: '1' })
-        );
-      })
+      { 'class': "medium choices n" + props.nChoice },
+      choices
     )
   );
 };
+
+class ChoiceBox extends Component {
+  render(props) {
+    return h(
+      'div',
+      { accesskey: props.i, 'class': 'choice-box nicebox', id: "choice-" + props.i },
+      h(
+        'span',
+        { 'class': 'choice-index' },
+        props.i,
+        '.'
+      ),
+      h(Value, { content: props.value, type: props.answerType, single: '1' })
+    );
+  }
+}
 
 const Recap = function (props) {
   var items = props.items,

@@ -9,7 +9,7 @@ urls = (
 
   "/courses", "courses",
   "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  "/course/(\d+)/([^/]+)/(\d+)/(preview|learn|classic_review|speed_review)", "course_level",
+  "/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
   "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
   "/course/(\d+)/([^/]+)", "course",
 
@@ -85,15 +85,7 @@ class courses:
 
 class course:
     def GET(self, idCourse, slug):
-        _GET = web.input(session=False)
-
-        sessionid = False
-        if _GET.session:
-            if not GLOBALS['session']['loggedin']:
-                return web.Forbidden()
-            sessionid = GLOBALS['session']['loggedin']['sessionid']
-
-        return _response(lambda: memrise.course(idCourse, sessionid))
+        return _response(lambda: memrise.course(idCourse))
 
 class course_level:
     def GET(self, idCourse, slug, lvl, kind="preview"):

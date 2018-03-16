@@ -420,11 +420,14 @@ class Memrise:
 
             @throws requests.exceptions.HTTPError
             @param integer idCourse
-            @param integer lvl
+            @param integer|string lvl - index | "all"
             @param string slug
             @param string session
             @return dict - Retrieved JSON
         """
+        if slug == "speed_review":
+            slug = "classic_review"
+
         if sessionid:
             cache_key = False
             level     = None
@@ -445,7 +448,11 @@ class Memrise:
                     sessionid = self.get_auth()
                     print 'GET ' + cache_key
 
-                url      = "https://www.memrise.com/ajax/session/?course_id=" + idCourse + "&level_index=" + lvl + "&session_slug=" + slug
+                url = "https://www.memrise.com/ajax/session/?course_id=" + idCourse
+                if lvl != "all":
+                    url += "&level_index=" + lvl
+                url += "&session_slug=" + slug
+
                 if slug != "preview":
                     url += "&_=" + get_time()
                 response = requests.get(url, cookies={"sessionid": sessionid})

@@ -107,29 +107,29 @@ $def thing(item, attr):
     </h3>
     <div class="mode-icons">
       $if stats:
-        $ displayCount = True
-        $ tolearn  = stats['num_things'] - stats['ignored'] - stats['learned']
+        $ learned  = stats['learned']
+        $ tolearn  = stats['num_things'] - stats['ignored'] - learned
         $ toreview = stats['review']
       $else:
-        $ displayCount = False
+        $ learned  = 0
         $ tolearn  = 0
         $ toreview = 0
 
-      <a href="$(course['url'])/garden/learn" class="mode-icon-wrapper $('disabled' if displayCount and tolearn == 0 else None)">
+      <a href="$(course['url'])/garden/learn" class="mode-icon-wrapper $('disabled' if stats and tolearn == 0 else None)">
         <div class="mode-icon learn">
-          $if displayCount:
+          $if tolearn:
             <div class="mode-counter">$(tolearn)</div>
         </div>
         <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
       </a>
-      <a href="$(course['url'])garden/classic_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+      <a href="$(course['url'])garden/classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon classic_review">
-          $if displayCount:
+          $if toreview:
             <div class="mode-counter">$(toreview)</div>
         </div>
         <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
       </a>
-      <a href="$(course['url'])garden/speed_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+      <a href="$(course['url'])garden/speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon speed_review">&nbsp;</div>
         <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
       </a>

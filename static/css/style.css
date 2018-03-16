@@ -1655,6 +1655,10 @@ table.learn {
   flex-wrap: wrap;
   justify-content: center;
 }
+.choices.n4 {
+  max-width: 550px;
+  margin: 0 auto;
+}
 .choice-box {
   width: 250px;
   margin: 5px;

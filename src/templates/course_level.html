@@ -88,7 +88,7 @@ $:(prender.inc_course_banner(course))
         </a>
       $if level['index'] < len(course['levels']):
         $ idx = level['index']+1
-    
+
         <a href="$(course['url'])$idx" class="paging-trigger next">
           <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
           <span class="ico ico-arr-right"></span>
@@ -108,14 +108,20 @@ $if level['type'] != 2:
       </h3>
       <div class="mode-icons">
         <a href="$(course['url'])$(level['index'])/garden/learn" class="mode-icon-wrapper $('disabled' if tolearn == 0 else None)">
-          <div class="mode-icon learn"><div class="mode-counter">$(tolearn)</div></div>
+          <div class="mode-icon learn">
+            $if tolearn:
+              <div class="mode-counter">$(tolearn)</div>
+          </div>
           <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
         </a>
-        <a href="$(course['url'])$(level['index'])/garden/classic_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
-          <div class="mode-icon classic_review"><div class="mode-counter">$(toreview)</div></div>
+        <a href="$(course['url'])$(level['index'])/garden/classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
+          <div class="mode-icon classic_review">
+            $if toreview:
+              <div class="mode-counter">$(toreview)</div>
+          </div>
           <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
         </a>
-        <a href="$(course['url'])$(level['index'])/garden/speed_review" class="mode-icon-wrapper $('disabled' if toreview == 0 else None)">
+        <a href="$(course['url'])$(level['index'])/garden/speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon speed_review">&nbsp;</div>
           <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
         </a>
