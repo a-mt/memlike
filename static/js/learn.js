@@ -56,8 +56,10 @@ class Learn extends Component {
     this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1, level_type: 1, review_all: false };
     if (typeof this.props.level == "string") {
       // all
-      this.state.level = 1;
-      this.state.maxlevel = Object.keys(window.course.levels).length;
+      this.levels = this.props.level.split(',').map(i => parseInt(i));
+
+      this.state.level = this.levels[0];
+      this.state.maxlevel = this.levels[this.levels.length - 1];
       this.state.review_all = this.props.type == "classic_review" || this.props.type == "speed_review";
     } else {
       this.state.level = parseInt(this.props.level);
@@ -254,9 +256,14 @@ class Learn extends Component {
           this.setState({
             data: false
           });
-          this.getData(this.state.level + 1);
+          this.getData(this.levels[this.levels.indexOf(this.state.level) + 1]);
         }
       } else {
+        if (this.props.usesession) {
+          $.ajax({
+            url: "/ajax/sync/" + window.course.id
+          });
+        }
         window.location.href = window.$_URL.urlFrom;
       }
 

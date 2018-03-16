@@ -78,19 +78,22 @@ $:(prender.inc_course_banner(course))
       </div>
 
     <!-- Pagination -->
+    $ levels = sorted(course['levels'].keys(), key=int)
+    $ i      = levels.index(str(level['index']))
+
     <div id="content-loader" class="paging clearfix">
-      $if level['index'] > 1:
-        $ idx = level['index']-1
+      $if i > 0:
+        $ idx = levels[i-1]
     
         <a href="$(course['url'])$idx" class="paging-trigger prev">
           <span class="ico ico-arr-left"></span>
-          <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
+          <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
         </a>
-      $if level['index'] < len(course['levels']):
-        $ idx = level['index']+1
+      $if i < len(levels):
+        $ idx = levels[i+1]
 
         <a href="$(course['url'])$idx" class="paging-trigger next">
-          <span class="page">$idx &ndash; $(course['levels'][str(idx)]['name'])</span>
+          <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
           <span class="ico ico-arr-right"></span>
         </a>
     </div>

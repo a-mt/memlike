@@ -18,7 +18,7 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
 <script>
   var course = $:(json(course)),
       ${"$"}_URL = {
-    lvl        : $:(lvl if lvl else '"1-'+str(len(course['levels'])) + '"'),
+    lvl        : $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
     type       : "$type",
     urlFrom    : "$url",
     thing      : $(thing if thing else 0),

@@ -51,12 +51,14 @@ class Learn extends Component {
     super(props);
 
     if(typeof this.props.level =="string") { // all
-      this.state.level      = 1;
-      this.state.maxlevel   = Object.keys(window.course.levels).length;
+      this.levels           = this.props.level.split(',').map((i) => parseInt(i));
+
+      this.state.level      = this.levels[0];
+      this.state.maxlevel   = this.levels[this.levels.length-1];
       this.state.review_all = (this.props.type == "classic_review" || this.props.type == "speed_review");
     } else {
-      this.state.level    = parseInt(this.props.level);
-      this.state.maxlevel = parseInt(this.props.level);
+      this.state.level      = parseInt(this.props.level);
+      this.state.maxlevel   = parseInt(this.props.level);
     }
 
     this.setMultipleChoices = this.setMultipleChoices.bind(this);
@@ -252,9 +254,10 @@ class Learn extends Component {
           this.setState({
             data: false
           });
-          this.getData(this.state.level + 1);
+          this.getData(this.levels[this.levels.indexOf(this.state.level) + 1]);
         }
       } else {
+        }
         window.location.href = window.$_URL.urlFrom;
       }
 
