@@ -1696,6 +1696,79 @@ table.learn {
   pointer-events: none;
 }
 
+.typing-container {
+  background: #EEE;
+  padding: 30px 15px;
+}
+.typing {
+  text-align: center;
+  width: 535px;
+  margin: 0 auto;
+  font-family: "Times New Roman","Times","Kai","KaiTi",Serif;
+}
+.typing input {
+  padding: 5.71429px 23px;
+  font-size: 30px;
+  line-height: 41px;
+  height: 57px;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 10px;
+  width: 100%;
+}
+.typing input:focus {
+  border-color: #E6E6E6;
+  background: white;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),
+                    0 0 8px rgba(82,168,236,0.6);
+}
+.typing input.correct {
+  border-color: #71a137;
+  background-color: #8bc14a;
+  color: white;
+  box-shadow: none;
+}
+.typing input.incorrect {
+  border-color: #dd2231;
+  background-color: #e44e5a;
+  color: white;
+  box-shadow: none;
+}
+.typing input.nearly {
+  border-color:#ddc722;
+  background-color:#e4d24e;
+  color:white
+}
+.typing button {
+  margin: 3px;
+  border-radius: 10px;
+  padding: 0 10px;
+  border: 1px solid #E6E6E6;
+  background: white;
+  font-size: 20px;
+  line-height: 41px;
+  box-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+.typing button:hover {
+  border-color: #ccc;
+}
+.keyboard {
+  padding-top: 10px;
+}
+.correction {
+  font-size: .9em;
+  font-weight: 500;
+  color: rgba(0,0,0,0.5);
+}
+.correction .deleted {
+  background-color: LightPink;
+  /*text-decoration: line-through;*/
+}
+.correction .inserted {
+  background-color: PaleGreen;
+}
+
 .recap {
   padding: 0;
 }

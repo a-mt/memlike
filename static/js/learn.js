@@ -66,13 +66,18 @@ class Learn extends Component {
       this.state.maxlevel = parseInt(this.props.level);
     }
 
-    this.setMultipleChoices = this.setMultipleChoices.bind(this);
+    this.setChoices = this.setChoices.bind(this);
   }
 
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
-    this.getData(this.state.level, function () {
 
+    // Typing
+    $('main').on('click', '.typing button', function () {
+      this.parentNode.previousElementSibling.value += this.innerHTML;
+    });
+
+    this.getData(this.state.level, function () {
       window.onbeforeunload = this.warnbeforeunload.bind(this);
 
       // User clicks on a multiple choice answer
@@ -162,12 +167,18 @@ class Learn extends Component {
 
     // Press enter
     if (key == 13) {
+
+      // Presentation
       if (!this.expectChoice) {
         this.getNext();
+
+        // Tyoing
+      } else if (this.expectChoice == "text") {
+        this.choice(e.target.value || "");
       }
 
-      // Press a number
-    } else if (this.expectChoice && key >= 96 && key <= 105) {
+      // Multiplice choice: press a number
+    } else if (this.expectChoice == "numeric" && key >= 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
       if (char <= this.choices.length) {
@@ -188,11 +199,75 @@ class Learn extends Component {
         choice = this.choices[idx].attributes;
 
     // getNormalPoints, getSpeedPoints
-    this.choice_feedback(choice.value, choice.isValid, choice.isValid ? 1 : 0, choice.answerType, idx);
+    this.choice_feedback({
+      value: choice.value,
+      score: choice.isValid ? 1 : 0,
+      kind: choice.answerType,
+      i: idx
+    });
+  }
+
+  // Text entry: User submit its answer
+  choice(text) {
+
+    var score = 0,
+        testText = sanitizeTyping(text, this.is_strict),
+        refText = "";
+
+    // Text input
+    for (let i = 0; i < this.choices.length; i++) {
+      var s = get_score(testText, this.choices[i]);
+
+      if (s && s > score) {
+        score = s;
+        refText = this.choices[i];
+      }
+    }
+    console.log(score, refText, testText);
+
+    this.choice_feedback({
+      value: testText,
+      ref: refText,
+      score: score,
+      kind: "text"
+    });
   }
 
   // Answer has been submitted and checked: give feedback
-  choice_feedback(text, correct, score, kind, i) {
+  choice_feedback(data) {
+    var points = 0;
+
+    // Score
+    switch (this.props.type) {
+      case "learn":
+        points = calculate_points_learn(data.score);
+        break;
+
+      case "classic_review":
+        var id = this.state.data.boxes[this.state.i].learnable_id,
+            thing = this.state.data.thingusers.find(item => item.learnable_id == id),
+            streak = 0;
+
+        if (thing) {
+          streak = thing.current_streak;
+
+          if (data.score == 1) {
+            thing.current_streak++;
+          }
+        }
+
+        points = calculate_points_learn(data.score);
+        if (streak) {
+          points = calculate_points_review(points, streak);
+        }
+        break;
+
+      case "speed_review":
+        // TODO timer
+        //points = calculate_points_speed(t);
+        break;
+    }
+    console.log(this.props.type, data.score, points);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap),
@@ -201,14 +276,14 @@ class Learn extends Component {
       recap[id] = { count: 0, right: 0, pos: Object.keys(recap).length };
     }
     recap[id].count++;
-    if (correct) {
+    if (data.score == 1) {
       recap[id].right++;
     }
 
     // Display correction
     if (this.props.type == "speed_review") {
 
-      if (correct) {
+      if (data.score == 1) {
         $("#choice-" + (i + 1)).addClass("correct");
       } else {
         $("#choice-" + (i + 1)).addClass("incorrect");
@@ -232,7 +307,7 @@ class Learn extends Component {
       this.setState({
         recap: recap,
         screen: "correction",
-        correct: correct ? false : { value: text, kind: kind }
+        correct: data
       });
       this.expectChoice = false;
       this.choices = false;
@@ -282,12 +357,15 @@ class Learn extends Component {
   //| RENDERING
   //+--------------------------------------------------------
 
-  setMultipleChoices(choices) {
-    this.expectChoice = "numeric";
+  setChoices(choices, type, is_strict) {
+    this.expectChoice = type; // numeric | text
     this.choices = choices;
+    this.is_strict = is_strict || 1;
   }
 
   render(props, state) {
+
+    // Something went wrong
     if (state.error) {
       if (state.error == 403) {
         return h(
@@ -309,38 +387,37 @@ class Learn extends Component {
         );
       }
     }
+
+    // Loading data
     if (!this.state.data) {
       return h('div', { 'class': 'loading-spinner' });
     }
+
+    // Preview thing
     if (this.props.thing) {
       return this.render_presentation(this.props.thing);
     }
+
+    // Media level
     if (this.state.level_type == 2) {
       return this.markdown();
     }
-    var recap = this.state.screen == "recap",
-        item = recap ? false : this.state.data.boxes[this.state.i],
-        percent = state.n ? Math.ceil(state.i / state.n * 100) : 100,
-        tpl = item.template,
-        correct;
 
-    if (this.state.screen == "correction") {
-      tpl = "presentation";
-      correct = this.state.correct || true;
-    }
+    // Default
+    var percent = this.state.n ? Math.ceil(this.state.i / this.state.n * 100) : 100;
 
     return h(
       'div',
       null,
       h(
         'div',
-        { 'class': 'progress-bar', role: 'progressbar', 'aria-valuenow': state.i, 'aria-valuemin': '0', 'aria-valuemax': state.i },
+        { 'class': 'progress-bar', role: 'progressbar', 'aria-valuenow': this.state.i, 'aria-valuemin': '0', 'aria-valuemax': this.state.i },
         h(
           'div',
           { 'class': 'counter' },
-          state.i,
+          this.state.i,
           ' / ',
-          state.n
+          this.state.n
         ),
         h(
           'div',
@@ -348,26 +425,188 @@ class Learn extends Component {
           h(
             'div',
             { 'class': 'counter' },
-            state.i,
+            this.state.i,
             ' / ',
-            state.n
+            this.state.n
           )
         )
       ),
-      item && this['render_' + tpl](item.learnable_id, correct),
-      recap && this.recap()
+      this.screen()
     );
   }
-  render_sentinel(id) {
-    var item = this.state.data.screens[id].multiple_choice,
-        nChoice = this.props.type == "speed_review" ? 4 : 9;
 
-    return h(Sentinel, { item: item, nChoice: nChoice, setChoices: this.setMultipleChoices });
+  screen() {
+    if (this.state.screen == "recap") {
+      return this.recap();
+    }
+    if (this.state.screen == "correction") {
+      return this.render_presentation(this.state.correct || true);
+    }
+
+    var item = this.state.data.boxes[this.state.i],
+        screen = this.state.data.screens[item.learnable_id];
+
+    if (item.learn_session_level) {
+      switch (item.learn_session_level) {
+        case 1:
+          return this.render_tpl({
+            template: "multiple_choice",
+            num_choices: 4
+          });
+
+        case 2:
+          if (screen.multiple_choice.video) {
+            return this.render_tpl({
+              template: "reversed_multiple_choice",
+              num_choices: 4,
+              promptWith: "video"
+            });
+          }
+          if (screen.audio_multiple_choice && Math.random() > .5) {
+            return this.render_tpl({
+              template: "audio-multiple-choice"
+            });
+          }
+          if (screen.tapping) {
+            return this.render_tpl({
+              template: "tapping",
+              difficulty: 0
+            });
+          }
+          return this.render_tpl({
+            template: "reversed_multiple_choice",
+            num_choices: 4
+          });
+
+        case 3:
+          if (screen.tapping) {
+            return this.render_tpl({
+              template: "tapping",
+              difficulty: .5
+            });
+          }
+          if (screen.typing) {
+            return this.render_tpl({
+              template: "typing"
+            });
+          }
+          return this.render_tpl({
+            template: "multiple_choice",
+            num_choices: 8
+          });
+
+        case 4:
+          if (screen.multiple_choice.video) {
+            return this.render_tpl({
+              template: "reversed_multiple_choice",
+              num_choices: 4,
+              promptWith: "video"
+            });
+          }
+          if (Math.random() > .5) {
+            var s = [];
+            if (screen.typing.audio) {
+              s.push({
+                template: "audio-typing"
+              });
+            }
+            if (screen.reversed_multiple_choice.audio) {
+              s.push({
+                template: "reversed_multiple_choice",
+                num_choices: 4,
+                promptWith: "audio"
+              });
+            }
+            if (s.length > 0) {
+              return this.render_tpl(s.random());
+            }
+          }
+          return this.reversed_tpl({
+            template: "reversed_multiple_choice",
+            num_choices: [4, 6].random()
+          });
+
+        case 5:
+          if (screen.taping) {
+            return this.render_tpl({
+              template: "tapping",
+              difficulty: .5
+            });
+          }
+          return this.render_tpl({
+            template: "multiple_choice",
+            num_choices: [6, 8].random()
+          });
+
+        default:
+          if (screen.typing) {
+            return this.render_tpl({
+              template: "typing"
+            });
+          }
+          return {
+            template: "multiple_choice",
+            num_choices: 8
+          };
+      }
+    }
+
+    if (item.template == "sentinel") {
+      if (screen.typing) {
+        return this.render_tpl({
+          template: "typing"
+        });
+      }
+      if (screen.audio_multiple_choice && Math.random() > .5) {
+        return this.render_tpl({
+          template: "audio-multiple-choice"
+        });
+      }
+      return this.render_tpl({
+        template: "multiple_choice",
+        num_choices: 8
+      });
+    }
+
+    return this.render_tpl({ template: item.template });
   }
-  render_presentation(id, correct) {
-    var item = this.state.data.screens[id].presentation;
+  render_tpl(setting) {
+    switch (setting.template) {
+      case "multiple_choice":
+        return this.render_multiple_choice(setting.num_choices);
+      case "typing":
+        return this.render_typing();
+      case "reversed_multiple_choice":
+      case "audio-multiple-choice":
+      case "tapping":
+      case "copytyping":
+      case "audio-typing":
+      case "reversed_multiple_choice_prompt_video":
+      case "video-pre-presentation":
+      case "presentation":
+        console.log('todo: ' + setting.template);
+        return this.render_presentation();
+      default:
+        console.error(setting.template + " doesn't exist");
+    }
+  }
+  get_screen(tpl) {
+    var id = this.state.data.boxes[this.state.i].learnable_id;
+    console.log(this.state.data, id);
+    return this.state.data.screens[id][tpl];
+  }
 
-    return h(Presentation, { item: item, correct: correct });
+  render_multiple_choice(nChoice) {
+    return h(MultipleChoice, {
+      item: this.get_screen("multiple_choice"),
+      nChoice: nChoice || (this.props.type == "speed_review" ? 4 : 9),
+      setChoices: this.setChoices });
+  }
+  render_typing() {
+    return h(Typing, { item: this.get_screen("typing"), setChoices: this.setChoices });
+  }
+  render_presentation(correct) {
+    return h(Presentation, { item: this.get_screen("presentation"), correct: correct });
   }
   recap() {
     var items = [];
@@ -405,9 +644,9 @@ const Value = function (props) {
           content
         );
       case "image":
-        return h('img', { src: content, 'class': 'text-image' });
+        return h('img', { key: Date.now(), src: content, 'class': 'text-image' });
       case "audio":
-        return h('audio', { src: content, 'class': 'audio-player ico ico-l ico-audio' });
+        return h('audio', { key: Date.now(), src: content, 'class': 'audio-player ico ico-l ico-audio' });
     }
   } else {
     switch (props.type) {
@@ -424,7 +663,7 @@ const Value = function (props) {
           h(
             'div',
             { 'class': 'media-list' },
-            content.map(media => h('img', { src: media, 'class': 'text-image' }))
+            content.map(media => h('img', { key: Date.now(), src: media, 'class': 'text-image' }))
           )
         );
       case "audio":
@@ -434,29 +673,50 @@ const Value = function (props) {
           h(
             'div',
             { 'class': 'media-list' },
-            content.map(media => h('audio', { src: media.normal, 'class': 'audio-player ico ico-l ico-audio' }))
+            content.map(media => h('audio', { key: Date.now(), src: media.normal, 'class': 'audio-player ico ico-l ico-audio' }))
           )
         );
     }
   }
 };
 
-const Presentation = function (props) {
-  var item = props.item,
-      correct = props.correct;
+const Correction = function (props) {
+  var data = props.data;
 
-  return h(
-    'div',
-    null,
-    correct && (typeof correct == "boolean" ? h(
+  if (data.score == 1) {
+    return h(
       'div',
       { 'class': 'alert alert-success' },
       window.i18n.correct_answer,
       '!'
-    ) : h(
+    );
+  } else if (data.score == 0) {
+    return h(
       'div',
       { 'class': 'alert alert-danger' },
       window.i18n.wrong_answer,
+      '!\xA0',
+      data.value ? h(
+        'span',
+        null,
+        window.i18n.your_answer_was,
+        ': ',
+        h(
+          'strong',
+          null,
+          h(Value, { content: data.value, type: data.kind, single: '1' })
+        )
+      ) : h(
+        'span',
+        null,
+        window.i18n.your_answer_was_empty
+      )
+    );
+  } else {
+    return h(
+      'div',
+      { 'class': 'alert alert-warning' },
+      window.i18n.near_answer,
       '!\xA0',
       h(
         'span',
@@ -466,10 +726,26 @@ const Presentation = function (props) {
         h(
           'strong',
           null,
-          h(Value, { content: correct.value, type: correct.kind, single: '1' })
+          data.kind == "text" ? h(
+            'span',
+            null,
+            data.value,
+            ' ',
+            h('small', { 'class': 'correction', dangerouslySetInnerHTML: { __html: "(" + diff(data.value, data.ref) + ")" } })
+          ) : h(Value, { content: data.value, type: data.kind, single: '1' })
         )
       )
-    )),
+    );
+  }
+};
+
+const Presentation = function (props) {
+  var item = props.item,
+      correct = props.correct;
+  return h(
+    'div',
+    null,
+    correct && h(Correction, { data: correct }),
     h(
       'table',
       { 'class': "learn nicebox big thing" + (correct ? "" : " autoplay") },
@@ -580,12 +856,17 @@ const Presentation = function (props) {
   );
 };
 
-const Sentinel = function (props) {
-  var item = props.item,
-      itemType = "text",
-      answerType = item.answer.kind;
+function get_prompt_type(item) {
+  if (item.prompt.image) return "image";
+  if (item.prompt.audio) return "audio";
+  if (item.prompt.video) return "video";
+  return "text";
+}
 
-  if (item.prompt.img) itemType = "image";else if (item.prompt.audio) itemType = "audio";else if (item.prompt.video) itemType = "video";
+const MultipleChoice = function (props) {
+  var item = props.item,
+      itemType = get_prompt_type(item),
+      answerType = item.answer.kind;
 
   // Randomize choices order
   var n = item.choices.length,
@@ -625,7 +906,7 @@ const Sentinel = function (props) {
   var choices = choicesRnd.map((value, i) => {
     return h(ChoiceBox, { key: i, i: i + 1, value: value, answerType: answerType, isValid: rightAnswers.includes(value) });
   });
-  props.setChoices(choices);
+  props.setChoices(choices, "numeric");
 
   return h(
     'div',
@@ -658,6 +939,41 @@ class ChoiceBox extends Component {
     );
   }
 }
+
+const Typing = function (props) {
+  var item = props.item,
+      itemType = get_prompt_type(item);
+
+  props.setChoices(item.correct, "text", item.is_strict);
+
+  return h(
+    'div',
+    { 'class': 'nicebox' },
+    h(
+      'div',
+      { 'class': 'big choice autoplay' },
+      h(Value, { content: item.prompt[itemType].value, type: itemType })
+    ),
+    h(
+      'div',
+      { 'class': 'typing-container' },
+      h(
+        'div',
+        { 'class': 'typing' },
+        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '' }),
+        h(
+          'div',
+          { 'class': 'keyboard' },
+          item.choices.map(letter => h(
+            'button',
+            null,
+            letter
+          ))
+        )
+      )
+    )
+  );
+};
 
 const Recap = function (props) {
   var items = props.items,
@@ -705,4 +1021,223 @@ const Recap = function (props) {
     })
   );
 };
+
+//+--------------------------------------------------------
+//| SCORING SYSTEM
+//+--------------------------------------------------------
+
+function get_score(response, answer) {
+  var FIRST_LETTER_WEIGHT = .1,
+      DISTANCE_WEIGHT = .9;
+
+  var both_are_numeric = function () {
+    return $.isNumeric(parseInt(response, 10)) && $.isNumeric(parseInt(answer, 10));
+  },
+      get_tolerance = function () {
+    var t = answer.length > 18 ? .5 : answer.length < 3 ? 1 : -1 * answer.length / 33 + 1.1;
+    return t, answer.length * t;
+  },
+      get_numeric_score = function () {
+    return parseInt(response, 10) === parseInt(answer, 10) ? 1 : 0;
+  },
+      get_string_score = function () {
+    var tolerance = get_tolerance(),
+        n = distance(response, answer);
+    if (n >= tolerance) return 0;
+
+    var r = answer.charAt(0) === response.charAt(0) ? 1 : 0,
+        i = (tolerance - n) / tolerance,
+        s = FIRST_LETTER_WEIGHT * r + DISTANCE_WEIGHT * i;
+
+    return s < .5 && (s = 0), s;
+  };
+  return both_are_numeric() ? get_numeric_score() : get_string_score();
+}
+
+function distance(a, b) {
+  var calculate_distance_matrix = function () {
+    var get_item_at;
+
+    if ($.isArray(a)) {
+      get_item_at = function (arr, i) {
+        return arr[i];
+      };
+    } else {
+      get_item_at = function (arr, i) {
+        return arr.charAt(i);
+      };
+    }
+
+    // Create matrix
+    var matrix = [];
+    for (var i = 0; i <= a.length; i += 1) matrix[i] = [], matrix[i][0] = i;
+    for (var j = 0; j <= b.length; j += 1) matrix[0][j] = j;
+
+    // Calculate distance
+    for (var i = 1; i <= a.length; i += 1) {
+      for (var j = 1; j <= b.length; j += 1) {
+        matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + (get_item_at(a, i - 1) === get_item_at(b, j - 1) ? 0 : 1));
+      }
+    }
+    return matrix;
+  };
+
+  var matrix = calculate_distance_matrix();
+  return matrix[a.length][b.length];
+}
+
+// https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
+var RegexUnicode = {
+  'C': '\0-\x1F\x7F-\x9F\xAD\u0378\u0379\u0380-\u0383\u038B\u038D\u03A2\u0530\u0557\u0558\u0560\u0588\u058B\u058C\u0590\u05C8-\u05CF\u05EB-\u05EF\u05F5-\u0605\u061C\u061D\u06DD\u070E\u070F\u074B\u074C\u07B2-\u07BF\u07FB-\u07FF\u082E\u082F\u083F\u085C\u085D\u085F-\u089F\u08B5-\u08E2\u0984\u098D\u098E\u0991\u0992\u09A9\u09B1\u09B3-\u09B5\u09BA\u09BB\u09C5\u09C6\u09C9\u09CA\u09CF-\u09D6\u09D8-\u09DB\u09DE\u09E4\u09E5\u09FC-\u0A00\u0A04\u0A0B-\u0A0E\u0A11\u0A12\u0A29\u0A31\u0A34\u0A37\u0A3A\u0A3B\u0A3D\u0A43-\u0A46\u0A49\u0A4A\u0A4E-\u0A50\u0A52-\u0A58\u0A5D\u0A5F-\u0A65\u0A76-\u0A80\u0A84\u0A8E\u0A92\u0AA9\u0AB1\u0AB4\u0ABA\u0ABB\u0AC6\u0ACA\u0ACE\u0ACF\u0AD1-\u0ADF\u0AE4\u0AE5\u0AF2-\u0AF8\u0AFA-\u0B00\u0B04\u0B0D\u0B0E\u0B11\u0B12\u0B29\u0B31\u0B34\u0B3A\u0B3B\u0B45\u0B46\u0B49\u0B4A\u0B4E-\u0B55\u0B58-\u0B5B\u0B5E\u0B64\u0B65\u0B78-\u0B81\u0B84\u0B8B-\u0B8D\u0B91\u0B96-\u0B98\u0B9B\u0B9D\u0BA0-\u0BA2\u0BA5-\u0BA7\u0BAB-\u0BAD\u0BBA-\u0BBD\u0BC3-\u0BC5\u0BC9\u0BCE\u0BCF\u0BD1-\u0BD6\u0BD8-\u0BE5\u0BFB-\u0BFF\u0C04\u0C0D\u0C11\u0C29\u0C3A-\u0C3C\u0C45\u0C49\u0C4E-\u0C54\u0C57\u0C5B-\u0C5F\u0C64\u0C65\u0C70-\u0C77\u0C80\u0C84\u0C8D\u0C91\u0CA9\u0CB4\u0CBA\u0CBB\u0CC5\u0CC9\u0CCE-\u0CD4\u0CD7-\u0CDD\u0CDF\u0CE4\u0CE5\u0CF0\u0CF3-\u0D00\u0D04\u0D0D\u0D11\u0D3B\u0D3C\u0D45\u0D49\u0D4F-\u0D56\u0D58-\u0D5E\u0D64\u0D65\u0D76-\u0D78\u0D80\u0D81\u0D84\u0D97-\u0D99\u0DB2\u0DBC\u0DBE\u0DBF\u0DC7-\u0DC9\u0DCB-\u0DCE\u0DD5\u0DD7\u0DE0-\u0DE5\u0DF0\u0DF1\u0DF5-\u0E00\u0E3B-\u0E3E\u0E5C-\u0E80\u0E83\u0E85\u0E86\u0E89\u0E8B\u0E8C\u0E8E-\u0E93\u0E98\u0EA0\u0EA4\u0EA6\u0EA8\u0EA9\u0EAC\u0EBA\u0EBE\u0EBF\u0EC5\u0EC7\u0ECE\u0ECF\u0EDA\u0EDB\u0EE0-\u0EFF\u0F48\u0F6D-\u0F70\u0F98\u0FBD\u0FCD\u0FDB-\u0FFF\u10C6\u10C8-\u10CC\u10CE\u10CF\u1249\u124E\u124F\u1257\u1259\u125E\u125F\u1289\u128E\u128F\u12B1\u12B6\u12B7\u12BF\u12C1\u12C6\u12C7\u12D7\u1311\u1316\u1317\u135B\u135C\u137D-\u137F\u139A-\u139F\u13F6\u13F7\u13FE\u13FF\u169D-\u169F\u16F9-\u16FF\u170D\u1715-\u171F\u1737-\u173F\u1754-\u175F\u176D\u1771\u1774-\u177F\u17DE\u17DF\u17EA-\u17EF\u17FA-\u17FF\u180E\u180F\u181A-\u181F\u1878-\u187F\u18AB-\u18AF\u18F6-\u18FF\u191F\u192C-\u192F\u193C-\u193F\u1941-\u1943\u196E\u196F\u1975-\u197F\u19AC-\u19AF\u19CA-\u19CF\u19DB-\u19DD\u1A1C\u1A1D\u1A5F\u1A7D\u1A7E\u1A8A-\u1A8F\u1A9A-\u1A9F\u1AAE\u1AAF\u1ABF-\u1AFF\u1B4C-\u1B4F\u1B7D-\u1B7F\u1BF4-\u1BFB\u1C38-\u1C3A\u1C4A-\u1C4C\u1C80-\u1CBF\u1CC8-\u1CCF\u1CF7\u1CFA-\u1CFF\u1DF6-\u1DFB\u1F16\u1F17\u1F1E\u1F1F\u1F46\u1F47\u1F4E\u1F4F\u1F58\u1F5A\u1F5C\u1F5E\u1F7E\u1F7F\u1FB5\u1FC5\u1FD4\u1FD5\u1FDC\u1FF0\u1FF1\u1FF5\u1FFF\u200B-\u200F\u202A-\u202E\u2060-\u206F\u2072\u2073\u208F\u209D-\u209F\u20BF-\u20CF\u20F1-\u20FF\u218C-\u218F\u23FB-\u23FF\u2427-\u243F\u244B-\u245F\u2B74\u2B75\u2B96\u2B97\u2BBA-\u2BBC\u2BC9\u2BD2-\u2BEB\u2BF0-\u2BFF\u2C2F\u2C5F\u2CF4-\u2CF8\u2D26\u2D28-\u2D2C\u2D2E\u2D2F\u2D68-\u2D6E\u2D71-\u2D7E\u2D97-\u2D9F\u2DA7\u2DAF\u2DB7\u2DBF\u2DC7\u2DCF\u2DD7\u2DDF\u2E43-\u2E7F\u2E9A\u2EF4-\u2EFF\u2FD6-\u2FEF\u2FFC-\u2FFF\u3040\u3097\u3098\u3100-\u3104\u312E-\u3130\u318F\u31BB-\u31BF\u31E4-\u31EF\u321F\u32FF\u4DB6-\u4DBF\u9FD6-\u9FFF\uA48D-\uA48F\uA4C7-\uA4CF\uA62C-\uA63F\uA6F8-\uA6FF\uA7AE\uA7AF\uA7B8-\uA7F6\uA82C-\uA82F\uA83A-\uA83F\uA878-\uA87F\uA8C5-\uA8CD\uA8DA-\uA8DF\uA8FE\uA8FF\uA954-\uA95E\uA97D-\uA97F\uA9CE\uA9DA-\uA9DD\uA9FF\uAA37-\uAA3F\uAA4E\uAA4F\uAA5A\uAA5B\uAAC3-\uAADA\uAAF7-\uAB00\uAB07\uAB08\uAB0F\uAB10\uAB17-\uAB1F\uAB27\uAB2F\uAB66-\uAB6F\uABEE\uABEF\uABFA-\uABFF\uD7A4-\uD7AF\uD7C7-\uD7CA\uD7FC-\uF8FF\uFA6E\uFA6F\uFADA-\uFAFF\uFB07-\uFB12\uFB18-\uFB1C\uFB37\uFB3D\uFB3F\uFB42\uFB45\uFBC2-\uFBD2\uFD40-\uFD4F\uFD90\uFD91\uFDC8-\uFDEF\uFDFE\uFDFF\uFE1A-\uFE1F\uFE53\uFE67\uFE6C-\uFE6F\uFE75\uFEFD-\uFF00\uFFBF-\uFFC1\uFFC8\uFFC9\uFFD0\uFFD1\uFFD8\uFFD9\uFFDD-\uFFDF\uFFE7\uFFEF-\uFFFB\uFFFE\uFFFF',
+  'P': '\x21-\x23\x25-\\x2A\x2C-\x2F\x3A\x3B\\x3F\x40\\x5B-\\x5D\x5F\\x7B\x7D\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E42\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65',
+  'S': '\\x24\\x2B\x3C-\x3E\\x5E\x60\\x7C\x7E\xA2-\xA6\xA8\xA9\xAC\xAE-\xB1\xB4\xB8\xD7\xF7\u02C2-\u02C5\u02D2-\u02DF\u02E5-\u02EB\u02ED\u02EF-\u02FF\u0375\u0384\u0385\u03F6\u0482\u058D-\u058F\u0606-\u0608\u060B\u060E\u060F\u06DE\u06E9\u06FD\u06FE\u07F6\u09F2\u09F3\u09FA\u09FB\u0AF1\u0B70\u0BF3-\u0BFA\u0C7F\u0D79\u0E3F\u0F01-\u0F03\u0F13\u0F15-\u0F17\u0F1A-\u0F1F\u0F34\u0F36\u0F38\u0FBE-\u0FC5\u0FC7-\u0FCC\u0FCE\u0FCF\u0FD5-\u0FD8\u109E\u109F\u1390-\u1399\u17DB\u1940\u19DE-\u19FF\u1B61-\u1B6A\u1B74-\u1B7C\u1FBD\u1FBF-\u1FC1\u1FCD-\u1FCF\u1FDD-\u1FDF\u1FED-\u1FEF\u1FFD\u1FFE\u2044\u2052\u207A-\u207C\u208A-\u208C\u20A0-\u20BE\u2100\u2101\u2103-\u2106\u2108\u2109\u2114\u2116-\u2118\u211E-\u2123\u2125\u2127\u2129\u212E\u213A\u213B\u2140-\u2144\u214A-\u214D\u214F\u218A\u218B\u2190-\u2307\u230C-\u2328\u232B-\u23FA\u2400-\u2426\u2440-\u244A\u249C-\u24E9\u2500-\u2767\u2794-\u27C4\u27C7-\u27E5\u27F0-\u2982\u2999-\u29D7\u29DC-\u29FB\u29FE-\u2B73\u2B76-\u2B95\u2B98-\u2BB9\u2BBD-\u2BC8\u2BCA-\u2BD1\u2BEC-\u2BEF\u2CE5-\u2CEA\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3004\u3012\u3013\u3020\u3036\u3037\u303E\u303F\u309B\u309C\u3190\u3191\u3196-\u319F\u31C0-\u31E3\u3200-\u321E\u322A-\u3247\u3250\u3260-\u327F\u328A-\u32B0\u32C0-\u32FE\u3300-\u33FF\u4DC0-\u4DFF\uA490-\uA4C6\uA700-\uA716\uA720\uA721\uA789\uA78A\uA828-\uA82B\uA836-\uA839\uAA77-\uAA79\uAB5B\uFB29\uFBB2-\uFBC1\uFDFC\uFDFD\uFE62\uFE64-\uFE66\uFE69\uFF04\uFF0B\uFF1C-\uFF1E\uFF3E\uFF40\uFF5C\uFF5E\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD'
+};
+
+function sanitizeTyping(text, strict) {
+  text = text.trim().replace(/\s+/g, " ").replace(new RegExp(RegexUnicode.C, "g"), ""); // control chars
+
+  // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
+  if (!strict) {
+    text = text.replace(/\(.*?\)/g, "").replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', "g"), "") // punctuation, symbol
+    .replace(/[-Ù‹Ù›]+/g, "");
+  }
+  return text;
+}
+
+function calculate_points_learn(score) {
+  return 1 === score ? 45 : 0 === score ? 0 : Math.max(10, Math.round(45 * score) - 20);
+}
+function calculate_points_speed(time_spent) {
+  var t = Math.floor(time_spent / 1e3);
+  return t >= 6 ? Math.min(15, 25) : Math.min(15 + 7 * (6 - t), 25);
+}
+function calculate_points_review(points, current_streak) {
+  points *= Math.pow(1.2, current_streak);
+  points = Math.min(points, 150);
+  return Math.ceil(points);
+}
+
+//+--------------------------------------------------------
+//| HIGHLIGHT TEXT DIFF
+//+--------------------------------------------------------
+
+// https://codereview.stackexchange.com/questions/133586/a-string-prototype-diff-implementation-text-diff
+// https://codereview.stackexchange.com/questions/133586/a-string-prototype-diff-implementation-text-diff
+var diff = function () {
+
+  function rotate(arr, n) {
+    var len = arr.length;
+    if (n % len === 0) {
+      return arr.slice();
+    }
+    var res = new Array(arr.length);
+    for (var i = 0; i < len; i++) {
+      res[i] = arr[(i + (len + n % len)) % len];
+    }
+    return res;
+  };
+
+  // returns the first matching substring in-between the two strings
+  function getMatchingSubstring(s, l, m) {
+    var i = -1,
+        n = s.length,
+        match = false,
+        cd = { fis: n, mtc: m, sbs: "" }; // temporary object used to construct the cd (change data) object
+
+    while (++i < n) {
+      if (l[i] === s[i]) {
+        if (match) {
+          cd.sbs += s[i]; // o.sbs holds the matching substring itsef
+        } else {
+          match = true;
+          cd.fis = i;
+          cd.sbs = s[i];
+        }
+      } else if (match) {
+        break; // stop after the first found substring
+      }
+    }
+    return cd;
+  }
+
+  function getChanges(t, s, m, p) {
+    var isThisLonger, longer, shorter;
+
+    // assignment of longer and shorter
+    if (t.length >= s.length) {
+      isThisLonger = true;
+      longer = t;
+      shorter = s;
+    } else {
+      isThisLonger = false;
+      longer = s;
+      shorter = t;
+    }
+
+    // get the index of first mismatching character in both strings
+    var base_index = 0;
+    while (shorter[base_index] === longer[base_index] && base_index < shorter.length) {
+      base_index++;
+    }
+
+    // convert longer to array to be able to rotate it
+    // shorter and longer now starts from the first mismatching character
+    longer = longer.split("").slice(base_index);
+    shorter = shorter.slice(base_index);
+
+    var len = longer.length,
+        // length of the longer string
+    cd = { fis: shorter.length, // the index of matching string in the shorter string
+      fil: len, // the index of matching string in the longer string
+      sbs: "", // the matching substring itself
+      mtc: m + s.slice(0, base_index) },
+        // if exists mtc holds the matching string at the front
+    sub = { sbs: "" }; // returned substring per 1 character rotation of the longer string
+
+    if (shorter !== "") {
+      for (var rc = 0; rc < len && sub.sbs.length < p; rc++) {
+        // rc -> rotate count, p -> precision factor
+        sub = getMatchingSubstring(shorter, rotate(longer, rc), cd.mtc); // rotate longer string 1 char and get substring
+        sub.fil = rc < len - sub.fis ? sub.fis + rc // mismatch is longer than the mismatch in short
+        : sub.fis - len + rc; // mismatch is shorter than the mismatch in short
+        sub.sbs.length > cd.sbs.length && (cd = sub); // only keep the one with the longest substring.
+      }
+    }
+
+    // insert the mismatching delete subsrt and insert substr to the cd object and attach the previous substring
+    if (isThisLonger) {
+      cd.del = longer.slice(0, cd.fil).join("");
+      cd.ins = shorter.slice(0, cd.fis);
+    } else {
+      cd.del = shorter.slice(0, cd.fis);
+      cd.ins = longer.slice(0, cd.fil).join("");
+    }
+
+    if (cd.del.indexOf(" ") == -1 || cd.ins.indexOf(" ") == -1) return cd;
+    if (cd.del === "" || cd.ins === "" || cd.sbs === "") return cd;
+    return getChanges(cd.del, cd.ins, cd.mtc, p);
+  }
+
+  function diff(txt1, txt2, p) {
+    p = p || 2; // p -> precision factor
+
+    var cd = getChanges(txt1, txt2, "", p),
+        nextTxt2 = txt2.slice(cd.mtc.length + cd.ins.length + cd.sbs.length),
+        // remaining part of "txt2"
+    nextTxt1 = txt1.slice(cd.mtc.length + cd.del.length + cd.sbs.length),
+        // remaining part of "txt1"
+    result = ""; // the glorious result
+
+    cd.del.length > 0 && (cd.del = '<span class = "deleted">' + cd.del + '</span>');
+    cd.ins.length > 0 && (cd.ins = '<span class = "inserted">' + cd.ins + '</span>');
+    result = cd.mtc + cd.del + cd.ins + cd.sbs;
+
+    if (nextTxt1 !== "" || nextTxt2 !== "") {
+      result += diff(nextTxt1, nextTxt2, p);
+    }
+    return result;
+  };
+
+  return diff;
+}();
 //# sourceMappingURL=learn.js.map
