@@ -2,13 +2,14 @@ $def with(course, type, lvl, thing)
 $var title: $(LANG.misc[type]) ~ $(course['title'])
 $var js: /static/js/markdown.min.js, //cdnjs.cloudflare.com/ajax/libs/preact/8.2.7/preact.min.js, /static/js/learn.js
 $var header: 1
+$var footer: 1
 
 $ url = course['url'] + str(lvl) if lvl else course['url']
 
 <header class="white">
   <div class="inner">
     <p class="course-title">
-      <a href="$url"><span class="ico ico-arr-left"></span></a>
+      <a href="$url" tabindex="-1"><span class="ico ico-arr-left"></span></a>
       $(course['title'])
       <span id="level-title"></span>
     </p>

@@ -46,30 +46,33 @@ $else:
     $else:
       $:tpl
 
-    <footer class="clearfix">
+    $if "footer" in tpl:
+      <!-- -->
+    $else:
+      <footer class="clearfix">
 
-      <!-- Link to Github -->
-      $if env['GITHUB_REPO']:
-        <a class="github" href="$(env['GITHUB_REPO'])" title="Fork me on Github">
-          <img src="https://cdn.rawgit.com/a-mt/4eee1459b499f6970e667f39c12b9e63/raw/146f66fcf3794a0fcd5a7a810341124825246fa1/Octicons-mark-github.svg" alt="Fork me on Github" height="30">
-        </a>
+        <!-- Link to Github -->
+        $if env['GITHUB_REPO']:
+          <a class="github" href="$(env['GITHUB_REPO'])" title="Fork me on Github">
+            <img src="https://cdn.rawgit.com/a-mt/4eee1459b499f6970e667f39c12b9e63/raw/146f66fcf3794a0fcd5a7a810341124825246fa1/Octicons-mark-github.svg" alt="Fork me on Github" height="30">
+          </a>
 
-      <!-- About -->
-      <a href="/about" title="$(LANG.menu['about'])"><span class="ico ico-l ico-question"></span></a>
+        <!-- About -->
+        <a href="/about" title="$(LANG.menu['about'])"><span class="ico ico-l ico-question"></span></a>
 
-      <!-- Choose lang -->
-      <ul class="header-nav">
-        <li class="header-nav-item lang">
-          <ul id="choose-lang">
-          $for lang in locales:
-            <li class="$('active' if lang['slug'] == session.lang else None)">
-              <a href="/lang/$(lang['slug'])"><img src="$(lang['photo'])" title="$(lang['name'])" height="20"></a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+        <!-- Choose lang -->
+        <ul class="header-nav">
+          <li class="header-nav-item lang">
+            <ul id="choose-lang">
+            $for lang in locales:
+              <li class="$('active' if lang['slug'] == session.lang else None)">
+                <a href="/lang/$(lang['slug'])"><img src="$(lang['photo'])" title="$(lang['name'])" height="20"></a>
+              </li>
+            </ul>
+          </li>
+        </ul>
 
-    </footer>
+      </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
@@ -88,7 +91,8 @@ $else:
         empty_dashboard: "$:(LANG.misc['empty_dashboard'])",
         browse_courses: "$:(LANG.misc['browse_courses'])",
         _403: "$:(LANG.misc['403'])",
-        login: "$:(LANG.menu['login'])"
+        login: "$:(LANG.menu['login'])",
+        next: "$:(LANG.misc['next'])",
      };
     </script>
     <script src="/static/js/app.js"></script>

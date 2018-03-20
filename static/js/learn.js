@@ -72,18 +72,44 @@ class Learn extends Component {
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
 
+    // Submit
+    $('main').on('click', '.submit', function (e) {
+      this.handle_submit(e);
+    }.bind(this));
+
     // Typing
-    $('main').on('click', '.typing button', function () {
+    $('main').on('click', '.typing .button', function () {
       this.parentNode.previousElementSibling.value += this.innerHTML;
     });
 
+    // Tapping
+    $('main').on('click', '.tapping .button', function () {
+      var parent = this.parentNode;
+
+      if (parent.className == "keyboard") {
+        parent.previousElementSibling.innerHTML += '<button class="button" data-id="' + this.getAttribute('id') + '">' + this.innerHTML + '</button>';
+        this.classList.add('disabled');
+      } else {
+        var id = this.getAttribute('data-id');
+        document.getElementById(id).classList.remove('disabled');
+        parent.removeChild(this);
+      }
+    });
+
+    // Multiple choice
+    $('main').on('click', '.choice-box', function (e) {
+      this.multiple_choice(e.currentTarget.getAttribute('accesskey'));
+    }.bind(this));
+
+    $('main').on('mouseover focus', '.choice-box.audio', function (e) {
+      window.audioPlayer && window.audioPlayer.play.call(this.lastElementChild, e, true);
+    }).on('mouseleave', '.choice-box.audio', function () {
+      window.audioPlayer && window.audioPlayer.pause.call(this.lastElementChild);
+    });
+
+    // Retrieve data
     this.getData(this.state.level, function () {
       window.onbeforeunload = this.warnbeforeunload.bind(this);
-
-      // User clicks on a multiple choice answer
-      $('main').on('click', '.choice-box', function (e) {
-        this.multiple_choice(e.currentTarget.getAttribute('accesskey'));
-      }.bind(this));
 
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
@@ -107,6 +133,15 @@ class Learn extends Component {
     if (!prevState.data || prevState.level != this.state.level) {
       document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
     }
+
+    // Debug screen
+    $('#debug-screen').on('click', 'li', function (e) {
+      if (e.target.classList.contains("disabled")) return;
+
+      this.setState({
+        debug_screen: e.target.innerHTML == "default" ? false : e.target.innerHTML
+      });
+    }.bind(this));
   }
 
   // Retrieve the current level datas
@@ -150,7 +185,7 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if (this.state.recap || this.state.error) return;
+    if (this.state.screen == "recap" || this.state.error) return;
     var msg = 'Your changes will be lost.';
 
     e = e || window.event;
@@ -167,15 +202,11 @@ class Learn extends Component {
 
     // Press enter
     if (key == 13) {
-
-      // Presentation
-      if (!this.expectChoice) {
-        this.getNext();
-
-        // Tyoing
-      } else if (this.expectChoice == "text") {
-        this.choice(e.target.value || "");
+      if (e.target.classList.contains("button") || e.target.classList.contains("choice-box")) {
+        e.target.click();
+        return;
       }
+      this.handle_submit(e);
 
       // Multiplice choice: press a number
     } else if (this.expectChoice == "numeric" && key >= 96 && key <= 105) {
@@ -184,6 +215,26 @@ class Learn extends Component {
       if (char <= this.choices.length) {
         this.multiple_choice(char);
       }
+    }
+  }
+
+  handle_submit(e) {
+
+    // Presentation
+    if (!this.expectChoice) {
+      this.getNext();
+
+      // Typing
+    } else if (this.expectChoice == "text") {
+      this.choice($('.typing input').val() || "");
+
+      // Tapping
+    } else if (this.expectChoice == "tapping") {
+      var chosen = [];
+      $('.tapping .input button').each(function () {
+        chosen.push(this.innerHTML);
+      });
+      this.tapping_choice(chosen);
     }
   }
 
@@ -223,12 +274,30 @@ class Learn extends Component {
         refText = this.choices[i];
       }
     }
-    console.log(score, refText, testText);
 
     this.choice_feedback({
       value: testText,
       ref: refText,
       score: score,
+      kind: "text"
+    });
+  }
+
+  // Tapping: User order words
+  tapping_choice(entry) {
+    var isValid = 0;
+    entry = entry.join(" ");
+
+    for (var i = 0; i < this.choices.length; i++) {
+      if (entry == this.choices[i].join(" ")) {
+        isValid = 1;
+        break;
+      }
+    }
+
+    this.choice_feedback({
+      value: entry,
+      score: isValid ? 1 : 0,
       kind: "text"
     });
   }
@@ -267,7 +336,6 @@ class Learn extends Component {
         //points = calculate_points_speed(t);
         break;
     }
-    console.log(this.props.type, data.score, points);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap),
@@ -307,7 +375,8 @@ class Learn extends Component {
       this.setState({
         recap: recap,
         screen: "correction",
-        correct: data
+        correct: data,
+        debug_screen: false
       });
       this.expectChoice = false;
       this.choices = false;
@@ -334,11 +403,6 @@ class Learn extends Component {
           this.getData(this.levels[this.levels.indexOf(this.state.level) + 1]);
         }
       } else {
-        if (this.props.usesession) {
-          $.ajax({
-            url: "/ajax/sync/" + window.course.id
-          });
-        }
         window.location.href = window.$_URL.urlFrom;
       }
 
@@ -363,11 +427,11 @@ class Learn extends Component {
     this.is_strict = is_strict || 1;
   }
 
-  render(props, state) {
+  render() {
 
     // Something went wrong
-    if (state.error) {
-      if (state.error == 403) {
+    if (this.state.error) {
+      if (this.state.error == 403) {
         return h(
           'p',
           null,
@@ -395,7 +459,7 @@ class Learn extends Component {
 
     // Preview thing
     if (this.props.thing) {
-      return this.render_presentation(this.props.thing);
+      return this.render_presentation(false, this.props.thing);
     }
 
     // Media level
@@ -431,11 +495,107 @@ class Learn extends Component {
           )
         )
       ),
-      this.screen()
+      this.screen(),
+      h(
+        'span',
+        { 'class': 'btn submit', tabindex: '0' },
+        window.i18n.next
+      )
+    );
+  }
+
+  addBoxDebugMenu() {
+    var item = this.state.data.boxes[this.state.i],
+        screen = this.state.data.screens[item.learnable_id],
+        current = this.state.debug_screen;
+
+    return h(
+      'ul',
+      { id: 'debug-screen' },
+      h(
+        'li',
+        { 'class': current ? "" : "active" },
+        'default'
+      ),
+      h(
+        'li',
+        { 'class': ("multiple_choice" in screen && screen.multiple_choice ? "" : "disabled") + (current == "multiple_choice" ? " active" : "") },
+        'multiple_choice'
+      ),
+      h(
+        'li',
+        { 'class': ("typing" in screen && screen.typing ? "" : "disabled") + (current == "typing" ? " active" : "") },
+        'typing'
+      ),
+      h(
+        'li',
+        { 'class': ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice ? "" : "disabled") + (current == "reversed_multiple_choice" ? " active" : "") },
+        'reversed_multiple_choice'
+      ),
+      h(
+        'li',
+        { 'class': ("audio_multiple_choice" in screen && screen.audio_multiple_choice ? "" : "disabled") + (current == "audio_multiple_choice" ? " active" : "") },
+        'audio_multiple_choice'
+      ),
+      h(
+        'li',
+        { 'class': ("tapping" in screen && screen.tapping ? "" : "disabled") + (current == "tapping" ? " active" : "") },
+        'tapping'
+      ),
+      h(
+        'li',
+        { 'class': ("typing" in screen && screen.typing ? "" : "disabled") + (current == "copytyping" ? " active" : "") },
+        'copytyping'
+      ),
+      h(
+        'li',
+        { 'class': ("typing" in screen && screen.typing.audio ? "" : "disabled") + (current == "audio_typing" ? " active" : "") },
+        'audio_typing'
+      ),
+      h(
+        'li',
+        { 'class': ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice.prompt.video ? "" : "disabled") + (current == "reversed_multiple_choice_prompt_video" ? " active" : "") },
+        'reversed_multiple_choice_prompt_video'
+      ),
+      h(
+        'li',
+        { 'class': ("multiple_choice" in screen && screen.multiple_choice.prompt.video ? "" : "disabled") + (current == "video-pre-presentation" ? " active" : "") },
+        'video-pre-presentation'
+      ),
+      h(
+        'li',
+        { 'class': (screen.presentation ? "" : "disabled") + (current == "presentation" ? " active" : "") },
+        'presentation'
+      )
     );
   }
 
   screen() {
+    if (this.state.debug_screen) {
+      switch (this.state.debug_screen) {
+        case "multiple_choice":
+          return this.render_tpl({ template: "multiple_choice" });
+        case "typing":
+          return this.render_tpl({ template: "typing" });
+        case "reversed_multiple_choice":
+          return this.render_tpl({ template: "reversed_multiple_choice" });
+        case "audio_multiple_choice":
+          return this.render_tpl({ template: "audio_multiple_choice" });
+        case "tapping":
+          return this.render_tpl({ template: "tapping" });
+        case "copytyping":
+          return this.render_tpl({ template: "copytyping" });
+        case "audio_typing":
+          return this.render_tpl({ template: "typing", promptWith: "audio" });
+        case "reversed_multiple_choice_prompt_video":
+          return this.render_tpl({ template: "reversed_multiple_choice", promptWith: "video" });
+        case "video-pre-presentation":
+          return this.render_tpl({ template: "multiple_choice", promptWith: "video" });
+        case "presentation":
+          return this.render_tpl({ template: "presentation" });
+      }
+    }
+
     if (this.state.screen == "recap") {
       return this.recap();
     }
@@ -464,7 +624,7 @@ class Learn extends Component {
           }
           if (screen.audio_multiple_choice && Math.random() > .5) {
             return this.render_tpl({
-              template: "audio-multiple-choice"
+              template: "audio_multiple_choice"
             });
           }
           if (screen.tapping) {
@@ -507,7 +667,8 @@ class Learn extends Component {
             var s = [];
             if (screen.typing.audio) {
               s.push({
-                template: "audio-typing"
+                template: "typing",
+                promptWith: "audio"
               });
             }
             if (screen.reversed_multiple_choice.audio) {
@@ -559,7 +720,7 @@ class Learn extends Component {
       }
       if (screen.audio_multiple_choice && Math.random() > .5) {
         return this.render_tpl({
-          template: "audio-multiple-choice"
+          template: "audio_multiple_choice"
         });
       }
       return this.render_tpl({
@@ -573,40 +734,60 @@ class Learn extends Component {
   render_tpl(setting) {
     switch (setting.template) {
       case "multiple_choice":
-        return this.render_multiple_choice(setting.num_choices);
+        return this.render_multiple_choice(setting);
       case "typing":
-        return this.render_typing();
+        return this.render_typing(setting);
       case "reversed_multiple_choice":
-      case "audio-multiple-choice":
+        return this.render_reversed_multiple_choice(setting);
+      case "audio_multiple_choice":
+        return this.render_audio_multiple_choice(setting);
       case "tapping":
+        return this.render_tapping(setting);
       case "copytyping":
-      case "audio-typing":
-      case "reversed_multiple_choice_prompt_video":
-      case "video-pre-presentation":
+        return this.render_copytyping(setting);
       case "presentation":
-        console.log('todo: ' + setting.template);
         return this.render_presentation();
       default:
         console.error(setting.template + " doesn't exist");
     }
   }
-  get_screen(tpl) {
-    var id = this.state.data.boxes[this.state.i].learnable_id;
-    console.log(this.state.data, id);
+  get_screen(tpl, id) {
+    id = id || this.state.data.boxes[this.state.i].learnable_id;
     return this.state.data.screens[id][tpl];
   }
 
-  render_multiple_choice(nChoice) {
+  render_audio_multiple_choice(setting) {
     return h(MultipleChoice, {
-      item: this.get_screen("multiple_choice"),
-      nChoice: nChoice || (this.props.type == "speed_review" ? 4 : 9),
+      item: this.get_screen("audio_multiple_choice"),
+      nChoice: setting.nChoice || 4,
+      promptWith: setting.promptWith,
       setChoices: this.setChoices });
   }
-  render_typing() {
-    return h(Typing, { item: this.get_screen("typing"), setChoices: this.setChoices });
+  render_reversed_multiple_choice(setting) {
+    return h(MultipleChoice, {
+      item: this.get_screen("reversed_multiple_choice"),
+      nChoice: setting.nChoice || 4,
+      promptWith: setting.promptWith,
+      setChoices: this.setChoices });
   }
-  render_presentation(correct) {
-    return h(Presentation, { item: this.get_screen("presentation"), correct: correct });
+  render_multiple_choice(setting) {
+    return h(MultipleChoice, {
+      item: this.get_screen("multiple_choice"),
+      nChoice: setting.nChoice || (this.props.type == "speed_review" ? 4 : 9),
+      promptWith: setting.promptWith,
+      setChoices: this.setChoices });
+  }
+  render_typing(setting) {
+    return h(Typing, { item: this.get_screen("typing"), setChoices: this.setChoices, promptWith: setting.promptWith });
+  }
+  render_tapping(setting) {
+    return h(Tapping, { item: this.get_screen("tapping"), difficulty: setting.difficulty || 1, setChoices: this.setChoices });
+  }
+  render_copytyping() {
+    return h(Presentation, { item: this.get_screen("presentation"), prompt: this.get_screen("typing") });
+  }
+  render_presentation(correct, thing) {
+    return h(Presentation, { item: this.get_screen("presentation", thing), correct: correct });
   }
   recap() {
     var items = [];
@@ -647,6 +828,12 @@ const Value = function (props) {
         return h('img', { key: Date.now(), src: content, 'class': 'text-image' });
       case "audio":
         return h('audio', { key: Date.now(), src: content, 'class': 'audio-player ico ico-l ico-audio' });
+      case "video":
+        return h(
+          'video',
+          { key: Date.now(), src: content, 'class': 'video-player', controls: true, autoplay: true },
+          'Your browser does not support the video tag.'
+        );
     }
   } else {
     switch (props.type) {
@@ -674,6 +861,20 @@ const Value = function (props) {
             'div',
             { 'class': 'media-list' },
             content.map(media => h('audio', { key: Date.now(), src: media.normal, 'class': 'audio-player ico ico-l ico-audio' }))
+          )
+        );
+      case "video":
+        return h(
+          'div',
+          { 'class': 'video' },
+          h(
+            'div',
+            { 'class': 'media-list' },
+            h(
+              'video',
+              { key: Date.now(), src: content.random(), 'class': 'video-player', controls: true, autoplay: true },
+              'Your browser does not support the video tag.'
+            )
           )
         );
     }
@@ -852,20 +1053,38 @@ const Presentation = function (props) {
           )
         )
       ))
+    ),
+    props.prompt && h(
+      'div',
+      { 'class': 'typing-container' },
+      h(
+        'div',
+        { 'class': 'typing', key: Date.now() },
+        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '', placeholder: props.prompt.answer.value, tabindex: '1', autofocus: true }),
+        h(
+          'ul',
+          { 'class': 'keyboard' },
+          props.prompt.choices.map((letter, i) => h(
+            'li',
+            { 'class': 'button', tabindex: i + 2 },
+            letter
+          ))
+        )
+      )
     )
   );
 };
 
 function get_prompt_type(item) {
+  if (item.prompt.text) return "text";
   if (item.prompt.image) return "image";
   if (item.prompt.audio) return "audio";
   if (item.prompt.video) return "video";
-  return "text";
 }
 
 const MultipleChoice = function (props) {
   var item = props.item,
-      itemType = get_prompt_type(item),
+      itemType = props.promptWith || get_prompt_type(item),
       answerType = item.answer.kind;
 
   // Randomize choices order
@@ -928,7 +1147,7 @@ class ChoiceBox extends Component {
   render(props) {
     return h(
       'div',
-      { accesskey: props.i, 'class': 'choice-box nicebox', id: "choice-" + props.i },
+      { accesskey: props.i, 'class': "choice-box nicebox " + props.answerType, id: "choice-" + props.i, tabindex: props.i },
       h(
         'span',
         { 'class': 'choice-index' },
@@ -942,7 +1161,7 @@ class ChoiceBox extends Component {
 
 const Typing = function (props) {
   var item = props.item,
-      itemType = get_prompt_type(item);
+      itemType = props.promptWith || get_prompt_type(item);
 
   props.setChoices(item.correct, "text", item.is_strict);
 
@@ -959,15 +1178,72 @@ const Typing = function (props) {
       { 'class': 'typing-container' },
       h(
         'div',
-        { 'class': 'typing' },
-        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '' }),
+        { 'class': 'typing', key: Date.now() },
+        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '', tabindex: '1', autofocus: true }),
         h(
-          'div',
+          'ul',
           { 'class': 'keyboard' },
-          item.choices.map(letter => h(
-            'button',
-            null,
+          item.choices.map((letter, i) => h(
+            'li',
+            { 'class': 'button', tabindex: i + 2 },
             letter
+          ))
+        )
+      )
+    )
+  );
+};
+
+const Tapping = function (props) {
+  var item = props.item,
+      itemType = get_prompt_type(item);
+
+  props.setChoices(item.correct, "tapping", item.is_strict);
+
+  var n = item.correct.length,
+      choices = item.correct[0].slice(),
+      remains = item.choices.filter(it => !choices.includes(it)),
+      extra = 0;
+
+  if (props.difficulty == 0) {
+    extra = 0;
+  } else if (n < 5) {
+    extra = 6 - n;
+  } else {
+    extra = Math.min(Math.max(0, 15 - n), Math.ceil(props.difficulty * n));
+  }
+
+  for (var i = 0; i < extra; i++) {
+    if (!remains.length) {
+      break;
+    }
+    var rnd = Math.floor(Math.random() * remains.length),
+        it = remains.splice(rnd, 1);
+    choices.push(...it);
+  }
+
+  return h(
+    'div',
+    { 'class': 'nicebox' },
+    h(
+      'div',
+      { 'class': 'big choice autoplay' },
+      h(Value, { content: item.prompt[itemType].value, type: itemType })
+    ),
+    h(
+      'div',
+      { 'class': 'tapping-container' },
+      h(
+        'div',
+        { 'class': 'tapping', key: Date.now() },
+        h('div', { 'class': 'input' }),
+        h(
+          'ul',
+          { 'class': 'keyboard' },
+          randomize(choices).map((word, i) => h(
+            'li',
+            { 'class': 'button', tabindex: i + 1, id: "btn-" + i },
+            word
           ))
         )
       )
@@ -1030,6 +1306,9 @@ function get_score(response, answer) {
   var FIRST_LETTER_WEIGHT = .1,
       DISTANCE_WEIGHT = .9;
 
+  if (!response) {
+    return 0;
+  }
   var both_are_numeric = function () {
     return $.isNumeric(parseInt(response, 10)) && $.isNumeric(parseInt(answer, 10));
   },

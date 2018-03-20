@@ -242,10 +242,17 @@ var audioPlayer = {
   },
 
   // Play the target (this) audio element
-  play: function() {
+  play: function(e, force) {
 
     // Toggle play/pause
     if(audioPlayer.target === this) {
+      if(force) {
+        if(!audioPlayer.isPlaying) {
+          this.play();
+          audioPlayer.isPlaying = true;
+        }
+        return;
+      }
       if(audioPlayer.isPlaying) {
         this.pause();
         this.classList.remove("active");
@@ -265,6 +272,15 @@ var audioPlayer = {
       this.classList.add("active");
       audioPlayer.target    = this;
       audioPlayer.isPlaying = true;
+    }
+  },
+
+  // Pause the current audio
+  pause: function() {
+    if(audioPlayer.isPlaying) {
+      audioPlayer.target.pause();
+      audioPlayer.target.classList.remove("active");
+      audioPlayer.isPlaying = false;
     }
   }
 };

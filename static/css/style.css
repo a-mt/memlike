@@ -101,6 +101,9 @@ figure, figcaption {
   background-color: #76b336;
   color: #ebebeb;
 }
+.submit {
+  float: right;
+}
 .caret {
   display: inline-block;
   width: 0;
@@ -1675,6 +1678,7 @@ table.learn {
 }
 
 .choice-box:hover,
+.choice-box:focus,
 .choice-box.active {
   border-color: #8c4a6c;
   background-color: #aa5f86;
@@ -1696,21 +1700,24 @@ table.learn {
   pointer-events: none;
 }
 
-.typing-container {
+.typing-container,
+.tapping-container {
   background: #EEE;
   padding: 30px 15px;
 }
-.typing {
+.typing,
+.tapping {
   text-align: center;
   width: 535px;
   margin: 0 auto;
   font-family: "Times New Roman","Times","Kai","KaiTi",Serif;
 }
-.typing input {
+.typing input,
+.tapping .input {
   padding: 5.71429px 23px;
   font-size: 30px;
   line-height: 41px;
-  height: 57px;
+  min-height: 57px;
   border: 1px solid #ccc;
   background: white;
   border-radius: 10px;
@@ -1739,7 +1746,16 @@ table.learn {
   background-color:#e4d24e;
   color:white
 }
-.typing button {
+
+.keyboard {
+  padding-top: 10px;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.typing .button,
+.tapping .button {
+  display: inline-block;
   margin: 3px;
   border-radius: 10px;
   padding: 0 10px;
@@ -1749,13 +1765,31 @@ table.learn {
   line-height: 41px;
   box-shadow: 1px 1px 0 rgba(0,0,0,0.2);
   cursor: pointer;
+  font-family: "Helvetica Neue","Helvetica","Arial","Kai","KaiTi",Sans-Serif;
 }
-.typing button:hover {
-  border-color: #ccc;
+.typing .button:hover,
+.typing .button:focus,
+.tapping .button:hover,
+.tapping .button:focus {
+  border-color: #8c4a6c;
+  background-color: #aa5f86;
+  color: white;
 }
-.keyboard {
-  padding-top: 10px;
+.tapping .input,
+.tapping .button.disabled {
+  box-shadow: inset 0 0 4px #fff;
+  transition: all 0.1s ease-out;
+  background: rgba(230,230,230,0.4);
+  color: rgba(0,0,0,0.3)
 }
+.tapping .button.disabled {
+  pointer-events: none;
+}
+.input .button {
+  margin-top: -1px;
+  margin-bottom: 0;
+}
+
 .correction {
   font-size: .9em;
   font-weight: 500;
@@ -1787,6 +1821,28 @@ table.learn {
 }
 .neverMissed {
   color:#23b26d
+}
+
+#debug-screen {
+  position: fixed;
+  z-index: 1;
+  border: 1px solid white;
+  padding: 5px;
+  background: wheat;
+  list-style: none;
+}
+#debug-screen li {
+  cursor: pointer;
+  padding: 2px;
+}
+#debug-screen li.disabled {
+  opacity: .3;
+}
+#debug-screen li.active {
+  background: rgba(0,0,0,0.1);
+}
+#debug-screen li:hover {
+  background: white;
 }
 
 /*-------------------------------------------------------
