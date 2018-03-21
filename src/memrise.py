@@ -165,7 +165,12 @@ class Memrise:
             @param string referer
             @return dict - Retrieved JSON
         """
-        response = requests.post("https://www.memrise.com/api/garden/" + path + "/", data=data, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+        if path == "session_end":
+            url = "https://www.memrise.com/ajax/session_end/"
+        else:
+            url = "https://www.memrise.com/api/garden/register/"
+
+        response = requests.post(url, data=data, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://www.memrise.com",
             "Referer": referer,
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",

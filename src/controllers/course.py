@@ -5,7 +5,7 @@ from requests.exceptions import HTTPError
 
 urls = (
   # Learn
-  "/(\d+)/(.*)/(\d+)/garden", "learn_formform",
+  "/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
   "/(\d+)/(.*)/(\d+)/(\d+)", "view",
   "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
@@ -18,7 +18,7 @@ urls = (
   "/(\d+)", "course"
 )
 
-class learn_formform:
+class learn_fromform:
     def GET(self, idCourse, path, lvl=False):
         _GET = web.input(session="", sendresults=0)
 

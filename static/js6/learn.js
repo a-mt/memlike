@@ -94,7 +94,7 @@ class Learn extends Component {
     recap: {}, num_scheduled_correct: 0, num_scheduled: 0,
     points: 0, hearts: 3, speed_bonus: 0,
     level: 1, maxlevel: 1, level_type: 1,
-    review_all: false
+    get_all: false
   };
 
   //+--------------------------------------------------------
@@ -106,14 +106,14 @@ class Learn extends Component {
     super(props);
 
     if(typeof this.props.level =="string") { // all
-      this.levels           = this.props.level.split(',').map((i) => parseInt(i));
+      this.levels         = this.props.level.split(',').map((i) => parseInt(i));
 
-      this.state.level      = this.levels[0];
-      this.state.maxlevel   = this.levels[this.levels.length-1];
-      this.state.review_all = (this.props.type == "classic_review" || this.props.type == "speed_review");
+      this.state.level    = this.levels[0];
+      this.state.maxlevel = this.levels[this.levels.length-1];
+      this.state.get_all  = true;
     } else {
-      this.state.level      = parseInt(this.props.level);
-      this.state.maxlevel   = parseInt(this.props.level);
+      this.state.level    = parseInt(this.props.level);
+      this.state.maxlevel = parseInt(this.props.level);
     }
 
     this.setChoices = this.setChoices.bind(this);
@@ -181,6 +181,7 @@ class Learn extends Component {
     if(!this.init) {
       this.init = true;
     }
+    $('input[autofocus]').focus();
 
     // Reset image zoom and audio player
     window.imgZoom     && window.imgZoom.reset();
@@ -190,7 +191,7 @@ class Learn extends Component {
     $('.autoplay .audio-player').random().trigger("click");
 
     // Update level title
-    if(!this.state.review_all) {
+    if(!this.state.get_all) {
       if(!prevState.data || prevState.level != this.state.level) {
         document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
       }
@@ -213,7 +214,7 @@ class Learn extends Component {
     var level_type = window.course.levels[level].type;
     $.ajax({
       url: '/ajax' + window.course.url
-                   + (this.state.review_all ? 'all' : level) + '/'
+                   + (this.state.get_all ? 'all' : level) + '/'
                    + (level_type == 2 ? "media" : this.props.type),
       data: { session: 1 },
       success: function(data){
@@ -266,13 +267,15 @@ class Learn extends Component {
     // Press enter
     if(key == 13) {
       if(e.target.classList.contains("button") || e.target.classList.contains("choice-box")) {
-        e.target.click();
+        if(!e.target.classList.contains("disabled")) {
+          e.target.click();
+        }
         return;
       }
       this.handle_submit(e);
 
     // Multiplice choice: press a number
-    } else if(this.expectChoice == "numeric" && key >= 96 && key <= 105) {
+    } else if(this.expectChoice == "numeric" && key > 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
       if(char <= this.choices.length) {
@@ -520,6 +523,10 @@ class Learn extends Component {
   }
   session_end() {
     $.ajax({
+      url: "/ajax/sync/" + window.course.id
+    });
+
+    $.ajax({
       url: "/ajax/session_end",
       method: "POST",
       headers: {
@@ -529,7 +536,7 @@ class Learn extends Component {
       data: {
         bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
         course_id    : window.course.id,
-        learnable_ids: Object.keys(this.state.recap),
+        learnable_ids: '["' + Object.keys(this.state.recap).join('","') + '"]',
         session_type : (this.props.type == "classic_review" ? "review" : this.props.type),
         total_points : this.state.points
       }
@@ -548,7 +555,7 @@ class Learn extends Component {
 
     // Next level or go back to course's page
     } else if(this.state.screen == "recap" || this.state.level_type == 2){
-      if(!this.state.review_all && this.state.level < this.state.maxlevel) {
+      if(!this.state.get_all && this.state.level < this.state.maxlevel) {
         if(this.state.data) {
           this.setState({
             data: false
@@ -798,7 +805,7 @@ class Learn extends Component {
               return this.render_tpl(s.random());
             }
           }
-          return this.reversed_tpl({
+          return this.render_tpl({
             template: "reversed_multiple_choice",
             num_choices: [4, 6].random()
           });
@@ -1037,7 +1044,7 @@ const Presentation = function(props){
       {/*-- Copytyping --*/}
       {props.prompt && <div class="typing-container">
           <div class="typing" key={Date.now()}>
-            <input type="text" autocomplete="off" spellcheck="false" value="" placeholder={props.prompt.answer.value} tabindex="1" autofocus />
+            <input type="text" autocomplete="off" spellcheck="false" value="" placeholder={props.prompt.answer.value} tabindex="1" autoFocus="autofocus" />
             <ul class="keyboard">{props.prompt.choices.map((letter, i) =>
               <li class="button" tabindex={i+2}>{letter}</li>
             )}</ul>
@@ -1131,7 +1138,7 @@ const Typing = function(props) {
     </div>
     <div class="typing-container">
       <div class="typing" key={Date.now()}>
-        <input type="text" autocomplete="off" spellcheck="false" value="" tabindex="1" autofocus />
+        <input type="text" autocomplete="off" spellcheck="false" value="" tabindex="1" autoFocus="autofocus" />
         <ul class="keyboard">{item.choices.map((letter, i) =>
           <li class="button" tabindex={i+2}>{letter}</li>
         )}</ul>
