@@ -66,7 +66,10 @@ misc = {
   "review_in_x_days": "Review in % days",
   "x_hours": "% h",
   "x_days": "% d",
-  "next": "Next"
+  "next": "Next",
+  "return": "Go back",
+  "replay": "Replay",
+  "no_more_hearts": "You don't have any more hearts"
 };
 
 menu = {

@@ -1624,10 +1624,11 @@ table.learn {
 }
 .big .media-list {
   text-align: center;
+  min-height: 200px;
 }
 @media (max-width: 540px) {
   .big .text-image {
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw - 50px);
     max-height: calc(100vh - 160px);
   }
 }
@@ -1646,7 +1647,7 @@ table.learn {
 .big.choice {
   text-align: center;
   font-size: 1.5em;
-  margin: 30px;
+  margin: 30px 0;
 }
 .big.choice audio {
   margin: 0 30px;
@@ -1843,6 +1844,100 @@ table.learn {
 }
 #debug-screen li:hover {
   background: white;
+}
+
+.speed_review {
+  padding: 10px;
+  position: relative;
+}
+#speed_review-timer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: -1;
+  background: linear-gradient(-180deg, #f64230 0%, #f66a30 100%);
+  border-radius: 5px;
+  transition: height .3s;
+}
+.progress-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+.progress-stats .progress-bar {
+  flex-grow: 1;
+}
+.points-num {
+  box-shadow: 0px 1px 3px 0px rgba(255,255,255,0.16),
+              inset 0px 1px 3px 0px rgba(0,0,0,0.1);
+  border-radius: 15px;
+  padding: 2px 18px;
+  text-align: center;
+  background: rgba(0,0,0,0.1);
+  font-size: 18px;
+  color: #fff;
+  letter-spacing: 0.5px;
+  text-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+  margin-right: 2px;
+}
+.hearts-wrapper {
+  margin-right: 2px;
+}
+.heart {
+  background-image: url("https://i.imgur.com/vYYJg8a.png");
+  width: 26px;
+  height: 26px;
+  background-position: 0px 0px;
+  background-size: 94px 26px;
+  display: inline-block;
+}
+.heart.empty {
+  background-position: -780px 0px;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 1001;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(0deg, rgba(0,0,0,0.8) 0%,
+                                          rgba(0,0,0,0.5) 100%);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.overlay a {
+  box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+  text-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+  border: 1px solid #e6e6e6;
+  border-radius: 24px;
+  height: 48px;
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.3);
+  padding: 10px 40px;
+  display: inline-block;
+}
+.overlay a:hover {
+  box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.34);
+  background: rgba(255,255,255,0.5);
+}
+.overlay .no-heart {
+  background: url("https://i.imgur.com/5M529D7.png") no-repeat;
+  background-size: 250px 180px;
+  width: 250px;
+  height: 180px;
+}
+.overlay-text {
+  color: white;
+  font-size: 23px;
 }
 
 /*-------------------------------------------------------

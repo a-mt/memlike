@@ -40,6 +40,52 @@ function fromKeyCode(key) {
 }
 
 //+--------------------------------------------------------
+//| Speed review timer
+//+--------------------------------------------------------
+
+var Timer = {
+  maxTime: 6e3,
+  remainingTime: 0,
+  lastUpdate: null,
+  target: null,
+  interval: null,
+  callback: null,
+
+  stop: function () {
+    var time = Date.now();
+
+    Timer.interval && clearInterval(Timer.interval);
+    Timer.remainingTime -= time - Timer.lastUpdate;
+    Timer.lastUpdate = time;
+  },
+  start: function (callback) {
+    Timer.callback = callback;
+    Timer.remainingTime = Timer.maxTime;
+    Timer.lastUpdate = Date.now();
+    Timer.interval = setInterval(Timer.tick.bind(this), 150);
+  },
+  get_time: function () {
+    return Timer.maxTime - Timer.remainingTime;
+  },
+  tick: function () {
+    var time = Date.now();
+
+    Timer.remainingTime -= time - Timer.lastUpdate;
+    Timer.lastUpdate = time;
+
+    if (Timer.remainingTime <= 0) {
+      clearInterval(Timer.interval);
+      $('#speed_review-timer').css("height", '100%');
+
+      Timer.callback && Timer.callback();
+    } else {
+      var percent = 1 - Timer.remainingTime / Timer.maxTime;
+      $('#speed_review-timer').css("height", percent * 100 + '%');
+    }
+  }
+};
+
+//+--------------------------------------------------------
 //| Render game
 //+--------------------------------------------------------
 
@@ -53,7 +99,15 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { i: 0, n: 0, data: false, error: false, screen: false, recap: {}, level: 1, maxlevel: 1, level_type: 1, review_all: false };
+    this.state = {
+      i: 0, n: 0,
+      data: false,
+      error: false,
+      screen: false,
+      recap: {}, points: 0, hearts: 3,
+      level: 1, maxlevel: 1, level_type: 1,
+      review_all: false
+    };
     if (typeof this.props.level == "string") {
       // all
       this.levels = this.props.level.split(',').map(i => parseInt(i));
@@ -71,6 +125,13 @@ class Learn extends Component {
 
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
+
+    document.body.addEventListener('load', function (e) {
+      if (e.target.tagName == 'IMG' && e.target.classList.contains('loading')) {
+        e.target.classList.remove('loading');
+        e.target.parentNode.style.minHeight = e.target.height + 'px';
+      }
+    }, true); // <-- useCapture
 
     // Submit
     $('main').on('click', '.submit', function (e) {
@@ -130,8 +191,12 @@ class Learn extends Component {
     $('.autoplay .audio-player').random().trigger("click");
 
     // Update level title
-    if (!prevState.data || prevState.level != this.state.level) {
-      document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
+    if (!this.state.review_all) {
+      if (!prevState.data || prevState.level != this.state.level) {
+        document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
+      }
+    } else if (this.props.type == "speed_review") {
+      Timer.start(this.time_over.bind(this));
     }
 
     // Debug screen
@@ -244,6 +309,10 @@ class Learn extends Component {
 
   // Multiple choice: User chooses a answer
   multiple_choice(i) {
+    if (this.state.screen == "lost") {
+      return;
+    }
+    Timer.stop();
 
     // Check if we got the right answer
     var idx = parseInt(i) - 1,
@@ -255,6 +324,14 @@ class Learn extends Component {
       score: choice.isValid ? 1 : 0,
       kind: choice.answerType,
       i: idx
+    });
+  }
+
+  time_over() {
+    this.choice_feedback({
+      value: "",
+      score: 0,
+      kind: ""
     });
   }
 
@@ -332,8 +409,27 @@ class Learn extends Component {
         break;
 
       case "speed_review":
-        // TODO timer
-        //points = calculate_points_speed(t);
+        if (data.score == 1) {
+          points = calculate_points_speed(Timer.get_time());
+        } else if (this.state.hearts) {
+          this.state.hearts -= 1;
+        }
+        if (this.state.hearts == 0) {
+          this.state.screen = "lost";
+          this.state.error = 1;
+          this.show_correct(data);
+
+          $(document.body).append(`<div class="overlay">
+            <div class="no-heart"></div>
+            <p class="overlay-text">${window.i18n.no_more_hearts} !</p>
+            <div class="btn-group">
+              <a href="${window.$_URL.urlFrom}">${window.i18n.return}</a>
+              <a href="${window.location.href}">${window.i18n.replay}</a>
+            </div>
+          </div>`);
+
+          return;
+        }
         break;
     }
 
@@ -350,22 +446,12 @@ class Learn extends Component {
 
     // Display correction
     if (this.props.type == "speed_review") {
+      this.show_correct(data);
 
-      if (data.score == 1) {
-        $("#choice-" + (i + 1)).addClass("correct");
-      } else {
-        $("#choice-" + (i + 1)).addClass("incorrect");
-
-        for (var j = 0; j < this.choices.length; j++) {
-          if (this.choices[j].attributes.isValid) {
-            $("#choice-" + (j + 1)).addClass("correct");
-            break;
-          }
-        }
-      }
       this.expectChoice = false;
       this.choices = false;
       this.state.recap = recap;
+      this.state.points += points;
 
       setTimeout(function () {
         $(".choice-box").removeClass("correct").removeClass("incorrect");
@@ -376,10 +462,24 @@ class Learn extends Component {
         recap: recap,
         screen: "correction",
         correct: data,
-        debug_screen: false
+        debug_screen: false,
+        points: this.state.points + points
       });
       this.expectChoice = false;
       this.choices = false;
+    }
+  }
+  show_correct(data) {
+    if ("i" in data) {
+      $("#choice-" + (data.i + 1)).addClass(data.score == 1 ? "correct" : "incorrect");
+    }
+    if (data.score != 1) {
+      for (var j = 0; j < this.choices.length; j++) {
+        if (this.choices[j].attributes.isValid) {
+          $("#choice-" + (j + 1)).addClass("correct");
+          break;
+        }
+      }
     }
   }
 
@@ -467,12 +567,51 @@ class Learn extends Component {
       return this.markdown();
     }
 
+    // Recap
+    if (this.state.screen == "recap") {
+      return h(
+        'div',
+        null,
+        this.addStats(),
+        this.screen()
+      );
+    }
+
     // Default
+    return h(
+      'div',
+      null,
+      this.addStats(),
+      this.props.type == "speed_review" ? h(
+        'div',
+        { 'class': 'speed_review' },
+        h('div', { id: 'speed_review-timer', key: Date.now() }),
+        this.screen()
+      ) : this.screen(),
+      h(
+        'span',
+        { 'class': 'btn submit', tabindex: '0' },
+        window.i18n.next
+      )
+    );
+  }
+
+  addStats() {
     var percent = this.state.n ? Math.ceil(this.state.i / this.state.n * 100) : 100;
 
     return h(
       'div',
-      null,
+      { 'class': 'progress-stats' },
+      this.props.type == "speed_review" && h(
+        'div',
+        { 'class': 'hearts-wrapper' },
+        [1, 2, 3].map(i => h('span', { 'class': "heart " + (i <= this.state.hearts ? "full" : "empty") }))
+      ),
+      h(
+        'div',
+        { 'class': 'points-num' },
+        this.state.points
+      ),
       h(
         'div',
         { 'class': 'progress-bar', role: 'progressbar', 'aria-valuenow': this.state.i, 'aria-valuemin': '0', 'aria-valuemax': this.state.i },
@@ -494,12 +633,6 @@ class Learn extends Component {
             this.state.n
           )
         )
-      ),
-      this.screen(),
-      h(
-        'span',
-        { 'class': 'btn submit', tabindex: '0' },
-        window.i18n.next
       )
     );
   }
@@ -712,6 +845,12 @@ class Learn extends Component {
       }
     }
 
+    if (this.props.type == "speed_review") {
+      return this.render_tpl({
+        template: "multiple_choice",
+        num_choices: 4
+      });
+    }
     if (item.template == "sentinel") {
       if (screen.typing) {
         return this.render_tpl({
@@ -850,7 +989,7 @@ const Value = function (props) {
           h(
             'div',
             { 'class': 'media-list' },
-            content.map(media => h('img', { key: Date.now(), src: media, 'class': 'text-image' }))
+            content.map(media => h('img', { key: Date.now(), src: media, 'class': 'text-image loading' }))
           )
         );
       case "audio":
