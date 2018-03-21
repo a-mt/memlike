@@ -8,7 +8,7 @@ const { h, Component, render } = window.preact;
 /* global $ */
 $(document).ready(function () {
   Object.freeze(window.course);
-  render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing, usesession: window.$_URL.usesession }), document.getElementById('learn-container'));
+  render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing, sendresults: window.$_URL.sendresults }), document.getElementById('learn-container'));
 });
 
 //+--------------------------------------------------------
@@ -104,7 +104,8 @@ class Learn extends Component {
       data: false,
       error: false,
       screen: false,
-      recap: {}, points: 0, hearts: 3,
+      recap: {}, num_scheduled_correct: 0, num_scheduled: 0,
+      points: 0, hearts: 3, speed_bonus: 0,
       level: 1, maxlevel: 1, level_type: 1,
       review_all: false
     };
@@ -214,9 +215,7 @@ class Learn extends Component {
     var level_type = window.course.levels[level].type;
     $.ajax({
       url: '/ajax' + window.course.url + (this.state.review_all ? 'all' : level) + '/' + (level_type == 2 ? "media" : this.props.type),
-      data: {
-        session: this.props.usesession
-      },
+      data: { session: 1 },
       success: function (data) {
         callback && callback();
 
@@ -381,7 +380,10 @@ class Learn extends Component {
 
   // Answer has been submitted and checked: give feedback
   choice_feedback(data) {
-    var points = 0;
+    var points = 0,
+        speed_bonus = 0,
+        time_spent = 0,
+        id = this.state.data.boxes[this.state.i].learnable_id;
 
     // Score
     switch (this.props.type) {
@@ -390,8 +392,7 @@ class Learn extends Component {
         break;
 
       case "classic_review":
-        var id = this.state.data.boxes[this.state.i].learnable_id,
-            thing = this.state.data.thingusers.find(item => item.learnable_id == id),
+        var thing = this.state.data.thingusers.find(item => item.learnable_id == id),
             streak = 0;
 
         if (thing) {
@@ -406,36 +407,25 @@ class Learn extends Component {
         if (streak) {
           points = calculate_points_review(points, streak);
         }
+        if (data.score == 1 && time_spent) {
+          speed_bonus = calculate_speed_bonus(time_spent, this.template);
+        }
         break;
 
       case "speed_review":
+        time_spent = Timer.get_time();
+
         if (data.score == 1) {
-          points = calculate_points_speed(Timer.get_time());
+          points = calculate_points_speed(time_spent);
         } else if (this.state.hearts) {
           this.state.hearts -= 1;
         }
-        if (this.state.hearts == 0) {
-          this.state.screen = "lost";
-          this.state.error = 1;
-          this.show_correct(data);
-
-          $(document.body).append(`<div class="overlay">
-            <div class="no-heart"></div>
-            <p class="overlay-text">${window.i18n.no_more_hearts} !</p>
-            <div class="btn-group">
-              <a href="${window.$_URL.urlFrom}">${window.i18n.return}</a>
-              <a href="${window.location.href}">${window.i18n.replay}</a>
-            </div>
-          </div>`);
-
-          return;
-        }
         break;
     }
+    this.props.sendresults && this.register(data, id, points, data.score, time_spent);
 
     // Count right and wrong answers
-    var recap = Object.assign({}, this.state.recap),
-        id = this.state.data.boxes[this.state.i].learnable_id;
+    var recap = Object.assign({}, this.state.recap);
     if (!recap[id]) {
       recap[id] = { count: 0, right: 0, pos: Object.keys(recap).length };
     }
@@ -448,10 +438,30 @@ class Learn extends Component {
     if (this.props.type == "speed_review") {
       this.show_correct(data);
 
+      if (this.state.hearts == 0) {
+        this.state.screen = "lost";
+        this.state.error = 1;
+
+        $(document.body).append(`<div class="overlay">
+          <div class="no-heart"></div>
+          <p class="overlay-text">${window.i18n.no_more_hearts} !</p>
+          <div class="btn-group">
+            <a href="${window.$_URL.urlFrom}">${window.i18n.return}</a>
+            <a href="${window.location.href}">${window.i18n.replay}</a>
+          </div>
+        </div>`);
+
+        return;
+      }
+
       this.expectChoice = false;
       this.choices = false;
       this.state.recap = recap;
       this.state.points += points;
+      this.state.num_scheduled += 1;
+      if (data.score == 1) {
+        this.state.num_scheduled_correct += 1;
+      }
 
       setTimeout(function () {
         $(".choice-box").removeClass("correct").removeClass("incorrect");
@@ -463,7 +473,10 @@ class Learn extends Component {
         screen: "correction",
         correct: data,
         debug_screen: false,
-        points: this.state.points + points
+        points: this.state.points + points,
+        speed_bonus: this.state.speed_bonus + speed_bonus,
+        num_scheduled: this.state.num_scheduled + 1,
+        num_scheduled_correct: this.state.num_scheduled_correct + (data.score == 1 ? 1 : 0)
       });
       this.expectChoice = false;
       this.choices = false;
@@ -481,6 +494,45 @@ class Learn extends Component {
         }
       }
     }
+  }
+
+  // Send progress to memrise
+  register(data, learnable_id, points, score, time_spent) {
+    $.ajax({
+      url: "/ajax/register",
+      method: "POST",
+      headers: {
+        "X-CSRFToken": this.state.data.csrftoken,
+        "X-Referer": this.state.data.referer
+      },
+      data: {
+        box_template: this.template,
+        course_id: window.course.id,
+        fully_grow: false,
+        given_answer: data.value,
+        learnable_id: learnable_id,
+        points: points,
+        score: score,
+        time_spent: time_spent
+      }
+    });
+  }
+  session_end() {
+    $.ajax({
+      url: "/ajax/session_end",
+      method: "POST",
+      headers: {
+        "X-CSRFToken": this.state.data.csrftoken,
+        "X-Referer": this.state.data.referer
+      },
+      data: {
+        bonus_points: this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
+        course_id: window.course.id,
+        learnable_ids: Object.keys(this.state.recap),
+        session_type: this.props.type == "classic_review" ? "review" : this.props.type,
+        total_points: this.state.points
+      }
+    });
   }
 
   // Display next screen
@@ -508,6 +560,8 @@ class Learn extends Component {
 
       // Recap
     } else {
+      this.props.sendresults && this.session_end();
+
       this.setState({
         i: this.state.n,
         screen: "recap"
@@ -871,6 +925,8 @@ class Learn extends Component {
     return this.render_tpl({ template: item.template });
   }
   render_tpl(setting) {
+    this.template = setting.template;
+
     switch (setting.template) {
       case "multiple_choice":
         return this.render_multiple_choice(setting);
@@ -1533,6 +1589,29 @@ function calculate_points_review(points, current_streak) {
   points *= Math.pow(1.2, current_streak);
   points = Math.min(points, 150);
   return Math.ceil(points);
+}
+
+function calculate_speed_bonus(time_spent, tpl) {
+  if (tpl == "typing") {
+    return time_spent < 4e3 ? 5 : 0;
+  } else {
+    return time_spent < 2e3 ? 3 : 0;
+  }
+}
+function calculate_accuracy_bonus(percent_correct, num_scheduled_correct) {
+  if (percent_correct == 100) {
+    return 20 * num_scheduled_correct;
+  } else if (percent_correct >= 90) {
+    return 12 * num_scheduled_correct;
+  } else if (percent_correct >= 80) {
+    return 6 * num_scheduled_correct;
+  } else if (percent_correct >= 70) {
+    return 4 * num_scheduled_correct;
+  } else if (percent_correct >= 50) {
+    return 2 * num_scheduled_correct;
+  } else {
+    return 0;
+  }
 }
 
 //+--------------------------------------------------------

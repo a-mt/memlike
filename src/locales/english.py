@@ -69,7 +69,8 @@ misc = {
   "next": "Next",
   "return": "Go back",
   "replay": "Replay",
-  "no_more_hearts": "You don't have any more hearts"
+  "no_more_hearts": "You don't have any more hearts",
+  "send_results": "Send results to Memrise"
 };
 
 menu = {

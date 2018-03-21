@@ -1250,6 +1250,13 @@ a > .expand-icon { /* ico-s icon-arr-right */
   max-width: 960px;
   width: 100%;
 }
+.mode-icon-wrapper {
+  background: none;
+  border: 0;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
 .mode-icon-wrapper.disabled {
   pointer-events: none;
 }
@@ -1265,7 +1272,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   transition: transform 0.3s ease;
   position: relative;
 }
-.mode-icon:hover {
+.mode-icon-wrapper:hover .mode-icon {
   transform: scale(1.2);
 }
 .disabled .mode-icon {
@@ -1285,6 +1292,9 @@ a > .expand-icon { /* ico-s icon-arr-right */
   height: 36px;
   line-height: 32px;
   text-align: center;
+}
+.mode-options {
+  margin-top: 50px;
 }
 
 .mode-icon-label {

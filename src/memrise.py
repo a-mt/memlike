@@ -153,6 +153,27 @@ class Memrise:
         response.raise_for_status()
         return response.json()
 
+    def track_progress(self, path, data, sessionid, csrftoken, referer):
+        """
+            Post play progress
+
+            @throws requests.exceptions.HTTPError
+            @param string path - register | session_end
+            @param dict data
+            @param string sessionid
+            @param string csrftoken
+            @param string referer
+            @return dict - Retrieved JSON
+        """
+        response = requests.post("https://www.memrise.com/api/garden/" + path + "/", data=data, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+            "Origin": "https://www.memrise.com",
+            "Referer": referer,
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+            "X-CSRFToken": csrftoken
+        })
+        response.raise_for_status()
+        return response.json()
+
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
@@ -413,7 +434,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, lvl, slug="preview", sessionid=False):
+    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False):
         """
             Retrieve the list of items of a level (wont work for multimedia)
             Is cached via memcached for 24hours if sessionid isn't provided
@@ -464,6 +485,13 @@ class Memrise:
 
                 response.raise_for_status()
                 level = response.json()
+
+                if sessionid:
+                    url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + slug +"/"
+                    response = requests.head(url, cookies={"sessionid": sessionid})
+                    response.raise_for_status()
+                    level['referer']   = url
+                    level['csrftoken'] = response.cookies.get('csrftoken')
 
                 if cache_key:
                     mc.set(cache_key, level, time=60*60*24)

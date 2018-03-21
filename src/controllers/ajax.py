@@ -24,7 +24,10 @@ urls = (
   "/leaderboard", "user_leaderboard",
   "/sync/(\d+)", "user_sync_course",
   "/sync", "user_sync",
-  "/session", "debug_session"
+  "/session", "debug_session",
+
+  "/(register)", "track_progress",
+  "/(session_end)", "track_progress"
 )
 NBPERPAGE = 15
 
@@ -88,7 +91,7 @@ class course:
         return _response(lambda: memrise.course(idCourse))
 
 class course_level:
-    def GET(self, idCourse, slug, lvl, kind="preview"):
+    def GET(self, idCourse, slugCourse, lvl, kind="preview"):
         _GET = web.input(session=False)
 
         sessionid = False
@@ -97,7 +100,10 @@ class course_level:
                 return web.Forbidden()
             sessionid = GLOBALS['session']['loggedin']['sessionid']
 
-        return _response(lambda: memrise.level(idCourse, lvl, kind, sessionid))
+        if slugCourse == "":
+            slugCourse = "-"
+
+        return _response(lambda: memrise.level(idCourse, slugCourse, lvl, kind, sessionid))
 
 class course_level_multimedia:
     def GET(self, idCourse, slug, lvl):
@@ -230,5 +236,17 @@ class debug_session():
     def GET(self):
         web.header('Content-Type', 'application/json')
         return json.dumps(GLOBALS['session'].__dict__)
+
+class track_progress():
+    def POST(self, path):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        return _response(lambda: memrise.track_progress(path,
+          web.input(),
+          GLOBALS['session']['loggedin']['sessionid'],
+          web.ctx.env.get('HTTP_X_CSRFTOKEN'),
+          web.ctx.env.get('HTTP_X_REFERER')
+        ))
 
 app = web.application(urls, locals())

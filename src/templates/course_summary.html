@@ -99,7 +99,7 @@ $def thing(item, attr):
 </main>
 
 <!-- Link to garden -->
-<div id="mode-selector">
+<form id="mode-selector" method="GET" action="$(course['url'])/garden" autocomplete="off">
   <div class="mode-selector">
     <h3 class="mode-selector-title">
       $(course['title'])
@@ -115,28 +115,33 @@ $def thing(item, attr):
         $ tolearn  = 0
         $ toreview = 0
 
-      <a href="$(course['url'])/garden/learn" class="mode-icon-wrapper $('disabled' if stats and tolearn == 0 else None)">
+      <button name="session" value="learn" class="mode-icon-wrapper $('disabled' if stats and tolearn == 0 else None)">
         <div class="mode-icon learn">
           $if tolearn:
             <div class="mode-counter">$(tolearn)</div>
         </div>
         <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
-      </a>
-      <a href="$(course['url'])garden/classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
+      </buttpn>
+      <button name="session" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon classic_review">
           $if toreview:
             <div class="mode-counter">$(toreview)</div>
         </div>
         <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
       </a>
-      <a href="$(course['url'])garden/speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
+      <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon speed_review">&nbsp;</div>
         <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
-      </a>
-      <a href="$(course['url'])garden/preview" class="mode-icon-wrapper">
+      </button>
+      <button name="session" value="preview" class="mode-icon-wrapper">
         <div class="mode-icon preview">&nbsp;</div>
         <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
-      </a>
+      </button>
     </div>
+    $if session["loggedin"]:
+      <div class="mode-options">
+        <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
+        <label for="sendresults">$:(LANG.misc['send_results'])</label>
+      </div>
   </div>
-</div>
+</form>

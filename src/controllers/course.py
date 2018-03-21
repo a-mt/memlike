@@ -5,17 +5,33 @@ from requests.exceptions import HTTPError
 
 urls = (
   # Learn
-  "/(\d+)/(.*)/(\d+)/garden/(preview|learn|classic_review|speed_review)", "learn",
+  "/(\d+)/(.*)/(\d+)/garden", "learn_formform",
   "/(\d+)/(.*)/(\d+)/(\d+)", "view",
   "/(\d+)/(.*)/(\d+)/(.*)", "level",
   "/(\d+)/(.*)/(\d+)", "level",
 
   # View course
+  "/(\d+)/(.*)/garden", "learn_fromform",
   "/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
   "/(\d+)/(.*)/leaderboard", "leaderboard",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
 )
+
+class learn_formform:
+    def GET(self, idCourse, path, lvl=False):
+        _GET = web.input(session="", sendresults=0)
+
+        if not _GET.session:
+            return GLOBALS['prender']._404()
+
+        try:
+            course = memrise.course(idCourse)
+        except HTTPError as e:
+            print e
+            return GLOBALS['prender']._404()
+
+        return GLOBALS['render'].learn(course, _GET.session, lvl, False, _GET.sendresults)
 
 class learn:
     def GET(self, idCourse, path, lvl, kind=False):
@@ -28,7 +44,7 @@ class learn:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].learn(course, kind, lvl, False)
+        return GLOBALS['render'].learn(course, kind, lvl, False, 1)
 
 class view:
     def GET(self, idCourse, path, lvl, thing):
@@ -41,7 +57,7 @@ class view:
         return GLOBALS['render'].learn(course, "preview", lvl, thing)
 
 class level:
-    def GET(self, idCourse, path, lvl, path2=""):
+    def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
             course = memrise.course(idCourse)
             if lvl not in course['levels']:
@@ -52,7 +68,7 @@ class level:
                 if GLOBALS['session']['loggedin']:
                     sessionid = GLOBALS['session']['loggedin']['sessionid']
 
-                items = memrise.level(idCourse, lvl, "preview", sessionid)
+                items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid)
             else:
                 # Type multimedia
                 items = memrise.level_multimedia(course['url'], lvl)
