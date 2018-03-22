@@ -89,7 +89,7 @@ $:(prender.inc_course_banner(course))
           <span class="ico ico-arr-left"></span>
           <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
         </a>
-      $if i < len(levels):
+      $if i + 1 < len(levels):
         $ idx = levels[i+1]
 
         <a href="$(course['url'])$idx" class="paging-trigger next">
