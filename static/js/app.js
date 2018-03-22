@@ -46,6 +46,23 @@ $(document).ready(function(){
   if($('#user-container').length) {
     user_mempals();
     user_courses();
+
+    // Sync
+    $('.ajax[data-href]').on('click', function(){
+      if(this.classList.contains('loading-spinner-before')) {
+        return;
+      }
+      var btn = this;
+      btn.classList.add('loading-spinner-before');
+
+      $.ajax({
+        url: btn.getAttribute('data-href'),
+        complete: function(){
+          btn.classList.remove('loading-spinner-before');
+          window.location.reload();
+        }
+      });
+    });
   }
 
   // Dashboard

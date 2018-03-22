@@ -596,17 +596,18 @@ class Memrise:
     #| USER
     #+-----------------------------------------------------
     # https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
-    def user(self, username):
+    def user(self, username, force=False):
         """
             Retrieve the info about a user
             Is cached via memcached for 1hour
 
             @throws requests.exceptions.HTTPError
             @param string username
+            @param boolean[optional] force - [false] Get data from Memrise even if already cached
             @return dict - {username, photo, rank, stats}
         """
         cache_key = "user_" + username
-        user      = mc.get(cache_key)
+        user      = None if force else mc.get(cache_key)
 
         if user == None:
             with mc.lock(cache_key) as retries:

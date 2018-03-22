@@ -23,6 +23,7 @@ urls = (
   "/dashboard", "user_dashboard",
   "/leaderboard", "user_leaderboard",
   "/sync/(\d+)", "user_sync_course",
+  "/sync/dashboard", "user_sync_dashboard",
   "/sync", "user_sync",
   "/session", "debug_session",
 
@@ -203,13 +204,12 @@ class user_leaderboard():
         _GET = web.input(period="week")
         return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
 
-class user_sync():
+class user_sync_dashboard():
     def GET(self):
-        c = 0
-
         if not GLOBALS['session']['loggedin']:
             raise web.Forbidden()
 
+        c = 0
         sessionid = GLOBALS['session']['loggedin']['sessionid']
         for courses in memrise.whatistudy(sessionid):
             for course in courses:
@@ -222,6 +222,21 @@ class user_sync():
 
         return str(c)
 
+class user_sync():
+    def GET(self):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        try:
+          data = memrise.user(GLOBALS['session']['loggedin']['username'], True)
+        except HTTPError as e:
+            if e.response.status_code == 403:
+                raise web.Forbidden()
+            else:
+                raise web.NotFound()
+
+        return data
+
 class user_sync_course():
     def GET(self, idCourse):
         if not GLOBALS['session']['loggedin']:
@@ -230,7 +245,8 @@ class user_sync_course():
         sessionid = GLOBALS['session']['loggedin']['sessionid']
         data      = memrise.course_progress(idCourse, sessionid)
 
-        GLOBALS['session']['learning'][idCourse] = data
+        GLOBALS['session']['learning'][int(idCourse)] = data
+        return data
 
 class debug_session():
     def GET(self):

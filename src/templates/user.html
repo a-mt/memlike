@@ -14,7 +14,10 @@ $var title: $(user['username'])
     <img class="page-photo page-photo-small" src="$(user['photo'])" alt="$(user['username'])">
     <div class="page-details">
       $if session.loggedin and session.loggedin['username'] == user['username']:
-        <a href="/logout" class="btn btn-pink logout">$:(LANG.menu['logout'])</a>
+       <div class="actions-right">
+          <button class="ajax btn" data-href="/ajax/sync">Sync</button>
+          <a href="/logout" class="btn btn-pink logout">$:(LANG.menu['logout'])</a>
+        </div>
 
       <!-- Username -->
       <h1 class="big">$(user['username'])</h1>

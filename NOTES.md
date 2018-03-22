@@ -117,3 +117,10 @@ for(var i=0; i<ul.children.length; i++) {
 }
 copy(lang);
 ```
+
+## Tests
+
+Course with
+* multiple images: /course/399843/human-neuroanatomy/2/
+* audio: /course/365747/80-operas-with-audio/1/
+* video: /course/1096771/anglais-britannique-1/
