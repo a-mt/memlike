@@ -592,6 +592,9 @@ footer .active a {
 .ico-list {
   background-position: -108px -108px;
 }
+.ico-audio {
+  background-position:-36px -54px
+}
 .ico-audio.ico-l {
   background-position: -64px -96px;
 }
@@ -1140,6 +1143,9 @@ a > .expand-icon { /* ico-s icon-arr-right */
   max-height: 100px;
   max-width: 100px;
   cursor: pointer
+}
+.text audio {
+  margin-left: 2px;
 }
 
 .overall-summary {

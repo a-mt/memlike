@@ -167,8 +167,13 @@ class Learn extends Component {
     });
 
     // Retrieve data
-    this.getData(this.state.level, function(){
-      window.onbeforeunload = this.warnbeforeunload.bind(this);
+    this.getData(this.state.level, function(data){
+      if(!this.props.thing) {
+        window.onbeforeunload = this.warnbeforeunload.bind(this);
+      }
+
+      this.langSource = data.session.course.source.language_code;
+      this.langTarget = data.session.course.target.language_code;
 
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
@@ -189,6 +194,21 @@ class Learn extends Component {
 
     // Automatically play first audio
     $('.autoplay .audio-player').random().trigger("click");
+
+    // Add text To Speech
+    if(window.TTS) {
+      $('.text[lang]').each(function(){
+        var src = window.TTS.get_audio(this.innerHTML, this.getAttribute('lang'));
+
+        if(src) {
+          var audio = document.createElement('audio');
+          audio.src = src;
+          audio.className = "audio-player ico ico-audio";
+
+          this.appendChild(audio);
+        }
+      });
+    }
 
     // Update level title
     if(!this.state.get_all) {
@@ -218,7 +238,7 @@ class Learn extends Component {
                    + (level_type == 2 ? "media" : this.props.type),
       data: { session: 1 },
       success: function(data){
-        callback && callback();
+        callback && callback(data);
 
         this.setState({
           recap: {},
@@ -920,7 +940,7 @@ class Learn extends Component {
     return <Presentation item={this.get_screen("presentation")} prompt={prompt} />;
   }
   render_presentation(correct) {
-    return <Presentation item={this.get_screen("presentation")} correct={correct} />;
+    return <Presentation item={this.get_screen("presentation")} correct={correct} langTarget={this.langTarget} />;
   }
   recap() {
     var items = [];
@@ -947,7 +967,11 @@ class Learn extends Component {
 }
 
 const Value = function(props) {
-  var content = props.content;
+  var content = props.content,
+      attrs   = {};
+  if(props.lang) {
+    attrs.lang = props.lang;
+  }
 
   if(props.single) {
     switch(props.type) {
@@ -958,7 +982,7 @@ const Value = function(props) {
     }
   } else {
     switch(props.type) {
-      case "text" : return <div class="text">{content}</div>;
+      case "text" : return <div class="text" {...attrs}>{content}</div>;
       case "image": return <div class="image"><div class="media-list">{content.map(media => <img key={Date.now()} src={media} class="text-image loading" />)}</div></div>;
       case "audio": return <div class="audio"><div class="media-list">{content.map(media => <audio key={Date.now()} src={media.normal} class="audio-player ico ico-l ico-audio"></audio>)}</div></div>;
       case "video": return <div class="video"><div class="media-list"><video key={Date.now()} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video></div></div>;
@@ -1006,7 +1030,7 @@ const Presentation = function(props){
         <tr>
           <td class="label">{item.item.label}</td>
           <td class="item">
-            <Value content={item.item.value} type={item.item.kind} />
+            <Value content={item.item.value} type={item.item.kind} lang={this.props.langTarget} />
             {item.item.alternatives.map(txt =>
               <div class="alt">{txt}</div>
             )}

@@ -170,8 +170,13 @@ class Learn extends Component {
     });
 
     // Retrieve data
-    this.getData(this.state.level, function () {
-      window.onbeforeunload = this.warnbeforeunload.bind(this);
+    this.getData(this.state.level, function (data) {
+      if (!this.props.thing) {
+        window.onbeforeunload = this.warnbeforeunload.bind(this);
+      }
+
+      this.langSource = data.session.course.source.language_code;
+      this.langTarget = data.session.course.target.language_code;
 
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
@@ -191,6 +196,21 @@ class Learn extends Component {
 
     // Automatically play first audio
     $('.autoplay .audio-player').random().trigger("click");
+
+    // Add text To Speech
+    if (window.TTS) {
+      $('.text[lang]').each(function () {
+        var src = window.TTS.get_audio(this.innerHTML, this.getAttribute('lang'));
+
+        if (src) {
+          var audio = document.createElement('audio');
+          audio.src = src;
+          audio.className = "audio-player ico ico-audio";
+
+          this.appendChild(audio);
+        }
+      });
+    }
 
     // Update level title
     if (!this.state.get_all) {
@@ -218,7 +238,7 @@ class Learn extends Component {
       url: '/ajax' + window.course.url + (this.state.get_all ? 'all' : level) + '/' + (level_type == 2 ? "media" : this.props.type),
       data: { session: 1 },
       success: function (data) {
-        callback && callback();
+        callback && callback(data);
 
         this.setState({
           recap: {},
@@ -1001,7 +1021,7 @@ class Learn extends Component {
     return h(Presentation, { item: this.get_screen("presentation"), prompt: prompt });
   }
   render_presentation(correct) {
-    return h(Presentation, { item: this.get_screen("presentation"), correct: correct });
+    return h(Presentation, { item: this.get_screen("presentation"), correct: correct, langTarget: this.langTarget });
   }
   recap() {
     var items = [];
@@ -1028,7 +1048,11 @@ class Learn extends Component {
 }
 
 const Value = function (props) {
-  var content = props.content;
+  var content = props.content,
+      attrs = {};
+  if (props.lang) {
+    attrs.lang = props.lang;
+  }
 
   if (props.single) {
     switch (props.type) {
@@ -1054,7 +1078,7 @@ const Value = function (props) {
       case "text":
         return h(
           'div',
-          { 'class': 'text' },
+          _extends({ 'class': 'text' }, attrs),
           content
         );
       case "image":
@@ -1175,7 +1199,7 @@ const Presentation = function (props) {
         h(
           'td',
           { 'class': 'item' },
-          h(Value, { content: item.item.value, type: item.item.kind }),
+          h(Value, { content: item.item.value, type: item.item.kind, lang: this.props.langTarget }),
           item.item.alternatives.map(txt => h(
             'div',
             { 'class': 'alt' },

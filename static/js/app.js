@@ -240,10 +240,25 @@ function categories() {
 //| Play/pause audio tag
 //+--------------------------------------------------------
 var audioPlayer = {
+  isInit: false,
   target: false,
   isPlaying: false,
 
   reset: function() {
+
+    // Detect when audio has stopped playing
+    if(!audioPlayer.isInit) {
+      audioPlayer.isInit = true;
+
+       document.body.addEventListener('ended', function(e){
+        if(e.target == audioPlayer.target) {
+          audioPlayer.target.isPlaying = false;
+          audioPlayer.target.classList.remove("active");
+        }
+      }, true);
+    }
+
+    // Reset audioPlayer state
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
       audioPlayer.target.classList.remove("active");
@@ -534,5 +549,124 @@ var Dashboard = {
         console.log('Error: ', xhr);
       }
     });
+  }
+};
+
+//+--------------------------------------------------------
+//| Text To Speech
+//+--------------------------------------------------------
+var TTS = {
+  host: "https://google-tts-api.herokuapp.com/",
+  langs: {
+    "af": "Afrikaans",
+    "sq": "Albanian",
+    "am": "Amharic",
+    "ar": "Arabic",
+    "hy": "Armenian",
+    "az": "Azeerbaijani",
+    "eu": "Basque",
+    "be": "Belarusian",
+    "bn": "Bengali",
+    "bs": "Bosnian",
+    "bg": "Bulgarian",
+    "ca": "Catalan",
+    "ceb": "Cebuano",
+    "zh-CN": "Chinese (Simplified)",
+    "zh-TW": "Chinese (Traditional)",
+    "co": "Corsican",
+    "hr": "Croatian",
+    "cs": "Czech",
+    "da": "Danish",
+    "nl": "Dutch",
+    "en": "English",
+    "eo": "Esperanto",
+    "et": "Estonian",
+    "fi": "Finnish",
+    "fr": "French",
+    "fy": "Frisian",
+    "gl": "Galician",
+    "ka": "Georgian",
+    "de": "German",
+    "el": "Greek",
+    "gu": "Gujarati",
+    "ht": "Haitian Creole",
+    "ha": "Hausa",
+    "haw": "Hawaiian",
+    "iw": "Hebrew",
+    "hi": "Hindi",
+    "hmn": "Hmong",
+    "hu": "Hungarian",
+    "is": "Icelandic",
+    "ig": "Igbo",
+    "id": "Indonesian",
+    "ga": "Irish",
+    "it": "Italian",
+    "ja": "Japanese",
+    "jw": "Javanese",
+    "kn": "Kannada",
+    "kk": "Kazakh",
+    "km": "Khmer",
+    "ko": "Korean",
+    "ku": "Kurdish",
+    "ky": "Kyrgyz",
+    "lo": "Lao",
+    "la": "Latin",
+    "lv": "Latvian",
+    "lt": "Lithuanian",
+    "lb": "Luxembourgish",
+    "mk": "Macedonian",
+    "mg": "Malagasy",
+    "ms": "Malay",
+    "ml": "Malayalam",
+    "mt": "Maltese",
+    "mi": "Maori",
+    "mr": "Marathi",
+    "mn": "Mongolian",
+    "my": "Myanmar (Burmese)",
+    "ne": "Nepali",
+    "no": "Norwegian",
+    "ny": "Nyanja (Chichewa)",
+    "ps": "Pashto",
+    "fa": "Persian",
+    "pl": "Polish",
+    "pt": "Portuguese (Portugal, Brazil)",
+    "pa": "Punjabi",
+    "ro": "Romanian",
+    "ru": "Russian",
+    "sm": "Samoan",
+    "gd": "Scots Gaelic",
+    "sr": "Serbian",
+    "st": "Sesotho",
+    "sn": "Shona",
+    "sd": "Sindhi",
+    "si": "Sinhala (Sinhalese)",
+    "sk": "Slovak",
+    "sl": "Slovenian",
+    "so": "Somali",
+    "es": "Spanish",
+    "su": "Sundanese",
+    "sw": "Swahili",
+    "sv": "Swedish",
+    "tl": "Tagalog (Filipino)",
+    "tg": "Tajik",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "th": "Thai",
+    "tr": "Turkish",
+    "uk": "Ukrainian",
+    "ur": "Urdu",
+    "uz": "Uzbek",
+    "vi": "Vietnamese",
+    "cy": "Welsh",
+    "xh": "Xhosa",
+    "yi": "Yiddish",
+    "yo": "Yoruba",
+    "zu": "Zulu"
+  },
+  get_audio(text, lang) {
+    if(!TTS.langs[lang] || text.length >= 200) {
+      return;
+    }
+    return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
   }
 };
