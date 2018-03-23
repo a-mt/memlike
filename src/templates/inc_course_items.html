@@ -63,6 +63,12 @@ $ t = now()
               $:(LANG.misc['x_hours'].replace('%', str(int(hours))))
               <i class="ico-color-water grey"></i>
             </div>
+          $elif review.total_seconds() > 1:
+            $ min = ceil(review.total_seconds()/60)
+            <div class="status review" title="$:(LANG.misc['review_in_x_min'].replace('%', str(min)))">
+              $:(LANG.misc['x_min'].replace('%', str(min)))
+              <i class="ico-color-water grey"></i>
+            </div>
           $else:
             $ toreview += 1
             <div class="status review" title="$:(LANG.misc['review_now'])">
