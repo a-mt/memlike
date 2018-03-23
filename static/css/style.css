@@ -396,11 +396,12 @@ header .header-nav {
 .header-nav .lang {
   float: right;
 }
-.page-banner .actions-right {
+.actions-right {
   float: right;
-  margin-top: 20px;
+  white-space: nowrap;
+  flex-grow: 1;
+  text-align: right;
 }
-
 #choose-lang {
   list-style: none;
   padding: 0;
@@ -491,7 +492,13 @@ p:last-child {
 h1 {
   font-size: 25px;
 }
-h1.big {
+.username {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.username > h1 {
   font-size: 30px;
   line-height: 30px;
   margin-bottom: 30px;
@@ -933,8 +940,9 @@ a > .expand-icon { /* ico-s icon-arr-right */
      flex-wrap: wrap;
      justify-content: center;
   }
-  h1.big {
-    text-align: center;
+  .big {
+    flex-direction: column;
+    justify-content: center;
   }
 }
 .page-photo {

@@ -425,7 +425,7 @@ class Memrise:
                     if learning["num_things"] == 0:
                         learning["percent_complete"] = 100
                     else:
-                        learning["percent_complete"] = int(float(learning["learned"]) / learning["num_things"] * 100)
+                        learning["percent_complete"] = int(float(learning["learned"]) / (learning["num_things"] - learning["ignored"]) * 100)
 
             # Review
             item = div.find('a',{'class':'blue'})

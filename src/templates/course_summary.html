@@ -22,6 +22,10 @@ $:(prender.inc_course_banner(course))
     <!-- Links to garden learn / preview -->
     <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_course'])</button>
 
+    $if session.loggedin:
+     <div class="actions-right">
+        <button class="ajax btn" data-href="/ajax/sync/${course['id']}">Sync</button>
+      </div>
   </div>
 </div>
 
