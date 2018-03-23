@@ -54,7 +54,7 @@ class view:
             print e
             return GLOBALS['prender']._404()
 
-        return GLOBALS['render'].learn(course, "preview", lvl, thing)
+        return GLOBALS['render'].learn(course, "preview", lvl, thing, 0)
 
 class level:
     def GET(self, idCourse, slugCourse, lvl, path2=""):

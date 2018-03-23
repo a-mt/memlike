@@ -341,16 +341,17 @@ class Learn extends Component {
   choice(text) {
 
     var score = 0,
-        testText = sanitizeTyping(text, this.is_strict),
+        testText = sanitizeTyping(text, this.is_strict).toLowerCase(),
         refText = "";
 
     // Text input
     for (let i = 0; i < this.choices.length; i++) {
-      var s = get_score(testText, this.choices[i]);
+      var choice = this.choices[i].toLowerCase(),
+          s = get_score(testText, choice);
 
       if (s && s > score) {
         score = s;
-        refText = this.choices[i];
+        refText = choice;
       }
     }
 
@@ -620,7 +621,15 @@ class Learn extends Component {
 
     // Preview thing
     if (this.props.thing) {
-      return this.render_presentation(false, this.props.thing);
+      if (this.state.debug_screen) {
+        return this.screen();
+      } else {
+        return h(
+          'div',
+          null,
+          this.render_presentation(false)
+        );
+      }
     }
 
     // Media level
@@ -953,8 +962,8 @@ class Learn extends Component {
         console.error(setting.template + " doesn't exist");
     }
   }
-  get_screen(tpl, id) {
-    id = id || this.state.data.boxes[this.state.i].learnable_id;
+  get_screen(tpl) {
+    var id = this.props.thing || this.state.data.boxes[this.state.i].learnable_id;
     return this.state.data.screens[id][tpl];
   }
 
@@ -986,10 +995,13 @@ class Learn extends Component {
     return h(Tapping, { item: this.get_screen("tapping"), difficulty: setting.difficulty || 1, setChoices: this.setChoices });
   }
   render_copytyping() {
-    return h(Presentation, { item: this.get_screen("presentation"), prompt: this.get_screen("typing") });
+    var prompt = this.get_screen("typing");
+    this.setChoices(prompt.correct, "text", prompt.is_strict);
+
+    return h(Presentation, { item: this.get_screen("presentation"), prompt: prompt });
   }
-  render_presentation(correct, thing) {
-    return h(Presentation, { item: this.get_screen("presentation", thing), correct: correct });
+  render_presentation(correct) {
+    return h(Presentation, { item: this.get_screen("presentation"), correct: correct });
   }
   recap() {
     var items = [];
