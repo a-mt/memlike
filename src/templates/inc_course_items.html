@@ -23,6 +23,19 @@ $ ignored  = 0
 $ tolearn  = 0
 $ toreview = 0
 $ t = now()
+$ j = 0
+
+$code:
+    def get_thing(i, learnable_id):
+        """get thingusers associated with current learnable"""
+        if i >= len(items['thingusers']):
+            return None
+
+        elif items['thingusers'][i]['learnable_id'] != learnable_id:
+          return None
+
+        else:
+          return items['thingusers'][i]
 
 <!-- Level details -->
 <ul class="rows">
@@ -31,23 +44,24 @@ $ t = now()
       $:thing(item, 'item')
       $:thing(item, 'definition')
 
-      $if i < len(items['thingusers']):
-        $ item = items['thingusers'][i]
+      $ thing_item = get_thing(j, item['learnable_id'])
+      $if thing_item:
+        $ j += 1
 
-        $if item['ignored']:
+        $if thing_item['ignored']:
           $ ignored += 1
           <div class="status">$:(LANG.misc['ignored'])</div>
 
-        $elif item['growth_level'] < 6:
+        $elif thing_item['growth_level'] < 6:
           $ tolearn += 1
-          $ percent = int(item['growth_level'] / 6.0 * 100)
+          $ percent = int(thing_item['growth_level'] / 6.0 * 100)
           <div class="status">
             <div class="progress"><div class="bar bar-success" style="width:${percent}%"></div></div>
           </div>
 
         $else:
           $ learned += 1
-          $ review = (date(item['next_date']) - t)
+          $ review = (date(thing_item['next_date']) - t)
           $ days   = review.days
           $ hours  = ceil(review.total_seconds() / 3600)
 

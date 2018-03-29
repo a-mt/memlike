@@ -491,7 +491,7 @@ class Memrise:
                 response.raise_for_status()
                 level = response.json()
 
-                if sessionid:
+                if sessionid and slug != "preview":
                     url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + slug +"/"
                     response = requests.head(url, cookies={"sessionid": sessionid})
                     response.raise_for_status()
