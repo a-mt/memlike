@@ -1169,6 +1169,23 @@ a > .expand-icon { /* ico-s icon-arr-right */
   text-align: center;
 }
 
+.multimedia-wrapper {
+  font-family: "Open Sans",Sans-Serif;
+  max-width: 640px;
+  padding: 20px;
+}
+.multimedia-wrapper p {
+  margin: 0 0 10px;
+}
+.multimedia-wrapper a {
+  color: #15A1EC;
+}
+.multimedia-wrapper code,
+.multimedia-wrapper pre {
+  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-size: 12px;
+  border-radius: 3px;
+}
 .multimedia-wrapper pre {
   padding: 9.5px;
   margin: 0 0 10px;

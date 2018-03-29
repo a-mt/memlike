@@ -10,9 +10,23 @@ $(document).ready(function(){
 
   if(window.markdown) {
     window.markdown.decode = function(value) {
-      return window.markdown.toHTML(value.replace(/img:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '![]($1)'))
-              .replace(/([^:>"])(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '$1<a href="$2" class="link">$2</a>')
-              .replace(/embed:(https?:\/\/[^\s<>\{\}\(\)\|'\[\]^,~`]+)/g, '<a href="$1" class="embed link">$1</a>');
+      var STATIC_URL   = 'https://static.memrise.com/',
+          allowed_tags = 'p,strong,em,pre,code';
+
+      value = value.replace(/img:http:\/\/www.memrise.com\/static\//g, "img:" + STATIC_URL)
+                   .replace(/img:http:\/\/memrise.com\/static\//g, "img:" + STATIC_URL)
+                   .replace(/img:\/static\//g, "img:" + STATIC_URL)
+                   .replace(/img:([^\s<]+)/g, "`img:$1`");
+      value = window.markdown.toHTML(value);
+
+      var res = $("<div>").html(value);
+      res.find('*').each(function(){
+        $(this).is(allowed_tags) || $(this).remove();
+      });
+
+      return res.html().trim()
+                .replace(/img:\s*([^\s<]+)/g, "<img class='img-tag' src='$1' />")
+                .replace(/embed:\s*([^\s<]+)/g, "<a class='embed' href='$1' target='_blank'>$1</a>");
     };
   } else {
     window.markdown = {decode: function(value) { return value; }};
