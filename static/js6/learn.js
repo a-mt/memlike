@@ -4,6 +4,9 @@ const {h, Component, render} = window.preact;
 
 /* global $ */
 $(document).ready(function(){
+  if(window.$_URL.lvl == "") {
+    window.course.levels[1] = {"name": "", "type": 1};
+  }
   Object.freeze(window.course);
   render(<Learn level={window.$_URL.lvl} type={window.$_URL.type} thing={window.$_URL.thing} sendresults={window.$_URL.sendresults} />, document.getElementById('learn-container'));
 });
@@ -108,8 +111,8 @@ class Learn extends Component {
     if(typeof this.props.level =="string") { // all
       this.levels         = this.props.level.split(',').map((i) => parseInt(i));
 
-      this.state.level    = this.levels[0];
-      this.state.maxlevel = this.levels[this.levels.length-1];
+      this.state.level    = this.levels[0] || 1;
+      this.state.maxlevel = this.levels[this.levels.length-1] || 1;
       this.state.get_all  = true;
     } else {
       this.state.level    = parseInt(this.props.level);
@@ -198,14 +201,21 @@ class Learn extends Component {
     // Add text To Speech
     if(window.TTS) {
       $('.text[lang]').each(function(){
-        var src = window.TTS.get_audio(this.innerHTML, this.getAttribute('lang'));
+        var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
 
         if(src) {
-          var audio = document.createElement('audio');
-          audio.src = src;
-          audio.className = "audio-player ico ico-audio";
+          window.audioPlayer && window.audioPlayer.pause();
 
-          this.appendChild(audio);
+          if(this.firstElementChild && this.firstElementChild.nodeName == "AUDIO") {
+            this.firstElementChild.src = src;
+
+          } else {
+            var audio = document.createElement('audio');
+            audio.src = src;
+            audio.className = "audio-player ico ico-audio";
+
+            this.appendChild(audio);
+          }
         }
       });
     }
@@ -213,7 +223,8 @@ class Learn extends Component {
     // Update level title
     if(!this.state.get_all) {
       if(!prevState.data || prevState.level != this.state.level) {
-        document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
+        var name = window.course.levels[this.state.level].name;
+        document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
       }
     } else if(this.props.type == "speed_review"){
       Timer.start(this.time_over.bind(this));

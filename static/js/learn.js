@@ -7,6 +7,9 @@ const { h, Component, render } = window.preact;
 
 /* global $ */
 $(document).ready(function () {
+  if (window.$_URL.lvl == "") {
+    window.course.levels[1] = { "name": "", "type": 1 };
+  }
   Object.freeze(window.course);
   render(h(Learn, { level: window.$_URL.lvl, type: window.$_URL.type, thing: window.$_URL.thing, sendresults: window.$_URL.sendresults }), document.getElementById('learn-container'));
 });
@@ -113,8 +116,8 @@ class Learn extends Component {
       // all
       this.levels = this.props.level.split(',').map(i => parseInt(i));
 
-      this.state.level = this.levels[0];
-      this.state.maxlevel = this.levels[this.levels.length - 1];
+      this.state.level = this.levels[0] || 1;
+      this.state.maxlevel = this.levels[this.levels.length - 1] || 1;
       this.state.get_all = true;
     } else {
       this.state.level = parseInt(this.props.level);
@@ -200,14 +203,20 @@ class Learn extends Component {
     // Add text To Speech
     if (window.TTS) {
       $('.text[lang]').each(function () {
-        var src = window.TTS.get_audio(this.innerHTML, this.getAttribute('lang'));
+        var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
 
         if (src) {
-          var audio = document.createElement('audio');
-          audio.src = src;
-          audio.className = "audio-player ico ico-audio";
+          window.audioPlayer && window.audioPlayer.pause();
 
-          this.appendChild(audio);
+          if (this.firstElementChild && this.firstElementChild.nodeName == "AUDIO") {
+            this.firstElementChild.src = src;
+          } else {
+            var audio = document.createElement('audio');
+            audio.src = src;
+            audio.className = "audio-player ico ico-audio";
+
+            this.appendChild(audio);
+          }
         }
       });
     }
@@ -215,7 +224,8 @@ class Learn extends Component {
     // Update level title
     if (!this.state.get_all) {
       if (!prevState.data || prevState.level != this.state.level) {
-        document.getElementById('level-title').innerHTML = this.state.level + " - " + window.course.levels[this.state.level].name;
+        var name = window.course.levels[this.state.level].name;
+        document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
       }
     } else if (this.props.type == "speed_review") {
       Timer.start(this.time_over.bind(this));
@@ -615,19 +625,19 @@ class Learn extends Component {
     if (this.state.error) {
       if (this.state.error == 403) {
         return h(
-          'p',
+          "p",
           null,
           window.i18n._403,
-          ' ',
+          " ",
           h(
-            'a',
-            { href: '/login', 'class': 'link' },
+            "a",
+            { href: "/login", "class": "link" },
             window.i18n.login
           )
         );
       } else {
         return h(
-          'p',
+          "p",
           null,
           window.i18n.error
         );
@@ -636,7 +646,7 @@ class Learn extends Component {
 
     // Loading data
     if (!this.state.data) {
-      return h('div', { 'class': 'loading-spinner' });
+      return h("div", { "class": "loading-spinner" });
     }
 
     // Preview thing
@@ -645,7 +655,7 @@ class Learn extends Component {
         return this.screen();
       } else {
         return h(
-          'div',
+          "div",
           null,
           this.render_presentation(false)
         );
@@ -660,7 +670,7 @@ class Learn extends Component {
     // Recap
     if (this.state.screen == "recap") {
       return h(
-        'div',
+        "div",
         null,
         this.addStats(),
         this.screen()
@@ -669,18 +679,18 @@ class Learn extends Component {
 
     // Default
     return h(
-      'div',
+      "div",
       null,
       this.addStats(),
       this.props.type == "speed_review" ? h(
-        'div',
-        { 'class': 'speed_review' },
-        h('div', { id: 'speed_review-timer', key: Date.now() }),
+        "div",
+        { "class": "speed_review" },
+        h("div", { id: "speed_review-timer", key: Date.now() }),
         this.screen()
       ) : this.screen(),
       h(
-        'span',
-        { 'class': 'btn submit', tabindex: '0' },
+        "span",
+        { "class": "btn submit", tabindex: "0" },
         window.i18n.next
       )
     );
@@ -690,36 +700,36 @@ class Learn extends Component {
     var percent = this.state.n ? Math.ceil(this.state.i / this.state.n * 100) : 100;
 
     return h(
-      'div',
-      { 'class': 'progress-stats' },
+      "div",
+      { "class": "progress-stats" },
       this.props.type == "speed_review" && h(
-        'div',
-        { 'class': 'hearts-wrapper' },
-        [1, 2, 3].map(i => h('span', { 'class': "heart " + (i <= this.state.hearts ? "full" : "empty") }))
+        "div",
+        { "class": "hearts-wrapper" },
+        [1, 2, 3].map(i => h("span", { "class": "heart " + (i <= this.state.hearts ? "full" : "empty") }))
       ),
       h(
-        'div',
-        { 'class': 'points-num' },
+        "div",
+        { "class": "points-num" },
         this.state.points
       ),
       h(
-        'div',
-        { 'class': 'progress-bar', role: 'progressbar', 'aria-valuenow': this.state.i, 'aria-valuemin': '0', 'aria-valuemax': this.state.i },
+        "div",
+        { "class": "progress-bar", role: "progressbar", "aria-valuenow": this.state.i, "aria-valuemin": "0", "aria-valuemax": this.state.i },
         h(
-          'div',
-          { 'class': 'counter' },
+          "div",
+          { "class": "counter" },
           this.state.i,
-          ' / ',
+          " / ",
           this.state.n
         ),
         h(
-          'div',
-          { 'class': 'progress-bar-active', style: { 'clip-path': 'polygon(0 0, ' + percent + '% 0, ' + percent + '% 100%, 0 100%)' } },
+          "div",
+          { "class": "progress-bar-active", style: { 'clip-path': 'polygon(0 0, ' + percent + '% 0, ' + percent + '% 100%, 0 100%)' } },
           h(
-            'div',
-            { 'class': 'counter' },
+            "div",
+            { "class": "counter" },
             this.state.i,
-            ' / ',
+            " / ",
             this.state.n
           )
         )
@@ -733,62 +743,62 @@ class Learn extends Component {
         current = this.state.debug_screen;
 
     return h(
-      'ul',
-      { id: 'debug-screen' },
+      "ul",
+      { id: "debug-screen" },
       h(
-        'li',
-        { 'class': current ? "" : "active" },
-        'default'
+        "li",
+        { "class": current ? "" : "active" },
+        "default"
       ),
       h(
-        'li',
-        { 'class': ("multiple_choice" in screen && screen.multiple_choice ? "" : "disabled") + (current == "multiple_choice" ? " active" : "") },
-        'multiple_choice'
+        "li",
+        { "class": ("multiple_choice" in screen && screen.multiple_choice ? "" : "disabled") + (current == "multiple_choice" ? " active" : "") },
+        "multiple_choice"
       ),
       h(
-        'li',
-        { 'class': ("typing" in screen && screen.typing ? "" : "disabled") + (current == "typing" ? " active" : "") },
-        'typing'
+        "li",
+        { "class": ("typing" in screen && screen.typing ? "" : "disabled") + (current == "typing" ? " active" : "") },
+        "typing"
       ),
       h(
-        'li',
-        { 'class': ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice ? "" : "disabled") + (current == "reversed_multiple_choice" ? " active" : "") },
-        'reversed_multiple_choice'
+        "li",
+        { "class": ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice ? "" : "disabled") + (current == "reversed_multiple_choice" ? " active" : "") },
+        "reversed_multiple_choice"
       ),
       h(
-        'li',
-        { 'class': ("audio_multiple_choice" in screen && screen.audio_multiple_choice ? "" : "disabled") + (current == "audio_multiple_choice" ? " active" : "") },
-        'audio_multiple_choice'
+        "li",
+        { "class": ("audio_multiple_choice" in screen && screen.audio_multiple_choice ? "" : "disabled") + (current == "audio_multiple_choice" ? " active" : "") },
+        "audio_multiple_choice"
       ),
       h(
-        'li',
-        { 'class': ("tapping" in screen && screen.tapping ? "" : "disabled") + (current == "tapping" ? " active" : "") },
-        'tapping'
+        "li",
+        { "class": ("tapping" in screen && screen.tapping ? "" : "disabled") + (current == "tapping" ? " active" : "") },
+        "tapping"
       ),
       h(
-        'li',
-        { 'class': ("typing" in screen && screen.typing ? "" : "disabled") + (current == "copytyping" ? " active" : "") },
-        'copytyping'
+        "li",
+        { "class": ("typing" in screen && screen.typing ? "" : "disabled") + (current == "copytyping" ? " active" : "") },
+        "copytyping"
       ),
       h(
-        'li',
-        { 'class': ("typing" in screen && screen.typing.audio ? "" : "disabled") + (current == "audio_typing" ? " active" : "") },
-        'audio_typing'
+        "li",
+        { "class": ("typing" in screen && screen.typing.audio ? "" : "disabled") + (current == "audio_typing" ? " active" : "") },
+        "audio_typing"
       ),
       h(
-        'li',
-        { 'class': ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice.prompt.video ? "" : "disabled") + (current == "reversed_multiple_choice_prompt_video" ? " active" : "") },
-        'reversed_multiple_choice_prompt_video'
+        "li",
+        { "class": ("reversed_multiple_choice" in screen && screen.reversed_multiple_choice.prompt.video ? "" : "disabled") + (current == "reversed_multiple_choice_prompt_video" ? " active" : "") },
+        "reversed_multiple_choice_prompt_video"
       ),
       h(
-        'li',
-        { 'class': ("multiple_choice" in screen && screen.multiple_choice.prompt.video ? "" : "disabled") + (current == "video-pre-presentation" ? " active" : "") },
-        'video-pre-presentation'
+        "li",
+        { "class": ("multiple_choice" in screen && screen.multiple_choice.prompt.video ? "" : "disabled") + (current == "video-pre-presentation" ? " active" : "") },
+        "video-pre-presentation"
       ),
       h(
-        'li',
-        { 'class': (screen.presentation ? "" : "disabled") + (current == "presentation" ? " active" : "") },
-        'presentation'
+        "li",
+        { "class": (screen.presentation ? "" : "disabled") + (current == "presentation" ? " active" : "") },
+        "presentation"
       )
     );
   }
@@ -1043,7 +1053,7 @@ class Learn extends Component {
   }
   markdown() {
     var data = window.markdown.decode(eval(this.state.data));
-    return h('div', { 'class': 'nicebox', dangerouslySetInnerHTML: { __html: data } });
+    return h("div", { "class": "nicebox", dangerouslySetInnerHTML: { __html: data } });
   }
 }
 
@@ -1058,60 +1068,60 @@ const Value = function (props) {
     switch (props.type) {
       case "text":
         return h(
-          'span',
+          "span",
           null,
           content
         );
       case "image":
-        return h('img', { key: Date.now(), src: content, 'class': 'text-image' });
+        return h("img", { key: Date.now(), src: content, "class": "text-image" });
       case "audio":
-        return h('audio', { key: Date.now(), src: content, 'class': 'audio-player ico ico-l ico-audio' });
+        return h("audio", { key: Date.now(), src: content, "class": "audio-player ico ico-l ico-audio" });
       case "video":
         return h(
-          'video',
-          { key: Date.now(), src: content, 'class': 'video-player', controls: true, autoplay: true },
-          'Your browser does not support the video tag.'
+          "video",
+          { key: Date.now(), src: content, "class": "video-player", controls: true, autoplay: true },
+          "Your browser does not support the video tag."
         );
     }
   } else {
     switch (props.type) {
       case "text":
         return h(
-          'div',
-          _extends({ 'class': 'text' }, attrs),
+          "div",
+          _extends({ "class": "text" }, attrs),
           content
         );
       case "image":
         return h(
-          'div',
-          { 'class': 'image' },
+          "div",
+          { "class": "image" },
           h(
-            'div',
-            { 'class': 'media-list' },
-            content.map(media => h('img', { key: Date.now(), src: media, 'class': 'text-image loading' }))
+            "div",
+            { "class": "media-list" },
+            content.map(media => h("img", { key: Date.now(), src: media, "class": "text-image loading" }))
           )
         );
       case "audio":
         return h(
-          'div',
-          { 'class': 'audio' },
+          "div",
+          { "class": "audio" },
           h(
-            'div',
-            { 'class': 'media-list' },
-            content.map(media => h('audio', { key: Date.now(), src: media.normal, 'class': 'audio-player ico ico-l ico-audio' }))
+            "div",
+            { "class": "media-list" },
+            content.map(media => h("audio", { key: Date.now(), src: media.normal, "class": "audio-player ico ico-l ico-audio" }))
           )
         );
       case "video":
         return h(
-          'div',
-          { 'class': 'video' },
+          "div",
+          { "class": "video" },
           h(
-            'div',
-            { 'class': 'media-list' },
+            "div",
+            { "class": "media-list" },
             h(
-              'video',
-              { key: Date.now(), src: content.random(), 'class': 'video-player', controls: true, autoplay: true },
-              'Your browser does not support the video tag.'
+              "video",
+              { key: Date.now(), src: content.random(), "class": "video-player", controls: true, autoplay: true },
+              "Your browser does not support the video tag."
             )
           )
         );
@@ -1124,54 +1134,54 @@ const Correction = function (props) {
 
   if (data.score == 1) {
     return h(
-      'div',
-      { 'class': 'alert alert-success' },
+      "div",
+      { "class": "alert alert-success" },
       window.i18n.correct_answer,
-      '!'
+      "!"
     );
   } else if (data.score == 0) {
     return h(
-      'div',
-      { 'class': 'alert alert-danger' },
+      "div",
+      { "class": "alert alert-danger" },
       window.i18n.wrong_answer,
-      '!\xA0',
+      "!\xA0",
       data.value ? h(
-        'span',
+        "span",
         null,
         window.i18n.your_answer_was,
-        ': ',
+        ": ",
         h(
-          'strong',
+          "strong",
           null,
-          h(Value, { content: data.value, type: data.kind, single: '1' })
+          h(Value, { content: data.value, type: data.kind, single: "1" })
         )
       ) : h(
-        'span',
+        "span",
         null,
         window.i18n.your_answer_was_empty
       )
     );
   } else {
     return h(
-      'div',
-      { 'class': 'alert alert-warning' },
+      "div",
+      { "class": "alert alert-warning" },
       window.i18n.near_answer,
-      '!\xA0',
+      "!\xA0",
       h(
-        'span',
+        "span",
         null,
         window.i18n.your_answer_was,
-        ': ',
+        ": ",
         h(
-          'strong',
+          "strong",
           null,
           data.kind == "text" ? h(
-            'span',
+            "span",
             null,
             data.value,
-            ' ',
-            h('small', { 'class': 'correction', dangerouslySetInnerHTML: { __html: "(" + diff(data.value, data.ref) + ")" } })
-          ) : h(Value, { content: data.value, type: data.kind, single: '1' })
+            " ",
+            h("small", { "class": "correction", dangerouslySetInnerHTML: { __html: "(" + diff(data.value, data.ref) + ")" } })
+          ) : h(Value, { content: data.value, type: data.kind, single: "1" })
         )
       )
     );
@@ -1182,129 +1192,129 @@ const Presentation = function (props) {
   var item = props.item,
       correct = props.correct;
   return h(
-    'div',
+    "div",
     null,
     correct && h(Correction, { data: correct }),
     h(
-      'table',
-      { 'class': "learn nicebox big thing" + (correct ? "" : " autoplay") },
+      "table",
+      { "class": "learn nicebox big thing" + (correct ? "" : " autoplay") },
       h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           item.item.label
         ),
         h(
-          'td',
-          { 'class': 'item' },
+          "td",
+          { "class": "item" },
           h(Value, { content: item.item.value, type: item.item.kind, lang: this.props.langTarget }),
           item.item.alternatives.map(txt => h(
-            'div',
-            { 'class': 'alt' },
+            "div",
+            { "class": "alt" },
             txt
           ))
         )
       ),
       h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           item.definition.label
         ),
         h(
-          'td',
-          { 'class': 'definition' },
+          "td",
+          { "class": "definition" },
           h(Value, { content: item.definition.value, type: item.definition.kind }),
           item.definition.alternatives.map(txt => h(
-            'div',
-            { 'class': 'alt' },
+            "div",
+            { "class": "alt" },
             txt
           ))
         )
       ),
       h(
-        'tr',
-        { 'class': 'sep' },
-        h('td', { colspan: '2' })
+        "tr",
+        { "class": "sep" },
+        h("td", { colspan: "2" })
       ),
       item.audio && h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           item.audio.label
         ),
         h(
-          'td',
-          { 'class': 'audio' },
-          h(Value, { content: item.audio.value, type: 'audio' })
+          "td",
+          { "class": "audio" },
+          h(Value, { content: item.audio.value, type: "audio" })
         )
       ),
       item.visible_info.map(it => h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           it.label
         ),
         h(
-          'td',
-          { 'class': 'more' },
+          "td",
+          { "class": "more" },
           h(Value, { content: it.value, type: it.kind })
         )
       )),
       item.hidden_info.map(it => h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           it.label
         ),
         h(
-          'td',
-          { 'class': 'more' },
+          "td",
+          { "class": "more" },
           h(Value, { content: it.value, type: it.kind })
         )
       )),
       item.attributes.map(it => h(
-        'tr',
+        "tr",
         null,
         h(
-          'td',
-          { 'class': 'label' },
+          "td",
+          { "class": "label" },
           it.label
         ),
         h(
-          'td',
-          { 'class': 'more' },
+          "td",
+          { "class": "more" },
           h(
-            'span',
-            { 'class': 'badge' },
-            h(Value, { content: it.value, type: 'text', single: '1' })
+            "span",
+            { "class": "badge" },
+            h(Value, { content: it.value, type: "text", single: "1" })
           )
         )
       ))
     ),
     props.prompt && h(
-      'div',
-      { 'class': 'typing-container' },
+      "div",
+      { "class": "typing-container" },
       h(
-        'div',
-        { 'class': 'typing', key: Date.now() },
-        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '', placeholder: props.prompt.answer.value, tabindex: '1', autoFocus: 'autofocus' }),
+        "div",
+        { "class": "typing", key: Date.now() },
+        h("input", { type: "text", autocomplete: "off", spellcheck: "false", value: "", placeholder: props.prompt.answer.value, tabindex: "1", autoFocus: "autofocus" }),
         h(
-          'ul',
-          { 'class': 'keyboard' },
+          "ul",
+          { "class": "keyboard" },
           props.prompt.choices.map((letter, i) => h(
-            'li',
-            { 'class': 'button', tabindex: i + 2 },
+            "li",
+            { "class": "button", tabindex: i + 2 },
             letter
           ))
         )
@@ -1366,16 +1376,16 @@ const MultipleChoice = function (props) {
   props.setChoices(choices, "numeric");
 
   return h(
-    'div',
-    { 'class': 'nicebox' },
+    "div",
+    { "class": "nicebox" },
     h(
-      'div',
-      { 'class': 'big choice autoplay' },
+      "div",
+      { "class": "big choice autoplay" },
       h(Value, { content: item.prompt[itemType].value, type: itemType })
     ),
     h(
-      'div',
-      { 'class': "medium choices n" + props.nChoice },
+      "div",
+      { "class": "medium choices n" + props.nChoice },
       choices
     )
   );
@@ -1384,15 +1394,15 @@ const MultipleChoice = function (props) {
 class ChoiceBox extends Component {
   render(props) {
     return h(
-      'div',
-      { accesskey: props.i, 'class': "choice-box nicebox " + props.answerType, id: "choice-" + props.i, tabindex: props.i },
+      "div",
+      { accesskey: props.i, "class": "choice-box nicebox " + props.answerType, id: "choice-" + props.i, tabindex: props.i },
       h(
-        'span',
-        { 'class': 'choice-index' },
+        "span",
+        { "class": "choice-index" },
         props.i,
-        '.'
+        "."
       ),
-      h(Value, { content: props.value, type: props.answerType, single: '1' })
+      h(Value, { content: props.value, type: props.answerType, single: "1" })
     );
   }
 }
@@ -1404,26 +1414,26 @@ const Typing = function (props) {
   props.setChoices(item.correct, "text", item.is_strict);
 
   return h(
-    'div',
-    { 'class': 'nicebox' },
+    "div",
+    { "class": "nicebox" },
     h(
-      'div',
-      { 'class': 'big choice autoplay' },
+      "div",
+      { "class": "big choice autoplay" },
       h(Value, { content: item.prompt[itemType].value, type: itemType })
     ),
     h(
-      'div',
-      { 'class': 'typing-container' },
+      "div",
+      { "class": "typing-container" },
       h(
-        'div',
-        { 'class': 'typing', key: Date.now() },
-        h('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', value: '', tabindex: '1', autoFocus: 'autofocus' }),
+        "div",
+        { "class": "typing", key: Date.now() },
+        h("input", { type: "text", autocomplete: "off", spellcheck: "false", value: "", tabindex: "1", autoFocus: "autofocus" }),
         h(
-          'ul',
-          { 'class': 'keyboard' },
+          "ul",
+          { "class": "keyboard" },
           item.choices.map((letter, i) => h(
-            'li',
-            { 'class': 'button', tabindex: i + 2 },
+            "li",
+            { "class": "button", tabindex: i + 2 },
             letter
           ))
         )
@@ -1461,26 +1471,26 @@ const Tapping = function (props) {
   }
 
   return h(
-    'div',
-    { 'class': 'nicebox' },
+    "div",
+    { "class": "nicebox" },
     h(
-      'div',
-      { 'class': 'big choice autoplay' },
+      "div",
+      { "class": "big choice autoplay" },
       h(Value, { content: item.prompt[itemType].value, type: itemType })
     ),
     h(
-      'div',
-      { 'class': 'tapping-container' },
+      "div",
+      { "class": "tapping-container" },
       h(
-        'div',
-        { 'class': 'tapping', key: Date.now() },
-        h('div', { 'class': 'input' }),
+        "div",
+        { "class": "tapping", key: Date.now() },
+        h("div", { "class": "input" }),
         h(
-          'ul',
-          { 'class': 'keyboard' },
+          "ul",
+          { "class": "keyboard" },
           randomize(choices).map((word, i) => h(
-            'li',
-            { 'class': 'button', tabindex: i + 1, id: "btn-" + i },
+            "li",
+            { "class": "button", tabindex: i + 1, id: "btn-" + i },
             word
           ))
         )
@@ -1494,8 +1504,8 @@ const Recap = function (props) {
       type = props.type;
 
   return h(
-    'table',
-    { 'class': 'learn nicebox recap' },
+    "table",
+    { "class": "learn nicebox recap" },
     items.map(item => {
       var rate = "";
 
@@ -1504,30 +1514,30 @@ const Recap = function (props) {
         var successRate = item.right / item.count * 100,
             className = successRate == 100 ? "neverMissed" : successRate < 20 ? "oftenMissed" : successRate > 80 ? "rarelyMissed" : "sometimesMissed",
             rate = h(
-          'span',
-          { 'class': className },
+          "span",
+          { "class": className },
           item.right,
-          '/',
+          "/",
           item.count
         );
       }
 
       // Render item
       return h(
-        'tr',
-        { 'class': 'thing' },
+        "tr",
+        { "class": "thing" },
         h(
-          'td',
+          "td",
           null,
           h(Value, { content: item.item.value, type: item.item.kind })
         ),
         h(
-          'td',
+          "td",
           null,
           h(Value, { content: item.definition.value, type: item.definition.kind })
         ),
         rate && h(
-          'td',
+          "td",
           null,
           rate
         )

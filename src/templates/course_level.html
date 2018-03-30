@@ -1,7 +1,7 @@
 $def with (course, level, items)
 $var currentPage: courses
 $var js: /static/js/markdown.min.js
-$var title: $(course['title']) - $(level['index'])
+$var title: $(course['title']) $("" if level['index'] == -1 else " - " + str(level['index']))
 
 $:(prender.inc_course_banner(course))
 
@@ -9,15 +9,21 @@ $:(prender.inc_course_banner(course))
   <div class="inner clearfix">
 
     <!-- Link to levels list -->
-    <a href="$(course['url'])" class="pill">
-      <i class="ico ico-list"></i>
-      $(LANG.misc['levels']) ($(len(course['levels'])))
-    </a>
+    $if level['index'] == -1:
+      <button type="button" class="pill active">
+          $(LANG.misc['levels']) ($(len(course['levels'])))
+      </button>
 
-    <!-- Level name -->
-    <button type="button" class="pill active">
-      $(level['index']) - $(level['name'])
-    </button>
+    $else:
+      <a href="$(course['url'])" class="pill">
+        <i class="ico ico-list"></i>
+        $(LANG.misc['levels']) ($(len(course['levels'])))
+      </a>
+
+      <!-- Level name -->
+      <button type="button" class="pill active">
+          $(level['index']) - $(level['name'])
+      </button>
 
     <!-- Links to garden learn / preview -->
     $if level['type'] != 2:
@@ -78,25 +84,26 @@ $:(prender.inc_course_banner(course))
       </div>
 
     <!-- Pagination -->
-    $ levels = sorted(course['levels'].keys(), key=int)
-    $ i      = levels.index(str(level['index']))
+    $if level['index'] != -1:
+      $ levels = sorted(course['levels'].keys(), key=int)
+      $ i      = levels.index(str(level['index']))
 
-    <div id="content-loader" class="paging clearfix">
-      $if i > 0:
-        $ idx = levels[i-1]
-    
-        <a href="$(course['url'])$idx" class="paging-trigger prev">
-          <span class="ico ico-arr-left"></span>
-          <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
-        </a>
-      $if i + 1 < len(levels):
-        $ idx = levels[i+1]
+      <div id="content-loader" class="paging clearfix">
+        $if i > 0:
+          $ idx = levels[i-1]
 
-        <a href="$(course['url'])$idx" class="paging-trigger next">
-          <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
-          <span class="ico ico-arr-right"></span>
-        </a>
-    </div>
+          <a href="$(course['url'])$idx" class="paging-trigger prev">
+            <span class="ico ico-arr-left"></span>
+            <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
+          </a>
+        $if i + 1 < len(levels):
+          $ idx = levels[i+1]
+
+          <a href="$(course['url'])$idx" class="paging-trigger next">
+            <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
+            <span class="ico ico-arr-right"></span>
+          </a>
+      </div>
 
   </div>
 </main>
@@ -106,7 +113,11 @@ $if level['type'] != 2:
   <form id="mode-selector" method="GET" action="$(course['url'])$(level['index'])/garden" autocomplete="off">
     <div class="mode-selector">
       <h3 class="mode-selector-title">
-        $(level['index']) - $(level['name'])
+        $if level['index'] == -1:
+          $(course['title'])
+
+        $else:
+          $(level['index']) - $(level['name'])
         <div class="mode-selector-close">&times;</div>
       </h3>
       <div class="mode-icons">

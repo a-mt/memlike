@@ -86,16 +86,33 @@ class level:
         }, items)
 
 class course:
-    def GET(self, idCourse, path=""):
+    def GET(self, idCourse, slugCourse=""):
         learning = False
+        items    = False
         try:
             course = memrise.course(idCourse)
 
-            if int(idCourse) in GLOBALS['session']['learning']:
+            # Course without any level ?
+            if len(course["levels"]) == 0:
+                sessionid = False
+                if GLOBALS['session']['loggedin']:
+                    sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+                items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid)
+
+            elif int(idCourse) in GLOBALS['session']['learning']:
                 learning = GLOBALS['session']['learning'][int(idCourse)]
+
         except HTTPError as e:
             print e
             return GLOBALS['prender']._404()
+
+        if items:
+            return GLOBALS['render'].course_level(course, {
+                "name": False,
+                "type": 1,
+                "index": -1
+            }, items)
 
         return GLOBALS['render'].course_summary(course, learning)
 

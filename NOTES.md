@@ -124,3 +124,4 @@ Course with
 * multiple images: /course/399843/human-neuroanatomy/2/
 * audio: /course/365747/80-operas-with-audio/1/
 * video: /course/1096771/anglais-britannique-1/
+* no level: /course/233943/livre-1001-phrases-pour-parler-allemand/
