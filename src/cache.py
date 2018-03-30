@@ -22,9 +22,14 @@ class Lock:
         max_tries = 1000
 
         while lock == False and tries < max_tries:
-          lock = self.mc.add('lock:' + self.cache_key, 1, 60)  # lock lasts 1 min max
+          try:
+              lock = self.mc.add('lock:' + self.cache_key, 1, 60)  # lock lasts 1 min max
+          except Exception as e:
+              print e
+              break
+
           if lock:
-            break
+              break
           tries += 1
           time.sleep(1)
 
@@ -34,7 +39,10 @@ class Lock:
         if not self.cache_key:
             return
 
-        self.mc.delete('lock:' + self.cache_key)
+        try:
+            self.mc.delete('lock:' + self.cache_key)
+        except Exception as e:
+            print e
 
 class Client(pylibmc.Client):
     """
