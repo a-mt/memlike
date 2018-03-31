@@ -1171,7 +1171,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
 
 .multimedia-wrapper {
   font-family: "Open Sans",Sans-Serif;
-  max-width: 640px;
+  /*max-width: 640px;*/
   padding: 20px;
 }
 .multimedia-wrapper p {
@@ -1209,6 +1209,11 @@ a > .expand-icon { /* ico-s icon-arr-right */
   white-space: pre-wrap;
   background-color: transparent;
   border: 0;
+}
+code.header {
+  display: block;
+  margin: auto;
+  text-align: center;
 }
 
 .progress {
@@ -1683,6 +1688,9 @@ table.learn {
 }
 .big .media-list {
   text-align: center;
+}
+.big .image .media-list,
+.big .video .media-list {
   min-height: 200px;
 }
 @media (max-width: 540px) {

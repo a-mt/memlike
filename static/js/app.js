@@ -24,9 +24,17 @@ $(document).ready(function(){
         $(this).is(allowed_tags) || $(this).remove();
       });
 
-      return res.html().trim()
+      value = res.html().trim()
                 .replace(/img:\s*([^\s<]+)/g, "<img class='img-tag' src='$1' />")
                 .replace(/embed:\s*([^\s<]+)/g, "<a class='embed' href='$1' target='_blank'>$1</a>");
+
+      // Header img + return carriage
+      value = value.replace(/<code>(<img class='img-tag' src='https:\/\/dummyimage.com\/600x35\/([0-9A-Fa-f]{6}))/g, function(match, img, background){
+        return '<code style="background: #' + background + '" class="header">' + img;
+      })
+      .replace(/\u2003+\n/g, '<br>\n');
+      return value;
+
     };
   } else {
     window.markdown = {decode: function(value) { return value; }};

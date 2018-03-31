@@ -59,10 +59,13 @@ class api:
 
 def _error(e):
     # https://github.com/webpy/webpy/blob/master/web/webapi.py#L15
-    print e
     if e.response.status_code == 403:
         return web.Forbidden()
+    elif e.response.status_code == 404:
+        return web.NotFound()
     else:
+        print e
+        # traceback.print_exc()
         return web.NotFound()
 
 def _response(call):
@@ -96,7 +99,7 @@ class course_level:
         _GET = web.input(session=False)
 
         sessionid = False
-        if _GET.session:
+        if _GET.session and _GET.session != "0":
             if not GLOBALS['session']['loggedin']:
                 return web.Forbidden()
             sessionid = GLOBALS['session']['loggedin']['sessionid']

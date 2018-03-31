@@ -8,7 +8,10 @@ $(document).ready(function(){
     window.course.levels[1] = {"name": "", "type": 1};
   }
   Object.freeze(window.course);
-  render(<Learn level={window.$_URL.lvl} type={window.$_URL.type} thing={window.$_URL.thing} sendresults={window.$_URL.sendresults} />, document.getElementById('learn-container'));
+  render(<Learn
+            level={window.$_URL.lvl} type={window.$_URL.type}
+            thing={window.$_URL.thing}
+            sendresults={window.$_URL.sendresults} session={window.$_URL.session} />, document.getElementById('learn-container'));
 });
 
 //+--------------------------------------------------------
@@ -175,8 +178,10 @@ class Learn extends Component {
         window.onbeforeunload = this.warnbeforeunload.bind(this);
       }
 
-      this.langSource = data.session.course.source.language_code;
-      this.langTarget = data.session.course.target.language_code;
+      if(data.session) {
+        this.langSource = data.session.course.source.language_code;
+        this.langTarget = data.session.course.target.language_code;
+      }
 
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
@@ -196,7 +201,7 @@ class Learn extends Component {
     window.audioPlayer && window.audioPlayer.reset();
 
     // Automatically play first audio
-    $('.autoplay .audio-player').random().trigger("click");
+    $('.autoplay .audio .audio-player').random().trigger("click");
 
     // Add text To Speech
     if(window.TTS) {
@@ -204,8 +209,6 @@ class Learn extends Component {
         var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
 
         if(src) {
-          window.audioPlayer && window.audioPlayer.pause();
-
           if(this.firstElementChild && this.firstElementChild.nodeName == "AUDIO") {
             this.firstElementChild.src = src;
 
@@ -247,7 +250,7 @@ class Learn extends Component {
       url: '/ajax' + window.course.url
                    + (this.state.get_all ? 'all' : level) + '/'
                    + (level_type == 2 ? "media" : this.props.type),
-      data: { session: 1 },
+      data: { session: this.props.session },
       success: function(data){
         callback && callback(data);
 
@@ -595,6 +598,7 @@ class Learn extends Component {
           this.getData(this.levels[this.levels.indexOf(this.state.level) + 1]);
         }
       } else {
+        this.state.error = 1; // prevent warning
         window.location.href = window.$_URL.urlFrom;
       }
 

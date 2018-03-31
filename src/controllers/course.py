@@ -22,9 +22,6 @@ class learn_fromform:
     def GET(self, idCourse, path, lvl=False):
         _GET = web.input(session="", sendresults=0)
 
-        if not _GET.session:
-            return GLOBALS['prender']._404()
-
         try:
             course = memrise.course(idCourse)
         except HTTPError as e:

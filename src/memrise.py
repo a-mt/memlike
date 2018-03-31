@@ -455,11 +455,13 @@ class Memrise:
             slug = "classic_review"
 
         if sessionid:
-            cache_key = False
-            level     = None
+            user_session = True
+            cache_key    = False
+            level        = None
         else:
-            cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
-            level     = mc.get(cache_key)
+            user_session = False
+            cache_key    = "course_" + idCourse + "_" + lvl + "_" + slug
+            level        = mc.get(cache_key)
 
         if level == None:
             with mc.lock(cache_key) as retries:
@@ -484,14 +486,14 @@ class Memrise:
                 response = requests.get(url, cookies={"sessionid": sessionid})
 
                 # Try reauthenticate
-                if sessionid == False and response.status_code == 403:
+                if user_session == False and response.status_code == 403:
                     sessionid = self.get_auth(True)
                     response  = requests.get(url, cookies={"sessionid": sessionid})
 
                 response.raise_for_status()
                 level = response.json()
 
-                if sessionid and slug != "preview":
+                if user_session and slug != "preview":
                     url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + slug +"/"
                     response = requests.head(url, cookies={"sessionid": sessionid})
                     response.raise_for_status()
