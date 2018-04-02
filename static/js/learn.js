@@ -1067,6 +1067,8 @@ const Value = function (props) {
   if (props.lang) {
     attrs.lang = props.lang;
   }
+  var k = Date.now(),
+      i = 0;
 
   if (props.single) {
     switch (props.type) {
@@ -1077,13 +1079,13 @@ const Value = function (props) {
           content
         );
       case "image":
-        return h("img", { key: Date.now(), src: content, "class": "text-image" });
+        return h("img", { key: k, src: content, "class": "text-image" });
       case "audio":
-        return h("audio", { key: Date.now(), src: content, "class": "audio-player ico ico-l ico-audio" });
+        return h("audio", { key: k, src: content, "class": "audio-player ico ico-l ico-audio" });
       case "video":
         return h(
           "video",
-          { key: Date.now(), src: content, "class": "video-player", controls: true, autoplay: true },
+          { key: k, src: content, "class": "video-player", controls: true, autoplay: true },
           "Your browser does not support the video tag."
         );
     }
@@ -1102,7 +1104,7 @@ const Value = function (props) {
           h(
             "div",
             { "class": "media-list" },
-            content.map(media => h("img", { key: Date.now(), src: media, "class": "text-image loading" }))
+            content.map(media => h("img", { key: k + i++, src: media, "class": "text-image loading" }))
           )
         );
       case "audio":
@@ -1112,7 +1114,7 @@ const Value = function (props) {
           h(
             "div",
             { "class": "media-list" },
-            content.map(media => h("audio", { key: Date.now(), src: media.normal, "class": "audio-player ico ico-l ico-audio" }))
+            content.map(media => h("audio", { key: k + i++, src: media.normal, "class": "audio-player ico ico-l ico-audio" }))
           )
         );
       case "video":
@@ -1124,7 +1126,7 @@ const Value = function (props) {
             { "class": "media-list" },
             h(
               "video",
-              { key: Date.now(), src: content.random(), "class": "video-player", controls: true, autoplay: true },
+              { key: k + i++, src: content.random(), "class": "video-player", controls: true, autoplay: true },
               "Your browser does not support the video tag."
             )
           )
@@ -1194,7 +1196,9 @@ const Correction = function (props) {
 
 const Presentation = function (props) {
   var item = props.item,
-      correct = props.correct;
+      correct = props.correct,
+      k = Date.now(),
+      i = 0;
   return h(
     "div",
     null,
@@ -1247,7 +1251,7 @@ const Presentation = function (props) {
       ),
       item.audio && h(
         "tr",
-        null,
+        { key: k + i++ },
         h(
           "td",
           { "class": "label" },
@@ -1261,7 +1265,7 @@ const Presentation = function (props) {
       ),
       item.visible_info.map(it => h(
         "tr",
-        null,
+        { key: k + i++ },
         h(
           "td",
           { "class": "label" },
@@ -1275,7 +1279,7 @@ const Presentation = function (props) {
       )),
       item.hidden_info.map(it => h(
         "tr",
-        null,
+        { key: k + i++ },
         h(
           "td",
           { "class": "label" },
@@ -1289,7 +1293,7 @@ const Presentation = function (props) {
       )),
       item.attributes.map(it => h(
         "tr",
-        null,
+        { key: k + i++ },
         h(
           "td",
           { "class": "label" },
@@ -1308,10 +1312,10 @@ const Presentation = function (props) {
     ),
     props.prompt && h(
       "div",
-      { "class": "typing-container" },
+      { "class": "typing-container", key: k + i++ },
       h(
         "div",
-        { "class": "typing", key: Date.now() },
+        { "class": "typing" },
         h("input", { type: "text", autocomplete: "off", spellcheck: "false", value: "", placeholder: props.prompt.answer.value, tabindex: "1", autoFocus: "autofocus" }),
         h(
           "ul",

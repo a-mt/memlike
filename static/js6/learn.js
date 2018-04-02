@@ -987,20 +987,22 @@ const Value = function(props) {
   if(props.lang) {
     attrs.lang = props.lang;
   }
+  var k = Date.now(),
+      i = 0;
 
   if(props.single) {
     switch(props.type) {
       case "text" : return <span>{content}</span>;
-      case "image": return <img key={Date.now()} src={content} class="text-image" />;
-      case "audio": return <audio key={Date.now()} src={content} class="audio-player ico ico-l ico-audio"></audio>;
-      case "video": return <video key={Date.now()} src={content} class="video-player" controls autoplay>Your browser does not support the video tag.</video>;
+      case "image": return <img key={k} src={content} class="text-image" />;
+      case "audio": return <audio key={k} src={content} class="audio-player ico ico-l ico-audio"></audio>;
+      case "video": return <video key={k} src={content} class="video-player" controls autoplay>Your browser does not support the video tag.</video>;
     }
   } else {
     switch(props.type) {
       case "text" : return <div class="text" {...attrs}>{content}</div>;
-      case "image": return <div class="image"><div class="media-list">{content.map(media => <img key={Date.now()} src={media} class="text-image loading" />)}</div></div>;
-      case "audio": return <div class="audio"><div class="media-list">{content.map(media => <audio key={Date.now()} src={media.normal} class="audio-player ico ico-l ico-audio"></audio>)}</div></div>;
-      case "video": return <div class="video"><div class="media-list"><video key={Date.now()} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video></div></div>;
+      case "image": return <div class="image"><div class="media-list">{content.map(media => <img key={k + i++} src={media} class="text-image loading" />)}</div></div>;
+      case "audio": return <div class="audio"><div class="media-list">{content.map(media => <audio key={k + i++} src={media.normal} class="audio-player ico ico-l ico-audio"></audio>)}</div></div>;
+      case "video": return <div class="video"><div class="media-list"><video key={k + i++} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video></div></div>;
     }
   }
 };
@@ -1032,7 +1034,8 @@ const Correction = function(props) {
 };
 
 const Presentation = function(props){
-  var item = props.item, correct = props.correct;
+  var item = props.item, correct = props.correct,
+      k    = Date.now(), i = 0;
 	return <div>
 
     {/*-- Correction --*/}
@@ -1065,32 +1068,32 @@ const Presentation = function(props){
         <tr class="sep"><td colspan="2"></td></tr>
 
         {/*-- Audio --*/}
-        {item.audio && <tr>
+        {item.audio && <tr key={k + i++}>
           <td class="label">{item.audio.label}</td>
           <td class="audio"><Value content={item.audio.value} type="audio" /></td>
         </tr>}
 
         {/*-- Additional content --*/}
-        {item.visible_info.map(it => <tr>
+        {item.visible_info.map(it => <tr key={k + i++}>
           <td class="label">{it.label}</td>
           <td class="more"><Value content={it.value} type={it.kind} /></td>
         </tr>)}
 
-        {item.hidden_info.map(it => <tr>
+        {item.hidden_info.map(it => <tr key={k + i++}>
           <td class="label">{it.label}</td>
           <td class="more"><Value content={it.value} type={it.kind} /></td>
         </tr>)}
 
         {/*-- Attributs --*/}
-        {item.attributes.map(it => <tr>
+        {item.attributes.map(it => <tr key={k + i++}>
           <td class="label">{it.label}</td>
           <td class="more"><span class="badge"><Value content={it.value} type="text" single="1" /></span></td>
         </tr>)}
       </table>
 
       {/*-- Copytyping --*/}
-      {props.prompt && <div class="typing-container">
-          <div class="typing" key={Date.now()}>
+      {props.prompt && <div class="typing-container" key={k + i++}>
+          <div class="typing">
             <input type="text" autocomplete="off" spellcheck="false" value="" placeholder={props.prompt.answer.value} tabindex="1" autoFocus="autofocus" />
             <ul class="keyboard">{props.prompt.choices.map((letter, i) =>
               <li class="button" tabindex={i+2}>{letter}</li>

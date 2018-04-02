@@ -1627,6 +1627,10 @@ header .course-title {
 table.learn {
   width: 100%;
   position: relative;
+  table-layout: fixed;
+}
+table.learn:not(.recap) td:last-child {
+  width: 100%;
 }
 .learn .label {
   font-size: 13px;
