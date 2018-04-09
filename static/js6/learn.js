@@ -116,7 +116,7 @@ class Learn extends Component {
 
       this.state.level    = this.levels[0] || 1;
       this.state.maxlevel = this.levels[this.levels.length-1] || 1;
-      this.state.get_all  = true;
+      this.state.get_all  = (this.props.type != "preview");
     } else {
       this.state.level    = parseInt(this.props.level);
       this.state.maxlevel = parseInt(this.props.level);
@@ -245,11 +245,19 @@ class Learn extends Component {
 
   // Retrieve the current level datas
   getData(level, callback) {
-    var level_type = window.course.levels[level].type;
+    var level_type = window.course.levels[level].type,
+        url        = '/ajax' + window.course.url;
+
+    if(this.state.get_all) {
+      url += 'all/' + this.props.type;
+    } else if(level_type == 2) {
+      url += level + '/media';
+    } else {
+      url += level + '/' + this.props.type;
+    }
+
     $.ajax({
-      url: '/ajax' + window.course.url
-                   + (this.state.get_all ? 'all' : level) + '/'
-                   + (level_type == 2 ? "media" : this.props.type),
+      url: url,
       data: { session: this.props.session },
       success: function(data){
         callback && callback(data);
@@ -651,7 +659,7 @@ class Learn extends Component {
     }
 
     // Media level
-    if(this.state.level_type == 2) {
+    if(this.state.level_type == 2 && !this.state.get_all) {
       return this.markdown();
     }
 

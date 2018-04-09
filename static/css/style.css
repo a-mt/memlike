@@ -1564,6 +1564,7 @@ code.header {
 }
 #imgZoom img.zoom {
   max-width: calc(100vw - 40px);
+  max-height: 100vh;
 }
 #imgZoom figcaption {
   margin-bottom: -5px;
