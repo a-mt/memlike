@@ -284,6 +284,7 @@ var audioPlayer = {
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
       audioPlayer.target.classList.remove("active");
+      audioPlayer.target = false;
     }
     audioPlayer.target    = false;
     audioPlayer.isPlaying = false;

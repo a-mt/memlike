@@ -1,6 +1,8 @@
 # Memrise-like
 
-## Run
+Custom interface for Memrise
+
+## Install
 
 * Install python headers and memcache
 
@@ -14,4 +16,3 @@
 * Start the script
 
       python src/app.py
-
