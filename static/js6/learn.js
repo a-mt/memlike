@@ -382,12 +382,12 @@ class Learn extends Component {
   choice(text) {
 
     var score      = 0,
-        testText   = sanitizeTyping(text, this.is_strict).toLowerCase(),
+        testText   = sanitizeTyping(text.trim(), this.is_strict).toLowerCase(),
         refText    = "";
 
     // Text input
     for(let i=0; i<this.choices.length; i++) {
-      var choice = this.choices[i].toLowerCase(),
+      var choice = this.choices[i].toLowerCase().trim(),
           s      = get_score(testText, choice);
 
       if(s && s > score) {
@@ -407,10 +407,10 @@ class Learn extends Component {
   // Tapping: User order words
   tapping_choice(entry) {
     var isValid = 0;
-    entry = entry.join(" ");
+    entry = entry.join(" ").trim();
 
     for(var i=0; i<this.choices.length; i++) {
-      if(entry == this.choices[i].join(" ")) {
+      if(entry == this.choices[i].join(" ").trim()) {
         isValid = 1;
         break;
       }
@@ -1355,7 +1355,8 @@ function sanitizeTyping(text, strict) {
   if(!strict) {
     text = text.replace(/\(.*?\)/g, "")
                .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', "g"), "") // punctuation, symbol
-               .replace(/[-Ù‹Ù›]+/g, "");
+               .replace(/[-Ù‹Ù›]+/g, "")
+               .replace(/\s+/g, " ");
   }
   return text;
 }

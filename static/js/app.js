@@ -274,8 +274,9 @@ var audioPlayer = {
 
        document.body.addEventListener('ended', function(e){
         if(e.target == audioPlayer.target) {
-          audioPlayer.target.isPlaying = false;
+          audioPlayer.isPlaying = false;
           audioPlayer.target.classList.remove("active");
+          audioPlayer.target = false;
         }
       }, true);
     }
@@ -284,7 +285,6 @@ var audioPlayer = {
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
       audioPlayer.target.classList.remove("active");
-      audioPlayer.target = false;
     }
     audioPlayer.target    = false;
     audioPlayer.isPlaying = false;
