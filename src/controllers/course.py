@@ -60,15 +60,18 @@ class level:
             if lvl not in course['levels']:
                 return GLOBALS['prender']._404()
 
-            if course['levels'][lvl]['type'] == 1:
-                sessionid = False
-                if GLOBALS['session']['loggedin']:
-                    sessionid = GLOBALS['session']['loggedin']['sessionid']
+            try:
+                if course['levels'][lvl]['type'] == 1:
+                    sessionid = False
+                    if GLOBALS['session']['loggedin']:
+                        sessionid = GLOBALS['session']['loggedin']['sessionid']
 
-                items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid)
-            else:
-                # Type multimedia
-                items = memrise.level_multimedia(course['url'], lvl)
+                    items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid)
+                else:
+                    # Type multimedia
+                    items = memrise.level_multimedia(course['url'], lvl)
+            except HTTPError as e:
+                items = {"learnables":[], "thingusers":[]}
 
         except HTTPError as e:
             if e.response.status_code == 403:

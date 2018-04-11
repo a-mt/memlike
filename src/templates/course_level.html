@@ -139,7 +139,7 @@ $if level['type'] != 2:
           <div class="mode-icon speed_review">&nbsp;</div>
           <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
         </button>
-        <button name="session" value="preview" class="mode-icon-wrapper">
+        <button name="session" value="preview" class="mode-icon-wrapper $('disabled' if num_things == 0 else None)">
           <div class="mode-icon preview">&nbsp;</div>
           <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
         </button>
