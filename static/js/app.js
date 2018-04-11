@@ -531,7 +531,7 @@ var Dashboard = {
 
     /* global $ */
     var runner = $.ajax({
-        url: '/ajax/dashboard',
+        url: '/ajax/dashboard?_=' + new Date().getTime(),
         data: {},
         processData: false,
         xhrFields: {
@@ -539,11 +539,19 @@ var Dashboard = {
             onprogress: function(e) {
                 var response = e.target.response;
 
-                if(response.substr(response.length-1, 1) == '}') {
+                if(response.substr(response.length-1, 1) == '$') {
                   try {
-                    var data = JSON.parse(response.substring(offsetResponse));
+                    var r = response.substring(offsetResponse);
                     offsetResponse = response.length;
-                    Dashboard.container.append(data.content);
+
+                    var parts = r.split('}$'),
+                        n     = parts.length - 1;
+                    parts.pop();
+
+                    for(var i=0; i<=n; i++) {
+                      var data = JSON.parse(parts[i] + '}');
+                      Dashboard.container.append(data.content);
+                    }
                   } catch(e) { }
                 }
             }

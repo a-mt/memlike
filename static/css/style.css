@@ -849,6 +849,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   border-radius: 0 10px 0 0;
 }
 .target-photo img {
+  display: block;
   width: 25px;
   height: 25px;
 }

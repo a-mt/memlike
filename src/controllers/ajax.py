@@ -175,7 +175,7 @@ class user_dashboard():
         c         = 0
         try:
             for courses in memrise.whatistudy(sessionid):
-                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__'] })
+                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__'] }) + '$'
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session

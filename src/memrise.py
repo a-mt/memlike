@@ -123,7 +123,6 @@ class Memrise:
         """
         nbperpage = 4
         offset    = 0
-        courses   = []
 
         while True:
             url       = "https://www.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset=" + str(offset) + "&limit=" + str(nbperpage-1) + "&get_review_count=true"
@@ -131,10 +130,8 @@ class Memrise:
             response.raise_for_status()
 
             data      = response.json()
-            yield data['courses']
-
-            courses  += data['courses']
             offset   += nbperpage
+            yield data['courses']
 
             if not 'has_more_courses' in data or not data['has_more_courses']:
                 break
