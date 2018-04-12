@@ -1719,6 +1719,9 @@ table.learn:not(.recap) td:last-child {
     max-height: calc(100vh - 160px);
   }
 }
+.clues {
+  text-align: left;
+}
 .badge {
   font-size: 12px;
   line-height: 14px;

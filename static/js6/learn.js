@@ -1189,6 +1189,11 @@ const Typing = function(props) {
   return <div class="nicebox">
     <div class="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
+
+      {/*-- Attributs --*/}
+      {item.attributes && <div class="clues">
+        {item.attributes.map(it => <span class="badge"><Value content={it.value} type="text" single="1" /></span>)}
+      </div>}
     </div>
     <div class="typing-container">
       <div class="typing" key={Date.now()}>
@@ -1232,6 +1237,11 @@ const Tapping = function(props) {
   return <div class="nicebox">
     <div class="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
+
+      {/*-- Attributs --*/}
+      {item.attributes && <div class="clues">
+        {item.attributes.map(it => <span class="badge"><Value content={it.value} type="text" single="1" /></span>)}
+      </div>}
     </div>
     <div class="tapping-container">
       <div class="tapping" key={Date.now()}>

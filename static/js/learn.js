@@ -1433,7 +1433,16 @@ const Typing = function (props) {
     h(
       "div",
       { "class": "big choice autoplay" },
-      h(Value, { content: item.prompt[itemType].value, type: itemType })
+      h(Value, { content: item.prompt[itemType].value, type: itemType }),
+      item.attributes && h(
+        "div",
+        { "class": "clues" },
+        item.attributes.map(it => h(
+          "span",
+          { "class": "badge" },
+          h(Value, { content: it.value, type: "text", single: "1" })
+        ))
+      )
     ),
     h(
       "div",
@@ -1490,7 +1499,16 @@ const Tapping = function (props) {
     h(
       "div",
       { "class": "big choice autoplay" },
-      h(Value, { content: item.prompt[itemType].value, type: itemType })
+      h(Value, { content: item.prompt[itemType].value, type: itemType }),
+      item.attributes && h(
+        "div",
+        { "class": "clues" },
+        item.attributes.map(it => h(
+          "span",
+          { "class": "badge" },
+          h(Value, { content: it.value, type: "text", single: "1" })
+        ))
+      )
     ),
     h(
       "div",
