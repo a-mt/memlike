@@ -608,6 +608,9 @@ footer .active a {
 .ico-question.ico-l {
   background-position:-128px 0px;
 }
+.ico-correct {
+  background-position: -36px -36px;
+}
 
 a > .expand-icon { /* ico-s icon-arr-right */
   background-position: -36px -12px;
@@ -993,6 +996,17 @@ a > .expand-icon { /* ico-s icon-arr-right */
   height: 189px;
   margin: 10px 4px;
   position: relative;
+}
+.level-box .level-status {
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 10px);
+  left: 5px;
+  text-align: center;
+  color: #aaa;
+}
+.level-box .level-status .ico {
+  opacity: .3;
 }
 .level-card {
   position: absolute;

@@ -1,4 +1,4 @@
-$def with (course, stats)
+$def with (course)
 $var currentPage: courses
 $var title: $(course['title'])
 
@@ -21,11 +21,6 @@ $:(prender.inc_course_banner(course))
 
     <!-- Links to garden learn / preview -->
     <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_course'])</button>
-
-    $if session.loggedin:
-     <div class="actions-right">
-        <button class="ajax btn" data-href="/ajax/sync/${course['id']}">Sync</button>
-      </div>
   </div>
 </div>
 
@@ -50,7 +45,8 @@ $def thing(item, attr):
   <div id="course-container" class="inner">
 
     <!-- Stats -->
-    $if stats:
+    $if "stats" in course:
+      $ stats = course['stats']
       <div class="nicebox overall-summary">
 
         <!-- Text -->
@@ -84,6 +80,8 @@ $def thing(item, attr):
         </div>
 
       </div>
+    $else:
+      $ stats = False
 
     <!-- List of levels -->
     <ul class="levels">
@@ -95,6 +93,9 @@ $def thing(item, attr):
           </div>
           <a class="level" href="$(course['url'])$idx">
             <span class="level-title">$:(level['name'].replace("/", "<wbr>/"))</span>
+
+            $if "status" in level:
+              $:level["status"]
           </a>
         </li>
     </ul>

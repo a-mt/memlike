@@ -90,18 +90,15 @@ class course:
         learning = False
         items    = False
         try:
-            course = memrise.course(idCourse)
+            sessionid = False
+            if GLOBALS['session']['loggedin']:
+                sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+            course = memrise.course(idCourse, sessionid)
 
             # Course without any level ?
             if len(course["levels"]) == 0:
-                sessionid = False
-                if GLOBALS['session']['loggedin']:
-                    sessionid = GLOBALS['session']['loggedin']['sessionid']
-
                 items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid)
-
-            elif int(idCourse) in GLOBALS['session']['learning']:
-                learning = GLOBALS['session']['learning'][int(idCourse)]
 
         except HTTPError as e:
             print e
@@ -114,7 +111,7 @@ class course:
                 "index": -1
             }, items)
 
-        return GLOBALS['render'].course_summary(course, learning)
+        return GLOBALS['render'].course_summary(course)
 
 class leaderboard:
     def GET(self, idCourse, path=""):

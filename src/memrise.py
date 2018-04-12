@@ -279,7 +279,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, id):
+    def course(self, id, sessionid=False):
         """
             Retrieve the info about a course
             Is cached via memcached for 24hours
@@ -288,8 +288,12 @@ class Memrise:
             @param integer id
             @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
         """
-        cache_key = "course_" + id
-        course    = mc.get(cache_key)
+        if sessionid:
+            cache_key = False
+            course    = None
+        else:
+            cache_key = "course_" + id
+            course    = mc.get(cache_key)
 
         if course == None:
             with mc.lock(cache_key) as retries:
@@ -300,8 +304,12 @@ class Memrise:
                     if course:
                         return course
 
-                print 'GET ' + cache_key
-                response = requests.get("https://www.memrise.com/course/" + id)
+                if sessionid:
+                    response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
+                else:
+                    print 'GET ' + cache_key
+                    response = requests.get("https://www.memrise.com/course/" + id)
+
                 response.raise_for_status()
                 html = response.text.encode('utf-8').strip()
 
@@ -362,34 +370,35 @@ class Memrise:
                         if not isinstance(child, Tag):
                             continue
 
-                        name = child.find('div',{'class':'level-title'}).text.strip()
-                        idx  = child.find('div',{'class':'level-index'}).text.strip()
-                        ico  = child.find(attrs={'class':'level-ico'}).attrs['class'].pop()
+                        name   = child.find('div',{'class':'level-title'}).text.strip()
+                        idx    = child.find('div',{'class':'level-index'}).text.strip()
+                        ico    = child.find(attrs={'class':'level-ico'}).attrs['class'].pop()
 
                         course["levels"][idx] = {
                             "name": name,
                             "type": (2 if ico == 'level-ico-multimedia-inactive' or ico == 'level-ico-multimedia' else 1)
                         }
+                        if sessionid:
+                            status = child.find('div', {'class':'level-status'})
+                            if status != None:
+                                course["levels"][idx]["status"] = re.sub("\s+", " ", str(status))
 
-                mc.set(cache_key, course, time=60*60*24)
+                if sessionid:
+                    course['stats'] = self._course_progress(DOM)
+
+                if cache_key:
+                    mc.set(cache_key, course, time=60*60*24)
         return course
 
-    def course_progress(self, id, sessionid):
+    def _course_progress(self, DOM):
         """
             Retrieve the given user progress for a given course
 
             @throws requests.exceptions.HTTPError
-            @param integer id
-            @param string sessionid
+            @param Node DOM
             @return dict - {ignored, learned, percent_complete, review_num_things}
         """
-        response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
-        response.raise_for_status()
-        html = response.text.encode('utf-8').strip()
-
-        # Parse HTML
-        DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-        learning = {
+        stats = {
             "ignored": 0,
             "learned": 0,
             "percent_complete": 0,
@@ -407,31 +416,31 @@ class Memrise:
                 if text:
                     res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
                     if res:
-                        learning["learned"]      = int(res.group(1))
-                        learning["num_things"]   = int(res.group(2))
+                        stats["learned"]      = int(res.group(1))
+                        stats["num_things"]   = int(res.group(2))
 
                 text = item.find(attrs={"class":"pull-right"})
                 if text:
                     res = re.search("^(\d+)", text.text.strip())
                     if res:
-                        learning["ignored"]     = int(res.group(1))
-                        learning["num_things"] += int(res.group(1))
+                        stats["ignored"]     = int(res.group(1))
+                        stats["num_things"] += int(res.group(1))
 
                 # Percentage complete
-                if learning["learned"] > 0:
-                    if learning["num_things"] == 0:
-                        learning["percent_complete"] = 100
+                if stats["learned"] > 0:
+                    if stats["num_things"] == 0:
+                        stats["percent_complete"] = 100
                     else:
-                        learning["percent_complete"] = int(float(learning["learned"]) / (learning["num_things"] - learning["ignored"]) * 100)
+                        stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
 
             # Review
             item = div.find('a',{'class':'blue'})
             if item != None:
                 res = re.search("\((\d+)\)", item.text)
                 if res:
-                    learning["review"] = int(res.group(1))
+                    stats["review"] = int(res.group(1))
 
-        return learning
+        return stats
 
     #+-----------------------------------------------------
     #| COURSE > LEVEL

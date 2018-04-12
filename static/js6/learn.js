@@ -566,10 +566,6 @@ class Learn extends Component {
   }
   session_end() {
     $.ajax({
-      url: "/ajax/sync/" + window.course.id
-    });
-
-    $.ajax({
       url: "/ajax/session_end",
       method: "POST",
       headers: {

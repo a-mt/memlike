@@ -22,8 +22,6 @@ urls = (
   # logged-in user only
   "/dashboard", "user_dashboard",
   "/leaderboard", "user_leaderboard",
-  "/sync/(\d+)", "user_sync_course",
-  "/sync/dashboard", "user_sync_dashboard",
   "/sync", "user_sync",
   "/session", "debug_session",
 
@@ -52,7 +50,6 @@ class api:
 
             "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
             "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}",
-            "user_sync_course": "/ajax/sync/{id} {cookies.sessionid}",
             "user_sync": "/ajax/sync {cookies.sessionid}",
             "debug_session": "/ajax/session"
         })
@@ -92,7 +89,15 @@ class courses:
 
 class course:
     def GET(self, idCourse, slug):
-        return _response(lambda: memrise.course(idCourse))
+        _GET = web.input(session=False)
+
+        sessionid = False
+        if _GET.session and _GET.session != "0":
+            if not GLOBALS['session']['loggedin']:
+                return web.Forbidden()
+            sessionid = GLOBALS['session']['loggedin']['sessionid']
+
+        return _response(lambda: memrise.course(idCourse, sessionid))
 
 class course_level:
     def GET(self, idCourse, slugCourse, lvl, kind="preview"):
@@ -183,8 +188,6 @@ class user_dashboard():
                     data = {}
                     for k in ['num_things', 'learned', 'review', 'ignored', 'percent_complete']:
                         data[k] = course[k]
-
-                    GLOBALS['session']['learning'][course['id']] = data
                     c += 1
                 saveSession()
 
@@ -207,24 +210,6 @@ class user_leaderboard():
         _GET = web.input(period="week")
         return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
 
-class user_sync_dashboard():
-    def GET(self):
-        if not GLOBALS['session']['loggedin']:
-            raise web.Forbidden()
-
-        c = 0
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        for courses in memrise.whatistudy(sessionid):
-            for course in courses:
-                data = {}
-                for k in ['num_things', 'learned', 'review', 'ignored', 'percent_complete']:
-                    data[k] = course[k]
-
-                GLOBALS['session']['learning'][course['id']] = data
-                c += 1
-
-        return str(c)
-
 class user_sync():
     def GET(self):
         if not GLOBALS['session']['loggedin']:
@@ -238,17 +223,6 @@ class user_sync():
             else:
                 raise web.NotFound()
 
-        return data
-
-class user_sync_course():
-    def GET(self, idCourse):
-        if not GLOBALS['session']['loggedin']:
-            raise web.Forbidden()
-
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        data      = memrise.course_progress(idCourse, sessionid)
-
-        GLOBALS['session']['learning'][int(idCourse)] = data
         return data
 
 class debug_session():
