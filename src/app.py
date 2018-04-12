@@ -34,8 +34,16 @@ urls = (
     '', controllers.index.app
 )
 
-app      = web.application(urls, globals())
-session  = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
+app = web.application(urls, globals())
+
+# Save session to database or to disk
+if environ.get('DATABASE_URL'):
+    db      = web.database()
+    store   = web.session.DBStore(db, 'sessions')
+    session = web.session.Session(app, store, initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
+else:
+    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
+
 lang     = Lang(app, session)
 render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
 prender  = web.template.render('src/templates/', globals=GLOBALS)

@@ -189,7 +189,6 @@ class user_dashboard():
                     for k in ['num_things', 'learned', 'review', 'ignored', 'percent_complete']:
                         data[k] = course[k]
                     c += 1
-                saveSession()
 
         except HTTPError as e:
             if e.response.status_code == 403:

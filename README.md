@@ -16,3 +16,8 @@ Custom interface for Memrise
 * Start the script
 
       python src/app.py
+
+* Create a database
+
+      heroku addons:create heroku-postgresql:hobby-dev
+      cat init.sql | heroku pg:psql

@@ -4,3 +4,4 @@ web.py
 pylibmc
 html5lib
 beautifulsoup4
+psycopg2
