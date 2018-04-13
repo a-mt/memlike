@@ -110,6 +110,11 @@ def notfound():
 app.notfound = notfound
 
 def flash():
+    # Redirect HTTP ot HTTPS
+    if web.ctx.environ.get('HTTP_X_FORWARDED_PROTO') == 'http':
+        raise web.seeother(web.ctx.home.replace('http://', 'https://').replace(':80', '') + web.ctx.fullpath)
+
+    # Handle flash messages
     if "flash" in session:
         web.flash = session.flash
         del session.flash
