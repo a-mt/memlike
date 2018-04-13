@@ -1,5 +1,11 @@
-# Import app
+# Make it work no matter the current directory
 from os import path, environ
+import sys
+
+pwd = path.dirname(path.realpath(__file__))
+sys.path.insert(0, pwd)
+
+# Import app
 from dotenv import load_dotenv
 from subprocess import Popen, PIPE
 from variables import menu, locales
@@ -13,11 +19,8 @@ from math import ceil
 from datetime import datetime
 
 # Load .env file
-pwd = path.dirname(__file__)
 dotenv_path = path.join(pwd, '..', '.env')
 load_dotenv(dotenv_path)
-
-DEFAULT_LANG = "french"
 
 # Configure web server
 web.config.debug = False # to be able to use session
@@ -40,13 +43,13 @@ app = web.application(urls, globals())
 if environ.get('DATABASE_URL'):
     db      = web.database()
     store   = web.session.DBStore(db, 'sessions')
-    session = web.session.Session(app, store, initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
+    session = web.session.Session(app, store, initializer=GLOBALS['defaults'])
 else:
-    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer={"lang": DEFAULT_LANG, "loggedin": False, "learning": {}})
+    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=GLOBALS['defaults'])
 
-lang     = Lang(app, session)
-render   = web.template.render('src/templates/', base='_layout', globals=GLOBALS)
-prender  = web.template.render('src/templates/', globals=GLOBALS)
+lang     = Lang(app, session, pwd)
+render   = web.template.render(pwd + '/templates/', base='_layout', globals=GLOBALS)
+prender  = web.template.render(pwd + '/templates/', globals=GLOBALS)
 
 def debug(x):
     return '<pre class="debug">' + pprint.pformat(x, indent=4) \

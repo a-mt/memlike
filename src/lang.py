@@ -3,9 +3,10 @@ import imp
 class Lang(object):
     """Translations management for web.py
     """
-    def __init__(self, app, session):
+    def __init__(self, app, session, pwd):
         self.session = session
-        self._data = {}
+        self.pwd     = pwd
+        self._data   = {}
         self.__getitem__ = self._data.__getitem__
 
         if app:
@@ -24,4 +25,4 @@ class Lang(object):
     def _load(self):
         lang = self.session['lang']
         if not lang in self._data:
-            self._data[lang] = imp.load_source(lang, 'src/locales/' + lang + '.py')
+            self._data[lang] = imp.load_source(lang, self.pwd + '/locales/' + lang + '.py')
