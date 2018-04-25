@@ -78,6 +78,8 @@ class Memrise:
         response.raise_for_status()
         if "sessionid" in response.cookies:
             return response.cookies['sessionid']
+        elif "sessionid_2" in response.cookies:
+            return response.cookies['sessionid_2']
         else:
             return None
 
