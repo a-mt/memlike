@@ -71,7 +71,8 @@ misc = {
   "return": "Retour",
   "replay": "Rejouer",
   "no_more_hearts": "Vous n'avez plus de vies",
-  "send_results": "Envoyer les résultats à Memrise"
+  "send_results": "Envoyer les résultats à Memrise",
+  "edit_course": "Modifier ce cours"
 };
 
 menu = {

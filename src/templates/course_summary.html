@@ -21,6 +21,9 @@ $:(prender.inc_course_banner(course))
 
     <!-- Links to garden learn / preview -->
     <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_course'])</button>
+
+    $if session.loggedin and session.loggedin['username'] == course['author']:
+      <a href="$(course['url'])edit" class="pill edit">$:(LANG.misc['edit_course'])</a>
   </div>
 </div>
 
@@ -133,7 +136,7 @@ $def thing(item, attr):
             <div class="mode-counter">$(toreview)</div>
         </div>
         <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
-      </a>
+      </button>
       <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon speed_review">&nbsp;</div>
         <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>

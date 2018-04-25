@@ -14,6 +14,7 @@ urls = (
   "/(\d+)/(.*)/garden", "learn_fromform",
   "/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
   "/(\d+)/(.*)/leaderboard", "leaderboard",
+  "/(\d+)/([^/]*)/edit", "edit",
   "/(\d+)/(.*)", "course",
   "/(\d+)", "course"
 )
@@ -125,5 +126,18 @@ class leaderboard:
 
         return GLOBALS['render'].course_leaderboard(course, _GET.period, leaderboard)
 
+class edit:
+    def GET(self, idCourse, path):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        try:
+            course = memrise.course_edit(sessionid, idCourse, path)
+        except HTTPError as e:
+            print e
+            return GLOBALS['prender']._404()
+
+        return GLOBALS['render'].course_edit(course)
 
 app = web.application(urls, locals())

@@ -8,6 +8,13 @@ urls = (
   "", "api",
 
   "/courses", "courses",
+  "/level/(\d+)", "level_edit",
+  "/level/(\d+)/alt", "level_alt",
+  "/level/(\d+)/alt_edit", "level_editalt",
+  "/level/(\d+)/add", "level_addrow",
+  "/level/(\d+)/edit", "level_editcell",
+  "/level/(\d+)/edit_multimedia", "level_editmultimedia",
+  "/course/(\d+)/([^/]+)/edit", "course_edit",
   "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
   "/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
   "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
@@ -128,6 +135,76 @@ class course_leaderboard:
     def GET(self, idCourse, slug):
         _GET = web.input(period="week")
         return _response(lambda: memrise.leaderboard(idCourse, _GET.period))
+
+class course_edit:
+    def GET(self, idCourse, slug):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.course_edit(sessionid, idCourse, slug))
+
+class level_edit:
+    def GET(self, idLevel):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_edit(sessionid, idLevel))
+
+class level_getcell:
+  def GET(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
+
+class level_addrow:
+    def POST(self, idLevel):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_add(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.data))
+
+class level_editcell:
+    def POST(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
+
+class level_alt:
+    def POST(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
+
+class level_editalt:
+    def POST(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_alt(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
+
+class level_editmultimedia:
+    def POST(self, idLevel):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_multimedia_edit(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.txt))
 
 class user:
     def GET(self, username):

@@ -22,7 +22,11 @@ $def with (course)
       </ul>
 
       <!-- Title + description -->
-      <h1>$(course['title'])</h1>
+      <h1>
+        $(course['title'])
+        $if course['author']:
+          <small><a href="/user/$(course['author'])">$(course['author'])</a></small>
+      </h1>
       <p class="description">$(course['description'])</p>
     </div>
 

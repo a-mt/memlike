@@ -32,8 +32,11 @@ class login:
         # Try login
         try:
             sessionid = memrise.login(_POST['username'], _POST['password'])
-            data      = memrise.whoami(sessionid)
-            GLOBALS['session'].loggedin = data
+            if sessionid == None:
+                GLOBALS['session'].loggedin = False
+            else:
+                data = memrise.whoami(sessionid)
+                GLOBALS['session'].loggedin = data
 
             redirect = _POST.redirect
             if not redirect:

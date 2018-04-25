@@ -1,0 +1,18 @@
+$def with (course)
+$var currentPage: courses
+$var js: /static/js/preact.min.js, /static/js/edit.js
+
+<div class="page-banner small">
+  <div class="inner">
+    <h1>
+      <a href="$(course['url'])">$(course['title'])</a>
+    </h1>
+  </div>
+</div>
+
+<main>
+  <div id="edit-levels"></div>
+  <script>
+    var course = $:json(course);
+  </script>
+</main>

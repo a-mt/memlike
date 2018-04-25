@@ -409,6 +409,38 @@ var imgZoom = {
 };
 
 //+--------------------------------------------------------
+//| Modal
+//+--------------------------------------------------------
+var modal = {
+  container: false,
+
+  createContainer: function() {
+    var div = $('<div id="modal" style="display: none">').appendTo(document.body);
+
+    // Backgroud=nd
+    $('<div class="backdrop">')
+      .appendTo(div)
+      .on('click', modal.close);
+
+    // Modal
+    $('<div class="modal">').appendTo(div);
+    modal.container = div;
+  },
+  open: function(html) {
+    if(!modal.container) {
+      modal.createContainer();
+    }
+
+    // Render
+    $('.modal', modal.container).html(html);
+    modal.container.show();
+  },
+  close: function() {
+    modal.container && modal.container.hide();
+  }
+};
+
+//+--------------------------------------------------------
 //| Render markdown content
 //+--------------------------------------------------------
 

@@ -83,6 +83,18 @@ figure, figcaption {
   padding: 8px 20px;
   box-shadow: 0 1px 0 0 rgba(255,255,255,0.2) inset,0 -1px 0 0 rgba(0,0,0,0.05) inset;
 }
+.btn-mini {
+  padding: 0 5px;
+  font-size: 12px;
+  height: 22px;
+}
+.btn.disabled {
+  background-color: #fff;
+  color: #6f6f6f;
+  border-color: #e6e6e6;
+  position: relative;
+  top: 1px;
+}
 .btn:hover {
   background-color: #f2f2f2;
 }
@@ -121,6 +133,10 @@ figure, figcaption {
   margin-bottom: 10px;
   list-style: none;
   padding: 0;
+  white-space: nowrap;
+}
+td > .btn-group {
+  margin-bottom: 0;
 }
 .btn-group > * {
   display: inline-block;
@@ -439,6 +455,9 @@ header .header-nav {
   background: white;
   padding: 10px 0;
 }
+.page-banner.small {
+  min-height: 0;
+}
 .page-head > .inner {
   display: flex;
   flex-wrap: wrap;
@@ -449,6 +468,8 @@ header .header-nav {
   }
   .page-head > .inner > * {
     flex-grow: 1;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 .page-title h1 {
@@ -982,6 +1003,12 @@ a > .expand-icon { /* ico-s icon-arr-right */
 }
 .page-breadcrumb a {
   font-weight: bold;
+}
+h1 small {
+  color: rgba(255,255,255,0.3);
+}
+.edit {
+  margin-left: auto;
 }
 
 .levels {
@@ -1535,7 +1562,8 @@ code.header {
  * IMAGE ZOOM
  *-------------------------------------------------------*/
 
-#imgZoom {
+#imgZoom,
+#modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -1543,6 +1571,9 @@ code.header {
   width: 100%;
   z-index: 1000;
   text-align: center;
+}
+#modal .modal {
+  flex-direction: column;
 }
 .backdrop {
   position: absolute;
@@ -2101,4 +2132,169 @@ form.login div:not(:last-child) {
 }
 form .error {
  color: red;
+}
+
+/*-------------------------------------------------------
+ * EDIT
+ *-------------------------------------------------------*/
+.edit-level {
+  margin: 5px;
+  counter-increment: levels;
+}
+.edit-level-label::before {
+  content: counters(levels, ".");
+  padding-right: 5px;
+}
+.edit-level-label {
+  font-size: 1.3em;
+  padding: 5px;
+}
+.edit-level-actions {
+  float: right;
+}
+.edit-level-actions span {
+  display: inline-block;
+  width: 20px;
+  cursor: pointer;
+  text-align: center;
+}
+.edit-level-actions span:hover {
+  background: #f5f5f5;
+}
+.edit-level .ico,
+.edit-level .addHeader,
+.multimedia-view {
+  display: none;
+}
+.table-container {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  margin-top: 15px;
+  overflow: auto;
+}
+.table {
+  min-width: 100%;
+  border-collapse: collapse;
+}
+.columns {
+  background: white;
+  border-bottom: 1px solid #ddd;
+}
+.column {
+  height: 2em;
+}
+.level-things td {
+  border-bottom: 1px solid #ddd;
+}
+.level-things td.text {
+  border-right: 1px solid #ddd;
+  padding-left: 5px;
+}
+.adding tr:last-child td {
+  border-bottom: 0;
+}
+.adding td:first-child {
+  width: 0;
+  padding: 0;
+  border: 0;
+  position: relative;
+}
+.adding tr:last-child td:first-child::before {
+  content: "+";
+  position: absolute;
+  left: 0;
+  font-size: 1.5em;
+  top: 5px;
+  pointer-events: none;
+}
+.things .text {
+  height: 2em;
+  padding: 5px;
+  position: relative;
+  white-space: nowrap;
+}
+.things .text .wide {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  z-index: 2;
+}
+.wide {
+  width: 100%;
+  border: 0 !important;
+}
+.adding td.text {
+  padding: 0;
+}
+.edit-alts {
+  position: absolute;
+  right: 2px;
+  border: 0;
+  opacity: 0;
+  z-index: 1;
+}
+.cell:hover .edit-alts {
+  opacity: 1;
+}
+.multimedia-edit textarea {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+.edit-level input:focus,
+.edit-level textarea:focus {
+  border-color: rgba(82,168,236,0.8);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(82,168,236,0.6);
+}
+tr.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.alt input,
+.alt button {
+  float: left;
+}
+.alt input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.alt button {
+  border-radius: 0 3px 3px 0;
+  color: #fff;
+  padding: 8px 20px;
+  background-color: #ff5d52;
+  border: 1px solid #ff4538;
+  font-size: 2em;
+  height: 38px;
+  line-height: 0;
+}
+.alt:last-child button {
+  border: 1px solid #699f30;
+  background-color: #83ca38;
+}
+.alt button::before {
+  content: "\D7";
+}
+.alt:last-child button::before {
+  content: "\2B";
+}
+.alt-actions {
+  padding-top: 30px;
+}
+.files-add {
+  position: relative;
+}
+.files-add input[type="file"] {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  line-height: 100%;
+  height: 100%;
 }

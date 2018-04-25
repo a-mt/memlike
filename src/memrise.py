@@ -58,6 +58,7 @@ class Memrise:
         DOM      = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
 
         form = DOM.find(id="login")
+
         if form != None:
             for input in form.find_all('input'):
                 if "value" in input.attrs and "name" in input.attrs:
@@ -73,9 +74,9 @@ class Memrise:
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
             "Content-Type": "application/x-www-form-urlencoded"
         }
-
         response = requests.post("https://www.memrise.com/login/", data=data, cookies=cookies, headers=headers)
         response.raise_for_status()
+
         if "sessionid" in response.cookies:
             return response.cookies['sessionid']
         elif "sessionid_2" in response.cookies:
@@ -847,5 +848,135 @@ class Memrise:
 
                 mc.set(cache_key, courses, time=60*60)
         return courses
+
+    #+-----------------------------------------------------
+    #| EDIT
+    #+-----------------------------------------------------
+    def level_edit(self, sessionid, idLevel):
+        url      = "https://www.memrise.com/ajax/level/editing_html/?level_id=" + idLevel + "&_=" + get_time()
+        response = requests.get(url, cookies={"sessionid": sessionid})
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_add(self, sessionid, csrftoken, referer, idLevel, data):
+        url      = "https://www.memrise.com/ajax/level/thing/add/"
+
+        response = requests.post(url, data={"columns":data, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+            "Origin": "https://www.memrise.com",
+            "Referer": referer,
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+            "X-CSRFToken": csrftoken,
+            "X-Requested-With": "XMLHttpRequest"
+        })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_update(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
+        url      = "https://www.memrise.com/ajax/thing/cell/update/"
+
+        response = requests.post(url,
+            data={
+                "cell_id": cellId,
+                "cell_type": "column",
+                "new_val": cellValue,
+                "thing_id": idThing
+            },
+            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            headers={
+                "Origin": "https://www.memrise.com",
+                "Referer": referer,
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_get(self, sessionid, csrftoken, referer, idThing):
+        url      = "https://www.memrise.com/api/thing/get/?thing_id=" + idThing + "&_=" + get_time()
+
+        response = requests.get(url,
+            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            headers={
+                "Origin": "https://www.memrise.com",
+                "Referer": referer,
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_alt(self, sessionid, csrftoken, referer, idThing, alts, column_key):
+        url      = "https://www.memrise.com/ajax/thing/column/update_alts/"
+        response = requests.post(url,
+            data={
+                "alts": alts,
+                "column_key": column_key,
+                "thing_id": idThing
+            },
+            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            headers={
+                "Origin": "https://www.memrise.com",
+                "Referer": referer,
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_multimedia_edit(self, sessionid, csrftoken, referer, idLevel, txt):
+        url      = "https://www.memrise.com/ajax/level/set_multimedia/"
+
+        response = requests.post(url, data={"multimedia":txt, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+            "Origin": "https://www.memrise.com",
+            "Referer": referer,
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+            "X-CSRFToken": csrftoken,
+            "X-Requested-With": "XMLHttpRequest"
+        })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def course_edit(self, sessionid, idCourse, slugCourse):
+        url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/"
+        response = requests.get(url, cookies={"sessionid": sessionid})
+        response.raise_for_status()
+
+        html = response.text.encode('utf-8').strip()
+        DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+        data = {
+            "csrftoken": response.cookies.get('csrftoken'),
+            "referer": url
+        }
+
+        # Course data
+        div = DOM.find(id="page-head")
+        if div != None:
+            item = div.find('div', {'class':'course-details'})
+            if item != None:
+                data['url']   = item.a.attrs['href']
+                data['title'] = item.text.strip()
+
+        # Levels
+        div    = DOM.find(id="levels")
+        levels = []
+
+        if div != None:
+            for child in div.findChildren(attrs={"class":"level"}):
+                level  = {"id": child.attrs['data-level-id']}
+                header = child.find('div', {"class": "level-header"}, recursive=False)
+
+                if "data-pool-id" in child.attrs:
+                    level["pool"] = child.attrs["data-pool-id"]
+
+                if header != None:
+                    level["name"] = header.h3.text.strip()
+
+                levels.append(level)
+        data['levels'] = levels
+
+        return data
 
 memrise = Memrise()
