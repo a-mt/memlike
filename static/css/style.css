@@ -94,6 +94,7 @@ figure, figcaption {
   border-color: #e6e6e6;
   position: relative;
   top: 1px;
+  pointer-events: none;
 }
 .btn:hover {
   background-color: #f2f2f2;
@@ -137,6 +138,7 @@ figure, figcaption {
 }
 td > .btn-group {
   margin-bottom: 0;
+  line-height: 1em;
 }
 .btn-group > * {
   display: inline-block;
@@ -631,6 +633,12 @@ footer .active a {
 }
 .ico-correct {
   background-position: -36px -36px;
+}
+.ico-close {
+  background-position: -18px -36px;
+}
+.ico-trash {
+  background-position: -18px -72px;
 }
 
 a > .expand-icon { /* ico-s icon-arr-right */
@@ -2166,6 +2174,11 @@ form .error {
 .multimedia-view {
   display: none;
 }
+.edit-level .ico-trash {
+  display: inline-block;
+  float: right;
+  cursor: pointer;
+}
 .table-container {
   background: #f5f5f5;
   border: 1px solid #ddd;
@@ -2207,15 +2220,17 @@ form .error {
   top: 5px;
   pointer-events: none;
 }
-.things .text {
-  height: 2em;
-  padding: 5px;
+.things td.text {
+  padding: 8px;
   position: relative;
   white-space: nowrap;
 }
+.things td:nth-child(2).text {
+  padding-left: 12px;
+}
 .things .text .wide {
   position: absolute;
-  left: 0;
+  left: -2px;
   top: 0;
   height: 100%;
   z-index: 2;
@@ -2233,6 +2248,7 @@ form .error {
   border: 0;
   opacity: 0;
   z-index: 1;
+  top: 4px;
 }
 .cell:hover .edit-alts {
   opacity: 1;
@@ -2297,4 +2313,23 @@ tr.disabled {
   opacity: 0;
   line-height: 100%;
   height: 100%;
+  width: 50px;
+}
+.thing__actions {
+  position: absolute;
+  z-index: 1;
+  left: -4px;
+  top: 3px;
+  line-height: 2em;
+  transform: scale(0.8);
+}
+.things .thing {
+  position: relative;
+}
+.thing:hover .thing__actions .ico-close {
+  display: inline-block;
+  cursor: pointer;
+}
+.dropdown-row {
+  padding: 10px 5px 10px 10px;
 }

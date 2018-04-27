@@ -32,6 +32,12 @@ class Edit extends Component {
       e.preventDefault();
       self.editAlts(e.target);
 
+    }).on('click', '.ico-close', function(e){
+      e.preventDefault();
+      if(confirm('Delete this row ?')) {
+        self.removeRow($(e.target).closest('tr'));
+      }
+
     }).on('click', 'div.text', function(){
       if(this.firstElementChild) {
         return;
@@ -42,6 +48,30 @@ class Edit extends Component {
       input.className = "wide";
       this.appendChild(input);
       input.focus();
+
+    }).on('change', 'input[type="file"]', function(e){
+      self.uploadFile(e.target);
+
+    }).on('click', '.dropdown-toggle', function(e){
+      var div = e.target.nextElementSibling;
+      div.innerHTML = div.innerHTML.replace(/ src="#"/g, '')
+                                   .replace(/ data-url="/g, ' src="');
+
+    }).on('click', '.dropdown-row .ico-trash', function(e){
+      self.removeFile($(e.target));
+
+    }).on('keyup', 'input.wide', function(e){
+      if(e.which == 13) {
+        var $tr     = $(e.target).closest('tr'),
+            $nextTr = $tr.next('tr');
+
+        if($nextTr.length == 0) {
+          $nextTr = $tr.closest('tbody').next('tbody').children(':not(.header)').first();
+          $nextTr.find('input.wide').first().focus();
+        } else {
+          $nextTr.find('div.text, input.wide').first().trigger('click').focus();
+        }
+      }
 
     }).on('blur', '.things input.wide', function(){
       var txt  = this.value,
@@ -103,6 +133,56 @@ class Edit extends Component {
           $btn.removeAttr('disabled');
         }
       });
+    });
+  }
+
+  removeFile($btn) {
+    var fileId  = $btn.closest('.dropdown-row').data('file-id'),
+        $column = $btn.closest('.column'),
+        cellId  = $column.data('key'),
+        thingId = $btn.closest('.thing').data('thing-id');
+
+    $.ajax({
+      url: '/ajax/level/' + thingId + '/upload_remove',
+      data: {
+        "csrftoken": window.course.csrftoken,
+        "referer": window.course.referer,
+        "cellId": cellId,
+        "fileId": fileId
+      },
+      type: 'POST',
+      success: function(data){
+        if(data.message) {
+          alert(data.message);
+        }
+        $column.html(data.rendered);
+      }
+    });
+  }
+
+  uploadFile(input) {
+    var $column = $(input).closest('.column'),
+        cellId  = $column.data('key'),
+        thingId = $(input).closest('.thing').data('thing-id');
+
+    var fd = new FormData();
+    fd.append('file', input.files[0]);
+    fd.append('csrftoken', window.course.csrftoken);
+    fd.append('referer', window.course.referer);
+    fd.append('cellId', cellId);
+
+    $.ajax({
+      url: '/ajax/level/' + thingId + '/upload',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function(data){
+        if(data.message) {
+          alert(data.message);
+        }
+        $column.html(data.rendered);
+      }
     });
   }
 
@@ -234,9 +314,44 @@ class Edit extends Component {
     });
   }
 
+  removeRow($tr){
+    var $level  = $tr.closest('.edit-level'),
+        thingid = $tr.data('thing-id'),
+        levelid = $level.data('level-id');
+
+    $.ajax({
+      url: "/ajax/level/" + levelid + "/remove",
+      method: "POST",
+      data: {
+        csrftoken: window.course.csrftoken,
+        referer: window.course.referer,
+        id_thing: thingid
+      },
+      success: function(json){
+        $tr.remove();
+      },
+      error: function(xhr){
+        console.error(xhr);
+        $tr.remove('disabled');
+      }
+    });
+  }
+
   render() {
+    var opentab = window.location.hash.match(/#(i|l)_(\d+)/);
+
     return <div>
-      {window.course.levels.map((level, i) => <EditLevel key={i} level={level} setNewRow={this.setNewRow} />)}
+      {window.course.levels.map((level, i) => {
+        var show = false;
+        if(opentab) {
+          if(opentab[1] == "i") {
+            show = (i+1 == opentab[2]);
+          } else {
+            show = (level.id == opentab[2]);
+          }
+        }
+        return <EditLevel show={show} key={i} level={level} setNewRow={this.setNewRow} />;
+      })}
     </div>;
   }
 }
@@ -247,6 +362,12 @@ class EditLevel extends Component {
 
     this.state = {"show": false};
     this.toggle = this.toggle.bind(this);
+  }
+
+  componentDidMount() {
+    if(this.props.show) {
+      this.getData();
+    }
   }
 
   toggle() {

@@ -13,6 +13,9 @@ urls = (
   "/level/(\d+)/alt_edit", "level_editalt",
   "/level/(\d+)/add", "level_addrow",
   "/level/(\d+)/edit", "level_editcell",
+  "/level/(\d+)/remove", "level_removerow",
+  "/level/(\d+)/upload", "level_uploadfile",
+  "/level/(\d+)/upload_remove", "level_removefile",
   "/level/(\d+)/edit_multimedia", "level_editmultimedia",
   "/course/(\d+)/([^/]+)/edit", "course_edit",
   "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
@@ -179,6 +182,24 @@ class level_editcell:
         sessionid = GLOBALS['session']['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
 
+class level_uploadfile:
+    def POST(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input(file={})
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_upload(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.file))
+
+class level_removefile:
+    def POST(self, idThing):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input(file={})
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_upload_remove(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.fileId))
+
 class level_alt:
     def POST(self, idThing):
         if not GLOBALS['session']['loggedin']:
@@ -205,6 +226,15 @@ class level_editmultimedia:
         _POST     = web.input()
         sessionid = GLOBALS['session']['loggedin']['sessionid']
         return _response(lambda: memrise.level_multimedia_edit(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.txt))
+
+class level_removerow:
+    def POST(self, idLevel):
+        if not GLOBALS['session']['loggedin']:
+            raise web.Forbidden()
+
+        _POST     = web.input()
+        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_remove(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.id_thing))
 
 class user:
     def GET(self, username):

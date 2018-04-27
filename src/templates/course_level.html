@@ -29,6 +29,8 @@ $:(prender.inc_course_banner(course))
     $if level['type'] != 2:
       <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_level'])</button>
 
+    $if session.loggedin and session.loggedin['username'] == course['author']:
+      <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(LANG.misc['edit_level'])</a>
   </div>
 </div>
 

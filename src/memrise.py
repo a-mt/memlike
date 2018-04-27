@@ -311,7 +311,8 @@ class Memrise:
                     response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
                 else:
                     print 'GET ' + cache_key
-                    response = requests.get("https://www.memrise.com/course/" + id)
+                    sessionid = self.get_auth()
+                    response  = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
 
                 response.raise_for_status()
                 html = response.text.encode('utf-8').strip()
@@ -889,6 +890,61 @@ class Memrise:
                 "X-CSRFToken": csrftoken,
                 "X-Requested-With": "XMLHttpRequest"
             })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_upload(self, sessionid, csrftoken, referer, idThing, cellId, file):
+        url      = "https://www.memrise.com/ajax/thing/cell/upload_file/"
+
+        response = requests.post(url,
+            data={
+                "cell_id": cellId,
+                "cell_type": "column",
+                "thing_id": idThing
+            },
+            files={"f": (file.filename, file.value)},
+            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            headers={
+                "Origin": "https://www.memrise.com",
+                "Referer": referer,
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_upload_remove(self, sessionid, csrftoken, referer, idThing, cellId, fileId):
+        url      = "https://www.memrise.com/ajax/thing/column/delete_from/"
+
+        response = requests.post(url,
+            data={
+                "column_key": cellId,
+                "cell_type": "column",
+                "thing_id": idThing,
+                "file_id": fileId
+            },
+            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            headers={
+                "Origin": "https://www.memrise.com",
+                "Referer": referer,
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest"
+            })
+        response.raise_for_status()
+        return response.text.encode('utf-8').strip()
+
+    def level_thing_remove(self, sessionid, csrftoken, referer, idLevel, idThing):
+        url      = "https://www.memrise.com/ajax/level/thing_remove/"
+
+        response = requests.post(url, data={"thing_id":idThing, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+            "Origin": "https://www.memrise.com",
+            "Referer": referer,
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
+            "X-CSRFToken": csrftoken,
+            "X-Requested-With": "XMLHttpRequest"
+        })
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
