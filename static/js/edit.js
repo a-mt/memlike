@@ -4,6 +4,8 @@
 const { h, Component, render } = window.preact;
 
 /* global $ */
+/* global navigator, Blob, URL, File, fetch */
+
 $(document).ready(function () {
   Object.freeze(window.course);
 
@@ -89,10 +91,6 @@ class EditLevel extends Component {
     });
   }
 
-  bindEvents() {
-    bindEvents(this.props.level.id, this.new_row);
-  }
-
   render() {
     var level = this.props.level;
 
@@ -103,16 +101,17 @@ class EditLevel extends Component {
         'div',
         { 'class': 'edit-level-actions' },
         this.state.show && h(
-          'span',
-          { 'class': 'export', title: window.i18n._export },
+          'label',
+          { 'class': 'export action', title: window.i18n._export },
           h('i', { dangerouslySetInnerHTML: { __html: '&darr;' } })
         ),
         this.state.show && h(
-          'span',
-          { 'class': 'import', title: window.i18n._import },
+          'label',
+          { 'class': 'import action', title: window.i18n._import, 'for': "import_" + level.id },
+          h('input', { type: 'file', id: "import_" + level.id }),
           h('i', { dangerouslySetInnerHTML: { __html: '&uarr;' } })
         ),
-        h('span', { 'class': 'toggle', onClick: this.toggle, dangerouslySetInnerHTML: { __html: '&updownarrow;' } })
+        h('label', { 'class': 'toggle action', onClick: this.toggle, dangerouslySetInnerHTML: { __html: '&updownarrow;' } })
       ),
       h(
         'div',
@@ -161,13 +160,13 @@ function bindEvents(new_row) {
     .on('click', '.edit-alts', click_editAlt)
 
     // Update attachments
-    .on('change', 'input[type="file"]', send_file).on('click', '.dropdown-toggle', click_displayFiles).on('click', '.dropdown-row .ico-trash', click_removeFile)
+    .on('change', '.things input[type="file"]', send_file).on('click', '.dropdown-toggle', click_displayFiles).on('click', '.dropdown-row .ico-trash', click_removeFile)
 
     // Delete row
     .on('click', '.ico-close', click_deleteRow)
 
     // Import/export
-    .on('click', '.export', click_export).on('click', '.import', click_import);
+    .on('click', '.export', click_export).on('change', '.import input', send_import);
   }
 
   //+---------------------------------------------------------------------------
@@ -208,7 +207,7 @@ function bindEvents(new_row) {
   }
 
   // POST new row
-  function addRow($tr, data) {
+  function addRow($tr, data, uploads) {
     var $level = $tr.closest('.edit-level'),
         idLevel = $level.data('level-id');
 
@@ -221,15 +220,42 @@ function bindEvents(new_row) {
         data: JSON.stringify(data)
       },
       success: function (json) {
-        var html = json.rendered_thing;
+        var html = json.rendered_thing,
+            $newTr = $(html).appendTo($('.things', $level));
 
-        $('.things', $level).append(html);
+        if (uploads && window.File) {
+          downloadFromUrls($newTr, idLevel, uploads);
+        }
         $tr.remove();
       },
       error: function (xhr) {
         console.error(xhr);
         $tr.remove('disabled');
       }
+    });
+  }
+
+  // Import rows: handle file upload from URL
+  function downloadFromUrls($tr, idLevel, uploads) {
+    var thingId = $tr.data('thing-id');
+
+    for (var i = 0; i < uploads.length; i++) {
+      var upload = uploads[i],
+          cellId = upload[0],
+          $column = $tr.children('[data-key="' + cellId + '"]');
+
+      downloadFromUrl($column, thingId, cellId, upload);
+    }
+  }
+  function downloadFromUrl($column, thingId, cellId, upload) {
+    var name = upload[1],
+        url = upload[2],
+        mime = upload[3];
+
+    fetch(url).then(res => res.blob()).then(blob => {
+      var file = new File([blob], name, { type: mime });
+
+      uploadFile($column, cellId, thingId, file);
     });
   }
 
@@ -428,16 +454,17 @@ function bindEvents(new_row) {
   //+---------------------------------------------------------------------------
   // On send file: upload file
   function send_file(e) {
-    uploadFile(e.target);
+    var $column = $(this).closest('.column'),
+        cellId = $column.data('key'),
+        thingId = $(this).closest('.thing').data('thing-id'),
+        file = this.files[0];
+
+    uploadFile($column, cellId, thingId, file);
   }
 
-  function uploadFile(input) {
-    var $column = $(input).closest('.column'),
-        cellId = $column.data('key'),
-        thingId = $(input).closest('.thing').data('thing-id');
-
+  function uploadFile($column, cellId, thingId, file) {
     var fd = new FormData();
-    fd.append('file', input.files[0]);
+    fd.append('file', file);
     fd.append('csrftoken', window.course.csrftoken);
     fd.append('referer', window.course.referer);
     fd.append('cellId', cellId);
@@ -452,7 +479,7 @@ function bindEvents(new_row) {
         if (data.message) {
           alert(data.message);
         }
-        $column.html(data.rendered);
+        $column.replaceWith(data.rendered);
       }
     });
   }
@@ -489,7 +516,7 @@ function bindEvents(new_row) {
         if (data.message) {
           alert(data.message);
         }
-        $column.html(data.rendered);
+        $column.replaceWith(data.rendered);
       }
     });
   }
@@ -596,8 +623,137 @@ function bindEvents(new_row) {
     download(csvContent, window.course.title + '_' + idLevel + '.csv', 'text/csv;encoding:utf-8');
   }
 
-  function click_import() {
-    alert('TODO');
+  function send_import(e) {
+    if (!e.target.files) {
+      return;
+    }
+    var file = e.target.files[0];
+    if (file.type != "text/csv") {
+      alert('You should send a .csv file (comma separated)');
+      return;
+    }
+
+    var reader = new FileReader(),
+        $level = $(this).closest('.edit-level');
+    reader.onload = function (f) {
+      return function (e) {
+        import_file($level, e.target.result);
+      };
+    }(file);
+
+    reader.readAsText(file);
+  }
+
+  function import_file($level, content) {
+    var data = $.csv.toArrays(content);
+    if (!data.length) {
+      return;
+    }
+
+    var $table = $level.find('table'),
+        $adding = $table.children('.adding'),
+        table_headers = [],
+        table_keys = [],
+        types = [];
+
+    // Get table headers
+    $table.children('.columns').find('.column,.attribute').each(function () {
+      var $col = $(this),
+          type = "text";
+
+      if ($col.hasClass("image")) {
+        type = "image";
+      } else if ($col.hasClass("audio")) {
+        type = "audio";
+      }
+      types.push(type);
+
+      table_headers.push($col.text().trim().toLowerCase());
+      table_keys.push($col.data('key'));
+    });
+
+    // Get position of headers in CSV
+    var headers = [];
+    for (var i = 0; i < data[0].length; i++) {
+      var header = data[0][i].trim(),
+          k = table_headers.indexOf(header.toLowerCase());
+
+      headers.push(k == -1 ? -1 : table_keys[k]);
+    }
+    table_headers = null;
+    table_keys = null;
+
+    // Import rows
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i],
+          row_import = {},
+          $tr = false,
+          row_upload = [];
+
+      // Get row content in the right order
+      for (var j = 0; j < row.length; j++) {
+        if (headers[j] == -1) {
+          continue;
+        }
+        var txt = row[j].trim();
+        if (!txt) {
+          continue;
+        }
+
+        // Create a new row
+        if (!$tr) {
+          $tr = $(new_row).appendTo($adding).prev().addClass('disabled');
+        }
+
+        // Add its value
+        if (types[j] == "text") {
+          row_import[headers[j]] = txt;
+
+          var $td = $tr.children('[data-key="' + headers[j] + '"]');
+          $td.find('input').val(txt);
+
+          // Upload its attachments once added
+        } else {
+          var list = txt.split(",");
+
+          for (var l = 0; l < list.length; l++) {
+            var item = list[l],
+                match = item.match(/^([^(]+)\(([^)]+)\)$/);
+
+            if (!match) {
+              continue;
+            }
+            var filename = match[1].trim(),
+                mime = "",
+                ext = filename.substring(filename.lastIndexOf('.') + 1);
+
+            switch (ext) {
+              case "png":
+                mime = "image/png";break;
+              case "jpg":
+                mime = "image/jpeg";break;
+              case "jpeg":
+                mime = "image/jpeg";break;
+              case "gif":
+                mime = "image/gif";break;
+              case "mp3":
+                mime = "audio/mpeg";break;
+              case "mp4":
+                mime = "video/mp4";break;
+              case "aac":
+                mime = "audio/aac";break;
+            }
+            if (!mime) {
+              continue;
+            }
+            row_upload.push([headers[j], filename, match[2].trim(), mime]);
+          }
+        }
+      }
+
+      // Create a new table row
+      addRow($tr, row_import, row_upload);
+    }
   }
 }
 
@@ -621,7 +777,6 @@ function exportCsv(row) {
   return txt + "\n";
 }
 
-/* global navigator, Blob, URL */
 /**
  * Trigger a file download of the given mimeType
  * ex: download(csvContent, 'dowload.csv', 'text/csv;encoding:utf-8');
