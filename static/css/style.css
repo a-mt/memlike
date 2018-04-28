@@ -92,8 +92,6 @@ figure, figcaption {
   background-color: #fff;
   color: #6f6f6f;
   border-color: #e6e6e6;
-  position: relative;
-  top: 1px;
   pointer-events: none;
 }
 .btn:hover {
@@ -138,7 +136,11 @@ figure, figcaption {
 }
 td > .btn-group {
   margin-bottom: 0;
-  line-height: 1em;
+  line-height: 20px;
+}
+.btn-group .dropdown-toggle {
+  position: relative;
+  top: 1px;
 }
 .btn-group > * {
   display: inline-block;
@@ -2165,18 +2167,35 @@ form .error {
   width: 20px;
   cursor: pointer;
   text-align: center;
+  font-size: 1.5em;
+  line-height: 30px;
+  margin: 0 2px;
+}
+.export i {
+  display: inline-block;
+  color: lightgray;
+  border-bottom: 2px solid;
+  line-height: 23px;
+}
+.import i {
+  display: inline-block;
+  color: lightgray;
+  border-top: 2px solid;
+  line-height: 8px;
 }
 .edit-level-actions span:hover {
   background: #f5f5f5;
 }
 .edit-level .ico,
 .edit-level .addHeader,
-.multimedia-view {
+.multimedia-view,
+.open-recorder {
   display: none;
 }
 .edit-level .ico-trash {
   display: inline-block;
-  float: right;
+  position: absolute;
+  right: 0;
   cursor: pointer;
 }
 .table-container {
@@ -2199,7 +2218,7 @@ form .error {
 .level-things td {
   border-bottom: 1px solid #ddd;
 }
-.level-things td.text {
+.level-things td.cell {
   border-right: 1px solid #ddd;
   padding-left: 5px;
 }
@@ -2332,4 +2351,5 @@ tr.disabled {
 }
 .dropdown-row {
   padding: 10px 5px 10px 10px;
+  position: relative;
 }
