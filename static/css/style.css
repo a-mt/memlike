@@ -1608,6 +1608,7 @@ code.header {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 @media (min-width: 721px) {
   .modal {
@@ -2358,4 +2359,34 @@ tr.disabled {
 .dropdown-row {
   padding: 10px 5px 10px 10px;
   position: relative;
+}
+.import_preview {
+  min-height: 10px; /* fixes overflow issues of flex */
+}
+.import_preview table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  empty-cells: show;
+}
+.import_preview th {
+  text-align: center;
+  background: #f5f5f5;
+}
+.import_preview th,
+.import_preview td {
+  border: 1px solid #ddd;
+  padding: 2px 5px;
+}
+.import_preview img {
+  max-height: 50px;
+}
+.import_preview .run_import {
+  width: 100%;
+}
+.import_preview .run_import.top {
+  margin-bottom: 15px;
+}
+.import_preview .run_import.bottom {
+  margin-top: 15px;
 }

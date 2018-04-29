@@ -413,11 +413,12 @@ var imgZoom = {
 //+--------------------------------------------------------
 var modal = {
   container: false,
+  close_callback: {},
 
   createContainer: function() {
     var div = $('<div id="modal" style="display: none">').appendTo(document.body);
 
-    // Backgroud=nd
+    // Background
     $('<div class="backdrop">')
       .appendTo(div)
       .on('click', modal.close);
@@ -435,8 +436,20 @@ var modal = {
     $('.modal', modal.container).html(html);
     modal.container.show();
   },
+  onclose: function(k, callback){
+    if(!callback) {
+      delete modal.close_callback[k];
+
+    } else if(typeof callback == "function") {
+      modal.close_callback[k] = callback;
+    }
+  },
   close: function() {
     modal.container && modal.container.hide();
+
+    for(var k in modal.close_callback) {
+      modal.close_callback[k].call(modal, k);
+    }
   }
 };
 

@@ -312,7 +312,7 @@ function bindEvents(new_row) {
         var alts = data.thing.columns[cellId].alts,
             html = `<div class="alts">
           ${alts.map((alt) => `<div class="alt">
-            <input type="text" name="${alt.id}" value=${alt.val} />
+            <input type="text" name="${alt.id}" value="${alt.val}" />
             <button type="button" class="alt-action"></button>
           </div>`).join('')}
 
@@ -634,7 +634,7 @@ function bindEvents(new_row) {
     }
     var file = e.target.files[0];
     if(file.type != "text/csv") {
-      alert('You should send a .csv file (comma separated)');
+      alert(window.i18n.import_err_ext);
       return;
     }
 
@@ -678,79 +678,196 @@ function bindEvents(new_row) {
     });
 
     // Get position of headers in CSV
-    var headers = [];
+    var headers = [],
+        empty   = true;
     for(var i=0; i<data[0].length; i++) {
       var header = data[0][i].trim(),
           k      = table_headers.indexOf(header.toLowerCase());
 
-      headers.push(k==-1 ? -1: table_keys[k]);
+      if(k==-1) {
+        headers.push(0);
+      } else {
+        empty = false;
+        headers.push({key: table_keys[k], type: types[k], txt: header});
+      }
     }
     table_headers = null;
     table_keys    = null;
+    types         = null;
 
-    // Import rows
-    for(var i=1; i<data.length; i++) {
-      var row        = data[i],
-          row_import = {},
-          $tr        = false,
-          row_upload = [];
+    // Format rows
+    var rows = [];
 
-      // Get row content in the right order
-      for(var j=0; j<row.length; j++) {
-        if(headers[j] == -1) {
-          continue;
-        }
-        var txt = row[j].trim();
-        if(!txt) {
-          continue;
-        }
+    if(!empty) {
+      for(var i=1; i<data.length; i++) {
+        var row        = data[i],
+            row_import = {},
+            row_upload = [];
 
-        // Create a new row
-        if(!$tr) {
-          $tr = $(new_row).appendTo($adding).prev().addClass('disabled');
-        }
-
-        // Add its value
-        if(types[j] == "text") {
-          row_import[headers[j]] = txt;
-
-          var $td = $tr.children('[data-key="' + headers[j] + '"]');
-          $td.find('input').val(txt);
-
-        // Upload its attachments once added
-        } else {
-          var list = txt.split(",");
-
-          for(var l=0; l<list.length; l++) {
-            var item  = list[l],
-                match = item.match(/^([^(]+)\(([^)]+)\)$/);
-
-            if(!match) {
-              continue;
-            }
-            var filename = match[1].trim(),
-                mime     = "",
-                ext      = filename.substring(filename.lastIndexOf('.')+1);
-  
-            switch(ext) {
-              case "png":  mime = "image/png"; break;
-              case "jpg":  mime = "image/jpeg"; break;
-              case "jpeg": mime = "image/jpeg"; break;
-              case "gif":  mime = "image/gif"; break;
-              case "mp3":  mime = "audio/mpeg"; break;
-              case "mp4":  mime = "video/mp4"; break;
-              case "aac":  mime = "audio/aac"; break;
-            }
-            if(!mime) {
-              continue;
-            }
-            row_upload.push([headers[j], filename, match[2].trim(), mime]);
+        // Get row content in the right order
+        for(var j=0; j<row.length; j++) {
+          if(!headers[j]) {
+            continue;
           }
+          var txt = row[j].trim();
+          if(!txt) {
+            continue;
+          }
+
+          // Add its value
+          var cellId = headers[j].key,
+              type   = headers[j].type;
+
+          if(type == "text") {
+            row_import[cellId] = txt;
+  
+          // Upload its attachments once added
+          } else {
+            var list = txt.split(",");
+
+            for(var l=0; l<list.length; l++) {
+              var item  = list[l],
+                  match = item.match(/^([^(]+)\(([^)]+)\)$/);
+
+              if(!match) {
+                continue;
+              }
+              var filename = match[1].trim(),
+                  mime     = "",
+                  ext      = filename.substring(filename.lastIndexOf('.')+1);
+
+              switch(ext) {
+                case "png":  mime = "image/png"; break;
+                case "jpg":  mime = "image/jpeg"; break;
+                case "jpeg": mime = "image/jpeg"; break;
+                case "gif":  mime = "image/gif"; break;
+                case "mp3":  mime = "audio/mpeg"; break;
+                case "mp4":  mime = "video/mp4"; break;
+                case "aac":  mime = "audio/aac"; break;
+              }
+              if(!mime) {
+                continue;
+              }
+              row_upload.push([cellId, filename, match[2].trim(), mime]);
+            }
+          }
+        }
+
+        // Create a new table row
+        rows.push({data: row_import, upload: row_upload});
+      }
+    }
+    data = null;
+
+    import_preview(rows, empty ? false : headers, $adding);
+  }
+
+  function import_preview(rows, headers, $adding) {
+    if(!headers) {
+      alert(window.i18n.import_err_empty);
+      return;
+    }
+    var html = '<div class="import_preview">';
+    html += '<button class="btn active run_import top">' + window.i18n._import + '</button>';
+    html += '<table>';
+
+    // Display headers
+    html += '<thead><tr>';
+    for(var i=0; i<headers.length; i++) {
+        if(!headers[i]) {
+          continue;
+        }
+      html += '<th>' + headers[i].txt + '</th>';
+    }
+    html += '</tr></thead>';
+
+    // Display rows
+    html += '<tbody>';
+    for(var i=0; i<rows.length; i++) {
+      html += '<tr>';
+
+      var row  = rows[i],
+          data = Object.assign({}, row.data);
+
+      // Bring back upload to data
+      for(var j=0; j<row.upload.length; j++) {
+        var upload  = row.upload[j],
+            cellId  = upload[0],
+            url     = upload[2];
+
+        if(typeof data[cellId] != "undefined") {
+          data[cellId].push(url);
+        } else {
+          data[cellId] = [url];
         }
       }
 
-      // Create a new table row
-      addRow($tr, row_import, row_upload);
+      // Display data
+      for(var j=0; j<headers.length; j++) {
+        if(!headers[j]) {
+          continue;
+        }
+        var k       = headers[j].key,
+            type    = headers[j].type,
+            content = data[k] || "";
+
+        if(type == "image") {
+          content = content.map(function(txt){
+            return '<img src="' + txt + '">';
+          }).join("");
+
+        } else if(type == "audio") {
+          content = content.map(function(txt){
+            return '<audio src="' + txt + '">';
+          }).join("");
+        }
+        html += '<td>' + content + '</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table>';
+    html += '<button class="btn active run_import bottom">' + window.i18n._import + '</button>';
+    html += '</div>';
+    window.modal.open(html);
+
+    // Close modal = cancel (clear out data)
+    window.modal.onclose('import', function(){
+      rows    = null;
+      headers = null;
+      $adding = null;
+
+      this.onclose('import', null);
+    });
+
+    var run_import = false;
+
+    $('.run_import', window.modal.container).one('click', function(){
+      if(run_import) {
+        return;
+      }
+      run_import = true;
+
+      window.modal.onclose('import', null);
+      window.modal.close();
+      import_rows(rows, $adding);
+
+      rows    = null;
+      headers = null;
+      $adding = null;
+    });
+  }
+
+  function import_rows(rows, $adding) {
+
+    for(var i=0; i<rows.length; i++) {
+      var data   = rows[i].data,
+          upload =rows[i].upload,
+          $tr    = $(new_row).appendTo($adding).prev().addClass('disabled');
+
+      for(var k in data) {
+        $tr.children('[data-key="' + k + '"]').find('input').val(data[k]);
+      }
+      addRow($tr, data, upload);
     }
   }
 }
