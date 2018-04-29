@@ -148,6 +148,7 @@ class Learn extends Component {
     // Typing
     $('main').on('click', '.typing .button', function () {
       this.parentNode.previousElementSibling.value += this.innerHTML;
+      this.parentNode.previousElementSibling.focus();
     });
 
     // Tapping
