@@ -1176,12 +1176,8 @@ h1 small {
   flex-shrink: 0;
 }
 .thing .media-list {
-  display: flex;
   overflow: auto;
-  margin-top: -10px;
-}
-.thing .media-list * {
-  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .audio-player {
@@ -1842,6 +1838,7 @@ table.learn:not(.recap) td:last-child {
 .tapping {
   text-align: center;
   width: 535px;
+  max-width: 100%;
   margin: 0 auto;
   font-family: "Times New Roman","Times","Kai","KaiTi",Serif;
 }
@@ -2223,9 +2220,6 @@ form .error {
 .columns {
   background: white;
   border-bottom: 1px solid #ddd;
-}
-.column {
-  height: 2.3em;
 }
 .level-things td {
   border-bottom: 1px solid #ddd;

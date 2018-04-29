@@ -425,12 +425,18 @@ function bindEvents(new_row) {
   //+---------------------------------------------------------------------------
   // On blur cell in things tbody: update cell
   function blur_input_thing() {
-    var txt = this.value,
+    var txt = this.value.trim(),
         $div = $(this.parentNode);
+
+    if (txt == $div.text()) {
+      $div.text(txt);
+      return;
+    }
     $div.text(txt);
 
     var thingId = $div.closest('.thing').data('thing-id'),
         cellId = $div.closest('.column').data('key');
+
     updateCell(thingId, cellId, txt);
   }
 
