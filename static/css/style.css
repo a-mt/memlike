@@ -1747,6 +1747,8 @@ table.learn:not(.recap) td:last-child {
 }
 .big .media-list {
   text-align: center;
+  white-space: nowrap;
+  overflow: auto;
 }
 .big .image .media-list,
 .big .video .media-list {
