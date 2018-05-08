@@ -1754,9 +1754,6 @@ table.learn:not(.recap) td:last-child {
 .big .video .media-list {
   min-height: 200px;
 }
-.big .audio .media-list {
-  padding: 30px 0;
-}
 @media (max-width: 540px) {
   .big .text-image {
     max-width: calc(100vw - 50px);
@@ -1787,6 +1784,9 @@ table.learn:not(.recap) td:last-child {
   margin: 0 30px;
   display: inline-block;
   transform: scale(2);
+}
+.big.choice .audio .media-list {
+  padding: 30px 0;
 }
 .choices {
   display: flex;
