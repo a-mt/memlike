@@ -388,7 +388,9 @@ class Memrise:
                                 course["levels"][idx]["status"] = re.sub("\s+", " ", str(status))
 
                 if sessionid:
-                    course['stats'] = self._course_progress(DOM)
+                    stats = self._course_progress(DOM)
+                    if stats != None:
+                        course['stats'] = stats
 
                 if cache_key:
                     mc.set(cache_key, course, time=60*60*24)
@@ -411,38 +413,39 @@ class Memrise:
         }
 
         div = DOM.find('div',{'class','progress-box-course'})
-        if div != None:
+        if div == None:
+            return None
 
-            # Ignored, learned, total
-            item = div.find('div',{'class':'progress-box-title'})
-            if item != None:
-                text = item.find(text=True, recursive=False)
-                if text:
-                    res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
-                    if res:
-                        stats["learned"]      = int(res.group(1))
-                        stats["num_things"]   = int(res.group(2))
-
-                text = item.find(attrs={"class":"pull-right"})
-                if text:
-                    res = re.search("^(\d+)", text.text.strip())
-                    if res:
-                        stats["ignored"]     = int(res.group(1))
-                        stats["num_things"] += int(res.group(1))
-
-                # Percentage complete
-                if stats["learned"] > 0:
-                    if stats["num_things"] == 0:
-                        stats["percent_complete"] = 100
-                    else:
-                        stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
-
-            # Review
-            item = div.find('a',{'class':'blue'})
-            if item != None:
-                res = re.search("\((\d+)\)", item.text)
+        # Ignored, learned, total
+        item = div.find('div',{'class':'progress-box-title'})
+        if item != None:
+            text = item.find(text=True, recursive=False)
+            if text:
+                res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
                 if res:
-                    stats["review"] = int(res.group(1))
+                    stats["learned"]      = int(res.group(1))
+                    stats["num_things"]   = int(res.group(2))
+
+            text = item.find(attrs={"class":"pull-right"})
+            if text:
+                res = re.search("^(\d+)", text.text.strip())
+                if res:
+                    stats["ignored"]     = int(res.group(1))
+                    stats["num_things"] += int(res.group(1))
+
+            # Percentage complete
+            if stats["learned"] > 0:
+                if stats["num_things"] == 0:
+                    stats["percent_complete"] = 100
+                else:
+                    stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
+
+        # Review
+        item = div.find('a',{'class':'blue'})
+        if item != None:
+            res = re.search("\((\d+)\)", item.text)
+            if res:
+                stats["review"] = int(res.group(1))
 
         return stats
 
