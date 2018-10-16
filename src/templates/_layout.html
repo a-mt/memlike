@@ -28,7 +28,7 @@ $else:
         <div class="inner">
           <ul class="header-nav inner">
             $for item in MENU:
-              $if item['slug'] == "login" and session.loggedin:
+              $if item['slug'] == "login" and session.loggedin and "username" in session.loggedin:
                 <li class="header-nav-item plain $(item['slug'])">
                   <a href="/user/$(session.loggedin['username'])">
                     <img src="$(session.loggedin['photo'])" class="profile-avatar">

@@ -2,7 +2,7 @@ import requests, re
 import time
 from cache import mc
 from bs4 import BeautifulSoup, Tag
-from variables import categories_code
+from variables import categories_code, levels
 
 def get_time():
     return '%d' % (time.time() * 1000)
@@ -68,6 +68,9 @@ class Memrise:
         data["username"] = username
         data["password"] = password
 
+        # Remove previous data from cache
+        mc.delete("user_" + username)
+
         headers = {
             "Origin": "https://www.memrise.com",
             "Referer": "https://www.memrise.com/login/",
@@ -78,9 +81,9 @@ class Memrise:
         response.raise_for_status()
 
         if "sessionid" in response.cookies:
-            return response.cookies['sessionid']
+            return response.cookies["sessionid"]
         elif "sessionid_2" in response.cookies:
-            return response.cookies['sessionid_2']
+            return response.cookies["sessionid_2"]
         else:
             return None
 
@@ -92,7 +95,7 @@ class Memrise:
             @param string sessionid
             @return dict - {sessionid, username, photo}
         """
-        response  = requests.get("https://www.memrise.com/settings/", cookies={"sessionid": sessionid})
+        response  = requests.get("https://www.memrise.com/settings/", cookies={"sessionid_2": sessionid})
         response.raise_for_status()
 
         html = response.text.encode('utf-8').strip()
@@ -129,7 +132,7 @@ class Memrise:
 
         while True:
             url       = "https://www.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset=" + str(offset) + "&limit=" + str(nbperpage-1) + "&get_review_count=true"
-            response  = requests.get(url, cookies={"sessionid": sessionid})
+            response  = requests.get(url, cookies={"sessionid_2": sessionid})
             response.raise_for_status()
 
             data      = response.json()
@@ -149,7 +152,7 @@ class Memrise:
             @return dict - Retrieved JSON
         """
         url      = "https://www.memrise.com/ajax/leaderboard/mempals/?period=" + period + "&how_many=50"
-        response = requests.get(url, cookies={"sessionid": sessionid})
+        response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()
         return response.json()
 
@@ -170,7 +173,7 @@ class Memrise:
         else:
             url = "https://www.memrise.com/api/garden/register/"
 
-        response = requests.post(url, data=data, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+        response = requests.post(url, data=data, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://www.memrise.com",
             "Referer": referer,
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
@@ -308,11 +311,11 @@ class Memrise:
                         return course
 
                 if sessionid:
-                    response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
+                    response = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid_2": sessionid})
                 else:
                     print 'GET ' + cache_key
                     sessionid = self.get_auth()
-                    response  = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid": sessionid})
+                    response  = requests.get("https://www.memrise.com/course/" + id, cookies={"sessionid_2": sessionid})
 
                 response.raise_for_status()
                 html = response.text.encode('utf-8').strip()
@@ -496,19 +499,19 @@ class Memrise:
 
                 if slug != "preview":
                     url += "&_=" + get_time()
-                response = requests.get(url, cookies={"sessionid": sessionid})
+                response = requests.get(url, cookies={"sessionid_2": sessionid})
 
                 # Try reauthenticate
                 if user_session == False and response.status_code == 403:
                     sessionid = self.get_auth(True)
-                    response  = requests.get(url, cookies={"sessionid": sessionid})
+                    response  = requests.get(url, cookies={"sessionid_2": sessionid})
 
                 response.raise_for_status()
                 level = response.json()
 
                 if user_session and slug != "preview":
                     url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + slug +"/"
-                    response = requests.head(url, cookies={"sessionid": sessionid})
+                    response = requests.head(url, cookies={"sessionid_2": sessionid})
                     response.raise_for_status()
                     level['referer']   = url
                     level['csrftoken'] = response.cookies.get('csrftoken')
@@ -594,12 +597,12 @@ class Memrise:
                 print 'GET ' + cache_key
 
                 url      = "https://www.memrise.com/ajax/leaderboard/course/" + idCourse + "/?period=" + period + "&how_many=50"
-                response = requests.get(url, cookies={"sessionid": sessionid})
+                response = requests.get(url, cookies={"sessionid_2": sessionid})
 
                 # Try reauthenticate
                 if response.status_code == 403:
                     sessionid = self.get_auth(True)
-                    response  = requests.get(url, cookies={"sessionid": sessionid})
+                    response  = requests.get(url, cookies={"sessionid_2": sessionid})
 
                 response.raise_for_status()
                 ldboard = response.json()
@@ -642,6 +645,7 @@ class Memrise:
                 user = {
                     "username": username,
                     "photo"   : "",
+                    "points"  : 0,
                     "rank"    : 0,
                     "stats"   : {}
                 }
@@ -654,12 +658,10 @@ class Memrise:
                     if item != None:
                         user['photo'] = item.attrs['src']
 
-                    # Get rank
-                    item = div.find('img', {'class':'rank-icon'})
+                    # Get ponts
+                    item = div.find('img', {'class':'profile-stats'})
                     if item != None:
-                        result = re.search('/([^/]*)_(\d+)\.(.*)$', item.attrs['src'])
-                        if result:
-                            user['rank'] = int(result.group(2))
+                        print(div.children)
 
                     # Get stats (num followers, following, words, points)
                     div = div.find(attrs={'class' : 'profile-stats'})
@@ -678,6 +680,18 @@ class Memrise:
                             elif tab == "word":
                                 tab = "words"
                             user["stats"][tab] = result.group(1)
+
+                if "points" in user["stats"]:
+                    points = int(user["stats"]["points"].replace(",",""))
+                    print(points)
+                    rank   = 0
+
+                    for i, threshold in enumerate(levels):
+                        if threshold < points:
+                            rank = i
+                        else:
+                            break
+                    user["rank"] = rank
 
                 div = DOM.find(id="content")
                 if div != None:
@@ -858,14 +872,14 @@ class Memrise:
     #+-----------------------------------------------------
     def level_edit(self, sessionid, idLevel):
         url      = "https://www.memrise.com/ajax/level/editing_html/?level_id=" + idLevel + "&_=" + get_time()
-        response = requests.get(url, cookies={"sessionid": sessionid})
+        response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
     def level_thing_add(self, sessionid, csrftoken, referer, idLevel, data):
         url      = "https://www.memrise.com/ajax/level/thing/add/"
 
-        response = requests.post(url, data={"columns":data, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+        response = requests.post(url, data={"columns":data, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://www.memrise.com",
             "Referer": referer,
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
@@ -885,7 +899,7 @@ class Memrise:
                 "new_val": cellValue,
                 "thing_id": idThing
             },
-            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://www.memrise.com",
                 "Referer": referer,
@@ -906,7 +920,7 @@ class Memrise:
                 "thing_id": idThing
             },
             files={"f": (file.filename, file.value)},
-            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://www.memrise.com",
                 "Referer": referer,
@@ -927,7 +941,7 @@ class Memrise:
                 "thing_id": idThing,
                 "file_id": fileId
             },
-            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://www.memrise.com",
                 "Referer": referer,
@@ -941,7 +955,7 @@ class Memrise:
     def level_thing_remove(self, sessionid, csrftoken, referer, idLevel, idThing):
         url      = "https://www.memrise.com/ajax/level/thing_remove/"
 
-        response = requests.post(url, data={"thing_id":idThing, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+        response = requests.post(url, data={"thing_id":idThing, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://www.memrise.com",
             "Referer": referer,
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
@@ -955,7 +969,7 @@ class Memrise:
         url      = "https://www.memrise.com/api/thing/get/?thing_id=" + idThing + "&_=" + get_time()
 
         response = requests.get(url,
-            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://www.memrise.com",
                 "Referer": referer,
@@ -974,7 +988,7 @@ class Memrise:
                 "column_key": column_key,
                 "thing_id": idThing
             },
-            cookies={"sessionid": sessionid, "csrftoken": csrftoken},
+            cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://www.memrise.com",
                 "Referer": referer,
@@ -988,7 +1002,7 @@ class Memrise:
     def level_multimedia_edit(self, sessionid, csrftoken, referer, idLevel, txt):
         url      = "https://www.memrise.com/ajax/level/set_multimedia/"
 
-        response = requests.post(url, data={"multimedia":txt, "level_id":idLevel}, cookies={"sessionid": sessionid, "csrftoken": csrftoken}, headers={
+        response = requests.post(url, data={"multimedia":txt, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://www.memrise.com",
             "Referer": referer,
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36",
@@ -1000,7 +1014,7 @@ class Memrise:
 
     def course_edit(self, sessionid, idCourse, slugCourse):
         url      = "https://www.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/"
-        response = requests.get(url, cookies={"sessionid": sessionid})
+        response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()
 
         html = response.text.encode('utf-8').strip()
