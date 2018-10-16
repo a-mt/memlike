@@ -68,6 +68,14 @@ class Client(pylibmc.Client):
     #+-----------------------------------------------------
     #| CATCH FAILURES
     #+-----------------------------------------------------
+    def delete(self, key):
+        try:
+            res = super(Client, self).delete(key)
+            return res
+        except Exception as e:
+            print e
+            return None
+
     def get(self, key):
         try:
             res = super(Client, self).get(key)
