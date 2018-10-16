@@ -691,7 +691,7 @@ class Memrise:
                             rank = i
                         else:
                             break
-                    user["rank"] = rank
+                    user["rank"] = rank+1
 
                 div = DOM.find(id="content")
                 if div != None:
