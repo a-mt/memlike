@@ -127,7 +127,7 @@ if __name__ == "__main__":
 
     # Start memcache if down
     stdout, stderr = Popen('(service memcached status | grep "not running") && sudo service memcached start || service memcached status', shell=True, stdout=PIPE).communicate()
-    print stdout
+    print(stdout)
 
     app.run()
 

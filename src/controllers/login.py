@@ -31,11 +31,10 @@ class login:
 
         # Try login
         try:
-            sessionid = memrise.login(_POST['username'], _POST['password'])
-            if sessionid == None:
+            data = memrise.login(_POST['username'], _POST['password'])
+            if data == None:
                 GLOBALS['session'].loggedin = False
             else:
-                data = memrise.whoami(sessionid)
                 GLOBALS['session'].loggedin = data
 
             redirect = _POST.redirect
@@ -45,7 +44,8 @@ class login:
             raise web.seeother(redirect, absolute=True)
 
         # Wrong credentials
-        except HTTPError:
+        except HTTPError as e:
+            print(e)
             err['username'] = 'wrong_credentials'
 
             GLOBALS['session'].flash = {"err": err, "data": _POST}

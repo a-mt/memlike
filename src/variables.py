@@ -6,8 +6,8 @@ menu = [
 ]
 
 locales = [
-    { "slug": "english", "name": "English", "photo": "https://cdn.rawgit.com/a-mt/963f6a89d6543a8eef2d06c309c0e3be/raw/81e1a0d18cf72d7839cb9403008404de51c477b3/flag_uk.svg" },
-    { "slug": "french", "name": "Français", "photo": "https://cdn.rawgit.com/a-mt/1a0631773bb11baa25e86637dde216d8/raw/0f56a59345dac72f204a73426e8274f0a0d1f7ce/flag_french.svg" }
+    { "slug": "english", "name": "English", "photo": "https://gistcdn.githack.com/a-mt/963f6a89d6543a8eef2d06c309c0e3be/raw/aae58d158943c8915627168aa6d8e31d1b653da9/flag_uk.svg" },
+    { "slug": "french", "name": "Français", "photo": "https://gistcdn.githack.com/a-mt/1a0631773bb11baa25e86637dde216d8/raw/05786bf73bbb72b72c7d769519e907b00168e20f/flag_french.svg" }
 ]
 
 languages = {

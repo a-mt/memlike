@@ -59,7 +59,7 @@ $ currentLang = page['lang']
           $ children = []
 
           $if "children" in item:
-            $ children = filter(lambda x: x['id'] in catHaveCourse, item["children"])
+            $ children = [x for x in item["children"] if x['id'] in catHaveCourse]
 
           <li data-category-id="$id">
               $if len(children) > 0:

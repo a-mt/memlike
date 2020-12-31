@@ -26,7 +26,7 @@ class Lock:
           try:
               lock = self.mc.add('lock:' + self.cache_key, 1, 60)  # lock lasts 1 min max
           except Exception as e:
-              print e
+              print(e)
               break
 
           if lock:
@@ -43,7 +43,7 @@ class Lock:
         try:
             self.mc.delete('lock:' + self.cache_key)
         except Exception as e:
-            print e
+            print(e)
 
 class Client(pylibmc.Client):
     """
@@ -73,7 +73,7 @@ class Client(pylibmc.Client):
             res = super(Client, self).delete(key)
             return res
         except Exception as e:
-            print e
+            print(e)
             return None
 
     def get(self, key):
@@ -81,7 +81,7 @@ class Client(pylibmc.Client):
             res = super(Client, self).get(key)
             return res
         except Exception as e:
-            print e
+            print(e)
             return None
 
     def set(self, key, data, **kwargs):
@@ -89,7 +89,7 @@ class Client(pylibmc.Client):
             res = super(Client, self).set(key, data, **kwargs)
             return res
         except Exception as e:
-            print e
+            print(e)
             return None
 
 # https://devcenter.heroku.com/articles/memcachier#python

@@ -30,7 +30,7 @@ class leaderboard:
             if e.response.status_code == 403:
                 return GLOBALS['prender']._403()
             else:
-                print e
+                print(e)
                 return GLOBALS['prender']._404()
 
         return GLOBALS['render'].dashboard("leaderboard", _GET.period, leaderboard)

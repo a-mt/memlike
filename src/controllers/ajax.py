@@ -71,7 +71,7 @@ def _error(e):
     elif e.response.status_code == 404:
         return web.NotFound()
     else:
-        print e
+        print(e)
         # traceback.print_exc()
         return web.NotFound()
 
@@ -82,7 +82,7 @@ def _response(call):
         return _error(e)
 
     web.header('Content-Type', 'application/json')
-    if isinstance(data, basestring):
+    if isinstance(data, str):
         return data
     else:
         return json.dumps(data)

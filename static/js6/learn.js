@@ -700,7 +700,7 @@ class Learn extends Component {
 
   addBoxDebugMenu() {
     var item    = this.state.data.boxes[this.state.i],
-        screen  = this.state.data.screens[item.learnable_id],
+        screen  = this.state.data.screen_template_map[item.learnable_id],
         current = this.state.debug_screen;
 
     return <ul id="debug-screen">
@@ -772,7 +772,7 @@ class Learn extends Component {
     }
 
     var item   = this.state.data.boxes[this.state.i],
-        screen = this.state.data.screens[item.learnable_id];
+        screen = this.state.data.screen_template_map[item.learnable_id];
 
     if(item.learn_session_level) {
       switch(item.learn_session_level) {
@@ -923,7 +923,7 @@ class Learn extends Component {
   }
   get_screen(tpl) {
     var id = this.props.thing || this.state.data.boxes[this.state.i].learnable_id;
-    return this.state.data.screens[id][tpl];
+    return this.state.data.screen_template_map[id][tpl][0];
   }
 
   render_audio_multiple_choice(setting) {
@@ -969,13 +969,13 @@ class Learn extends Component {
       for(var i=0; i<this.state.data.boxes.length; i++) {
         var id = this.state.data.boxes[i].learnable_id;
 
-        items.push(this.state.data.screens[id].presentation);
+        items.push(this.state.data.screen_template_map[id].presentation[0]);
       }
     } else {
       for(var id in this.state.recap) {
         var item = this.state.recap[id];
 
-        items[item.pos] = {...item, ...this.state.data.screens[id].presentation};
+        items[item.pos] = {...item, ...this.state.data.screen_template_map[id].presentation[0]};
       }
     }
     return <Recap items={Object.values(items)} type={this.props.type} />;

@@ -19,7 +19,7 @@ class user:
         try:
             user = memrise.user(username)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].user(user, tab, levels)

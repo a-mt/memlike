@@ -26,7 +26,7 @@ class learn_fromform:
         try:
             course = memrise.course(idCourse)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].learn(course, _GET.session, lvl, False, _GET.sendresults)
@@ -39,7 +39,7 @@ class learn:
         try:
             course = memrise.course(idCourse)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].learn(course, kind, lvl, False, 1)
@@ -49,7 +49,7 @@ class view:
         try:
             course = memrise.course(idCourse)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].learn(course, "preview", lvl, thing, 0)
@@ -102,7 +102,7 @@ class course:
                 items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid)
 
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         if items:
@@ -121,7 +121,7 @@ class leaderboard:
             course      = memrise.course(idCourse)
             leaderboard = memrise.leaderboard(idCourse, _GET.period)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].course_leaderboard(course, _GET.period, leaderboard)
@@ -135,7 +135,7 @@ class edit:
         try:
             course = memrise.course_edit(sessionid, idCourse, path)
         except HTTPError as e:
-            print e
+            print(e)
             return GLOBALS['prender']._404()
 
         return GLOBALS['render'].course_edit(course)

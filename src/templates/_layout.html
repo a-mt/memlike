@@ -31,7 +31,7 @@ $else:
               $if item['slug'] == "login" and session.loggedin and "username" in session.loggedin:
                 <li class="header-nav-item plain $(item['slug'])">
                   <a href="/user/$(session.loggedin['username'])">
-                    <img src="$(session.loggedin['photo'])" class="profile-avatar">
+                    <img src="https://gistcdn.githack.com/a-mt/3497fd798a22e7e6b08dd7d4dc6acce1/raw/237c6ae0c8fde62a6f7ecd472ad42ac22458b792/empty-avatar-1.png" class="profile-avatar">
                   </a>
                 </li>
               $else:
