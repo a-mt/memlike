@@ -1,0 +1,46 @@
+# add git-ignore syntax here of things you don't want copied into docker image
+
+# Cache files
+**/*.pyc
+**/*.pyo
+**/*.idea/
+.tox/
+**/__pycache__/
+
+# macOS files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+
+# IDE files
+.vscode
+*.sublime-workspace
+*.sublime-project
+
+# Git files
+.gitignore
+.git/
+
+# Heroku files
+runtime.txt
+Procfile
+buildpack-run.sh
+
+# Docker files
+docker_volumes/
+docker-compose.yml
+docker-compose.*.yml
+*.Dockerfile
+
+# Postgres files
+init.sql
+
+# Node files
+static/
+package.json
+package-lock.json
+node_modules/

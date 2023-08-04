@@ -1,7 +1,7 @@
 {
   "name": "workspace",
   "version": "1.0.0",
-  "description": "## Run",
+  "description": "Build JS",
   "main": "index.js",
   "scripts": {
     "build": "babel static/js6 -d static/js -w -s"

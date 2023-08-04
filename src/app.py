@@ -1,5 +1,5 @@
 # Make it work no matter the current directory
-from os import path, environ
+from os import path, environ, getenv
 import sys
 
 pwd = path.dirname(path.realpath(__file__))
@@ -7,7 +7,6 @@ sys.path.insert(0, pwd)
 
 # Import app
 from dotenv import load_dotenv
-from subprocess import Popen, PIPE
 from variables import menu, locales
 from _globals import GLOBALS
 
@@ -23,7 +22,11 @@ dotenv_path = path.join(pwd, '..', '.env')
 load_dotenv(dotenv_path)
 
 # Configure web server
-web.config.debug = False # to be able to use session
+if getenv('DEBUG', False):
+    web.config.debug = True
+else:
+    web.config.debug = False # to be able to use session
+
 web.config.session_parameters.cookie_path = '/'
 
 urls = (
@@ -40,7 +43,7 @@ urls = (
 app = web.application(urls, globals())
 
 # Save session to database or to disk
-if environ.get('DATABASE_URL'):
+if environ.get('DATABASE_URL', ''):
     db      = web.database()
     store   = web.session.DBStore(db, 'sessions')
     session = web.session.Session(app, store, initializer=GLOBALS['defaults'])
@@ -76,7 +79,9 @@ GLOBALS['debug']         = debug
 # Variables accessible globally in templates
 GLOBALS['session']       = session
 GLOBALS['LANG']          = lang
-GLOBALS['env']           = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
+GLOBALS['env']           = {
+    "GITHUB_REPO": environ.get("GITHUB_REPO"),
+}
 GLOBALS['MENU']          = menu
 GLOBALS['locales']       = locales
 
@@ -124,11 +129,7 @@ def flash():
 app.add_processor(web.loadhook(flash))
 
 if __name__ == "__main__":
-
-    # Start memcache if down
-    stdout, stderr = Popen('(service memcached status | grep "not running") && sudo service memcached start || service memcached status', shell=True, stdout=PIPE).communicate()
-    print(stdout)
-
+    print('Run...')
     app.run()
 
 # Translations: https://d2rhekw5qr4gcj.cloudfront.net/dist/locales/fr/translation-54de43979713.json

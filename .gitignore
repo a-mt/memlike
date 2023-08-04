@@ -1,3 +1,5 @@
 .env
 package-lock.json
 sessions/
+node_modules
+__pycache__
