@@ -1,8 +1,11 @@
 $def with (course, level, items)
 
 $def thing(item, attr):
-  $ it = item[attr]
-  <div class="column $(attr) $(item[attr]['kind'])">
+  $ it = item['screens']['1'][attr]
+
+  $#{'label': 'Anatomie 101', 'kind': 'image', 'value': ['https://static.memrise.com/uploads/things/images/69984960_150914_1730_57.png', 'https://static.memrise.com/uploads/things/images/69984960_150922_1824_38.png', 'https://static.memrise.com/uploads/things/images/69984960_150922_1824_46.PNG'], 'alternatives': [], 'style': [], 'direction': 'source', 'markdown': False}
+
+  <div class="column $(attr) $(it['kind'])">
     $if it['kind'] == "text":
       $(it['value'])
     $elif it['kind'] == "image":
@@ -27,15 +30,15 @@ $ j = 0
 
 $code:
     def get_thing(i, learnable_id):
-        """get thingusers associated with current learnable"""
-        if i >= len(items['thingusers']):
+        """get progress associated with current learnable"""
+        if i >= len(items['progress']):
             return None
 
-        elif items['thingusers'][i]['learnable_id'] != learnable_id:
+        elif items['progress'][i]['learnable_id'] != learnable_id:
           return None
 
         else:
-          return items['thingusers'][i]
+          return items['progress'][i]
 
 <!-- Level details -->
 <ul class="rows">
@@ -44,7 +47,7 @@ $code:
       $:thing(item, 'item')
       $:thing(item, 'definition')
 
-      $ thing_item = get_thing(j, item['learnable_id'])
+      $ thing_item = get_thing(j, str(item['id']))
       $if thing_item:
         $ j += 1
 
@@ -92,7 +95,10 @@ $code:
         $ tolearn += 1
         <div class="status"></div>
 
-      <a href="$(course['url'])$(str(level['index']))/$(item['learnable_id'])" class="view-detail" title="$:(LANG.misc['preview'])"></a>
+      <a
+        href="$(course['url'])$(str(level['index']))/$(item['id'])"
+        class="view-detail"
+        title="$:(LANG.misc['preview'])"></a>
     </li>
 </ul>
 

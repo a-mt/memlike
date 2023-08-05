@@ -64,15 +64,18 @@ class level:
             try:
                 if course['levels'][lvl]['type'] == 1:
                     sessionid = False
+                    csrftoken = None
+
                     if GLOBALS['session']['loggedin']:
                         sessionid = GLOBALS['session']['loggedin']['sessionid']
+                        csrftoken = GLOBALS['session']['loggedin']['csrftoken']
 
-                    items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid)
+                    items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid, csrftoken)
                 else:
                     # Type multimedia
                     items = memrise.level_multimedia(course['url'], lvl)
             except HTTPError as e:
-                items = {"learnables":[], "thingusers":[]}
+                items = {"learnables":[], "progress":[]}
 
         except HTTPError as e:
             if e.response.status_code == 403:
@@ -92,14 +95,17 @@ class course:
         items    = False
         try:
             sessionid = False
+            csrftoken = None
+
             if GLOBALS['session']['loggedin']:
                 sessionid = GLOBALS['session']['loggedin']['sessionid']
+                csrftoken = GLOBALS['session']['loggedin']['csrftoken']
 
-            course = memrise.course(idCourse, sessionid)
+            course = memrise.course(idCourse, sessionid, csrftoken)
 
             # Course without any level ?
             if len(course["levels"]) == 0:
-                items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid)
+                items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid, csrftoken)
 
         except HTTPError as e:
             print(e)

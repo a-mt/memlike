@@ -22,7 +22,7 @@ services:
       retries: 10
 
   api:
-    image: memlike_api:latest
+    image: memlike-api:latest
     build:
       context: .
       dockerfile: docker-api.Dockerfile

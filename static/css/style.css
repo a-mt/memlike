@@ -1138,7 +1138,7 @@ h1 small {
   display: inline-block;
   height: 18px;
   width: 12px;
-  background: url("https://cdn.rawgit.com/a-mt/c23fc955f741cd94dbfcabc3d7a22af4/raw/a4a61237d9dc520d08b374df3ae13b4c63e9a753/scb-icon-water.svg");
+  background: url("https://gistcdn.githack.com/a-mt/c23fc955f741cd94dbfcabc3d7a22af4/raw/c7f2f73d015e45ebeeb0ffb6855e66ae77a32b81/scb-icon-water.svg");
   background-size: 100%;
   vertical-align: middle;
   margin-top: -5px;
@@ -1406,19 +1406,19 @@ code.header {
   letter-spacing: 0.2px;
 }
 .mode-icon.speed_review {
-  background-image: url("https://cdn.rawgit.com/a-mt/a73b81aa05402f312c0746b39fa786a7/raw/140bd02e2fa5c214c83d84202fd2d968f118f73a/scb-icon-speedreview.svg");
+  background-image: url("https://gistcdn.githack.com/a-mt/a73b81aa05402f312c0746b39fa786a7/raw/603e202ea4fc9f1e38dc179f8faf40fd06538ede/scb-icon-speedreview.svg");
   background-color: #f83c25;
 }
 .mode-icon.classic_review {
-  background-image: url("https://cdn.rawgit.com/a-mt/02095364d08b9e6e498cc29230e8f818/raw/b5c52a69f47e0853c7e83eeb777d0d1fb3f913da/scb-icon-review.svg");
+  background-image: url("https://gistcdn.githack.com/a-mt/02095364d08b9e6e498cc29230e8f818/raw/f47c9ff97932d0442e261ef0c4add012a313c304/scb-icon-review.svg");
   background-color: #02a0fb;
 }
 .mode-icon.learn {
-  background-image: url("https://cdn.rawgit.com/a-mt/f1d9b03ae6f81629e7dd025f9fac936a/raw/01cd2c50a55671f75e9ff87a680ed7f2a486f83f/scb-icon-learn.svg");
+  background-image: url("https://gistcdn.githack.com/a-mt/f1d9b03ae6f81629e7dd025f9fac936a/raw/828a91a4cf742977f3ed970ee1040792c27498cc/scb-icon-learn.svg");
   background-color: #00c622;
 }
 .mode-icon.preview {
-  background-image: url("https://cdn.rawgit.com/a-mt/458746ed4dce13ae34ac7fd73579c77e/raw/2578f5ba38960893f6ea0a52ca373ad6bb1860e1/scb-icon-preview.svg");
+  background-image: url("https://gistcdn.githack.com/a-mt/458746ed4dce13ae34ac7fd73579c77e/raw/c9861813212e2839b6acca45f66f31253e5ee0fc/scb-icon-preview.svg");
   background-color: #858585;
 }
 

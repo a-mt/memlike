@@ -114,15 +114,17 @@ class course_level:
         _GET = web.input(session=False)
 
         sessionid = False
+        csrftoken = None
         if _GET.session and _GET.session != "0":
             if not GLOBALS['session']['loggedin']:
                 return web.Forbidden()
             sessionid = GLOBALS['session']['loggedin']['sessionid']
+            csrftoken = GLOBALS['session']['loggedin']['csrftoken']
 
         if slugCourse == "":
             slugCourse = "-"
 
-        return _response(lambda: memrise.level(idCourse, slugCourse, lvl, kind, sessionid))
+        return _response(lambda: memrise.level(idCourse, slugCourse, lvl, kind, sessionid, csrftoken))
 
 class course_level_multimedia:
     def GET(self, idCourse, slug, lvl):
@@ -287,24 +289,29 @@ class user_dashboard():
         c         = 0
         try:
             for courses in memrise.whatistudy(sessionid):
-                yield json.dumps({"content": GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__'] }) + '$'
+                content = GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__']
+
+                yield json.dumps({"content": content }) + '$'
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session
                 for course in courses:
                     data = {}
-                    for k in ['num_things', 'learned', 'review', 'ignored', 'percent_complete']:
+                    for k in ['progress']:
                         data[k] = course[k]
                     c += 1
 
         except HTTPError as e:
+            print('HTTPError', e)
+
             if e.response.status_code == 403:
                 raise web.Forbidden()
             else:
                 raise web.NotFound()
 
         except Exception as e:
-            print(e)
+            print('ERR', e)
+
             raise web.InternalError()
 
 class user_leaderboard():

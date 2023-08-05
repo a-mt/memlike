@@ -4,6 +4,7 @@ $if "currentPage" in tpl:
   $ currentPage = tpl.currentPage
 $else:
   $ currentPage = ""
+$ t = time()
 
 <!DOCTYPE html>
 <html>
@@ -28,7 +29,7 @@ $else:
         <div class="inner">
           <ul class="header-nav inner">
             $for item in MENU:
-              $if item['slug'] == "login" and session.loggedin and "username" in session.loggedin:
+              $if item['slug'] == "login" and session.get('loggedin', None) and "username" in session.loggedin:
                 <li class="header-nav-item plain $(item['slug'])">
                   <a href="/user/$(session.loggedin['username'])">
                     <img src="https://gistcdn.githack.com/a-mt/3497fd798a22e7e6b08dd7d4dc6acce1/raw/237c6ae0c8fde62a6f7ecd472ad42ac22458b792/empty-avatar-1.png" class="profile-avatar">
@@ -37,7 +38,7 @@ $else:
               $else:
                 <li class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
                   <a href="$(item['url'])" class="nav-item-btn">
-                    <span class="nav-item-btn-text">$(LANG.menu["dashboard"] if item["slug"] == "index" and session.loggedin else LANG.menu[item['slug']])</span>
+                    <span class="nav-item-btn-text">$(LANG.menu["dashboard"] if item["slug"] == "index" and session.get('loggedin', None) else LANG.menu[item['slug']])</span>
                   </a>
                 </li>
           </ul>
@@ -55,7 +56,7 @@ $else:
         <!-- Link to Github -->
         $if env['GITHUB_REPO']:
           <a class="github" href="$(env['GITHUB_REPO'])" title="Fork me on Github">
-            <img src="https://cdn.rawgit.com/a-mt/4eee1459b499f6970e667f39c12b9e63/raw/146f66fcf3794a0fcd5a7a810341124825246fa1/Octicons-mark-github.svg" alt="Fork me on Github" height="30">
+            <img src="https://gistcdn.githack.com/a-mt/4eee1459b499f6970e667f39c12b9e63/raw/146f66fcf3794a0fcd5a7a810341124825246fa1/Octicons-mark-github.svg" alt="Fork me on Github" height="30">
           </a>
 
         <!-- About -->
@@ -66,7 +67,7 @@ $else:
           <li class="header-nav-item lang">
             <ul id="choose-lang">
             $for lang in locales:
-              <li class="$('active' if lang['slug'] == session.lang else None)">
+              <li class="$('active' if lang['slug'] == session.get('lang', 'english') else None)">
                 <a href="/lang/$(lang['slug'])"><img src="$(lang['photo'])" title="$(lang['name'])" height="20"></a>
               </li>
             </ul>
@@ -105,7 +106,7 @@ $else:
     </script>
     <script src="/static/js/app.js"></script>
     $if "js" in tpl:
-      $for file in tpl.js.split(','):
-        <script src="$file"></script>
+      $for file in tpl.js.split(', '):
+        <script src="$(file)?t=$(t)"></script>
   </body>
 </html>

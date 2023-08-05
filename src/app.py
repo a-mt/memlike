@@ -70,6 +70,7 @@ GLOBALS['sorted']        = sorted
 GLOBALS['str']           = str
 GLOBALS['ceil']          = ceil
 GLOBALS['now']           = lambda: datetime.now()
+GLOBALS['time']          = lambda: int(datetime.now().timestamp())
 GLOBALS['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
 GLOBALS['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
 GLOBALS['number_format'] = lambda x: "{:,}".format(x)

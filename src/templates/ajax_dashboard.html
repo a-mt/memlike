@@ -1,75 +1,76 @@
 $def with (courses, offset)
 
 $for i, course in enumerate(courses):
-  $ idCat = str(course['target']['id'])
+  $ idCat = str(course['id'])
+  $ progress = course['progress']
   $if idCat in LANG.categories:
     $ category = LANG.categories[idCat]
   $else:
-    $ category = course['target']['name']
+    $ category = course['name']
 
   <div class="course-box"
         data-i="$(offset + i)"
-        data-progress="$(course['percent_complete'])"
+        data-progress="$(progress['percent_complete'])"
         data-title="$(course['name'])"
-        data-review="$(course['review'])"
+        data-review="$(progress['due_review'])"
         data-category="$(category)">
 
     <!-- Progress-->
-    <div class="course-progress" title="$(course['learned'])/$(course['num_things'] - course['ignored'])">
-      <div class="course-progress-active" style="width: $(course['percent_complete'])%"></div>
+    <div class="course-progress" title="$(progress['learned'])/$(progress['size'] - progress['ignored'])">
+      <div class="course-progress-active" style="width: $(progress['percent_complete'])%"></div>
     </div>
 
-    $if course['percent_complete'] == 100:
+    $if progress['percent_complete'] == 100:
       <div class="course-complete">$:(LANG.misc['course_complete'])</div>
 
-    $if course['review']:
-      <div class="need-watering $('small' if course['review'] >= 1000 else None)">
-        $if course['review'] >= 1000:
+    $if progress['due_review']:
+      <div class="need-watering $('small' if progress['due_review'] >= 1000 else None)">
+        $if progress['due_review'] >= 1000:
           +999
         $else:
-          $(course['review'])
+          $(progress['due_review'])
       </div>
 
     <div class="inner-wrap">
       <!-- Photo -->
-      <a href="$(course['url'])" class="picture-wrapper">
-        <div class="course-box-picture" style="background-image: url(&quot;$(course['photo'])&quot;)"></div>
+      <a href="/course/$(course['id'])/$(course['slug'])/" class="picture-wrapper">
+        <div class="course-box-picture" style="background-image: url(&quot;$(course['photo_url'])&quot;)"></div>
       </a>
       <div class="details-wrapper">
 
-        <!-- Language -->
-        <div class="target-photo">
-          <img src="$(course['target']['photo'])" alt="">
-        </div>
+        $#<!-- Language -->
+        $#<div class="target-photo">
+        $#  <img src="$(course['target']['photo'])" alt="">
+        $#</div>
 
-        <!-- Author + category -->
-        <div class="clearfix">
-          <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
-            $:category
-          </a>
-        </div>
+        $#<!-- Author + category -->
+        $#<div class="clearfix">
+        $#  <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
+        $#    $:category
+        $#  </a>
+        $#</div>
 
         <!-- Title -->
         <h3>
-          <a href="$(course['url'])" class="inner" title="$(course['name']))">$(course['name'])</a>
+          <a href="/course/$(course['id'])/$(course['slug'])/" class="inner" title="$(course['name']))">$(course['name'])</a>
         </h3>
 
         <!-- Stats -->
-        $if course['num_learners'] >= 1000:
-          $ num_learners = "{0:.2f}".format(float(course['num_learners']) / 1000) + "k"
-        $else:
-          $ num_learners = str(course['num_learners'])
+        $# $if course['num_learners'] >= 1000:
+        $#   $ num_learners = "{0:.2f}".format(float(course['num_learners']) / 1000) + "k"
+        $# $else:
+        $#   $ num_learners = str(course['num_learners'])
 
-        $if course['num_things'] < 60:
-          $ duration = str(course['num_things']) + "m"
+        $if progress['size'] < 60:
+          $ duration = str(progress['size']) + "m"
         $else:
-          $ duration = str(int(ceil(float(course['num_things']) / 60))) + "h"
+          $ duration = str(int(ceil(float(progress['size']) / 60))) + "h"
 
         <div class="details">
           <div class="stats">
-            <span class="stat" title="$:(LANG.misc['course_learners'].replace('%', str(course['num_learners'])))">
-              <span class="ico ico-user"></span> $(num_learners)
-            </span>
+            $#<span class="stat" title="$:(LANG.misc['course_learners'].replace('%', str(course['num_learners'])))">
+            $#  <span class="ico ico-user"></span> $(num_learners)
+            $#</span>
             <span class="stat" title="$:(LANG.misc['course_duration'].replace('%', duration))">
               <span class="ico ico-clock"></span> $(duration)
             </span>

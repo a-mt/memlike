@@ -16,13 +16,17 @@ class Lang(object):
         return name in self._data
 
     def __getattr__(self, name):
-        return getattr(self._data[self.session['lang']], name)
+        return getattr(self._data[self.lang], name)
+
+    @property
+    def lang(self):
+        return self.session.get('lang', 'english')
 
     def _processor(self, handler):
         self._load()
         return handler()
 
     def _load(self):
-        lang = self.session['lang']
+        lang = self.lang
         if not lang in self._data:
             self._data[lang] = imp.load_source(lang, self.pwd + '/locales/' + lang + '.py')
