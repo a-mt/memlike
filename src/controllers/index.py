@@ -1,4 +1,5 @@
 import web
+from os import getenv
 from _globals import GLOBALS
 from requests.exceptions import HTTPError
 from memrise import memrise
@@ -39,4 +40,5 @@ class about:
     def GET(self):
         return GLOBALS['render'].about()
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+

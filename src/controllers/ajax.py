@@ -1,4 +1,5 @@
 import web, json
+from os import getenv
 from memrise import memrise
 from requests.exceptions import HTTPError
 from math import ceil
@@ -355,4 +356,4 @@ class track_progress():
           web.ctx.env.get('HTTP_X_REFERER')
         ))
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))

@@ -1,7 +1,6 @@
 import requests, re, sys
 import time
 import json
-import web
 
 from cache import mc
 from bs4 import BeautifulSoup, Tag
@@ -9,7 +8,6 @@ from variables import categories_code, levels
 
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
 USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
-
 
 def get_time():
     return '%d' % (time.time() * 1000)
@@ -47,7 +45,7 @@ class Memrise:
 
     def login(self, username, password):
         """
-            Authenticate with the given username and password
+            Authenticate on Memrise (no caching) with the given username and password
             Throws 403 if the username or password isn't right
 
             @throws requests.exceptions.HTTPError
@@ -297,7 +295,6 @@ class Memrise:
                 categories = {}
                 if len(ul_list):
                     parseCategories(ul_list.pop())
-
                 mc.set(cache_key, categories, time=60*60*24)
 
         return categories

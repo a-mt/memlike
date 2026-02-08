@@ -21,13 +21,31 @@ from datetime import datetime
 dotenv_path = path.join(pwd, '..', '.env')
 load_dotenv(dotenv_path)
 
+IS_TEST = getenv('WEBPY_ENV', '') == 'test'
+
 # Configure web server
 if getenv('DEBUG', False):
-    web.config.debug = True
+    web.config.debug = True # debug trace error
+    web.config.debug_sql = not IS_TEST # flag to enable/disable printing queries
 else:
     web.config.debug = False # to be able to use session
+    web.config.debug_sql = False
 
-web.config.session_parameters.cookie_path = '/'
+web.config.session_parameters.secret_key = web.utils.storage(
+    {
+        "cookie_name": "session_id",
+        "cookie_domain": None,
+        "cookie_path": '/',
+        "samesite": None,
+        "timeout": 86400,  # 24 * 60 * 60, # 24 hours in seconds
+        "ignore_expiry": True,
+        "ignore_change_ip": True,
+        "secret_key": "fLjUfxqXtfNoIldA0A0K",
+        "expired_message": "Session expired",
+        "httponly": True,
+        "secure": False,
+    }
+)
 
 urls = (
     '/fr/courses', controllers.courses.app,
@@ -40,7 +58,11 @@ urls = (
     '', controllers.index.app
 )
 
-app = web.application(urls, globals())
+app = web.application(mapping=urls, fvars=globals(), autoreload=getenv('AUTORELOAD', None))
+if getenv('DEBUG', False):
+    app.debug = True
+else:
+    app.debug = False
 
 # Save session to database or to disk
 if environ.get('DATABASE_URL', ''):
@@ -74,7 +96,7 @@ GLOBALS['time']          = lambda: int(datetime.now().timestamp())
 GLOBALS['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
 GLOBALS['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
 GLOBALS['number_format'] = lambda x: "{:,}".format(x)
-GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))
+GLOBALS['floatval']      = lambda x: float(re.sub(r'[^\d]', '', x))
 GLOBALS['debug']         = debug
 
 # Variables accessible globally in templates
@@ -129,8 +151,10 @@ def flash():
 
 app.add_processor(web.loadhook(flash))
 
-if __name__ == "__main__":
-    print('Run...')
+if __name__ == "__main__" and not IS_TEST:
+    autoreload = 'true' if getenv('AUTORELOAD', None) else 'false'
+
+    print(f'Run app (web2py={web.__version__}, debug={app.debug}, autoreload={autoreload})...')
     app.run()
 
 # Translations: https://d2rhekw5qr4gcj.cloudfront.net/dist/locales/fr/translation-54de43979713.json

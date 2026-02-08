@@ -6,6 +6,7 @@ ENV PYTHONUNBUFFERED=1
 RUN apt update \
   && apt install -y gettext wget curl procps \
   && apt install -y memcached libmemcached-dev \
+  && apt install -y python3-pip python3-wheel git \
   # cleanup apt cache
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
@@ -16,8 +17,8 @@ ENV WWWDIR='/srv/src'
 
 WORKDIR $APPDIR
 
-RUN pip3 install --upgrade pip
 COPY requirements.txt ./requirements.txt
+COPY requirements-dev.txt ./requirements-dev.txt
 RUN pip install -r requirements.txt
 
 # setup server dependencies

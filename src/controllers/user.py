@@ -1,4 +1,5 @@
 import web
+from os import getenv
 from memrise import memrise
 from _globals import GLOBALS
 from variables import levels
@@ -24,4 +25,5 @@ class user:
 
         return GLOBALS['render'].user(user, tab, levels)
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+

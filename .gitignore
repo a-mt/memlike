@@ -3,3 +3,10 @@ package-lock.json
 sessions/
 node_modules
 __pycache__
+docker_volumes
+.tox*
+.pytest*
+*.egg-info
+=*
+*.log
+build/

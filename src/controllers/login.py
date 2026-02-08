@@ -1,4 +1,5 @@
 import web
+from os import getenv
 from _globals import GLOBALS
 from memrise import memrise
 from requests.exceptions import HTTPError
@@ -51,4 +52,4 @@ class login:
             GLOBALS['session'].flash = {"err": err, "data": _POST}
             raise web.seeother('')
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))

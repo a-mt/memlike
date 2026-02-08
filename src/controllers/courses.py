@@ -1,5 +1,6 @@
 from variables import *
 import web
+from os import getenv
 from memrise import memrise
 from _globals import GLOBALS
 
@@ -36,4 +37,4 @@ class courses:
             "q"     : _GET.q
         }, languages, categories, catHaveCourse)
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
