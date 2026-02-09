@@ -1,6 +1,8 @@
-from app import app
+from app import app, web
 from functools import partial
 from re import compile
+from utils.datastructures import CaseInsensitiveMapping, SimpleCookie
+
 import json
 import unittest
 
@@ -24,9 +26,35 @@ class Client:
                 )
         return response._json
 
+    def _parse_headers(self, response, **extra):
+        if not hasattr(response, "_headers"):
+            try:
+                response._headers = CaseInsensitiveMapping(response.headers)
+            except Exception:
+                raise ValueError("Response headers is not a valid enumerable")
+        return response._headers
+
+    def _parse_cookies(self, response, **extra):
+        """
+        A Python :class:`~http.cookies.SimpleCookie` object, containing the current
+        values of all the client cookies. See the documentation of the
+        :mod:`http.cookies` module for more.
+        """
+        if not hasattr(response, "_cookies"):
+            response._cookies = SimpleCookie([
+                x[1] for x in response.header_items if x[0].lower() == 'set-cookie'
+            ])
+        return response._cookies
+
+    @property
+    def app(self):
+        return app
+
     def request(self, *args, **kwargs):
         response = app.request(*args, **kwargs)
         response.json = partial(self._parse_json, response)
+        response.get_headers = partial(self._parse_headers, response)
+        response.get_cookies = partial(self._parse_cookies, response)
         response.status_code = int(response.status.split(' ', 2)[0])
         return response
 
@@ -67,3 +95,9 @@ class SimpleTestCase(unittest.TestCase):
     @classmethod
     def _pre_setup(cls):
         cls.client = cls.client_class()
+
+    def get_auth_cookies(self):
+        response = self.client.request('/login', method='TEST')
+        assert response.status_code == 303
+
+        return response.get_cookies()

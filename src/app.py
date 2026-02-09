@@ -65,12 +65,14 @@ else:
     app.debug = False
 
 # Save session to database or to disk
-if environ.get('DATABASE_URL', ''):
-    db      = web.database()
-    store   = web.session.DBStore(db, 'sessions')
-    session = web.session.Session(app, store, initializer=GLOBALS['defaults'])
+if IS_TEST:
+    session_store =  web.session.MemoryStore()
+elif environ.get('DATABASE_URL', ''):
+    session_store = web.session.DBStore(web.database(), 'sessions')
 else:
-    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=GLOBALS['defaults'])
+    session_store = web.session.DiskStore('sessions')
+
+session = web.session.Session(app, session_store, initializer=GLOBALS['defaults'])
 
 lang     = Lang(app, session, pwd)
 render   = web.template.render(pwd + '/templates/', base='_layout', globals=GLOBALS)

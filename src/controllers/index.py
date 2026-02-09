@@ -5,10 +5,10 @@ from requests.exceptions import HTTPError
 from memrise import memrise
 
 urls = (
-  "/home/leaderboard", "leaderboard",
-  "/home", "index",
-  "/about", "about",
-  "/", "index"
+  r"/home/leaderboard", "leaderboard",
+  r"/home", "index",
+  r"/about", "about",
+  r"/", "index"
 )
 
 class index:

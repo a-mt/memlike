@@ -8,36 +8,36 @@ from _globals import GLOBALS
 urls = (
   "", "api",
 
-  "/courses", "courses",
-  "/level/(\d+)", "level_edit",
-  "/level/(\d+)/alt", "level_alt",
-  "/level/(\d+)/alt_edit", "level_editalt",
-  "/level/(\d+)/add", "level_addrow",
-  "/level/(\d+)/edit", "level_editcell",
-  "/level/(\d+)/remove", "level_removerow",
-  "/level/(\d+)/upload", "level_uploadfile",
-  "/level/(\d+)/upload_remove", "level_removefile",
-  "/level/(\d+)/edit_multimedia", "level_editmultimedia",
-  "/course/(\d+)/([^/]+)/edit", "course_edit",
-  "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  "/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
-  "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
-  "/course/(\d+)/([^/]+)", "course",
+  r"/courses", "courses",
+  r"/level/(\d+)", "level_edit",
+  r"/level/(\d+)/alt", "level_alt",
+  r"/level/(\d+)/alt_edit", "level_editalt",
+  r"/level/(\d+)/add", "level_addrow",
+  r"/level/(\d+)/edit", "level_editcell",
+  r"/level/(\d+)/remove", "level_removerow",
+  r"/level/(\d+)/upload", "level_uploadfile",
+  r"/level/(\d+)/upload_remove", "level_removefile",
+  r"/level/(\d+)/edit_multimedia", "level_editmultimedia",
+  r"/course/(\d+)/([^/]+)/edit", "course_edit",
+  r"/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
+  r"/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
+  r"/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
+  r"/course/(\d+)/([^/]+)", "course",
 
-  "/user/([^/]+)", "user",
-  "/user/([^/]+)/(followers)", "user_mempals",
-  "/user/([^/]+)/(following)", "user_mempals",
-  "/user/([^/]+)/(teaching)", "user_courses",
-  "/user/([^/]+)/(learning)", "user_courses",
+  r"/user/([^/]+)", "user",
+  r"/user/([^/]+)/(followers)", "user_mempals",
+  r"/user/([^/]+)/(following)", "user_mempals",
+  r"/user/([^/]+)/(teaching)", "user_courses",
+  r"/user/([^/]+)/(learning)", "user_courses",
 
   # logged-in user only
-  "/dashboard", "user_dashboard",
-  "/leaderboard", "user_leaderboard",
-  "/sync", "user_sync",
-  "/session", "debug_session",
+  r"/dashboard", "user_dashboard",
+  r"/leaderboard", "user_leaderboard",
+  r"/sync", "user_sync",
+  r"/session", "debug_session",
 
-  "/(register)", "track_progress",
-  "/(session_end)", "track_progress"
+  r"/(register)", "track_progress",
+  r"/(session_end)", "track_progress"
 )
 NBPERPAGE = 15
 
@@ -296,11 +296,11 @@ class user_dashboard():
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session
-                for course in courses:
-                    data = {}
-                    for k in ['progress']:
-                        data[k] = course[k]
-                    c += 1
+                # for course in courses:
+                #     data = {}
+                #     for k in ['progress']:
+                #         data[k] = course[k]
+                #     c += 1
 
         except HTTPError as e:
             print('HTTPError', e)
@@ -310,10 +310,7 @@ class user_dashboard():
             else:
                 raise web.NotFound()
 
-        except Exception as e:
-            print('ERR', e)
-
-            raise web.InternalError()
+        return ''
 
 class user_leaderboard():
     def GET(self):

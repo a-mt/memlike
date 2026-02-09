@@ -6,18 +6,18 @@ from requests.exceptions import HTTPError
 
 urls = (
   # Learn
-  "/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
-  "/(\d+)/(.*)/(\d+)/(\d+)", "view",
-  "/(\d+)/(.*)/(\d+)/(.*)", "level",
-  "/(\d+)/(.*)/(\d+)", "level",
+  r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
+  r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
+  r"/(\d+)/(.*)/(\d+)/(.*)", "level",
+  r"/(\d+)/(.*)/(\d+)", "level",
 
   # View course
-  "/(\d+)/(.*)/garden", "learn_fromform",
-  "/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
-  "/(\d+)/(.*)/leaderboard", "leaderboard",
-  "/(\d+)/([^/]*)/edit", "edit",
-  "/(\d+)/(.*)", "course",
-  "/(\d+)", "course"
+  r"/(\d+)/(.*)/garden", "learn_fromform",
+  r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
+  r"/(\d+)/(.*)/leaderboard", "leaderboard",
+  r"/(\d+)/([^/]*)/edit", "edit",
+  r"/(\d+)/(.*)", "course",
+  r"/(\d+)", "course"
 )
 
 class learn_fromform:

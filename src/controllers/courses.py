@@ -5,8 +5,8 @@ from memrise import memrise
 from _globals import GLOBALS
 
 urls = (
-  "", "courses",
-  "/(.*)", "courses"
+  r"", "courses",
+  r"/(.*)", "courses"
 )
 
 class courses:

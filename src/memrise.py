@@ -7,9 +7,6 @@ from cache import mc
 from bs4 import BeautifulSoup, Tag
 from variables import categories_code, levels
 
-OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
-USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
-
 
 def get_time():
     return '%d' % (time.time() * 1000)
@@ -19,32 +16,6 @@ class Memrise:
     #+-----------------------------------------------------
     #| AUTH
     #+-----------------------------------------------------
-    def get_auth(self, force=False):
-        """
-            Retrieve sessionid to retrieve content (using our own account)
-            Is cached via memcached for 1day
-
-            @param boolean force - [False] Force cache refresh
-            @return string       - sessionid
-        """
-        cache_key = "login"
-        session = mc.get(cache_key)
-        if force or session == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    session = mc.get(cache_key)
-                    if session:
-                        return session['sessionid']
-
-                print('GET ' + cache_key)
-
-                session = self.login("66b1d91e8e", "66b1d91e8e66b1d91e8e!")
-                mc.set(cache_key, session, time=60*60*24)
-
-        return session['sessionid']
-
     def login(self, username, password):
         """
             Authenticate with the given username and password
@@ -53,55 +24,11 @@ class Memrise:
             @throws requests.exceptions.HTTPError
             @param string username
             @param string password
-            @return string - sessionid
         """
-        data     = {}
-        cookies  = {}
+        data = {'username': username} # json['user']
 
-        #-----------------------------------------------------------------------
-        # Retrieve CRSF token
-        headers = {
-            "Referer": "https://app.memrise.com/signin",
-            "User-Agent": USER_AGENT,
-        }
-        response  = requests.get("https://app.memrise.com/v1.17/web/ensure_csrf")
-        response.raise_for_status()
-
-        json      = response.json()
-        csrftoken = json['csrftoken']
-
-        #-----------------------------------------------------------------------
-        # Retrieve access_token (login)
-        headers['Origin']      = 'https://app.memrise.com'
-        headers['X-CSRFToken'] = csrftoken
-
-        cookies = {
-            'csrftoken': csrftoken
-        }
-        data = {
-            'client_id' : OAUTH_CLIENT_ID,
-            'grant_type': 'password',
-            'username'  : username,
-            'password'  : password
-        }
-        response  = requests.post("https://app.memrise.com/v1.17/auth/access_token/", cookies=cookies, headers=headers, data=data)
-        response.raise_for_status()
-
-        json = response.json()
-        data = json['user']
-
-        #-----------------------------------------------------------------------
-        # Retrieve sessionid_2
-        del headers['Origin']
-        del headers['X-CSRFToken']
-
-        token     = json['access_token']['access_token']
-        response  = requests.get("https://app.memrise.com/v1.17/auth/web/?invalidate_token_after=true&token=" + token, cookies=cookies, headers=headers)
-        response.raise_for_status()
-
-        data['sessionid'] = response.cookies["sessionid_2"]
-        data['csrftoken'] = response.cookies["csrftoken"]
-
+        data['sessionid'] = 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4'
+        data['csrftoken'] = 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4'
         return data
 
     def whoami(self, sessionid):
@@ -112,29 +39,12 @@ class Memrise:
             @param string sessionid
             @return dict - {sessionid, username, photo}
         """
-        response  = requests.get("https://app.memrise.com/settings/", cookies={"sessionid_2": sessionid})
-        response.raise_for_status()
-
-        html = response.text.encode('utf-8').strip()
-        DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-        data = {
-            "sessionid": sessionid
+        # response = read('tests/responses/settings.html')
+        return {
+            "sessionid": 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4',
+            "username": "4v15721",
+            "photo": "https://static.memrise.com/img/400sqf/from/uploads/profiles/amistri_140708_0656_52.jpg",
         }
-
-        div  = DOM.find(id="content")
-        if div != None:
-
-            # Get username
-            item = div.find(id="id_username")
-            if item != None:
-                data["username"] = item.attrs["value"]
-
-            # Get photo
-            item = div.find('div', {'class':'thumbnail'})
-            if item != None:
-                data["photo"] = item.img.attrs["src"]
-
-        return data
 
     def whatistudy(self, sessionid):
         """
@@ -144,21 +54,80 @@ class Memrise:
             @param string sessionid
             @return dict
         """
-        nbperpage = 4
-        offset    = 0
-
-        while True:
-            #url       = f"https://app.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset={offset}&limit={nbperpage-1}&get_review_count=true"
-            url       = f"https://app.memrise.com/v1.21/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage-1}"
-            response  = requests.get(url, cookies={"sessionid_2": sessionid})
-            response.raise_for_status()
-
-            data      = response.json()
-            offset   += nbperpage
-            yield data['courses']
-
-            if not 'has_more_pages' in data or not data['has_more_pages']:
-                break
+        # response = read('tests/responses/dashboard_courses.json')
+        page1 = [{
+            "id": "6698294",
+            "name": "German vocab",
+            "slug": "german-vocab",
+            "is_official": False,
+            "photo_url": "https://static.memrise.com/garden/img/placeholders/course-4.png",
+            "next_session": {
+                "single_continue": {
+                    "session_type": "learn",
+                    "is_pro_mode": False,
+                    "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "unlocked_state": "always_unlocked",
+                    "badge_count": None
+                },
+                "mode_selector": {
+                    "learn": {
+                        "is_pro_mode": False,
+                        "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                        "badge_count": 0,
+                        "is_enabled": True,
+                        "unlocked_state": "always_unlocked"
+                    },
+                    "classic_review": {
+                        "is_pro_mode": False,
+                        "url": "/aprender/review?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                        "badge_count": 0,
+                        "is_enabled": True,
+                        "unlocked_state": "always_unlocked"
+                    },
+                    "speed_review": {
+                        "is_pro_mode": False,
+                        "url": "/aprender/speed?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                        "badge_count": 0,
+                        "is_enabled": True,
+                        "unlocked_state": "always_unlocked"
+                    },
+                    "difficult_words": {
+                        "is_pro_mode": True,
+                        "url": "/aprender/difficult?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                        "badge_count": 4,
+                        "is_enabled": True,
+                        "unlocked_state": "locked"
+                    },
+                    "listening_skills": {
+                        "is_pro_mode": True,
+                        "url": None,
+                        "badge_count": 0,
+                        "is_enabled": False,
+                        "unlocked_state": "locked"
+                    },
+                    "video": {
+                        "is_pro_mode": True,
+                        "url": None,
+                        "badge_count": 0,
+                        "is_enabled": False,
+                        "unlocked_state": "locked"
+                    }
+                }
+            },
+            "goal": None,
+            "progress": {
+                "id": 6698294,
+                "name": "German vocab",
+                "size": 274,
+                "due_review": 0,
+                "learned": 50,
+                "ignored": 0,
+                "difficult": 4,
+                "completed_this_session": False,
+                "percent_complete": 18
+            }
+        }]
+        return [page1]
 
     def user_leaderboard(self, sessionid, period):
         """
@@ -169,10 +138,73 @@ class Memrise:
             @param string period - month, week, alltime
             @return dict - Retrieved JSON
         """
-        url      = "https://app.memrise.com/ajax/leaderboard/mempals/?period=" + period + "&how_many=50"
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
-        response.raise_for_status()
-        return response.json()
+        return {
+            "rows": [{
+                "position": 1,
+                "points": 140168,
+                "username": "4v15721",
+                "uid": 5892033,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amistri_140708_0656_52.jpg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 2,
+                "points": 0,
+                "username": "Abdullah720",
+                "uid": 597440,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/azrael42_120927_1846_32.jpg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 3,
+                "points": 0,
+                "username": "BradLife",
+                "uid": 1705578,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Gustavis_140926_1859_19.jpg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 4,
+                "points": 0,
+                "username": "CFT",
+                "uid": 1799372,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/CFT_161101_0641_06.jpg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 5,
+                "points": 0,
+                "username": "Sam.Artin",
+                "uid": 4923954,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Sam.Aritan_141210_0039_38.png",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 6,
+                "points": 0,
+                "username": "amayoco",
+                "uid": 5798179,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amayoco_140805_1022_50.jpg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 7,
+                "points": 0,
+                "username": "Oc\u00e9ane-Polyglot",
+                "uid": 6322393,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/6322393_240911_1343_22.jpeg",
+                "is_premium": False,
+                "following": True
+            }, {
+                "position": 8,
+                "points": 0,
+                "username": "Jordancraig1",
+                "uid": 6602920,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Jordancraig1_141212_1125_11.jpg",
+                "is_premium": False,
+                "following": True
+            }]
+        }
 
     def track_progress(self, path, data, sessionid, csrftoken, referer):
         """
@@ -186,19 +218,8 @@ class Memrise:
             @param string referer
             @return dict - Retrieved JSON
         """
-        if path == "session_end":
-            url = "https://app.memrise.com/ajax/session_end/"
-        else:
-            url = "https://app.memrise.com/api/garden/register/"
-
-        response = requests.post(url, data=data, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
-            "Origin": "https://app.memrise.com",
-            "Referer": referer,
-            "User-Agent": USER_AGENT,
-            "X-CSRFToken": csrftoken
-        })
-        response.raise_for_status()
-        return response.json()
+        # progress_register_{request,response}.json
+        return {}
 
     #+-----------------------------------------------------
     #| COURSES
@@ -214,42 +235,13 @@ class Memrise:
             @param string[optional] query - [""]
             @return string                - Retrieved JSON
         """
-        if not isinstance(page, int) and not page.isdigit():
-            page = 0
+        # response = read('tests/responses/browse_cat-languages_scat-french_page-2.json')
 
-        # Check cache
-        if query != "":
-            cache_key = False
-            courses   = None
-        else:
-            cache_key = lang + '_courses_' + str(page) + '_' + cat
-            courses   = mc.get(cache_key)
-
-        # Query memrise
-        if courses == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    courses = mc.get(cache_key)
-                    if courses:
-                        return courses
-
-                if cache_key:
-                    print('GET ' + cache_key)
-
-                url  = 'https://app.memrise.com/ajax/browse/?s_cat=' + lang
-                if cat != "":
-                    url += "&cat=" + cat
-                if query != "":
-                    url += "&q=" + query
-                url += '&page=' + str(page) + '&_=' + get_time()
-
-                courses = requests.get(url, headers={"Accept-Language": "fr;q=0.8,en-US;q=0.5,en;q=0.3"}).text
-                if cache_key:
-                    mc.set(cache_key, courses, time=60*60*24)
-
-        return courses
+        return {
+            "page": 1,
+            "content": "\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/80191/espagnol-1000-mots-et-expressions/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/71045_Imagen6.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/language_photos/DemoFlags-03_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/Franc%C3%A9s-T%C3%B3xico/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"2910601\" data-direction=\"bottom\" class=\"author-link\">Franc\u00e9s-T\u00f3xico</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/spanish-spain/\" class=\"category\" title=\"Spanish (Spain)\">Spanish (Spain)</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/80191/espagnol-1000-mots-et-expressions/\" class=\"inner\" title=\"Espagnol - 1000 mots et expressions\">\n                    Espagnol - 1000 mots et expressions\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3642 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.64k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 14h\">\n                            <span class=\"ico ico-clock\"></span> 14h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/1577418/cm2-vocabulary/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/garden/img/placeholders/course-3.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/christelle.picard/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"7126701\" data-direction=\"bottom\" class=\"author-link\">christelle.picard</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/1577418/cm2-vocabulary/\" class=\"inner\" title=\"CM2 vocabulary\">\n                    CM2 vocabulary\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3429 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.43k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 25m\">\n                            <span class=\"ico ico-clock\"></span> 25m</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/1577422/cm5-vocabulary/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/garden/img/placeholders/course-2.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/christelle.picard/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"7126701\" data-direction=\"bottom\" class=\"author-link\">christelle.picard</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/1577422/cm5-vocabulary/\" class=\"inner\" title=\"CM5 vocabulary\">\n                    CM5 vocabulary\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3419 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.42k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 31m\">\n                            <span class=\"ico ico-clock\"></span> 31m</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/1577421/cm4-vocabulary/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/garden/img/placeholders/course-1.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/christelle.picard/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"7126701\" data-direction=\"bottom\" class=\"author-link\">christelle.picard</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/1577421/cm4-vocabulary/\" class=\"inner\" title=\"CM4 vocabulary\">\n                    CM4 vocabulary\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3415 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.42k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 1h\">\n                            <span class=\"ico ico-clock\"></span> 1h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/1577420/cm3-vocabulary/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/garden/img/placeholders/course-0.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/christelle.picard/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"7126701\" data-direction=\"bottom\" class=\"author-link\">christelle.picard</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/1577420/cm3-vocabulary/\" class=\"inner\" title=\"CM3 vocabulary\">\n                    CM3 vocabulary\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3415 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.42k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 24m\">\n                            <span class=\"ico ico-clock\"></span> 24m</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/604963/spice-up-your-english-2/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/4321150000150401182837.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/quetsch_c/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"4321150\" data-direction=\"bottom\" class=\"author-link\">quetsch_c</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/604963/spice-up-your-english-2/\" class=\"inner\" title=\"Spice up your english\">\n                    Spice up your english\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3365 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.37k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 28h\">\n                            <span class=\"ico ico-clock\"></span> 28h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/47355/neerlandais-debutant/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/arton43-1a7c6.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/language_photos/Flags_Dutch_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/marianneac/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"1927144\" data-direction=\"bottom\" class=\"author-link\">marianneac</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/dutch/\" class=\"category\" title=\"Niederl\u00e4ndisch\">Niederl\u00e4ndisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/47355/neerlandais-debutant/\" class=\"inner\" title=\"N\u00e9erlandais d\u00e9butant\">\n                    N\u00e9erlandais d\u00e9butant\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3179 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.18k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 2h\">\n                            <span class=\"ico ico-clock\"></span> 2h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/113013/anglais-economie/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/3146044000151109055021.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <span>deactivated user</span>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/113013/anglais-economie/\" class=\"inner\" title=\"Anglais \u2022 Economie\">\n                    Anglais \u2022 Economie\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"3099 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 3.1k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 10h\">\n                            <span class=\"ico ico-clock\"></span> 10h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/602567/vocabulaire-francais-tres-avance/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/6776343000150322234943.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/language_photos/DemoFlags-02_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/Inultus/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"6776343\" data-direction=\"bottom\" class=\"author-link\">Inultus</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/french/\" class=\"category\" title=\"Franz\u00f6sisch\">Franz\u00f6sisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/602567/vocabulaire-francais-tres-avance/\" class=\"inner\" title=\"Vocabulaire fran\u00e7ais (tr\u00e8s) avanc\u00e9\">\n                    Vocabulaire fran\u00e7ais (tr\u00e8s) avanc\u00e9\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2914 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.91k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 6h\">\n                            <span class=\"ico ico-clock\"></span> 6h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/84241/espagnol-maitriser-la-langue-en-3h/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/64854_Imagen6.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/language_photos/DemoFlags-03_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/Franc%C3%A9s-T%C3%B3xico/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"2910601\" data-direction=\"bottom\" class=\"author-link\">Franc\u00e9s-T\u00f3xico</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/spanish-spain/\" class=\"category\" title=\"Spanish (Spain)\">Spanish (Spain)</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/84241/espagnol-maitriser-la-langue-en-3h/\" class=\"inner\" title=\"Espagnol - ma\u00eetriser la langue en 3h\">\n                    Espagnol - ma\u00eetriser la langue en 3h\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2889 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.89k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 3h\">\n                            <span class=\"ico ico-clock\"></span> 3h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/39372/turc-basique/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/iset_photos/blumosk_tulips1804.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/language_photos/DemoFlags-13_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/Correo/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"28027\" data-direction=\"bottom\" class=\"author-link\">Correo</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/turkish/\" class=\"category\" title=\"T\u00fcrkisch\">T\u00fcrkisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/39372/turc-basique/\" class=\"inner\" title=\"Turc basique\">\n                    Turc basique\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2875 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.88k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 25h\">\n                            <span class=\"ico ico-clock\"></span> 25h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/165862/anglais-phrases/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/3146044000171227093241.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <span>deactivated user</span>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/165862/anglais-phrases/\" class=\"inner\" title=\"Anglais \u2022 Phrases\">\n                    Anglais \u2022 Phrases\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2793 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.79k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 2h\">\n                            <span class=\"ico ico-clock\"></span> 2h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/45221/anglais-debutant/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/v.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/Mshmash/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"1932121\" data-direction=\"bottom\" class=\"author-link\">Mshmash</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/45221/anglais-debutant/\" class=\"inner\" title=\"Anglais d\u00e9butant\">\n                    Anglais d\u00e9butant\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2755 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.75k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 12h\">\n                            <span class=\"ico ico-clock\"></span> 12h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/297166/anglais-lheure/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/3146044000171227090609.png\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/en.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <span>deactivated user</span>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/english/\" class=\"category\" title=\"Englisch\">Englisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/297166/anglais-lheure/\" class=\"inner\" title=\"Anglais \u2022 L&#x27;Heure\">\n                    Anglais \u2022 L&#x27;Heure\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2725 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.73k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 54m\">\n                            <span class=\"ico ico-clock\"></span> 54m</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n    <div class=\"course-box-wrapper col-xs-12 col-sm-6 col-md-4\">\n        \n\n<div class=\"course-box \">\n\n    <div class=\"inner-wrap\">\n\n        <a href=\"/community/course/367429/apprendre-les-bases-du-japonais-audio/\" class=\"picture-wrapper\">\n            <div class=\"course-box-picture\" style='background-image: url(\"https://static.memrise.com/img/400sqf/from/uploads/course_photos/6146585000140811143554.jpg\")'></div>\n        </a>\n\n        <div class=\"details-wrapper\">\n            \n                \n                    <div class=\"target-photo\">\n                        <img src=\"https://static.memrise.com/uploads/category_photos/DemoFlags-09_copy.png\" alt=\"\"/>\n                    </div>\n                \n                <div class=\"clearfix\">\n                <span class=\"author pull-right\">\n                    von\n                    \n                        <a href=\"/user/ker0tan/courses/teaching/\" data-role=\"hovercard\" data-user-id=\"6146585\" data-direction=\"bottom\" class=\"author-link\">ker0tan</a>\n                    \n                </span>\n                <a href=\"/de/community/courses/french/japanese-4/\" class=\"category\" title=\"Japanisch\">Japanisch</a>\n            \n            </div>\n            <h3>\n                <a href=\"/community/course/367429/apprendre-les-bases-du-japonais-audio/\" class=\"inner\" title=\"Apprendre les bases du Japonais AUDIO\">\n                    Apprendre les bases du Japonais AUDIO\n                </a>\n            </h3>\n            \n                <div class=\"details\">\n                    \n                        <div class=\"stats\">\n                            <span class=\"stat\" title=\"2699 Leute lernen diesen Kurs\">\n                                <span class=\"ico ico-user\"></span> 2.7k\n                            </span>\n                            <span class=\"stat\" title=\"Dieser Kurs dauert ungef\u00e4hr 8h\">\n                            <span class=\"ico ico-clock\"></span> 8h</span>\n                        </div>\n                    \n                </div>\n            \n\n        </div>\n\n    </div>\n\n</div>\n\n    </div>\n\n",
+            "has_next": False
+        }
 
     #+-----------------------------------------------------
     #| CATEGORIES
@@ -263,42 +255,123 @@ class Memrise:
             @return dict       - {<idCourse>: True}
         """
 
-        cache_key  = lang + "_categories"
-        categories = mc.get(cache_key)
-
-        # Query memrise
-        if categories == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    categories = mc.get(cache_key)
-                    if categories:
-                        return categories
-
-                print('GET ' + cache_key)
-                html = requests.get("https://app.memrise.com/fr/courses/" + lang + "/").text.encode('utf-8').strip()
-
-                # Parse HTML
-                DOM = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                ul_list = DOM.find_all('ul',{'class':'categories-list'})
-
-                def parseCategories(ul):
-                    for li in ul.findChildren():
-                        if not 'data-category-id' in li.attrs:
-                            continue
-
-                        id = li.attrs['data-category-id']
-                        categories[id] = True
-
-                        if li.ul:
-                            parseCategories(li.ul)
-
-                categories = {}
-                if len(ul_list):
-                    parseCategories(ul_list.pop())
-
-                mc.set(cache_key, categories, time=60*60*24)
+        # languages/french
+        categories = {
+            "578": True,
+            "6": True,
+            "964": True,
+            "3": True,
+            "2": True,
+            "879": True,
+            "4": True,
+            "842": True,
+            "428": True,
+            "688": True,
+            "5": True,
+            "9": True,
+            "53": True,
+            "19": True,
+            "17": True,
+            "20": True,
+            "27": True,
+            "11": True,
+            "67": True,
+            "79": True,
+            "926": True,
+            "927": True,
+            "32": True,
+            "114": True,
+            "15": True,
+            "963": True,
+            "18": True,
+            "767": True,
+            "950": True,
+            "23": True,
+            "24": True,
+            "26": True,
+            "268": True,
+            "35": True,
+            "290": True,
+            "353": True,
+            "383": True,
+            "183": True,
+            "612": True,
+            "547": True,
+            "550": True,
+            "549": True,
+            "613": True,
+            "665": True,
+            "666": True,
+            "668": True,
+            "582": True,
+            "22": True,
+            "393": True,
+            "614": True,
+            "25": True,
+            "8": True,
+            "441": True,
+            "474": True,
+            "117": True,
+            "122": True,
+            "267": True,
+            "297": True,
+            "336": True,
+            "54": True,
+            "583": True,
+            "52": True,
+            "679": True,
+            "677": True,
+            "680": True,
+            "681": True,
+            "684": True,
+            "678": True,
+            "685": True,
+            "21": True,
+            "31": True,
+            "264": True,
+            "706": True,
+            "584": True,
+            "10": True,
+            "16": True,
+            "13": True,
+            "14": True,
+            "51": True,
+            "12": True,
+            "29": True,
+            "30": True,
+            "43": True,
+            "291": True,
+            "585": True,
+            "41": True,
+            "920": True,
+            "72": True,
+            "205": True,
+            "254": True,
+            "296": True,
+            "414": True,
+            "416": True,
+            "483": True,
+            "675": True,
+            "69": True,
+            "224": True,
+            "961": True,
+            "378": True,
+            "615": True,
+            "273": True,
+            "73": True,
+            "586": True,
+            "34": True,
+            "222": True,
+            "279": True,
+            "722": True,
+            "957": True,
+            "751": True,
+            "945": True,
+            "587": True,
+            "204": True,
+            "220": True,
+            "676": True,
+        }
 
         return categories
 
@@ -314,112 +387,60 @@ class Memrise:
             @param integer id
             @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
         """
+        course = {
+            "id"         : id,
+            "title"      : "Grammaire • Le groupe nominal",
+            "url"        : "/community/course/6698294/german-vocab/",
+            "author"     : "4v15721",
+            "description": "Des mots de vocabulaire",
+            "photo"      : "https://static.memrise.com/garden/img/placeholders/course-4.png",
+            "levels"     : {
+                "1": {"name": "L&#x27;article", "type": 2, "status": 'Multimedia'},
+                "2": {"name": "L&#x27;article", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "3": {"name": "Le nom", "type": 2, "status": 'Multimedia'},
+                "4": {"name": "Le nom", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "5": {"name": "L&#x27;adjectif", "type": 2, "status": 'Multimedia'},
+                "6": {"name": "L&#x27;adjectif", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "7": {"name": "Le pronom", "type": 2, "status": 'Multimedia'},
+                "8": {"name": "Le pronom", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "9": {"name": "Le possessif et démonstratif", "type": 2, "status": 'Multimedia'},
+                "10": {"name": "Le possessif et démonstratif", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "11": {"name": "Le pronom indéfini", "type": 2, "status": 'Multimedia'},
+                "12": {"name": "Le pronom indéfini", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "13": {"name": "Les prépositions", "type": 2, "status": 'Multimedia'},
+                "14": {"name": "Les prépositions", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "15": {"name": "Le comparatif", "type": 2, "status": 'Multimedia'},
+                "16": {"name": "Le comparatif", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "17": {"name": "Le superlatif", "type": 2, "status": 'Multimedia'},
+                "18": {"name": "Le superlatif", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "19": {"name": "Le corrélatif", "type": 2, "status": 'Multimedia'},
+                "20": {"name": "Le corrélatif", "type": 1, "status": '<span class="ico ico-complete ico-correct ico-m ico-green"></span>'},
+                "21": {"name": "Example", "type": 1, "status": 'Bereit zum lernen'},
+            },
+            "breadcrumb" : []
+        }
+
+        cats = [
+            'languages',
+            'european',
+            'german',
+            'german-2',
+        ]
+        for cat in cats:
+            if cat in categories_code:
+                course["breadcrumb"].append({
+                    "id"  : categories_code[cat],
+                    "name": cat
+                })
+
         if sessionid:
-            cache_key = False
-            course    = None
-        else:
-            cache_key = "course_" + id
-            course    = mc.get(cache_key)
+            stats = self._course_progress()
+            if stats != None:
+                course['stats'] = stats
 
-        if course == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    course = mc.get(cache_key)
-                    if course:
-                        return course
-
-                if sessionid:
-                    response = requests.get("https://app.memrise.com/course/" + id, cookies={"sessionid_2": sessionid})
-                else:
-                    print('GET ' + cache_key)
-                    sessionid = self.get_auth()
-                    response  = requests.get("https://app.memrise.com/course/" + id, cookies={"sessionid_2": sessionid})
-
-                response.raise_for_status()
-                html = response.text.encode('utf-8').strip()
-
-                # Parse HTML
-                DOM    = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                course = {
-                    "id"         : id,
-                    "title"      : "",
-                    "url"        : "",
-                    "author"     : "",
-                    "description": "",
-                    "photo"      : "",
-                    "levels"     : {},
-                    "breadcrumb" : []
-                }
-
-                div = DOM.find('div',{'class','course-wrapper'})
-                if div != None:
-
-                    # Title
-                    item = div.find(itemprop="name")
-                    if item != None:
-                        course['title'] = item.text
-
-                    # Description
-                    item = div.find(itemprop="about")
-                    if item != None:
-                        course['description'] = item.text
-
-                    # Author (only when logged in :/)
-                    item = div.find(itemprop="author")
-                    if item != None:
-                        course['author'] = item.find(itemprop="additionalName").text
-
-                    # Categories
-                    item = div.find('div',{'class','course-breadcrumb'})
-                    if item != None:
-                        for child in item.find_all('a'):
-                            cat = child.attrs['href'].strip('/').split('/').pop()
-
-                            if cat in categories_code:
-                                course["breadcrumb"].append({
-                                    "id"  : categories_code[cat],
-                                    "name": cat
-                                })
-
-                    # Photo + url
-                    item = div.find('a',{'class','course-photo'})
-                    if item != None:
-                        course["url"]   = item.attrs['href']
-                        course["photo"] = item.img.attrs['src']
-
-                # List of levels
-                div = DOM.find('div',{'class':'levels'})
-                if div != None:
-
-                    for child in div.children:
-                        if not isinstance(child, Tag):
-                            continue
-
-                        name   = child.find('div',{'class':'level-title'}).text.strip()
-                        idx    = child.find('div',{'class':'level-index'}).text.strip()
-                        ico    = child.find(attrs={'class':'level-ico'}).attrs['class'].pop()
-
-                        course["levels"][idx] = {
-                            "name": name,
-                            "type": (2 if ico == 'level-ico-multimedia-inactive' or ico == 'level-ico-multimedia' else 1)
-                        }
-                        if sessionid:
-                            status = child.find('div', {'class':'level-status'})
-                            if status != None:
-                                course["levels"][idx]["status"] = re.sub(r"\s+", " ", str(status))
-
-                if sessionid:
-                    stats = self._course_progress(DOM)
-                    if stats != None:
-                        course['stats'] = stats
-
-                if cache_key:
-                    mc.set(cache_key, course, time=60*60*24)
         return course
 
-    def _course_progress(self, DOM):
+    def _course_progress(self):
         """
             Retrieve the given user progress for a given course
 
@@ -435,38 +456,33 @@ class Memrise:
             "num_things": 0
         }
 
-        div = DOM.find('div',{'class','progress-box-course'})
-        if div == None:
-            return None
+        # Learned
+        text = '50 / 274 gelernte Wörter (50 im Langzeitgedächtnis)'
+        if text:
+            res = re.search(r"^(\d+) ?/ ?(\d+)", text)
+            if res:
+                stats["learned"]      = int(res.group(1))
+                stats["num_things"]   = int(res.group(2))
 
-        # Ignored, learned, total
-        item = div.find('div',{'class':'progress-box-title'})
-        if item != None:
-            text = item.find(text=True, recursive=False)
-            if text:
-                res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
-                if res:
-                    stats["learned"]      = int(res.group(1))
-                    stats["num_things"]   = int(res.group(2))
+        # Ignored
+        text = '0 ignoriert'
+        if text:
+            res = re.search(r"^(\d+)", text)
+            if res:
+                stats["ignored"]     = int(res.group(1))
+                stats["num_things"] += int(res.group(1))
 
-            text = item.find(attrs={"class":"pull-right"})
-            if text:
-                res = re.search("^(\d+)", text.text.strip())
-                if res:
-                    stats["ignored"]     = int(res.group(1))
-                    stats["num_things"] += int(res.group(1))
-
-            # Percentage complete
-            if stats["learned"] > 0:
-                if stats["num_things"] == 0:
-                    stats["percent_complete"] = 100
-                else:
-                    stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
+        # Percentage complete
+        if stats["learned"] > 0:
+            if stats["num_things"] == 0:
+                stats["percent_complete"] = 100
+            else:
+                stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
 
         # Review
-        item = div.find('a',{'class':'blue'})
-        if item != None:
-            res = re.search("\((\d+)\)", item.text)
+        text = 'Wiederholen (274)'
+        if text:
+            res = re.search(r"\((\d+)\)", text)
             if res:
                 stats["review"] = int(res.group(1))
 
@@ -487,71 +503,11 @@ class Memrise:
             @param string session
             @return dict - Retrieved JSON
         """
-        if slug == "speed_review":
-            slug = "classic_review"
+        import json
 
-        if sessionid:
-            user_session = True
-            cache_key    = False
-            level        = None
-        else:
-            user_session = False
-            cache_key    = "course_" + idCourse + "_" + lvl + "_" + slug
-            level        = mc.get(cache_key)
-            csrftoken    = "ZS9AlStmGDO0tpKhS8bnz1bz0q4GqN0"
+        with open('tests/responses/learning_session_preview.json') as f:
+            level = json.loads(f.read())
 
-        if level == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    level = mc.get(cache_key)
-                    if level:
-                        return level
-
-                if not sessionid:
-                    sessionid = self.get_auth()
-                    print('GET ' + cache_key)
-                else:
-                    print('GET session' + "course_" + idCourse + "_" + lvl + "_" + slug)
-
-                url = "https://app.memrise.com/v1.21/learning_sessions/preview/"
-                referer = f"https://app.memrise.com/aprender/preview?course_id=${idCourse}&level_index=${lvl}"
-
-                response = requests.post(url, cookies={
-                    "sessionid_2": sessionid,
-                    "csrftoken": csrftoken,
-                }, headers={
-                    "Origin": "https://app.memrise.com",
-                    "Referer": referer,
-                    "User-Agent": USER_AGENT,
-                    "X-CSRFToken": csrftoken,
-                    "X-Requested-With": "XMLHttpRequest",
-                    "Content-Type": "application/json",
-                }, json={
-                    "session_source_id": idCourse,
-                    "session_source_sub_index": lvl,
-                    "session_source_type": "course_id_and_level_index",
-                })
-
-                # Try reauthenticate
-                if user_session == False and response.status_code == 403 and retry:
-                    sessionid = self.get_auth(True)
-
-                    return self.level(idCourse, slugCourse, lvl, slug, sessionid, csrftoken, retry=False)
-
-                response.raise_for_status()
-                level = response.json()
-
-                if user_session and slug != "preview":
-                    url      = "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + slug +"/"
-                    response = requests.head(url, cookies={"sessionid_2": sessionid})
-                    response.raise_for_status()
-                    level['referer']   = url
-                    level['csrftoken'] = response.cookies.get('csrftoken')
-
-                if cache_key:
-                    mc.set(cache_key, level, time=60*60*24)
         return level
 
     def level_multimedia(self, urlCourse, lvl):
@@ -564,43 +520,7 @@ class Memrise:
             @param integer lvl
             @return dict - Retrieved JSON
         """
-        pattern = re.search("/course/(\d+)/", urlCourse)
-        if pattern:
-            idCourse = pattern.group(1)
-        else:
-            return False
-
-        cache_key = "course_" + idCourse + "_" + lvl + "_multimedia"
-        data      = mc.get(cache_key)
-
-        if data == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    data = mc.get(cache_key)
-                    if data:
-                        return data
-
-                url      = "https://app.memrise.com" + urlCourse + lvl + "/"
-                response = requests.get(url)
-                response.raise_for_status()
-
-                # Get response
-                html = response.text.encode('utf-8').strip()
-                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                data = False
-
-                # Look for value of js variable "level_multimedia"
-                scripts = DOM.html.body.find_all("script", recursive=False)
-                for script in scripts:
-                    text = script.text.strip()
-                    if text and text.startswith("var level_multimedia = "):
-                        data = text[23:].strip(';')
-                        break
-
-                mc.set(cache_key, data, time=60*60*24)
-        return data
+        return 'img:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20genre\u000A\u000AEn allemand, il existe trois genres: féminin, masculin et neutre. L\u0027article placé devant le nom (le, la) indique le genre:\u000A\u000A• *der* devant les noms **masculins**\u000A\u000A• *die* devant les noms **féminins**\u000A\u000A• *das* devant les noms **neutres**\u000A\u000ATout nom doit être appris avec son article, le genre d\u0027un mot en allemand n\u0027étant pas toujours le même qu\u0027en français: *der Wagen* (la voiture), *die Katze* (le chat), *das Buch* (le livre).\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000APour l\u0027article indéfini (un, une):\u000A\u000A• *ein* devant les noms **masculins ou neutres**\u000A\u000A• *eine* devant les noms **féminins**\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20pluriel\u000A\u000AL\u0027article défini du pluriel (les) est toujours *die*.\u000A\u000AL\u0027article indéfini du pluriel (des) n\u0027existe pas.\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000AEn plus de l\u0027article, les noms prennent également les marques du pluriel:\u000A\u000A• \u002De: *der Hund* / *die Hunde* (le chien)\u000A\u000A•  ̈\u002De: *der Zug* / *die Züge* (le train)\u000A\u000A• \u002Der: *das Kind* / *die Kinder* (l\u0027enfant)\u000A\u000A•  ̈\u002Der: *der Wald* / *die Wälder* (la forêt)\u000A\u000A• \u002Ds: *das Radio* / *die Radios* (la radio)\u000A\u000A• \u002Dn: *der Junge* / *die Jungen* (le garçon)\u000A\u000A• \u002Den: *das Bett* / *die Betten* (le lit)\u000A\u000A•  ̈: *die Tochter* / *die Töchter* (la fille de)\u000A\u000ATout comme pour le genre, un nom doit donc être appris avec son pluriel.\u000A\u000A͏\u000A\u000ACertains noms n\u0027existent qu\u0027au pluriel: *die Leute* (les gens), *die Ferien* (les vacances).\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20cas\u000A\u000ALe groupe nominal (article + nom) change de forme selon qu\u0027il est\u000A\u000A• s͟u͟j͟e͟t͟ ͟(͟n͟o͟m͟i͟n͟a͟t͟i͟f͟):\u000A\u000A  ⇒ _**Der** Hund is süß_ (le chien est mignon)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟D͟i͟r͟e͟c͟t͟ ͟(͟a͟c͟c͟u͟s͟a͟t͟i͟f͟) \u002D qui:\u000A\u000A  ⇒ *Siehst du **den** Hund ?* (vois\u002Dtu le chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟I͟n͟d͟i͟r͟e͟c͟t͟ ͟o͟u͟ ͟S͟e͟c͟o͟n͟d͟ ͟(͟d͟a͟t͟i͟f͟) \u002D à qui:\u000A\u000A  ⇒ *Gib **dem** Hund das Essen* (donne le repas au chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟u͟ ͟N͟o͟m͟ ͟(͟g͟é͟n͟i͟t͟i͟f͟) \u002D de qui:\u000A\u000A  ⇒ *Es ist das Essen **des** Hund**es** * (c\u0027est le repas du chien)\u000A\u000ANotons qu\u0027en Allemand, le COI précède le COD.\u000A\u000A͏\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/ec63a4f901c54e9c089dd0466c187da7/raw/4f9fcac662effec634ca0cd2b2137847fdd64388/dec_article_defini.svg\u000A\u000AOn décline *diese* (ce), *jede* (chaque) et *welche* (quel) comme *der*/*die*/*das*\u000A\u000A  ⇒ *Ich gebe dies**em** Hund das Essen* (je donne le repas à ce chien).\u000A\u000AOn décline *alle* (tous) et *keine* (aucun) comme *die* (les).\u000A\u000A  ⇒ *Ich gebe all**en** Tiere**n** das Essen* (je donne le repas à tous les animaux)\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/bfd71cb08b8b399065e35ca9fb713dc2/raw/ca47bd26088cb620f5b4da25f115c6d4ec9a434d/dec_article_indefini.svg\u000A\u000AOn décline *mein* (mon), *dein* (ton) et *sein* (son) comme *ein*/*eine*.\u000A\u000A  ⇒ *Ich gebe mein**er** Katze das Essen* (je donne le repas à mon chat) \u002D *Katze* est féminin\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DCas%20particuliers\u000A\u000ACertaines prépositions forcent la forme du groupe du nominal:\u000A\u000A• **accusatif** après les prépositions *durch*, *für*, *gegen*, *ohne*, *um* et dans les compléments de lieu répondant à la question *wohin ?* (directionnel).\u000A\u000A• **datif** après les prépositions *aus*, *bei*, *mit*, *nach*, *seit*, *von*, *zu* et dans les compléments de lieu répondant à la question *wo ?* (location): *Ich spiele **mit** d**em** Hund* (je joue avec le chien).\u000A\u000A• **génitif** après les prépositions *wegen*, *trozt*, *während*, *statt*.\u000A\u000ANB Un chapitre est dédié aux prépositions plus loin'
 
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
@@ -615,34 +535,7 @@ class Memrise:
             @param string period - month, week, alltime
             @return dict - Retrieved JSON
         """
-        cache_key = "course_" + idCourse + "_learderboard_" + period
-        ldboard   = mc.get(cache_key)
-
-        if ldboard == None:
-            with mc.lock(cache_key) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    ldboard = mc.get(cache_key)
-                    if ldboard:
-                        return ldboard
-
-                sessionid = self.get_auth()
-                print('GET ' + cache_key)
-
-                url      = "https://app.memrise.com/ajax/leaderboard/course/" + idCourse + "/?period=" + period + "&how_many=50"
-                response = requests.get(url, cookies={"sessionid_2": sessionid})
-
-                # Try reauthenticate
-                if response.status_code == 403:
-                    sessionid = self.get_auth(True)
-                    response  = requests.get(url, cookies={"sessionid_2": sessionid})
-
-                response.raise_for_status()
-                ldboard = response.json()
-
-                mc.set(cache_key, ldboard, time=60*60*24)
-        return ldboard
+        return '''{"rows": [{"position": 1, "points": 125395, "uid": 5892033, "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amistri_140708_0656_52.jpg", "username": "4v15721", "is_premium": false}]}'''
 
     #+-----------------------------------------------------
     #| USER
@@ -658,91 +551,35 @@ class Memrise:
             @param boolean[optional] force - [false] Get data from Memrise even if already cached
             @return dict - {username, photo, rank, stats}
         """
-        cache_key = "user_" + username
-        user      = None if force else mc.get(cache_key)
+        response = read("tests/responses/user_courses.html")
 
-        if user == None:
-            with mc.lock(cache_key) as retries:
+        user = {
+            "username": 'Decks',
+            "photo"   : "https://static.memrise.com/img/400sqf/from/uploads/profiles/45119304_190219_0936_02.png",
+            "points"  : 0,
+            "rank"    : 0,
+            "stats"   : {
+                "following": "1",
+                "followers": "1.480",
+                "words": "0",
+                "points": "660",
+                "learning": "1",
+                "teaching": "61",
+            }
+        }
 
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    user = mc.get(cache_key)
-                    if user:
-                        return user
+        if "points" in user["stats"]:
+            points = int(user["stats"]["points"].replace(",",""))
+            print(points)
+            rank   = 0
 
-                print('GET ' + cache_key)
-                response = requests.get("https://app.memrise.com/user/" + username + "/courses/teaching/")
-                response.raise_for_status()
+            for i, threshold in enumerate(levels):
+                if threshold < points:
+                    rank = i
+                else:
+                    break
+            user["rank"] = rank+1
 
-                html = response.text.encode('utf-8').strip()
-                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                user = {
-                    "username": username,
-                    "photo"   : "",
-                    "points"  : 0,
-                    "rank"    : 0,
-                    "stats"   : {}
-                }
-
-                div = DOM.find(id="page-head")
-                if div != None:
-
-                    # Get avatar
-                    item = div.find('img', {'class':'avatar'})
-                    if item != None:
-                        user['photo'] = item.attrs['src']
-
-                    # Get ponts
-                    item = div.find('img', {'class':'profile-stats'})
-                    if item != None:
-                        print(div.children)
-
-                    # Get stats (num followers, following, words, points)
-                    div = div.find(attrs={'class' : 'profile-stats'})
-                    for child in div.children:
-                        if not isinstance(child, Tag):
-                            continue
-
-                        text   = child.text.strip()
-                        result = re.search('([0-9,]+)([\n\w ]*)', text)
-                        if result:
-                            tab = result.group(2).strip().lower()
-
-                            # force plural
-                            if tab == "follower":
-                                tab = "followers"
-                            elif tab == "word":
-                                tab = "words"
-                            user["stats"][tab] = result.group(1)
-
-                if "points" in user["stats"]:
-                    points = int(user["stats"]["points"].replace(",",""))
-                    print(points)
-                    rank   = 0
-
-                    for i, threshold in enumerate(levels):
-                        if threshold < points:
-                            rank = i
-                        else:
-                            break
-                    user["rank"] = rank+1
-
-                div = DOM.find(id="content")
-                if div != None:
-
-                    # Get nb courses
-                    item = div.find('div',{'class','btn-group'})
-                    if item != None:
-                        for child in item.children:
-                            if not isinstance(child, Tag):
-                                continue
-
-                            result = re.search('\(([0-9,]+)\)', child.text)
-                            if result:
-                                tab = child.attrs['href'].strip('/').split('/')[-1]
-                                user["stats"][tab] = result.group(1)
-
-                mc.set(cache_key, user, time=60*60)
         return user
 
     def user_followers(self, username, page=1):
@@ -762,89 +599,47 @@ class Memrise:
             @param integer page - [1]
             @return dict - {page, lastpage, users}
         """
-        if not isinstance(page, int):
-            if page.isdigit():
-                page = int(page)
-            else:
-                page = 1
+        data  = {
+            "page": 1,
+            "lastpage": 0,
+            "users": [
+                {"name": "00James-Knox00", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/40970246_200212_0920_35.jpeg"},
+                {"name": "100y", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/46460503_211124_1246_39.png"},
+                {"name": "16gdaniels", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/17213884_180603_1126_45.jpeg"},
+                {"name": "17bartlettb", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-0.png"},
+                {"name": "17DodmanC", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/29810101_220208_1418_04.jpg"},
+                {"name": "18torosser", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/18torosser_181105_2029_57.jpg"},
+                {"name": "1bAbrahamGutierrezSalgueiro", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-1.png"},
+                {"name": "1theo0", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/1theo0_131117_1326_21.jpg"},
+                {"name": "2018_Benjamin_Wong", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/2018_Benjamin_Wong_180819_0706_32.jfif"},
+                {"name": "2019SLord", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/49100140_190911_1536_36.jpg"},
+                {"name": "2020_Alex_Pook", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/50864539_200210_1051_00.jpg"},
+                {"name": "2100futurism82", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-2.png"},
+                {"name": "2152023842", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-4.png"},
+                {"name": "21h-bekhoukh", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-2.png"},
+                {"name": "21Jas", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/60902954_211017_1124_52.gif"},
+                {"name": "21tipplef", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/69098213_230209_1345_39.jpg"},
+                {"name": "22asevi", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/67023658_240110_1947_17.jpg"},
+                {"name": "22brackellr", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/68175447_230201_2011_42.jpeg"},
+                {"name": "22czyzewiczk", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-0.png"},
+                {"name": "22jhoward33", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/67266036_231111_1437_45.jpeg"},
+                {"name": "22MahirJ", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/67230481_250509_1355_44.jpg"},
+                {"name": "22stephensonn", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-4.png"},
+                {"name": "23erevell", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/72197125_251119_1344_35.jpg"},
+                {"name": "2AKarenLoya", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-1.png"},
+                {"name": "2DBrendaVega", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-0.png"},
+                {"name": "33036e6129", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-3.png"},
+                {"name": "3598c29958", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-2.png"},
+                {"name": "3br7man98888", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-4.png"},
+                {"name": "4nhd4y99044100", "photo": "https://static.memrise.com/accounts/img/placeholders/empty-avatar-1.png"},
+                {"name": "60202Rendy", "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/52391130_220516_0408_10.jpg"},
+            ]
+        }
 
-        cache_key    = "user_" + username + "_" + mempals
-        cache_paging = True
-        data         = mc.get(cache_key)
-
-        # Check we dont cache the last page multiple times
-        if data != None:
-            cache_paging = False
-            if page > data:
-                page = data
-            data = mc.get(cache_key + "_" + str(page))
-
-        # Get the given page
-        cache_key_page = cache_key + "_" + str(page)
-        if data == None:
-            with mc.lock(cache_key_page) as retries:
-
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    data = mc.get(cache_key_page)
-                    if data:
-                        return data
-
-                print('GET ' + cache_key_page)
-                response = requests.get("https://app.memrise.com/user/" + username + "/mempals/" + mempals + "/?page=" + str(page))
-                response.raise_for_status()
-
-                html = response.text.encode('utf-8').strip()
-                DOM   = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                data  = {
-                    "page": page,
-                    "lastpage": 0,
-                    "users": []
-                }
-
-                # Get list of followers
-                div   = DOM.find(id="content")
-                if div != None:
-                    users = div.find_all(attrs={'class': 'user-box'})
-                    for user in users:
-                        username = user.find(attrs={'class': 'username'})
-                        img      = user.find('img')
-                        if username == None:
-                            continue
-
-                        item = {
-                            "name" : username.text.strip(),
-                            "photo": img.attrs['src'] if img else ""
-                        }
-                        data["users"].append(item)
-
-                # Get current page + max page number
-                div  = DOM.find('ul', {'class':'pagination'})
-                currentPage = page
-                lastpage    = 0
-
-                if div != None:
-                    for child in div.children:
-                        if not isinstance(child, Tag):
-                            continue
-
-                        text = child.text.strip()
-                        if not re.match('[0-9]+', text):
-                            continue
-
-                        lastpage = int(text)
-                        if 'class' in child.attrs and 'active' in child.attrs['class']:
-                            currentPage = lastpage
-
-                    data['page']    = currentPage
-                    data['lastpage'] = lastpage
-
-                    if cache_paging:
-                        mc.set(cache_key, data['lastpage'], time=60*60)
-
-                mc.set(cache_key + '_' + str(currentPage), data, time=60*60)
-
-        data['has_next'] = data['page'] < data['lastpage']
+        # Get current page + max page number
+        data['page']    = 1
+        data['lastpage'] = 50
+        data['has_next'] = True
         return data
 
     #+-----------------------------------------------------
@@ -866,53 +661,53 @@ class Memrise:
             @param string username
             @return dict - {content, nbCourse}
         """
-        cache_key = "user_" + username + "_" + tab
-        courses   = mc.get(cache_key)
+        # url = 'https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0'
+        with open("tests/responses/user_courses_teaching_min.html") as f:
+            text = f.read()
 
-        if courses == None:
-            with mc.lock(cache_key) as retries:
+            html = text.encode('utf-8').strip()
+            DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
+            courses = {
+                "nbCourse": 0,
+                "content": []
+            }
 
-                # Check if we set memcached while we were waiting for the lock
-                if retries:
-                    courses = mc.get(cache_key)
-                    if courses:
-                        return courses
+            # Get list of courses
+            content = DOM.find_all("div",{"class":"course-box-wrapper"})
 
-                print('GET ' + cache_key)
-                response = requests.get("https://app.memrise.com/user/" + username + "/courses/" + tab + "/")
-                response.raise_for_status()
+            for wrapper in content:
+                courses["content"].append(str(wrapper))
+                courses["nbCourse"] += 1
 
-                html = response.text.encode('utf-8').strip()
-                DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-                courses = {
-                    "nbCourse": 0,
-                    "content": []
-                }
-
-                # Get list of courses
-                div = DOM.find(id="content")
-                if div != "None":
-                    content = div.find_all("div",{"class":"course-box-wrapper"})
-
-                    for wrapper in content:
-                        courses["content"].append(str(wrapper))
-                        courses["nbCourse"] += 1
-
-                mc.set(cache_key, courses, time=60*60)
         return courses
 
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
     def level_edit(self, sessionid, idLevel):
+        return '''{
+            "success": true,
+            "rendered": "<div id=\"l_16180581\"\n     class=\"level\"\n     data-level-id=\"16180581\"\n     data-pool-id=\"7758772\"><div class=\"level-header clearfix\"><div class=\"level-actions\"><div class=\"btn-group\"><a class=\"show-hide btn btn-small\" data-role=\"level-toggle\">Einblenden/Ausblenden</a><a class=\"btn btn-small\" data-role=\"level-preview\" href=\"/community/course/6698294/german-vocab/1/\">\n                    Vorschau\n                </a><a class=\"btn btn-small\" data-role=\"level-duplicate\">\n                    Duplizieren\n                </a><a class=\"btn btn-small\" data-role=\"level-delete\">\n                    L\u00f6schen\n                </a></div></div><div class=\"level-handle\">1</div><h3 class=\"level-name\" title=\"Doppelklick um den Namen dieses Levels zu \u00e4ndern\">\n            New level\n        </h3><a href=\"/course/6698294/german-vocab/edit/database/7758772/\" class=\"level-pool\">(German)</a></div><div class=\"level-options\"><div class=\"options-col clearfix\"><div class=\"editing-controls\"><div class=\"btn-group pull-right\"><button class=\"dropdown-toggle btn btn-small btn-icos-active\" data-toggle=\"dropdown\">\n            Fortgeschritten\n            <i class=\"ico ico-s ico-arr-down\"></i></button><ul class=\"dropdown-menu pull-right\"><li><a href=\"#\" data-role=\"level-bulk-add\"><i class=\"ico ico-plus\"></i>\n                    Viele W\u00f6rter auf einmal hinzuf\u00fcgen\n                </a></li></ul></div></div><strong class=\"level-columns\"\n            data-column-a=\"1\"\n            data-column-b=\"2\">\n        Abfragen:\n        <span class=\"column-a-label\">German</span>,\n        Anzeigen:\n        <span class=\"column-b-label\">English</span>.\n        <i class=\"ico ico-l ico-edit ico-active-states\"></i></strong></div></div><div class=\"table-container\"><table class=\"level-things table\"\n               data-level-id=\"16180581\"\n               data-pool-id=\"7758772\"><thead class=\"columns\"><tr><th></th><th class=\"column text\"\n                            data-key=\"1\"\n                            data-role=\"pool-column-header\"><span class=\"txt\">German</span>&nbsp;\n                            <i class=\"ico ico-edit ico-blue\"></i></th><th class=\"column text\"\n                            data-key=\"2\"\n                            data-role=\"pool-column-header\"><span class=\"txt\">English</span>&nbsp;\n                            <i class=\"ico ico-edit ico-blue\"></i></th><th class=\"column audio\"\n                            data-key=\"3\"\n                            data-role=\"pool-column-header\"><span class=\"txt\">Audio</span>&nbsp;\n                            <i class=\"ico ico-edit ico-blue\"></i></th><th class=\"column text\"\n                            data-key=\"4\"\n                            data-role=\"pool-column-header\"><span class=\"txt\">Plural and inflected forms</span>&nbsp;\n                            <i class=\"ico ico-edit ico-blue\"></i></th><th class=\"attribute text\" data-key=\"2\" data-role=\"pool-attribute-header\"><span class=\"txt\">Part of Speech</span><i class=\"ico ico-edit ico-blue\"></i></th></tr></thead><tbody class=\"things\"><tr class=\"thing\" data-thing-id=\"467903288\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">das zentrale Anliegen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;objectif principal</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903288_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903289\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Erwerb</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;acquisition</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903289_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903296\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Teilbereichen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les sous-domaines</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903296_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903298\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">vertieften fachlichen Wissens</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">connaissances techniques approfondies</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903298_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903309\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Einf\u00fchrung</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;introduction</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903309_251025_0740_51.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903314\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">dementsprechend</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">par cons\u00e9quent</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903314_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903318\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Auswertung</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;\u00e9valuation</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903318_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903319\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Einstieg</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;entr\u00e9e</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903319_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903326\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Bewerbung</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;application (pr\u00e9senter une application)</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903326_251025_0740_51.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903329\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Frist</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">la date limite</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903329_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903338\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">skizzieren</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">esquisser</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903338_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903341\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">knobeln</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">cogiter</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903341_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903347\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">in Bezug auf</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">en rapport avec</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903347_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903408\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">\u00fcber den Tellerrand hinausschauen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">aller chercher plus loin</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903408_251025_0740_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903578\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Begriff</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;expression</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903578_251025_0825_02.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903585\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Schaben</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les cafards</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903585_251025_0825_02.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903659\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Anwendung</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;application</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903659_251025_0831_08.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903683\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Keime</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les germes</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903683_251025_0836_00.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"467903688\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Seife</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le savon</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/467903688_251025_0836_49.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468159094\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der  Eimer</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le seau</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468159094_251028_1107_20.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468159105\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der D\u00fcnger</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">l&#x27;engrais</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468159105_251028_1107_20.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468159152\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Fasern</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les fibres</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468159152_251028_1107_20.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176740\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">flotter</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">plus rapide</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176740_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176770\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">bugsieren</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">remorquer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176770_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176774\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">einspannen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">serrer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176774_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176818\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">loslegen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">commencer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176818_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176823\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Blech</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">la t\u00f4le</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176823_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176829\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">ausgestanzt</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">frapp\u00e9</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176829_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176833\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Stangen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les tiges</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176833_251028_1114_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176857\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Kunststoff</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le plastique</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176857_251028_1117_25.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176861\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Schl\u00e4uche</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les tuyaux</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176861_251028_1118_06.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176866\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">gesaugt</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">aspir\u00e9</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176866_251028_1118_28.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468176883\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Felge</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">la jante</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468176883_251028_1120_17.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696079\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">behutsam</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">soigneusement</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696079_251102_0757_34.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696550\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">vertretbar</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">justifiable</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696550_251102_0843_08.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696676\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Kalb</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le veau</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696676_251102_0913_41.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696692\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">das K\u00fcken</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le poussin</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696692_251102_0913_41.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696696\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">die Schw\u00e4nze</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">les queues</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696696_251102_0920_57.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696781\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">suhlen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">se vautrer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696781_251102_0920_57.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696803\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Schlamm</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">la boue</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696803_251102_0920_57.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468696930\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">aus den Fugen geraten</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">deviendrait incontrollable</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468696930_251102_0927_48.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468697833\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">gew\u00e4hrleistet</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">garanti</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468697833_251102_1053_04.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468705461\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">verdeutlichen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">illustrer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468705461_251102_1053_04.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468705590\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">einl\u00e4uten</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">inaugurer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468705590_251102_1053_04.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468705688\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">erzeugen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">g\u00e9n\u00e9rer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468705688_251102_1053_04.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468709143\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">erraten</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">deviner</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468709143_251102_1053_04.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468712902\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">verweisen</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">r\u00e9f\u00e9rer</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468712902_251102_1058_28.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468713459\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">der Anwendungsfall</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">le cas d&#x27;utilisation</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468713459_251102_1059_52.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468713465\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">umstritten</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">controvers\u00e9</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468713465_251102_1100_10.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr><tr class=\"thing\" data-thing-id=\"468714457\"><td><div class=\"thing__actions\"><i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i><i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i></div></td><td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">auffordern</div></div></td><td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\">demander (formuler une requ\u00eate)</div></div></td><td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\"><div class=\"btn-group\"><div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" /></div><div class=\"btn btn-mini open-recorder\">Aufnehmen</div><button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i></button><div class=\"dropdown-menu audios\"><div class=\"dropdown-row\" data-file-id=\"1\"><i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i><a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/468714457_251102_1103_12.mp3\"></a></div></div></div></td><td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\"><div class=\"wrapper\"><button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i></button><div class=\"text\"></div></div></td><td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\"><div class=\"wrapper\"><div class=\"text\"></div></div></td></tr></tbody><tbody class=\"adding\" data-role=\"level-thing-add\" data-original-only=\"false\"><tr class=\"header\"><td></td><td class=\"addHeader\" colspan=\"100\">\n            W\u00f6rter hinzuf\u00fcgen\n        </td></tr><tr data-role=\"add-form\"><td><i class=\"ico ico-plus ico-blue\"></i></td><td class=\"text column\"\n                        data-key=\"1\"><input class=\"wide\" type=\"text\"></td><td class=\"text column\"\n                        data-key=\"2\"><input class=\"wide\" type=\"text\"></td><td class=\"audio column\"\n                        data-key=\"3\"></td><td class=\"text column\"\n                        data-key=\"4\"><input class=\"wide\" type=\"text\"></td><td class=\"attribute\">&nbsp;</td></tr></tbody></table></div></div>\n"
+        }'''
+
+        return '''{
+            "success": true,
+            "rendered": "<div id=\"l_16260539\"\n     class=\"level\"\n     data-level-id=\"16260539\"\n     ><div class=\"level-header clearfix\"><div class=\"level-actions\"><div class=\"btn-group\"><a class=\"show-hide btn btn-small\" data-role=\"level-toggle\">Einblenden/Ausblenden</a><a class=\"btn btn-small\" data-role=\"level-preview\" href=\"/community/course/6698294/german-vocab/7/\">\n                    Vorschau\n                </a><a class=\"btn btn-small\" data-role=\"level-duplicate\">\n                    Duplizieren\n                </a><a class=\"btn btn-small\" data-role=\"level-delete\">\n                    L\u00f6schen\n                </a></div></div><div class=\"level-handle\">7</div><h3 class=\"level-name\" title=\"Doppelklick um den Namen dieses Levels zu \u00e4ndern\">\n            New level\n        </h3></div><div class=\"level-options\"><div class=\"options-col clearfix\"><a href=\"#\" class=\"toggle-edit btn btn-icos-active\"><i class=\"ico ico-edit\"></i>\n        Multimedia bearbeiten\n    </a></div></div><div class=\"level-multimedia\"><div class=\"multimedia-view hide\"><code>\n                None\n            </code></div><div class=\"multimedia-edit \" ><textarea id=\"mmTooltip\" data-placement=\"top\" data-original-title=\"\n\n<p>\n    Wenn du Multimedia aus dem Web einf\u00fcgen willst (Fotos, Videos, gifs, usw.) sind hier ein paar Tipps:\n</p>\n1. F\u00fcr Bilder schreibe \"img:\" vor die URL, z.B.\n\n<br /><b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\"></textarea><button class=\"noMrg btn btn-primary\" data-role=\"level-multimedia-save\">\n                Speichern\n            </button></div></div><script>\n    MEMRISE.renderer.ready(function(){\n        $(\"#mmTooltip\").tooltip({\n            html : true,\n            template :  '<div class=\"tooltip wide\" role=\"tooltip\">' +\n                            '<div class=\"tooltip-arrow\"></div>' +\n                            '<div class=\"tooltip-inner\"></div>' +\n                        '</div>'\n        });\n    })\n    </script></div>\n"
+        }
+        '''
         url      = "https://app.memrise.com/ajax/level/editing_html/?level_id=" + idLevel + "&_=" + get_time()
         response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
     def level_thing_add(self, sessionid, csrftoken, referer, idLevel, data):
+        data = '''{
+            columns: {"1":"a","2":"b","4":"plural"},
+            level_id: "16258912"
+        }'''
+        return '''{"success": true, "thing": {"id": 477757811, "pool_id": 7758772, "columns": {"1": {"alts": [], "val": "a", "choices": [], "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": []}, "kind": "text", "accepted": ["a"], "typing_corrects": {}}, "2": {"alts": [], "val": "b", "choices": [], "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": []}, "kind": "text", "accepted": ["b"], "typing_corrects": {}}, "4": {"alts": [], "val": "plural", "choices": [], "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": []}, "kind": "text", "accepted": ["plural"], "typing_corrects": {}}}, "attributes": {}}, "rendered_thing": "\n\n<tr class=\"thing\" data-thing-id=\"477757811\">\n    <td>\n        <div class=\"thing__actions\">\n            <i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i>\n            <i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i>\n        </div>\n    </td>\n    \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">a</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">b</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">plural</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n    \n    \n        \n            \n                \n\n<td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n\n            \n            <div class=\"text\"></div>\n        </div>\n    \n</td>\n\n            \n        \n    \n</tr>\n"}'''
+ 
         url      = "https://app.memrise.com/ajax/level/thing/add/"
-
         response = requests.post(url, data={"columns":data, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
             "Origin": "https://app.memrise.com",
             "Referer": referer,
@@ -924,6 +719,12 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_update(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
+        data = '''{
+            thing_id: "477757811",
+            cell_id: "2",
+            cell_type: "column",
+            new_val: "b2",
+        }'''
         url      = "https://app.memrise.com/ajax/thing/cell/update/"
 
         response = requests.post(url,
@@ -945,6 +746,32 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_upload(self, sessionid, csrftoken, referer, idThing, cellId, file):
+        data = '''
+        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
+        Content-Disposition: form-data; name="thing_id"
+
+        477757811
+        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
+        Content-Disposition: form-data; name="cell_id"
+
+        3
+        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
+        Content-Disposition: form-data; name="cell_type"
+
+        column
+        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
+        Content-Disposition: form-data; name="csrfmiddlewaretoken"
+
+        YsnZH2DPNXxtderlM6Zmgi7keR0tTyCg73uladFBfgta2FkniqAf4bd8Kv1hb3dh
+        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
+        Content-Disposition: form-data; name="f"; filename="a1.mp3"
+        '''
+        return '''
+        {
+            "success": true,
+            "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n    <div class=\"dropdown-row\" data-file-id=\"1\">\n        <i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i>\n        <a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/477757811_260208_1842_02.mp3\"></a>\n    </div>\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
+        }
+        '''
         url      = "https://app.memrise.com/ajax/thing/cell/upload_file/"
 
         response = requests.post(url,
@@ -966,6 +793,18 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_upload_remove(self, sessionid, csrftoken, referer, idThing, cellId, fileId):
+        data = '''
+        thing_id    "477757811"
+        column_key  "3"
+        file_id "1"
+        cell_type   "column"
+        '''
+        return '''
+        {
+            "success": true,
+            "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
+        }
+        '''
         url      = "https://app.memrise.com/ajax/thing/column/delete_from/"
 
         response = requests.post(url,
@@ -987,6 +826,12 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_remove(self, sessionid, csrftoken, referer, idLevel, idThing):
+        data = '''
+        level_id    "16258912"
+        thing_id    "477757811"
+        '''
+        return '''{"success": true}'''
+
         url      = "https://www.memrise.com/ajax/level/thing_remove/"
 
         response = requests.post(url, data={"thing_id":idThing, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
@@ -1000,6 +845,36 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_get(self, sessionid, csrftoken, referer, idThing):
+        '''
+        https://community-courses.memrise.com/ajax/thing/get/?thing_id=477757876&_=1770575744741
+        '''
+        return '''
+        {"thing": {
+            "id": 477757876,
+            "pool_id": 7758772,
+            "columns": {
+                "1": {
+                    "alts": [],
+                    "val": "a",
+                    "choices": ["a1", "eifrig", "trumpfen", "das Gest\u00e4ndnis", "gesaugt", "abbaut", "arglos", "erworben", "abseits", "anlegen", "anders ausgedr\u00fcckt", "zug\u00e4nglich"],
+                    "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": ["a1", "eifrig", "trumpfen", "das Gest\u00e4ndnis", "gesaugt", "abbaut", "arglos", "erworben", "abseits", "anlegen", "anders ausgedr\u00fcckt", "zug\u00e4nglich"]},
+                    "kind": "text",
+                    "accepted": ["a"],
+                    "typing_corrects": {}
+                },
+                "2": {
+                    "alts": [],
+                    "val": "b",
+                    "choices": ["b2", "la boue", "braver", "attentivement", "la t\u00f4le", "insignifiant", "remorquer", "consid\u00e9rer", "confirmer", "charg\u00e9", "r\u00e9flechir", "soigneusement"],
+                    "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": ["b2", "la boue", "braver", "attentivement", "la t\u00f4le", "insignifiant", "remorquer", "consid\u00e9rer", "confirmer", "charg\u00e9", "r\u00e9flechir", "soigneusement"]},
+                    "kind": "text",
+                    "accepted": ["b"],
+                    "typing_corrects": {}}
+                },
+                "attributes": {}
+            }
+        }
+        '''
         url      = "https://app.memrise.com/api/thing/get/?thing_id=" + idThing + "&_=" + get_time()
 
         response = requests.get(url,
@@ -1015,6 +890,13 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_alt(self, sessionid, csrftoken, referer, idThing, alts, column_key):
+        data = '''
+        thing_id    "477757876"
+        column_key  "2"
+        alts    '["a2","a3"]'
+        '''
+        return '''{"success": null}'''
+
         url      = "https://app.memrise.com/ajax/thing/column/update_alts/"
         response = requests.post(url,
             data={
@@ -1034,6 +916,11 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_multimedia_edit(self, sessionid, csrftoken, referer, idLevel, txt):
+        return '''
+        {
+            "success": true,
+            "multimedia": "<b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\">"}
+        '''
         url      = "https://app.memrise.com/ajax/level/set_multimedia/"
 
         response = requests.post(url, data={"multimedia":txt, "level_id":idLevel}, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
@@ -1046,7 +933,17 @@ class Memrise:
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
+    def level_delete(self, sessionid, idCourse, slugCourse):
+        data = '''
+        level_id    "16260539"
+        '''
+        return '''{"success": true}'''
+
+        url = 'https://community-courses.memrise.com/ajax/level/delete/'
+
     def course_edit(self, sessionid, idCourse, slugCourse):
+        response = read("tests/responses/course_edit.html")
+
         url      = "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/"
         response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()

@@ -5,7 +5,7 @@ from memrise import memrise
 from requests.exceptions import HTTPError
 
 urls = (
-  ".*", "login"
+  r".*", "login"
 )
 
 class login:
@@ -16,8 +16,15 @@ class login:
 
         return GLOBALS['render'].login(_GET.redirect, err, data)
 
+    def TEST(self):
+        data = memrise.login('admin','pass')
+
+        GLOBALS['session'].loggedin = data
+
+        raise web.seeother('/', absolute=True)
+
     def POST(self):
-        _POST = web.input()
+        _POST = web.input(username="", password="", redirect="")
         err   = {}
 
         # Check required fields

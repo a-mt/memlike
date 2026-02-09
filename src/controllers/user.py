@@ -6,11 +6,11 @@ from variables import levels
 from requests.exceptions import HTTPError
 
 urls = (
-  "/([^/]+)/courses/(teaching)/?", "user",
-  "/([^/]+)/courses/(learning)/?", "user",
-  "/([^/]+)/mempals/(followers)/?", "user",
-  "/([^/]+)/mempals/(following)/?", "user",
-  "/(.*)", "user"
+  r"/([^/]+)/courses/(teaching)/?", "user",
+  r"/([^/]+)/courses/(learning)/?", "user",
+  r"/([^/]+)/mempals/(followers)/?", "user",
+  r"/([^/]+)/mempals/(following)/?", "user",
+  r"/(.*)", "user"
 )
 
 class user:
