@@ -97,6 +97,6 @@ tox -e test
 # python -m tox --recreate -e test
 # python -m pytest
 
-# pip install pytest; cd src; export WEBPY_ENV=test
+# pip install pytest; cd src; export WEBPY_ENV=test DEFAULT_LANG=english
 # python -m pytest tests/test_lang.py
 ```

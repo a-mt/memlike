@@ -18,7 +18,6 @@ ENV WWWDIR='/srv/src'
 WORKDIR $APPDIR
 
 COPY requirements.txt ./requirements.txt
-COPY requirements-dev.txt ./requirements-dev.txt
 RUN pip install -r requirements.txt
 
 # setup server dependencies

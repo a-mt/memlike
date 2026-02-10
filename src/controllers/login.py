@@ -16,7 +16,10 @@ class login:
         return web.config.template.render.login(_GET.redirect, err, data)
 
     def TEST(self):
-        data = memrise.login('admin','pass')
+        """
+        Is used in tests to force a login
+        """
+        data = memrise.login('bob','pass')
 
         web.ctx.session.loggedin = data
 
