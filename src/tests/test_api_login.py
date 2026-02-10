@@ -1,5 +1,4 @@
 from .testcases import SimpleTestCase
-from _globals import GLOBALS
 
 
 class ApplicationLoginTest(SimpleTestCase):
@@ -21,7 +20,7 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
         payload = response.json()
-        self.assertFalse(payload['loggedin'])
+        self.assertFalse(payload.get('loggedin', None))
 
         # keep the same session throughout
         cookies = response.get_cookies()

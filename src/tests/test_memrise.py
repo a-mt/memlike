@@ -19,14 +19,12 @@ memrise.level_thing_remove(sessionid, _POST.csrftoken, _POST.referer, idLevel, _
 memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue)
 memrise.level_thing_upload(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.file)
 memrise.level_thing_upload_remove(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.fileId)
-memrise.user(GLOBALS['session']['loggedin']['username'], True)
+memrise.user(web.ctx.session['loggedin']['username'], True)
 memrise.user(username)
 memrise.user_courses(tab, username)
 memrise.user_leaderboard(sessionid, _GET.period)
 '''
 import unittest
-
-from app import lang
 
 SESSION_ID = 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4'
 

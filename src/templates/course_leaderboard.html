@@ -36,7 +36,7 @@ $:(prender.inc_course_banner(course))
       <!-- List of scores -->
       <ul class="leaderboard-content">
         $for item in items['rows']:
-          <li class="leaderboard-row $('current' if session['loggedin'] and item['username'] == session['loggedin']['username'] else None)">
+          <li class="leaderboard-row $('current' if session.get('loggedin', False) and item['username'] == session['loggedin']['username'] else None)">
             <a href="/user/$(item['username'])/">
               <span class="row-pic">
                 <strong>$(item['position']).</strong>

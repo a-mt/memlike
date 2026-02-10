@@ -8,5 +8,5 @@ if [ -z "$MEMCACHIER_SERVERS" ]; then
     { service memcached status | grep "not running" ;} && service memcached start || service memcached status
 fi
 
-echo "Starting app..."
+echo "Launching entrypoint..."
 exec "$@"

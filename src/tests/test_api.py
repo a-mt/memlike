@@ -1,5 +1,4 @@
 from .testcases import SimpleTestCase
-from _globals import GLOBALS
 
 
 # https://github.com/webpy/webpy/tree/master/tests

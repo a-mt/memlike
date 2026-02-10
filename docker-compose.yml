@@ -39,7 +39,9 @@ services:
       POSTGRES_PASSWORD: mempass
       POSTGRES_DB: memdb
       DEBUG: 1
+      DEBUG_SQL: 1
       AUTORELOAD: ""
+      PYTHONUNBUFFERED: 1
     platform: linux/amd64
     volumes:
       - .:/srv
@@ -47,7 +49,7 @@ services:
     healthcheck:
       disable: true
     command: >
-      python src/app-entrypoint.py
+      python -u src/app-entrypoint.py
 
 volumes:
   api_logs:

@@ -1,7 +1,6 @@
 import web
 from os import getenv
 from memrise import memrise
-from _globals import GLOBALS
 from requests.exceptions import HTTPError
 
 urls = (
@@ -28,9 +27,9 @@ class learn_fromform:
             course = memrise.course(idCourse)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].learn(course, _GET.session, lvl, False, _GET.sendresults)
+        return web.config.template.render.learn(course, _GET.session, lvl, False, _GET.sendresults)
 
 class learn:
     def GET(self, idCourse, path, lvl, kind=False):
@@ -41,9 +40,9 @@ class learn:
             course = memrise.course(idCourse)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].learn(course, kind, lvl, False, 1)
+        return web.config.template.render.learn(course, kind, lvl, False, 1)
 
 class view:
     def GET(self, idCourse, path, lvl, thing):
@@ -51,25 +50,25 @@ class view:
             course = memrise.course(idCourse)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].learn(course, "preview", lvl, thing, 0)
+        return web.config.template.render.learn(course, "preview", lvl, thing, 0)
 
 class level:
     def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
             course = memrise.course(idCourse)
             if lvl not in course['levels']:
-                return GLOBALS['prender']._404()
+                return web.config.template.prender._404()
 
             try:
                 if course['levels'][lvl]['type'] == 1:
                     sessionid = False
                     csrftoken = None
 
-                    if GLOBALS['session']['loggedin']:
-                        sessionid = GLOBALS['session']['loggedin']['sessionid']
-                        csrftoken = GLOBALS['session']['loggedin']['csrftoken']
+                    if web.ctx.session.get('loggedin', False):
+                        sessionid = web.ctx.session['loggedin']['sessionid']
+                        csrftoken = web.ctx.session['loggedin']['csrftoken']
 
                     items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid, csrftoken)
                 else:
@@ -80,11 +79,11 @@ class level:
 
         except HTTPError as e:
             if e.response.status_code == 403:
-                return GLOBALS['prender']._403()
+                return web.config.template.prender._403()
             else:
-                return GLOBALS['prender']._404()
+                return web.config.template.prender._404()
 
-        return GLOBALS['render'].course_level(course, {
+        return web.config.template.render.course_level(course, {
             "name": course['levels'][lvl]['name'],
             "type": course['levels'][lvl]['type'],
             "index": int(lvl)
@@ -98,9 +97,9 @@ class course:
             sessionid = False
             csrftoken = None
 
-            if GLOBALS['session']['loggedin']:
-                sessionid = GLOBALS['session']['loggedin']['sessionid']
-                csrftoken = GLOBALS['session']['loggedin']['csrftoken']
+            if web.ctx.session.get('loggedin', False):
+                sessionid = web.ctx.session['loggedin']['sessionid']
+                csrftoken = web.ctx.session['loggedin']['csrftoken']
 
             course = memrise.course(idCourse, sessionid, csrftoken)
 
@@ -110,16 +109,16 @@ class course:
 
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
         if items:
-            return GLOBALS['render'].course_level(course, {
+            return web.config.template.render.course_level(course, {
                 "name": False,
                 "type": 1,
                 "index": -1
             }, items)
 
-        return GLOBALS['render'].course_summary(course)
+        return web.config.template.render.course_summary(course)
 
 class leaderboard:
     def GET(self, idCourse, path=""):
@@ -129,22 +128,22 @@ class leaderboard:
             leaderboard = memrise.leaderboard(idCourse, _GET.period)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].course_leaderboard(course, _GET.period, leaderboard)
+        return web.config.template.render.course_leaderboard(course, _GET.period, leaderboard)
 
 class edit:
     def GET(self, idCourse, path):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         try:
             course = memrise.course_edit(sessionid, idCourse, path)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].course_edit(course)
+        return web.config.template.render.course_edit(course)
 
 app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))

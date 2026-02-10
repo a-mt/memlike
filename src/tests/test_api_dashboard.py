@@ -1,5 +1,4 @@
 from .testcases import SimpleTestCase
-from _globals import GLOBALS
 
 
 class ApplicatioDashboardTest(SimpleTestCase):

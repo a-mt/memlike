@@ -2,7 +2,6 @@ from variables import *
 import web
 from os import getenv
 from memrise import memrise
-from _globals import GLOBALS
 
 urls = (
   r"", "courses",
@@ -20,7 +19,7 @@ class courses:
 
         # Filter courses in a given language
         if lang == "":
-            lang = GLOBALS['session'].lang
+            lang = web.ctx.session['lang']
 
         # Filter courses in a given category
         if len(parts) > 1 and parts[1] in categories_code:
@@ -30,7 +29,7 @@ class courses:
         # Retrieve list of categories that have a course
         catHaveCourse = memrise.categories(lang)
 
-        return GLOBALS['render'].courses({
+        return web.config.template.render.courses({
             "lang"  : lang,
             "cat"   : cat,
             "catId" : catId,
