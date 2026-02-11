@@ -92,7 +92,7 @@ def session_load():
     be careful with manipulating the session object: it is both a global object
     and used as holder after reading the current context
     """
-    web.ctx.session = session
+    web.ctx.session = session._data
     web.ctx.session_id = session.session_id
 
     # Make it accessible in templates

@@ -36,20 +36,19 @@ else:
 
 # ---
 # Configure session
-if web.config.get('session_parameters', None) is None:
-    web.config.session_parameters = web.utils.storage({
-        'cookie_name': 'session_id',
-        'cookie_domain': None,
-        'cookie_path': '/',
-        'samesite': None,
-        'timeout': 86400,  # 24 * 60 * 60, # 24 hours in seconds
-        'ignore_expiry': True,
-        'ignore_change_ip': True,
-        'secret_key': 'fLjUfxqXtfNoIldA0A0K',
-        'expired_message': 'Session expired',
-        'httponly': True,
-        'secure': False,
-    })
+web.config.session_parameters = web.utils.storage({
+    'cookie_name': 'session_id',
+    'cookie_domain': None,
+    'cookie_path': '/',
+    'samesite': None,
+    'timeout': 86400,  # 24 * 60 * 60, # 24 hours in seconds
+    'ignore_expiry': True,
+    'ignore_change_ip': False,
+    'secret_key': 'fLjUfxqXtfNoIldA0A0K',
+    'expired_message': 'Session expired',
+    'httponly': True,
+    'secure': False,
+})
 
 # Save session to database or to disk
 DEFAULT_SESSION = {

@@ -12,11 +12,9 @@ JSON_CONTENT_TYPE_RE = compile(r"^application\/(.+\+)?json")
 class Client:
     def _parse_json(self, response, **extra):
         if not hasattr(response, "_json"):
-            if not JSON_CONTENT_TYPE_RE.match(response.headers.get("Content-Type")):
-                raise ValueError(
-                    'Content-Type header is "%s", not "application/json"'
-                    % response.headers.get("Content-Type")
-                )
+            content_type = response.headers.get("Content-Type")
+            if not content_type or not JSON_CONTENT_TYPE_RE.match(content_type):
+                raise ValueError('Content-Type header is "%s", not "application/json"' % content_type)
             try:
                 raw = response.data
                 response._json = json.loads(raw, **extra)
@@ -98,6 +96,6 @@ class SimpleTestCase(unittest.TestCase):
 
     def get_auth_cookies(self):
         response = self.client.request('/login', method='TEST')
-        assert response.status_code == 303
 
+        assert response.status_code == 303
         return response.get_cookies()

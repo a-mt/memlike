@@ -46,6 +46,7 @@ services:
     volumes:
       - .:/srv
       - api_logs:/var/logs
+      - api_sessions:/tmp/sessions
     healthcheck:
       disable: true
     command: >
@@ -53,3 +54,4 @@ services:
 
 volumes:
   api_logs:
+  api_sessions:
