@@ -1,3 +1,4 @@
+import settings
 import web
 from os import getenv
 from memrise import memrise
@@ -61,4 +62,4 @@ class login:
             web.ctx.session.flash = {"err": err, "data": _POST}
             raise web.seeother('')
 
-app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)

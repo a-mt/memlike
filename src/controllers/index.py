@@ -1,3 +1,4 @@
+import settings
 import web
 from os import getenv
 from requests.exceptions import HTTPError
@@ -39,5 +40,5 @@ class about:
     def GET(self):
         return web.config.template.render.about()
 
-app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
 

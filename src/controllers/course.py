@@ -1,3 +1,4 @@
+import settings
 import web
 from os import getenv
 from memrise import memrise
@@ -146,4 +147,4 @@ class edit:
 
         return web.config.template.render.course_edit(course)
 
-app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)

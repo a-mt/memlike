@@ -1,4 +1,6 @@
-import web, json
+import json
+import settings
+import web
 from os import getenv
 from memrise import memrise
 from requests.exceptions import HTTPError
@@ -350,4 +352,4 @@ class track_progress():
         )
         return _response(lambda: progress)
 
-app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)

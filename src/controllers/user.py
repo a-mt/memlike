@@ -1,3 +1,4 @@
+import settings
 import web
 from os import getenv
 from memrise import memrise
@@ -24,5 +25,5 @@ class user:
 
         return web.config.template.render.user(user, tab, levels)
 
-app = web.application(urls, locals(), autoreload=getenv('AUTORELOAD', None))
+app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
 
