@@ -901,7 +901,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def level_edit(self, sessionid, idLevel):
+    def level_edit_get(self, sessionid, idLevel):
         url      = "https://app.memrise.com/ajax/level/editing_html/?level_id=" + idLevel + "&_=" + get_time()
         response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()
@@ -920,7 +920,7 @@ class Memrise:
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
-    def level_thing_update(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
+    def level_thing_edit(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
         url      = "https://app.memrise.com/ajax/thing/cell/update/"
 
         response = requests.post(url,
@@ -942,15 +942,26 @@ class Memrise:
         return response.text.encode('utf-8').strip()
 
     def level_thing_upload(self, sessionid, csrftoken, referer, idThing, cellId, file):
-        url      = "https://app.memrise.com/ajax/thing/cell/upload_file/"
+        url = "https://app.memrise.com/ajax/thing/cell/upload_file/"
 
+        """
+        Possible File-like-object:
+            filepointer <attr name="...">
+            (filename, filepointer)
+            (filename, filepointer, filecontenttype)
+            (filename, filepointer, filecontenttype, fileheaders)
+
+        Possible Filepointer:
+            isinstance(fp, (str, bytes, bytearray))
+            hasattr(fp, "read")   # _pyio
+        """
         response = requests.post(url,
             data={
                 "cell_id": cellId,
                 "cell_type": "column",
                 "thing_id": idThing
             },
-            files={"f": (file.filename, file.value)},
+            files={"f": (file.filename, file.value)},  # dict of {'filename': file-like-objects}
             cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://app.memrise.com",
@@ -1011,7 +1022,7 @@ class Memrise:
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
-    def level_thing_alt(self, sessionid, csrftoken, referer, idThing, alts, column_key):
+    def level_thing_alt_edit(self, sessionid, csrftoken, referer, idThing, alts, column_key):
         url      = "https://app.memrise.com/ajax/thing/column/update_alts/"
         response = requests.post(url,
             data={
@@ -1043,7 +1054,7 @@ class Memrise:
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
-    def course_edit(self, sessionid, idCourse, slugCourse):
+    def course_edit_get(self, sessionid, idCourse, slugCourse):
         url      = "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/"
         response = requests.get(url, cookies={"sessionid_2": sessionid})
         response.raise_for_status()

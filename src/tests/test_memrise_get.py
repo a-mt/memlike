@@ -1,20 +1,9 @@
 from memrise import memrise
 
 '''
-memrise.course_edit(sessionid, idCourse, path)
-memrise.course_edit(sessionid, idCourse, slug)
 memrise.level(idCourse, slugCourse, "1", "preview", sessionid, csrftoken)
 memrise.level(idCourse, slugCourse, lvl, "preview", sessionid, csrftoken)
 memrise.level(idCourse, slugCourse, lvl, kind, sessionid, csrftoken)
-memrise.level_edit(sessionid, idLevel)
-memrise.level_multimedia_edit(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.txt)
-memrise.level_thing_add(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.data)
-memrise.level_thing_alt(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId)
-memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing)
-memrise.level_thing_remove(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.id_thing)
-memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue)
-memrise.level_thing_upload(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.file)
-memrise.level_thing_upload_remove(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.fileId)
 '''
 import unittest
 
@@ -22,7 +11,7 @@ COURSE_ID = '6698294'
 COURSE_SLUG = 'german-vocab'
 
 
-class MemriseTest(unittest.TestCase):
+class MemriseGetTest(unittest.TestCase):
     session = {}
 
     def test_first_memrise_login(self):
@@ -187,3 +176,16 @@ class MemriseTest(unittest.TestCase):
         result = memrise.level_multimedia(f"/course/{COURSE_ID}/{COURSE_SLUG}/", "1")
 
         self.assertTrue(type(result) is str)
+
+    def disable_test_memrise_level(self):
+        self.assertIsNotNone(self.session['session_id'])
+
+        result = memrise.level(
+            COURSE_ID,
+            COURSE_SLUG,
+            '1',
+            'preview',
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+        )
+        self.assertTrue('todo' is False)

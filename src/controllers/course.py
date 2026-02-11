@@ -140,11 +140,11 @@ class edit:
 
         sessionid = web.ctx.session['loggedin']['sessionid']
         try:
-            course = memrise.course_edit(sessionid, idCourse, path)
+            course = memrise.course_edit_get(sessionid, idCourse, path)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.course_edit(course)
+        return web.config.template.render.course_edit_get(course)
 
 app = web.application(urls, locals(), autoreload=False)

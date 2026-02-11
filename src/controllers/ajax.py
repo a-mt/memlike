@@ -145,7 +145,7 @@ class course_edit:
             raise web.Forbidden()
 
         sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.course_edit(sessionid, idCourse, slug))
+        return _response(lambda: memrise.course_edit_get(sessionid, idCourse, slug))
 
 class level_edit:
     def GET(self, idLevel):
@@ -153,7 +153,7 @@ class level_edit:
             raise web.Forbidden()
 
         sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_edit(sessionid, idLevel))
+        return _response(lambda: memrise.level_edit_get(sessionid, idLevel))
 
 class level_getcell:
   def GET(self, idThing):
@@ -180,7 +180,7 @@ class level_editcell:
 
         _POST     = web.input()
         sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
+        return _response(lambda: memrise.level_thing_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
 
 class level_uploadfile:
     def POST(self, idThing):
@@ -216,7 +216,7 @@ class level_editalt:
 
         _POST     = web.input()
         sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_alt(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
+        return _response(lambda: memrise.level_thing_alt_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
 
 class level_editmultimedia:
     def POST(self, idLevel):
