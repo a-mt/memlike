@@ -62,4 +62,4 @@ class login:
             web.ctx.session.flash = {"err": err, "data": _POST}
             raise web.seeother('')
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
+app = web.application(urls, locals(), autoreload=False)

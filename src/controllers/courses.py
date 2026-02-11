@@ -37,4 +37,4 @@ class courses:
             "q"     : _GET.q
         }, languages, categories, catHaveCourse)
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
+app = web.application(urls, locals(), autoreload=False)

@@ -335,9 +335,9 @@ class user_sync():
 
 class debug_session():
     def GET(self):
-        session = web.ctx.session
+        session = dict(web.ctx.session)
         web.header('Content-Type', 'application/json')
-        return json.dumps(dict(session))
+        return json.dumps(session)
 
 class track_progress():
     def POST(self, path):
@@ -352,4 +352,4 @@ class track_progress():
         )
         return _response(lambda: progress)
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
+app = web.application(urls, locals(), autoreload=False)

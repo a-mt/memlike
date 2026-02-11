@@ -57,7 +57,7 @@ urls = (
 app = web.application(
     mapping=urls,
     fvars=globals(),
-    autoreload=settings.AUTORELOAD,
+    autoreload=False,
 )
 app.notfound = notfound
 
@@ -130,6 +130,16 @@ if __name__ == '__main__' and not settings.IS_TEST:
     print(f'web2py: {web.__version__}')
     print(f'Autoreload: {settings.AUTORELOAD}')
     print(f'Debug: app={app.debug} web={web.config.debug} sql={web.config.debug_sql}')
+
+    # Reload modules that have changed
+    # Is checked at the beginning of each request
+    # Note that the main app isn't reloaded (so if the URLs mapping is updated, you should restart the entrypoint)
+    if settings.AUTORELOAD:
+        from autoreload import AutoreloadMagics
+        auto_reload_extension = AutoreloadMagics()
+        app.processors.insert(0, web.loadhook(auto_reload_extension.pre_execute_hook))
+        app.processors.append(web.loadhook(auto_reload_extension.post_execute_hook))
+        auto_reload_extension.autoreload(mode='all', log=settings.DEBUG)
 
     print('Running...')
     app.run()

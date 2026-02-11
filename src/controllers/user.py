@@ -25,5 +25,4 @@ class user:
 
         return web.config.template.render.user(user, tab, levels)
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
-
+app = web.application(urls, locals(), autoreload=False)

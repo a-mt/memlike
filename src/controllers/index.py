@@ -40,5 +40,5 @@ class about:
     def GET(self):
         return web.config.template.render.about()
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
+app = web.application(urls, locals(), autoreload=False)
 

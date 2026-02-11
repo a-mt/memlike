@@ -147,4 +147,4 @@ class edit:
 
         return web.config.template.render.course_edit(course)
 
-app = web.application(urls, locals(), autoreload=settings.AUTORELOAD)
+app = web.application(urls, locals(), autoreload=False)
