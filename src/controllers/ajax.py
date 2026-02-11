@@ -137,7 +137,7 @@ class course_level_multimedia:
 class course_leaderboard:
     def GET(self, idCourse, slug):
         _GET = web.input(period="week")
-        return _response(lambda: memrise.leaderboard(idCourse, _GET.period))
+        return _response(lambda: memrise.course_leaderboard(idCourse, _GET.period))
 
 class course_edit:
     def GET(self, idCourse, slug):
@@ -316,7 +316,7 @@ class user_leaderboard():
 
         sessionid = web.ctx.session['loggedin']['sessionid']
         _GET = web.input(period="week")
-        return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
+        return _response(lambda: memrise.my_leaderboard(sessionid, _GET.period))
 
 class user_sync():
     def GET(self):

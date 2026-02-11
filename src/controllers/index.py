@@ -26,7 +26,7 @@ class leaderboard:
         _GET = web.input(period="alltime")
         try:
             sessionid   = web.ctx.session['loggedin']['sessionid']
-            leaderboard = memrise.user_leaderboard(sessionid, _GET.period)
+            leaderboard = memrise.leaderboard(sessionid, _GET.period)
         except HTTPError as e:
             if e.response.status_code == 403:
                 return web.config.template.prender._403()

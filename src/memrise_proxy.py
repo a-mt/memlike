@@ -158,7 +158,7 @@ class Memrise:
             if not 'has_more_pages' in data or not data['has_more_pages']:
                 break
 
-    def user_leaderboard(self, sessionid, period):
+    def my_leaderboard(self, sessionid, period):
         """
             Retrieve the learderboard of the current user (50 first)
 
@@ -602,7 +602,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def leaderboard(self, idCourse, period):
+    def course_leaderboard(self, idCourse, period):
         """
             Retrieve the learderboard of a course (50 first)
             Is cached via memcached for 1hour

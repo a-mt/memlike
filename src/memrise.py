@@ -41,7 +41,7 @@ class Memrise:
         """
         # response = read('tests/responses/settings.html')
         return {
-            "sessionid": 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4',
+            "sessionid": sessionid,
             "username": "4v15721",
             "photo": "https://static.memrise.com/img/400sqf/from/uploads/profiles/amistri_140708_0656_52.jpg",
         }
@@ -129,7 +129,7 @@ class Memrise:
         }]
         return [page1]
 
-    def user_leaderboard(self, sessionid, period):
+    def my_leaderboard(self, sessionid, period):
         """
             Retrieve the learderboard of the current user (50 first)
 
@@ -525,7 +525,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def leaderboard(self, idCourse, period):
+    def course_leaderboard(self, idCourse, period):
         """
             Retrieve the learderboard of a course (50 first)
             Is cached via memcached for 1hour
@@ -535,9 +535,18 @@ class Memrise:
             @param string period - month, week, alltime
             @return dict - Retrieved JSON
         """
-        return '''{"rows": [{"position": 1, "points": 125395, "uid": 5892033, "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amistri_140708_0656_52.jpg", "username": "4v15721", "is_premium": false}]}'''
+        return {
+            "rows": [{
+                "position": 1,
+                "points": 125395,
+                "uid": 5892033,
+                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amistri_140708_0656_52.jpg",
+                "username": "4v15721",
+                "is_premium": False
+            }]
+        }
 
-    #+-----------------------------------------------------
+     #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
     # https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
@@ -551,7 +560,7 @@ class Memrise:
             @param boolean[optional] force - [false] Get data from Memrise even if already cached
             @return dict - {username, photo, rank, stats}
         """
-        response = read("tests/responses/user_courses.html")
+        # response = read("tests/responses/user_courses.html")
 
         user = {
             "username": 'Decks',
@@ -570,7 +579,6 @@ class Memrise:
 
         if "points" in user["stats"]:
             points = int(user["stats"]["points"].replace(",",""))
-            print(points)
             rank   = 0
 
             for i, threshold in enumerate(levels):

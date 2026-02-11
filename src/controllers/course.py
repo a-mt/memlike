@@ -126,7 +126,7 @@ class leaderboard:
         _GET = web.input(period="week")
         try:
             course      = memrise.course(idCourse)
-            leaderboard = memrise.leaderboard(idCourse, _GET.period)
+            leaderboard = memrise.course_leaderboard(idCourse, _GET.period)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
