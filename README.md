@@ -56,7 +56,7 @@ If you need to update files in static/js6:
 * Compile JS6 to JS (with watch)
 
       npm install
-      npm run build
+      npm run build-dev
 
 ## Architecture
 
