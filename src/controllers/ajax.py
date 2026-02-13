@@ -6,24 +6,35 @@ from memrise import memrise
 from requests.exceptions import HTTPError
 from math import ceil
 
+# /ajax/level/...
+urls_level = (
+  r"/(\d+)", "level_edit",
+  r"/(\d+)/alt", "level_alt",
+  r"/(\d+)/alt_edit", "level_editalt",
+  r"/(\d+)/add", "level_addrow",
+  r"/(\d+)/edit", "level_editcell",
+  r"/(\d+)/remove", "level_removerow",
+  r"/(\d+)/upload", "level_uploadfile",
+  r"/(\d+)/upload_remove", "level_removefile",
+  r"/(\d+)/edit_multimedia", "level_editmultimedia",
+)
+# /ajax/course/...
+urls_course = (
+  r"/(\d+)/([^/]+)/edit", "course_edit",
+  r"/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
+  r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
+  r"/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
+  r"/(\d+)/([^/]+)", "course",
+)
+subapp_course = web.application(urls_course, locals(), autoreload=False)
+
 urls = (
   "", "api",
 
   r"/courses", "courses",
-  r"/level/(\d+)", "level_edit",
-  r"/level/(\d+)/alt", "level_alt",
-  r"/level/(\d+)/alt_edit", "level_editalt",
-  r"/level/(\d+)/add", "level_addrow",
-  r"/level/(\d+)/edit", "level_editcell",
-  r"/level/(\d+)/remove", "level_removerow",
-  r"/level/(\d+)/upload", "level_uploadfile",
-  r"/level/(\d+)/upload_remove", "level_removefile",
-  r"/level/(\d+)/edit_multimedia", "level_editmultimedia",
-  r"/course/(\d+)/([^/]+)/edit", "course_edit",
-  r"/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  r"/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
-  r"/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
-  r"/course/(\d+)/([^/]+)", "course",
+  r"/community/course", subapp_course,
+  r"/course", subapp_course,
+  r"/level", web.application(urls_level, locals(), autoreload=False),
 
   r"/user/([^/]+)", "user",
   r"/user/([^/]+)/(followers)", "user_mempals",
@@ -262,7 +273,7 @@ class user_courses:
         if not isinstance(page, int) and not page.isdigit():
             page = 1
 
-        lastpage = int(ceil(data['nbCourse'] / NBPERPAGE) + 1)
+        lastpage = int(ceil(data['nbCourse'] / NBPERPAGE)) or 1
         if page > lastpage:
             page = lastpage
         offset = (page-1)*NBPERPAGE

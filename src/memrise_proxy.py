@@ -257,8 +257,8 @@ class Memrise:
             Retrieve  the list of categories that have courses for the given language
             Is cached via memcached for 24hours
 
-            @param string lang
-            @return dict       - {<idCourse>: True}
+            @param string lang - "I speak"
+            @return dict       - All categories {<idCourse>: True}
         """
 
         cache_key  = lang + "_categories"

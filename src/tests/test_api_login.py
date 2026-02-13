@@ -6,11 +6,13 @@ import web
 class ApplicationLoginTest(SimpleTestCase):
 
     def setUp(self):
-        session = web.config.template.get('session', None)
+        session = web.test.session
 
-        # Reset to defaults
-        if session is not None:
-            session._config.update(dict(web.config.session_parameters))
+        self.session_store = session.store
+        self.session_parameters = session._config
+
+        # Reset session configs to defaults
+        self.session_parameters.update(dict(web.config.session_parameters))
 
     def test_session_anonymous(self):
         response = self.client.request('/ajax/session')
@@ -103,7 +105,7 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertTrue(response.json().get('loggedin', False))
 
     def test_session_deleted(self):
-        cookie_name = web.config.session_parameters['cookie_name']
+        cookie_name = self.session_parameters['cookie_name']
 
         # ---
         # Unauthenticated Request = create new session
@@ -133,7 +135,7 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertIsNotNone(payload.get('lang', None))
 
         # Clear out the sessions (config.template holds the session from the last request)
-        session_store = web.config.template['session'].store
+        session_store = self.session_store
         self.assertIsNotNone(session_store)
         del session_store[sessionid]
 
@@ -163,8 +165,8 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
         # Delete session
-        cookie_name = web.config.session_parameters['cookie_name']
-        session_store = web.config.template['session'].store
+        cookie_name = self.session_parameters['cookie_name']
+        session_store = self.session_store
         del session_store[cookies[cookie_name].value]
 
         # Authenticated request with deleted session = cannot access dashboard
@@ -172,12 +174,12 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_session_ip_update(self):
-        cookie_name = web.config.session_parameters['cookie_name']
+        cookie_name = self.session_parameters['cookie_name']
         cookies = self.get_auth_cookies()
         headers = {'Cookie': cookies.simple_output()}
 
         # Set settings = ensure session got created with the current IP
-        web.config.template['session']._config.ignore_change_ip = False
+        self.session_parameters.ignore_change_ip = False
 
         # Request with same IP (None) = same session
         response = self.client.request('/ajax/session', headers=headers, env={'REMOTE_ADDR': None})
@@ -204,12 +206,12 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertNotEqual(response.get_cookies()[cookie_name].value, cookies[cookie_name].value)
 
     def test_session_ip_update2(self):
-        cookie_name = web.config.session_parameters['cookie_name']
+        cookie_name = self.session_parameters['cookie_name']
         cookies = self.get_auth_cookies()
         headers = {'Cookie': cookies.simple_output()}
 
         # Set settings = can change current IP during session
-        web.config.template['session']._config.ignore_change_ip = True
+        self.session_parameters.ignore_change_ip = True
 
         # Request with same IP (None) = same session
         response = self.client.request('/ajax/session', headers=headers, env={'REMOTE_ADDR': None})
@@ -230,13 +232,13 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_session_ip_expired(self):
-        cookie_name = web.config.session_parameters['cookie_name']
+        cookie_name = self.session_parameters['cookie_name']
         cookies = self.get_auth_cookies()
         headers = {'Cookie': cookies.simple_output()}
 
         # Set settings = ignore timeout
-        web.config.template['session']._config.timeout = 0
-        web.config.template['session']._config.ignore_expiry = True
+        self.session_parameters.timeout = 0
+        self.session_parameters.ignore_expiry = True
 
         # Request with timed out session = new session
         response = self.client.request('/ajax/session', headers=headers)
@@ -244,13 +246,13 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertNotEqual(response.get_cookies()[cookie_name].value, cookies[cookie_name].value)
 
     def test_session_ip_expired2(self):
-        cookie_name = web.config.session_parameters['cookie_name']
+        cookie_name = self.session_parameters['cookie_name']
         cookies = self.get_auth_cookies()
         headers = {'Cookie': cookies.simple_output()}
 
         # Set settings = throw exception on timeout
-        web.config.template['session']._config.timeout = 0
-        web.config.template['session']._config.ignore_expiry = False
+        self.session_parameters.timeout = 0
+        self.session_parameters.ignore_expiry = False
 
         # Request with timed out session = 401
         response = self.client.request('/ajax/session', headers=headers)

@@ -43,6 +43,7 @@ def notfound():
 
 urls = (
     '/fr/courses', controllers.courses.app,
+    '/community/course', controllers.course.app,
     '/course', controllers.course.app,
     '/user', controllers.user.app,
     '/ajax', controllers.ajax.app,
@@ -92,11 +93,16 @@ def session_load():
     be careful with manipulating the session object: it is both a global object
     and used as holder after reading the current context
     """
+
+    # session._data is a threaded dict that is saved at the end of the request
     web.ctx.session = session._data
     web.ctx.session_id = session.session_id
 
     # Make it accessible in templates
-    web.config.template['session'] = session
+    web.config.template['session'] = session._data
+
+if settings.IS_TEST:
+    web.test = web.storage({'session': session})
 
 # Processors are run at each request
 app.add_processor(session._processor)

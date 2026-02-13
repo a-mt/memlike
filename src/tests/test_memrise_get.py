@@ -176,6 +176,7 @@ class MemriseGetTest(unittest.TestCase):
         result = memrise.level_multimedia(f"/course/{COURSE_ID}/{COURSE_SLUG}/", "1")
 
         self.assertTrue(type(result) is str)
+        self.assertTrue(result[0] == '"', 'Expecting a valid JS var [var multimedia = result]')
 
     def disable_test_memrise_level(self):
         self.assertIsNotNone(self.session['session_id'])
