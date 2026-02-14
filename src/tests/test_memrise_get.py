@@ -1,4 +1,5 @@
 from memrise import memrise
+from inspect import isgenerator
 import unittest
 
 
@@ -40,10 +41,14 @@ class MemriseGetTest(unittest.TestCase):
 
         pages = memrise.whatistudy(sessionid=self.session['session_id'])
 
-        self.assertIs(type(pages), list)
-        self.assertTrue(len(pages) > 0)
+        # Depending on the backend we might retrieve a generator or a list
+        if isgenerator(pages):
+            courses = next(pages)
+        else:
+            self.assertIs(type(pages), list)
+            self.assertTrue(len(pages) > 0)
+            courses = pages[0]
 
-        courses = pages[0]
         self.assertIs(type(courses), list)
         self.assertTrue(len(courses) > 0)
 
@@ -169,9 +174,10 @@ class MemriseGetTest(unittest.TestCase):
 
     def test_memrise_level_multimedia(self):
         result = memrise.level_multimedia(f"/course/{COURSE_ID}/{COURSE_SLUG}/", "1")
-
         self.assertIs(type(result), str)
-        self.assertTrue(result[0] == '"', 'Expecting a valid JS var [var multimedia = result]')
+
+        first_char = result[0]
+        self.assertTrue(first_char == '"' or first_char == "'", 'Expecting a valid JS var [var multimedia = result]')
 
     def test_memrise_level(self):
         self.assertIsNotNone(self.session['session_id'])

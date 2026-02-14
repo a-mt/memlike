@@ -8,9 +8,9 @@ IS_TEST = getenv('WEBPY_ENV', '') == 'test'
 
 DATABASE_URL = getenv('DATABASE_URL', '')
 
-MEMRISE_BACKEND = 'memrise.backends.api.ApiMemrise'
+MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
 if True or IS_TEST:
-    MEMRISE_BACKEND = 'memrise.backends.dummy.DummyMemrise'
+    MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
 
 # Import global web object to hold web.py config
 import web

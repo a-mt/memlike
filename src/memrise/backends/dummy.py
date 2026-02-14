@@ -22,6 +22,9 @@ class DummyMemrise(Memrise):
         data["csrftoken"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
         return data
 
+    #+-----------------------------------------------------
+    #| CURRENT USER
+    #+-----------------------------------------------------
     def whoami(self, sessionid):
         """
         Testset: settings.html
@@ -112,7 +115,7 @@ class DummyMemrise(Memrise):
 
     def my_leaderboard(self, sessionid, period):
         """
-        Testset: profile_leaderboard.html
+        Testset: profile_leaderboard.json
         """
         return {
             "rows": [{
@@ -139,46 +142,6 @@ class DummyMemrise(Memrise):
                 "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Gustavis_140926_1859_19.jpg",
                 "is_premium": False,
                 "following": True
-            }, {
-                "position": 4,
-                "points": 0,
-                "username": "CFT",
-                "uid": 1799372,
-                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/CFT_161101_0641_06.jpg",
-                "is_premium": False,
-                "following": True
-            }, {
-                "position": 5,
-                "points": 0,
-                "username": "Sam.Artin",
-                "uid": 4923954,
-                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Sam.Aritan_141210_0039_38.png",
-                "is_premium": False,
-                "following": True
-            }, {
-                "position": 6,
-                "points": 0,
-                "username": "amayoco",
-                "uid": 5798179,
-                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/amayoco_140805_1022_50.jpg",
-                "is_premium": False,
-                "following": True
-            }, {
-                "position": 7,
-                "points": 0,
-                "username": "Oc\u00e9ane-Polyglot",
-                "uid": 6322393,
-                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/6322393_240911_1343_22.jpeg",
-                "is_premium": False,
-                "following": True
-            }, {
-                "position": 8,
-                "points": 0,
-                "username": "Jordancraig1",
-                "uid": 6602920,
-                "photo": "https://static.memrise.com/img/100sqf/from/uploads/profiles/Jordancraig1_141212_1125_11.jpg",
-                "is_premium": False,
-                "following": True
             }]
         }
 
@@ -190,7 +153,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     def courses(self, lang, page=1, cat="", query=""):
         """
-        Testset: browse_cat-languages_scat-french_page-2.json
+        Testset: browse_cat-languages_scat-french_page-1.json
         """
         return {
             "page": 1,
@@ -476,12 +439,8 @@ class DummyMemrise(Memrise):
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None):
-        import json
-
         with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
-            level = json.loads(f.read())
-
-        return level
+            return json.loads(f.read())
 
     def level_multimedia(self, urlCourse, lvl):
         """
@@ -543,12 +502,6 @@ class DummyMemrise(Memrise):
 
         return user
 
-    def user_followers(self, username, page=1):
-        return self.user_mempals("followers", username, page)
-
-    def user_following(self, username, page=1):
-        return self.user_mempals("following", username, page)
-
     def user_mempals(self, tab, username, page=1):
         """
         Testset: user_mempals_followers.html
@@ -596,12 +549,6 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| USER's COURSES
     #+-----------------------------------------------------
-    def user_teaching(self, username):
-        return self.user_courses("teaching", username)
-
-    def user_learning(self, username):
-        return self.user_courses("learning", username)
-
     def user_courses(self, tab, username):
         # https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0
         with open(settings.ROOTDIR + "/tests/testset/user_courses_teaching_min.html") as f:
@@ -621,7 +568,7 @@ class DummyMemrise(Memrise):
                 courses["content"].append(str(wrapper))
                 courses["nbCourse"] += 1
 
-        return courses
+            return courses
 
     #+-----------------------------------------------------
     #| EDIT

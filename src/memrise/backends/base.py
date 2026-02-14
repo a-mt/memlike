@@ -24,6 +24,9 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a login() method")
 
+    #+-----------------------------------------------------
+    #| CURRENT USER
+    #+-----------------------------------------------------
     def whoami(self, sessionid):
         """
             Retrieve the username and photo of current user
@@ -48,7 +51,7 @@ class Memrise:
         """
             Retrieve the learderboard of the current user (50 first)
 
-            Testset: profile_leaderboard.html
+            Testset: profile_leaderboard.json
             @param string sessionid
             @param string period - month, week, alltime
             @return dict - {rows: [{position, points, username, uid, photo, is_premium, following}]}
@@ -76,7 +79,7 @@ class Memrise:
         """
             Retrieve the list of courses for the given language, category, query string and page
 
-            Testset: browse_cat-languages_scat-french_page-2.json
+            Testset: browse_cat-languages_scat-french_page-1.json
             @param string lang
             @param integer[optional] page - [1]
             @param string[optional] cat   - [""]
@@ -121,6 +124,7 @@ class Memrise:
         """
             Retrieve the list of items of a level (wont work for multimedia)
 
+            Testset: learning_session_learn.json
             @param integer idCourse
             @param integer|string lvl - index | "all"
             @param string slug
@@ -173,24 +177,33 @@ class Memrise:
             Retrieve the list of followers of a user
 
             Testset: user_mempals_followers.html
-            @param string mempals - followers  following
             @param string username
             @param integer page - [1]
             @return dict - {page, lastpage, has_next, users}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a user_followers() method")
+        return self.user_mempals("followers", username, page)
 
     def user_following(self, username, page=1):
         """
-            Retrieve the list of followers of followed users
+            Retrieve the list of followed users
 
             Testset: user_mempals_following.html
-            @param string mempals - followers  following
             @param string username
             @param integer page - [1]
             @return dict - {page, lastpage, has_next, users}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a user_following() method")
+        return self.user_mempals("following", username, page)
+
+    def user_mempals(self, tab, username, page=1):
+        """
+            Retrieve the users associated to an user (follower or following)
+
+            @param string mempals - followers | following
+            @param string username
+            @param integer page - [1]
+            @return dict - {page, lastpage, has_next, users}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a user_mempals() method")
 
     #+-----------------------------------------------------
     #| USER's COURSES
@@ -205,6 +218,7 @@ class Memrise:
         """
             Retrieve the courses of an user
 
+            Testset: user_courses_teaching.html
             @param string tab - teaching | learning
             @param string username
             @return dict - {content, nbCourse}
@@ -336,6 +350,7 @@ class Memrise:
         """
             Retrieve the content of a course for the edit page
 
+            Testset: course_get_edit.html
             @param string sessionid
             @param string idCourse - "1892646"
             @param string slugCourse - "grammaire-le-groupe-nominal"
