@@ -145,6 +145,6 @@ class edit:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.course_edit_get(course)
+        return web.config.template.render.course_edit(course)
 
 app = web.application(urls, locals(), autoreload=False)

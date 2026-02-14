@@ -559,7 +559,7 @@ class Memrise:
             @throws requests.exceptions.HTTPError
             @param string urlCourse - ex "/course/43238/durham-university-medicine-year-one/"
             @param integer lvl
-            @return dict - Retrieved JSON
+            @return string - Retrieved JSON
         """
         pattern = re.search("/course/(\d+)/", urlCourse)
         if pattern:
@@ -757,7 +757,7 @@ class Memrise:
             @param string mempals - followers  following
             @param string username
             @param integer page - [1]
-            @return dict - {page, lastpage, users}
+            @return dict - {page, lastpage, has_next, users}
         """
         if not isinstance(page, int):
             if page.isdigit():
