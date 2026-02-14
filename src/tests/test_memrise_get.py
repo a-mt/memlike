@@ -1,11 +1,6 @@
 from memrise import memrise
-
-'''
-memrise.level(idCourse, slugCourse, "1", "preview", sessionid, csrftoken)
-memrise.level(idCourse, slugCourse, lvl, "preview", sessionid, csrftoken)
-memrise.level(idCourse, slugCourse, lvl, kind, sessionid, csrftoken)
-'''
 import unittest
+
 
 COURSE_ID = '6698294'
 COURSE_SLUG = 'german-vocab'
@@ -21,7 +16,7 @@ class MemriseGetTest(unittest.TestCase):
         result = memrise.login(username, password)
 
         self.assertIsNotNone(result)
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertEqual(result.get('username', None), username)
         self.assertIsNotNone(result.get('sessionid', None))
         self.assertIsNotNone(result.get('csrftoken', None))
@@ -34,7 +29,7 @@ class MemriseGetTest(unittest.TestCase):
 
         result = memrise.whoami(sessionid=self.session['session_id'])
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('sessionid', None))
         self.assertIsNotNone(result.get('username', None))
         self.assertIsNotNone(result.get('photo', None))
@@ -45,11 +40,11 @@ class MemriseGetTest(unittest.TestCase):
 
         pages = memrise.whatistudy(sessionid=self.session['session_id'])
 
-        self.assertTrue(type(pages) is list)
+        self.assertIs(type(pages), list)
         self.assertTrue(len(pages) > 0)
 
         courses = pages[0]
-        self.assertTrue(type(courses) is list)
+        self.assertIs(type(courses), list)
         self.assertTrue(len(courses) > 0)
 
         course = courses[0]
@@ -66,7 +61,7 @@ class MemriseGetTest(unittest.TestCase):
 
         result = memrise.my_leaderboard(self.session['session_id'], period='alltime')
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue('rows' in result)
         self.assertTrue(len(result['rows']) > 0)
 
@@ -84,7 +79,7 @@ class MemriseGetTest(unittest.TestCase):
 
         result = memrise.categories(lang_code)
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(lang_id in result)
         self.assertTrue(result[lang_id])
 
@@ -94,7 +89,7 @@ class MemriseGetTest(unittest.TestCase):
     def test_course_leaderboard(self):
         result = memrise.course_leaderboard(COURSE_ID, period='alltime')
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue('rows' in result)
         self.assertTrue(len(result['rows']) > 0)
 
@@ -109,7 +104,7 @@ class MemriseGetTest(unittest.TestCase):
     def test_memrise_user(self):
         result = memrise.user(username='bob')
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('username', None))
         self.assertIsNotNone(result.get('photo', None))
         self.assertIsNotNone(result.get('rank', None))
@@ -126,19 +121,19 @@ class MemriseGetTest(unittest.TestCase):
     def test_user_courses(self):
         result = memrise.user_courses(tab='teaching', username='bob')
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('nbCourse', 0) > 0)
         self.assertIsNotNone(result.get('content', None))
         self.assertTrue(len(result['content']) > 0)
-        self.assertTrue(type(result['content'][0]) is str)
+        self.assertIs(type(result['content'][0]), str)
 
     def test_courses(self):
         result = memrise.courses(lang='french', page=1)
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertEqual(result['page'], 1)
         self.assertIsNotNone(result.get('has_next', None))
-        self.assertTrue(type(result.get('content', None)) is str)
+        self.assertIs(type(result.get('content', None)), str)
 
     def test_memrise_course(self):
         self.assertIsNotNone(self.session['session_id'])
@@ -154,11 +149,11 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(result.get('levels', None))
         self.assertIsNotNone(result.get('breadcrumb', None))
 
-        self.assertTrue(type(result['breadcrumb']) is list)
+        self.assertIs(type(result['breadcrumb']), list)
         self.assertTrue(len(result['breadcrumb']) > 0)
         self.assertIsNotNone(result['breadcrumb'][0].get('name', None))
 
-        self.assertTrue(type(result['levels']) is dict)
+        self.assertIs(type(result['levels']), dict)
         self.assertTrue(len(result['levels']) > 0)
         level = result['levels']['1']
         self.assertIsNotNone(level.get('name', None))
@@ -175,10 +170,10 @@ class MemriseGetTest(unittest.TestCase):
     def test_memrise_level_multimedia(self):
         result = memrise.level_multimedia(f"/course/{COURSE_ID}/{COURSE_SLUG}/", "1")
 
-        self.assertTrue(type(result) is str)
+        self.assertIs(type(result), str)
         self.assertTrue(result[0] == '"', 'Expecting a valid JS var [var multimedia = result]')
 
-    def disable_test_memrise_level(self):
+    def test_memrise_level(self):
         self.assertIsNotNone(self.session['session_id'])
 
         result = memrise.level(
@@ -189,4 +184,38 @@ class MemriseGetTest(unittest.TestCase):
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
         )
-        self.assertTrue('todo' is False)
+
+        self.assertIs(type(result), dict)
+        self.assertIs(type(result.get('learnables', None)), list)
+        self.assertTrue(len(result['learnables']) > 0)
+        self.assertIs(type(result.get('progress', None)), list)
+        self.assertIs(type(result.get('session_source_info', None)), dict)
+        self.assertIs(type(result.get('settings', None)), dict)
+
+        item = result['learnables'][0]
+        self.assertIsNotNone(item.get('id', None))
+        self.assertIs(type(item.get('screens', None)), dict)  # SCREEN_ID: SCREEN
+
+        screens = list(item['screens'].values())
+        self.assertTrue(len(screens) > 0)
+
+        screen = screens[0]
+        self.assertIs(type(screen), dict)
+        self.assertEqual(screen.get('template', None), 'presentation')
+        self.assertIs(type(screen.get('item', None)), dict)
+        self.assertIs(type(screen.get('definition', None)), dict)
+        self.assertIs(type(screen.get('visible_info', None)), list)
+        self.assertIs(type(screen.get('hidden_info', None)), list)
+        self.assertIs(type(screen.get('attributes', None)), list)
+        self.assertTrue('audio' in screen)
+        self.assertTrue('video' in screen)
+
+        screen = screens[1]
+        self.assertEqual(screen.get('template', None), 'multiple_choice')
+        self.assertIs(type(screen.get('prompt', None)), dict)
+        self.assertIs(type(screen.get('answer', None)), dict)
+        self.assertIs(type(screen.get('choices', None)), list)
+        self.assertIs(type(screen.get('correct', None)), list)
+        self.assertIs(type(screen.get('attributes', None)), list)
+        self.assertTrue('audio' in screen)
+        self.assertTrue('is_strict' in screen)

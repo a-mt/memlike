@@ -26,8 +26,8 @@ class Memrise:
         """
         data = {'username': username} # json['user']
 
-        data['sessionid'] = 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4'
-        data['csrftoken'] = 'zwrpo2uktmjzby5fla2wl23nlm0vcuto4'
+        data["sessionid"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
+        data["csrftoken"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
         return data
 
     def whoami(self, sessionid):

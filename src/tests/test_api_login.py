@@ -78,7 +78,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         payload = response.json()
         self.assertTrue(payload['loggedin'])
-        self.assertTrue(type(payload['loggedin']) is dict)
+        self.assertIs(type(payload['loggedin']), dict)
         self.assertEqual(payload['loggedin'].get('username', None), username)
 
     def test_test_login(self):
@@ -94,7 +94,7 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertTrue(payload.get('loggedin', False))
         self.assertEqual(payload.get('learning', None), {})
 
-        self.assertTrue(type(payload['loggedin']) is dict)
+        self.assertIs(type(payload['loggedin']), dict)
         self.assertIsNotNone(payload['loggedin'].get('sessionid', None))  # sessionid used to proxy to memrise
 
     def test_test_sugar_login(self):

@@ -1,7 +1,7 @@
 from memrise import memrise
-
 import unittest
 import web
+
 
 COURSE_ID = '6698294'
 COURSE_SLUG = 'german-vocab'
@@ -17,7 +17,7 @@ class MemriseEditTest(unittest.TestCase):
         result = memrise.login(username, password)
 
         self.assertIsNotNone(result)
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertEqual(result.get('username', None), username)
         self.assertIsNotNone(result.get('sessionid', None))
         self.assertIsNotNone(result.get('csrftoken', None))
@@ -28,7 +28,7 @@ class MemriseEditTest(unittest.TestCase):
     def test_memrise_course_edit_get(self):
         result = memrise.course_edit_get(sessionid=self.session['session_id'], idCourse=COURSE_ID, slugCourse=COURSE_SLUG)
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('csrftoken', None))
         self.assertIsNotNone(result.get('referer', None))
         self.assertIsNotNone(result.get('url', None))
@@ -44,9 +44,9 @@ class MemriseEditTest(unittest.TestCase):
     def test_memrise_level_edit_get(self):
         result = memrise.level_edit_get(sessionid=self.session['session_id'], idLevel='16180581')
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
-        self.assertTrue(type(result.get('rendered', None)) is str)
+        self.assertIs(type(result.get('rendered', None)), str)
 
     # -------------------------------------------------------------------------
     # THINGS
@@ -63,23 +63,23 @@ class MemriseEditTest(unittest.TestCase):
             }
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
-        self.assertTrue(type(result.get('rendered_thing', None)) is str)
-        self.assertTrue(type(result.get('thing', None)) is dict)
+        self.assertIs(type(result.get('rendered_thing', None)), str)
+        self.assertIs(type(result.get('thing', None)), dict)
 
         thing = result['thing']
         self.assertIsNotNone(thing.get('id', None))
         self.assertIsNotNone(thing.get('pool_id', None))
-        self.assertIsNotNone(type(thing.get('columns', None)) is dict)
-        self.assertIsNotNone(type(thing.get('attributes', None)) is dict)
+        self.assertIs(type(thing.get('columns', None)), dict)
+        self.assertIs(type(thing.get('attributes', None)), dict)
         self.assertTrue("1" in thing['columns'])
 
         column = thing['columns']['1']
-        self.assertTrue(type(column.get('alts', None)) is list)
-        self.assertTrue(type(column.get('choices', None)) is list)
-        self.assertTrue(type(column.get('accepted', None)) is list)
-        self.assertTrue(type(column.get('distractors', None)) is dict)
+        self.assertIs(type(column.get('alts', None)), list)
+        self.assertIs(type(column.get('choices', None)), list)
+        self.assertIs(type(column.get('accepted', None)), list)
+        self.assertIs(type(column.get('distractors', None)), dict)
         self.assertEqual(column.get('val', None), 'a')
         self.assertEqual(column.get('kind', None), 'text')
 
@@ -90,21 +90,21 @@ class MemriseEditTest(unittest.TestCase):
             referer='',
             idThing='477757876',
         )
-        self.assertTrue(type(result) is dict)
-        self.assertTrue(type(result.get('thing', None)) is dict)
+        self.assertIs(type(result), dict)
+        self.assertIs(type(result.get('thing', None)), dict)
 
         thing = result['thing']
         self.assertIsNotNone(thing.get('id', None), '477757876')
         self.assertIsNotNone(thing.get('pool_id', None))
-        self.assertIsNotNone(type(thing.get('columns', None)) is dict)
-        self.assertIsNotNone(type(thing.get('attributes', None)) is dict)
+        self.assertIs(type(thing.get('columns', None)), dict)
+        self.assertIs(type(thing.get('attributes', None)), dict)
         self.assertTrue("1" in thing['columns'])
 
         column = thing['columns']['1']
-        self.assertTrue(type(column.get('alts', None)) is list)
-        self.assertTrue(type(column.get('choices', None)) is list)
-        self.assertTrue(type(column.get('accepted', None)) is list)
-        self.assertTrue(type(column.get('distractors', None)) is dict)
+        self.assertIs(type(column.get('alts', None)), list)
+        self.assertIs(type(column.get('choices', None)), list)
+        self.assertIs(type(column.get('accepted', None)), list)
+        self.assertIs(type(column.get('distractors', None)), dict)
         self.assertEqual(column.get('val', None), 'a')
         self.assertEqual(column.get('kind', None), 'text')
 
@@ -118,7 +118,7 @@ class MemriseEditTest(unittest.TestCase):
             cellValue='b2',
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertIsNone(result.get('success', False))
 
     def test_memrise_course_level_thing_alt_edit(self):
@@ -131,7 +131,7 @@ class MemriseEditTest(unittest.TestCase):
             alts='["a2","a3"]',
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertIsNone(result.get('success', False))
 
     def test_memrise_course_level_thing_upload(self):
@@ -149,9 +149,9 @@ class MemriseEditTest(unittest.TestCase):
             cellId='2',
             file=None,
         )
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
-        self.assertTrue(type(result.get('rendered', None)) is str)
+        self.assertIs(type(result.get('rendered', None)), str)
 
     def test_memrise_course_level_thing_upload_remove(self):
         result = memrise.level_thing_upload_remove(
@@ -163,9 +163,9 @@ class MemriseEditTest(unittest.TestCase):
             fileId='1',
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
-        self.assertTrue(type(result.get('rendered', None)) is str)
+        self.assertIs(type(result.get('rendered', None)), str)
 
     def test_memrise_course_level_thing_remove(self):
         result = memrise.level_thing_remove(
@@ -176,7 +176,7 @@ class MemriseEditTest(unittest.TestCase):
             idThing='16258912',
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
 
     # -------------------------------------------------------------------------
@@ -192,6 +192,6 @@ class MemriseEditTest(unittest.TestCase):
             txt='',
         )
 
-        self.assertTrue(type(result) is dict)
+        self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
-        self.assertTrue(type(result.get('multimedia', None)) is str)
+        self.assertIs(type(result.get('multimedia', None)), str)
