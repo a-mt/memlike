@@ -12,9 +12,12 @@ $(document).ready(function () {
   }
   Object.freeze(window.course);
   render(h(Learn, {
-    level: window.$_URL.lvl, type: window.$_URL.type,
-    thing: window.$_URL.thing,
-    sendresults: window.$_URL.sendresults, session: window.$_URL.session }), document.getElementById('learn-container'));
+    level: window.$_URL.lvl,
+    session_type: window.$_URL.type,
+    preview_thing_id: window.$_URL.thing,
+    sendresults: window.$_URL.sendresults,
+    session: window.$_URL.session
+  }), document.getElementById('learn-container'));
 });
 
 //+--------------------------------------------------------
@@ -121,7 +124,7 @@ class Learn extends Component {
 
       this.state.level = this.levels[0] || 1;
       this.state.maxlevel = this.levels[this.levels.length - 1] || 1;
-      this.state.get_all = this.props.type != "preview";
+      this.state.get_all = this.props.session_type != "preview";
     } else {
       this.state.level = parseInt(this.props.level);
       this.state.maxlevel = parseInt(this.props.level);
@@ -178,7 +181,7 @@ class Learn extends Component {
 
     // Retrieve data
     this.getData(this.state.level, function (data) {
-      if (!this.props.thing) {
+      if (!this.props.preview_thing_id) {
         window.onbeforeunload = this.warnbeforeunload.bind(this);
       }
 
@@ -231,7 +234,7 @@ class Learn extends Component {
         var name = window.course.levels[this.state.level].name;
         document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
       }
-    } else if (this.props.type == "speed_review") {
+    } else if (this.props.session_type == "speed_review") {
       Timer.start(this.time_over.bind(this));
     }
 
@@ -245,17 +248,174 @@ class Learn extends Component {
     }.bind(this));
   }
 
+  shouldDisplayPresentation(progress) {
+    if (!progress || !progress.last_date) {
+      return true;
+    }
+    try {
+      const lastDate = new Date(progress.last_date);
+      const thresholdDate = new Date(Date.now() - PRESENTATION_PROGRESS_THRESHOLD_SECONDS * 1000);
+      return lastDate < thresholdDate;
+    } catch (e) {
+      console.error(e);
+      return true;
+    }
+  }
+
+  /**
+   * Returns an integer random number between min (included) and max (included)
+   */
+  randrange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  buildBoxes(session_type, learnables, progress_map) {
+    const boxes = [];
+
+    switch (session_type) {
+      case 'learn':
+        const REPEAT_UNTIL_GROWTH_LEVEL = 6;
+        const PRESENTATION_PROGRESS_THRESHOLD_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
+
+        let add_tests = [];
+        for (let learnable of learnables) {
+          const learnable_id = learnable.id;
+
+          if (this.shouldDisplayPresentation(progress_map[learnable_id])) {
+            boxes.push({
+              learnable_id,
+              template: 'presentation',
+              learn_session_level: 0
+            });
+          }
+
+          // How many times do we have to repeat the test to learn it
+          const progress = progress_map[learnable_id];
+          const level = progress ? progress.growth_level : 0;
+
+          const from_target_level = level + 1 | 0;
+          const to_target_level = Math.min(level + 3 | 0, REPEAT_UNTIL_GROWTH_LEVEL);
+
+          if (to_target_level <= from_target_level) {
+            console.warning('The following learnable has already been learned:', learnable);
+          } else {
+            add_tests.push({ learnable_id, from_target_level, to_target_level });
+          }
+        }
+
+        // While there are still tests to add
+        while (add_tests.length) {
+          let still_add_tests = [];
+
+          // For each learnable that have to be tested
+          for (let i = 0; i < add_tests.length; i++) {
+            let item = add_tests[i];
+            let { learnable_id, from_target_level, to_target_level } = item;
+
+            // Get a random index to insert the test
+            // 2 steps after the presentation of the learnable
+            // or anywhere after the first test
+            let idx = boxes.findLastIndex(box => box.learnable_id == learnable_id);
+            let min = 0;
+            let max = boxes.length;
+            let is_presentation = false;
+
+            if (idx) {
+              min = idx;
+              is_presentation = boxes[idx].template == 'presentation';
+            }
+            let insertAtIndex = is_presentation ? Math.min(min + 2, max) : this.randrange(min, max);
+
+            // Insert the test at the chosen random index
+            boxes.splice(insertAtIndex, 0, {
+              learnable_id,
+              template: 'sentinel',
+              learn_session_level: from_target_level // target growth level
+            });
+
+            // Do we still have to repeat the test to learn it
+            from_target_level += 1;
+            if (to_target_level >= from_target_level) {
+              still_add_tests.push({ learnable_id, from_target_level, to_target_level });
+            }
+          }
+          add_tests = still_add_tests;
+        }
+        break;
+
+      case 'speed_review':
+      case 'classic_review':
+        for (let learnable of learnables) {
+          boxes.push({
+            learnable_id: learnable.id,
+            template: 'sentinel',
+            learn_session_level: 0
+          });
+        }
+        break;
+
+      case 'preview':
+      default:
+        for (let learnable of learnables) {
+          boxes.push({
+            learnable_id: learnable.id,
+            template: 'presentation',
+            learn_session_level: 0
+          });
+        }
+        break;
+    }
+    return boxes;
+  }
+
+  buildGameData(session_type, data) {
+
+    // Build screen_template_map (data.screen_template_map[learnable_id][tpl][0])
+    const screen_template_map = {};
+    for (let learnable of data.learnables) {
+      const screens = {};
+
+      // A screen = {correct, is_strict, ...} (cf learning_session_preview.json)
+      for (let screen_id in learnable.screens) {
+        let screen = learnable.screens[screen_id];
+        screens[screen.template] = [screen];
+      }
+      screen_template_map[learnable.id] = screens;
+    }
+
+    // Build progress_map {learnable_id: {growth_level, current_streak, correct, attempts, is_difficult}}
+    const progress_map = {};
+    for (let progress of data.progress) {
+      progress_map[progress.learnable_id] = progress;
+    }
+
+    const boxes = this.buildBoxes(session_type, data.learnables, progress_map);
+    console.log('boxes', boxes);
+    //var id = this.state.data.boxes[this.state.i].learnable_id;
+    //items.push(this.state.data.screen_template_map[id].presentation[0]);
+
+    return {
+      boxes,
+      screen_template_map,
+      progress_map: data.progress,
+      csrftoken: '',
+      referer: ''
+    };
+  }
+
   // Retrieve the current level datas
   getData(level, callback) {
+    const session_type = this.props.session_type;
+
     var level_type = window.course.levels[level].type,
         url = '/ajax' + window.course.url;
 
     if (this.state.get_all) {
-      url += 'all/' + this.props.type;
+      url += 'all/' + session_type;
     } else if (level_type == 2) {
       url += level + '/media';
     } else {
-      url += level + '/' + this.props.type;
+      url += level + '/' + session_type;
     }
 
     $.ajax({
@@ -264,6 +424,7 @@ class Learn extends Component {
       success: function (data) {
         callback && callback(data);
 
+        const gameData = this.buildGameData(session_type, data);
         this.setState({
           recap: {},
           screen: false,
@@ -271,9 +432,9 @@ class Learn extends Component {
           level: level,
           level_type: level_type,
 
-          data: data,
+          data: gameData,
           i: 0,
-          n: data.boxes ? data.boxes.length : 1
+          n: gameData.boxes ? gameData.boxes.length : 1
         });
       }.bind(this),
 
@@ -346,6 +507,11 @@ class Learn extends Component {
         chosen.push(this.innerHTML);
       });
       this.tapping_choice(chosen);
+
+      // Numeric
+    } else {
+      console.info('Skipping', this.expectChoice);
+      this.skip_choice();
     }
   }
 
@@ -371,6 +537,11 @@ class Learn extends Component {
       kind: choice.answerType,
       i: idx
     });
+  }
+
+  skip_choice() {
+    Timer.stop();
+    this.time_over();
   }
 
   time_over() {
@@ -427,35 +598,36 @@ class Learn extends Component {
   }
 
   // Answer has been submitted and checked: give feedback
-  choice_feedback(data) {
-    var points = 0,
+  choice_feedback(input) {
+    var points_earned = 0,
         speed_bonus = 0,
         time_spent = 0,
         id = this.state.data.boxes[this.state.i].learnable_id;
 
     // Score
-    switch (this.props.type) {
+    switch (this.props.session_type) {
       case "learn":
-        points = calculate_points_learn(data.score);
+        points_earned = calculate_points_learn(input.score);
         break;
 
       case "classic_review":
-        var thing = this.state.data.thingusers.find(item => item.learnable_id == id),
-            streak = 0;
+        if (id in this.state.data.progress_map) {
+          var progress = this.state.data.progress_map[id],
+              streak = 0;
 
-        if (thing) {
-          streak = thing.current_streak;
+          if (progress) {
+            streak = progress.current_streak;
 
-          if (data.score == 1) {
-            thing.current_streak++;
+            if (data.score == 1) {
+              progress.current_streak++;
+            }
           }
         }
-
-        points = calculate_points_learn(data.score);
+        points_earned = calculate_points_learn(input.score);
         if (streak) {
-          points = calculate_points_review(points, streak);
+          points_earned = calculate_points_review(points_earned, streak);
         }
-        if (data.score == 1 && time_spent) {
+        if (input.score == 1 && time_spent) {
           speed_bonus = calculate_speed_bonus(time_spent, this.template);
         }
         break;
@@ -463,14 +635,14 @@ class Learn extends Component {
       case "speed_review":
         time_spent = Timer.get_time();
 
-        if (data.score == 1) {
-          points = calculate_points_speed(time_spent);
+        if (input.score == 1) {
+          points_earned = calculate_points_speed(time_spent);
         } else if (this.state.hearts) {
           this.state.hearts -= 1;
         }
         break;
     }
-    this.props.sendresults && this.register(data, id, points, data.score, time_spent);
+    this.props.sendresults && this.register(input, id, points_earned, input.score, time_spent);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
@@ -478,13 +650,13 @@ class Learn extends Component {
       recap[id] = { count: 0, right: 0, pos: Object.keys(recap).length };
     }
     recap[id].count++;
-    if (data.score == 1) {
+    if (input.score == 1) {
       recap[id].right++;
     }
 
     // Display correction
-    if (this.props.type == "speed_review") {
-      this.show_correct(data);
+    if (this.props.session_type == "speed_review") {
+      this.show_correct(input);
 
       if (this.state.hearts == 0) {
         this.state.screen = "lost";
@@ -505,9 +677,9 @@ class Learn extends Component {
       this.expectChoice = false;
       this.choices = false;
       this.state.recap = recap;
-      this.state.points += points;
+      this.state.points += points_earned;
       this.state.num_scheduled += 1;
-      if (data.score == 1) {
+      if (input.score == 1) {
         this.state.num_scheduled_correct += 1;
       }
 
@@ -519,22 +691,23 @@ class Learn extends Component {
       this.setState({
         recap: recap,
         screen: "correction",
-        correct: data,
+        correct: input,
         debug_screen: false,
-        points: this.state.points + points,
+        points: this.state.points + points_earned,
         speed_bonus: this.state.speed_bonus + speed_bonus,
         num_scheduled: this.state.num_scheduled + 1,
-        num_scheduled_correct: this.state.num_scheduled_correct + (data.score == 1 ? 1 : 0)
+        num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0)
       });
       this.expectChoice = false;
       this.choices = false;
     }
   }
-  show_correct(data) {
-    if ("i" in data) {
-      $("#choice-" + (data.i + 1)).addClass(data.score == 1 ? "correct" : "incorrect");
+
+  show_correct(input) {
+    if ("i" in input) {
+      $("#choice-" + (input.i + 1)).addClass(input.score == 1 ? "correct" : "incorrect");
     }
-    if (data.score != 1) {
+    if (input.score != 1) {
       for (var j = 0; j < this.choices.length; j++) {
         if (this.choices[j].attributes.isValid) {
           $("#choice-" + (j + 1)).addClass("correct");
@@ -545,7 +718,7 @@ class Learn extends Component {
   }
 
   // Send progress to memrise
-  register(data, learnable_id, points, score, time_spent) {
+  register(input, learnable_id, points, score, time_spent) {
     $.ajax({
       url: "/ajax/register",
       method: "POST",
@@ -557,7 +730,7 @@ class Learn extends Component {
         box_template: this.template,
         course_id: window.course.id,
         fully_grow: false,
-        given_answer: data.value,
+        given_answer: input.value,
         learnable_id: learnable_id,
         points: points,
         score: score,
@@ -577,7 +750,7 @@ class Learn extends Component {
         bonus_points: this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
         course_id: window.course.id,
         learnable_ids: '["' + Object.keys(this.state.recap).join('","') + '"]',
-        session_type: this.props.type == "classic_review" ? "review" : this.props.type,
+        session_type: this.props.session_type == "classic_review" ? "review" : this.props.session_type,
         total_points: this.state.points
       }
     });
@@ -625,7 +798,7 @@ class Learn extends Component {
   //+--------------------------------------------------------
 
   setChoices(choices, type, is_strict) {
-    this.expectChoice = type; // numeric | text
+    this.expectChoice = type; // numeric | text | tapping
     this.choices = choices;
     this.is_strict = is_strict || 1;
   }
@@ -661,7 +834,7 @@ class Learn extends Component {
     }
 
     // Preview thing
-    if (this.props.thing) {
+    if (this.props.preview_thing_id) {
       if (this.state.debug_screen) {
         return this.screen();
       } else {
@@ -693,7 +866,7 @@ class Learn extends Component {
       "div",
       null,
       this.addStats(),
-      this.props.type == "speed_review" ? h(
+      this.props.session_type == "speed_review" ? h(
         "div",
         { "class": "speed_review" },
         h("div", { id: "speed_review-timer", key: Date.now() }),
@@ -713,7 +886,7 @@ class Learn extends Component {
     return h(
       "div",
       { "class": "progress-stats" },
-      this.props.type == "speed_review" && h(
+      this.props.session_type == "speed_review" && h(
         "div",
         { "class": "hearts-wrapper" },
         [1, 2, 3].map(i => h("span", { "class": "heart " + (i <= this.state.hearts ? "full" : "empty") }))
@@ -956,12 +1129,13 @@ class Learn extends Component {
       }
     }
 
-    if (this.props.type == "speed_review") {
+    if (this.props.session_type == "speed_review") {
       return this.render_tpl({
         template: "multiple_choice",
         num_choices: 4
       });
     }
+
     if (item.template == "sentinel") {
       if (screen.typing) {
         return this.render_tpl({
@@ -1004,7 +1178,68 @@ class Learn extends Component {
     }
   }
   get_screen(tpl) {
-    var id = this.props.thing || this.state.data.boxes[this.state.i].learnable_id;
+    /*
+    Returns the current screen data
+    Exemple:
+        {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chien ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du den Hund ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du den Hund ?"
+          ],
+          "choices": [
+            "Siehst du das Pferd ?",
+            "Siehst du die Katze ?",
+            "Siehst du die Tiere ?",
+            "Die Tiere sind süß",
+            "Der Hund ist süß",
+            "Gib der Katze des Essen",
+            "Gib dem Hund das Essen",
+            "Die Katze ist süß",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen der Tiere",
+            "Das Pferd ist süß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+    */
+    var id = this.props.preview_thing || this.state.data.boxes[this.state.i].learnable_id;
     return this.state.data.screen_template_map[id][tpl][0];
   }
 
@@ -1025,7 +1260,7 @@ class Learn extends Component {
   render_multiple_choice(setting) {
     return h(MultipleChoice, {
       item: this.get_screen("multiple_choice"),
-      nChoice: setting.nChoice || (this.props.type == "speed_review" ? 4 : 9),
+      nChoice: setting.nChoice || (this.props.session_type == "speed_review" ? 4 : 9),
       promptWith: setting.promptWith,
       setChoices: this.setChoices });
   }
@@ -1047,7 +1282,7 @@ class Learn extends Component {
   recap() {
     var items = [];
 
-    if (this.props.type == "preview") {
+    if (this.props.session_type == "preview") {
       for (var i = 0; i < this.state.data.boxes.length; i++) {
         var id = this.state.data.boxes[i].learnable_id;
 
@@ -1060,7 +1295,7 @@ class Learn extends Component {
         items[item.pos] = _extends({}, item, this.state.data.screen_template_map[id].presentation[0]);
       }
     }
-    return h(Recap, { items: Object.values(items), type: this.props.type });
+    return h(Recap, { items: Object.values(items), session_type: this.props.session_type });
   }
   markdown() {
     var data = window.markdown.decode(eval(this.state.data));
@@ -1534,7 +1769,7 @@ const Tapping = function (props) {
 
 const Recap = function (props) {
   var items = props.items,
-      type = props.type;
+      session_type = props.session_type;
 
   return h(
     "table",
@@ -1543,7 +1778,7 @@ const Recap = function (props) {
       var rate = "";
 
       // Compute success rate
-      if (type != "preview") {
+      if (session_type != "preview") {
         var successRate = item.right / item.count * 100,
             className = successRate == 100 ? "neverMissed" : successRate < 20 ? "oftenMissed" : successRate > 80 ? "rarelyMissed" : "sometimesMissed",
             rate = h(

@@ -558,7 +558,7 @@ class Memrise:
         """
         import json
 
-        with open(settings.ROOTDIR + '/tests/testset/learning_session_preview.json') as f:
+        with open(settings.ROOTDIR + '/tests/testset/learning_session_learn.json') as f:
             level = json.loads(f.read())
 
         return level
