@@ -1,1 +1,398 @@
-{"applied_filter":"recent","applied_category":null,"categories":[{"id":"632","name":"Animals","photo_url":"https://static.memrise.com/uploads/category_photos/animals.png","slug":"animals"},{"id":"624","name":"Biology","photo_url":"https://static.memrise.com/uploads/category_photos/biology.png","slug":"biology"},{"id":"638","name":"Capitals","photo_url":"https://static.memrise.com/uploads/category_photos/capitals.png","slug":"capitals"},{"id":"625","name":"Chemistry","photo_url":"https://static.memrise.com/uploads/category_photos/chemistry.png","slug":"chemistry"},{"id":"650","name":"Computers & Engineering","photo_url":"https://static.memrise.com/uploads/category_photos/computers-engineering.png","slug":"computers-engineering"},{"id":"627","name":"Economics","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"economics"},{"id":"629","name":"Engineering","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"engineering"},{"id":"6","name":"English","photo_url":"https://static.memrise.com/uploads/category_photos/en.png","slug":"english"},{"id":"621","name":"Fashion","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"fashion"},{"id":"564","name":"Flags","photo_url":"https://static.memrise.com/uploads/category_photos/flags.png","slug":"flags"},{"id":"2","name":"French","photo_url":"https://static.memrise.com/uploads/language_photos/DemoFlags-02_copy.png","slug":"french"},{"id":"4","name":"German","photo_url":"https://static.memrise.com/uploads/language_photos/german.png","slug":"german-2"},{"id":"631","name":"Health Sciences","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"health-sciences"},{"id":"636","name":"History","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"history"},{"id":"8","name":"Korean","photo_url":"https://static.memrise.com/uploads/category_photos/korean-flag.png","slug":"korean"},{"id":"273","name":"Latin","photo_url":"https://static.memrise.com/uploads/language_photos/latin.png","slug":"latin"},{"id":"618","name":"Literature","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"literature"},{"id":"639","name":"Maps","photo_url":"https://static.memrise.com/uploads/category_photos/maps.png","slug":"maps"},{"id":"628","name":"Maths","photo_url":"https://static.memrise.com/uploads/category_photos/maths.png","slug":"maths"},{"id":"647","name":"Medicine & Healthcare","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"medicine-healthcare"},{"id":"763","name":"Miscellaneous","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"miscellaneous"},{"id":"722","name":"Morse Code","photo_url":"https://static.memrise.com/uploads/category_photos/morse-code.png","slug":"morse-code"},{"id":"616","name":"Music","photo_url":"https://static.memrise.com/uploads/category_photos/music.png","slug":"music"},{"id":"656","name":"Other Standardized Tests","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"other-standardized-tests"},{"id":"640","name":"Places","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"places"},{"id":"760","name":"Psychology","photo_url":"https://static.memrise.com/uploads/category_photos/psychology.png","slug":"psychology"},{"id":"10","name":"Russian","photo_url":"https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png","slug":"russian"},{"id":"661","name":"Science and Nature","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"science-and-nature"},{"id":"662","name":"Sports and Leisure","photo_url":"https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png","slug":"sports-and-leisure"},{"id":"771","name":"Yoga","photo_url":"https://static.memrise.com/uploads/category_photos/yoga.png","slug":"yoga"}],"courses":[{"id":"6698294","name":"German vocab","slug":"german-vocab","is_official":false,"photo_url":"https://static.memrise.com/garden/img/placeholders/course-4.png","next_session":{"single_continue":{"session_type":"learn","is_pro_mode":false,"url":"/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93","unlocked_state":"always_unlocked","badge_count":null},"mode_selector":{"learn":{"is_pro_mode":false,"url":"/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"classic_review":{"is_pro_mode":false,"url":"/aprender/review?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"speed_review":{"is_pro_mode":false,"url":"/aprender/speed?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"difficult_words":{"is_pro_mode":true,"url":"/aprender/difficult?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93","badge_count":4,"is_enabled":true,"unlocked_state":"locked"},"listening_skills":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"},"video":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"}}},"goal":null,"progress":{"id":6698294,"name":"German vocab","size":274,"due_review":0,"learned":50,"ignored":0,"difficult":4,"completed_this_session":false,"percent_complete":18}},{"id":"6687517","name":"German vocab","slug":"german-vocab","is_official":false,"photo_url":"https://static.memrise.com/garden/img/placeholders/course-2.png","next_session":{"single_continue":{"session_type":"speed_review","is_pro_mode":false,"url":"/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7","unlocked_state":"always_unlocked","badge_count":null},"mode_selector":{"learn":{"is_pro_mode":false,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"always_unlocked"},"classic_review":{"is_pro_mode":false,"url":"/aprender/review?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7","badge_count":274,"is_enabled":true,"unlocked_state":"always_unlocked"},"speed_review":{"is_pro_mode":false,"url":"/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"difficult_words":{"is_pro_mode":true,"url":"/aprender/difficult?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7","badge_count":68,"is_enabled":true,"unlocked_state":"locked"},"listening_skills":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"},"video":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"}}},"goal":null,"progress":{"id":6687517,"name":"German vocab","size":274,"due_review":274,"learned":274,"ignored":0,"difficult":68,"completed_this_session":false,"percent_complete":100}},{"id":"6660056","name":"German vocab","slug":"german-vocab","is_official":false,"photo_url":"https://static.memrise.com/garden/img/placeholders/course-1.png","next_session":{"single_continue":{"session_type":"classic_review","is_pro_mode":false,"url":"/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f","unlocked_state":"always_unlocked","badge_count":null},"mode_selector":{"learn":{"is_pro_mode":false,"url":"/aprender/learn?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"classic_review":{"is_pro_mode":false,"url":"/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f","badge_count":850,"is_enabled":true,"unlocked_state":"always_unlocked"},"speed_review":{"is_pro_mode":false,"url":"/aprender/speed?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f","badge_count":0,"is_enabled":true,"unlocked_state":"always_unlocked"},"difficult_words":{"is_pro_mode":true,"url":"/aprender/difficult?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f","badge_count":89,"is_enabled":true,"unlocked_state":"locked"},"listening_skills":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"},"video":{"is_pro_mode":true,"url":null,"badge_count":0,"is_enabled":false,"unlocked_state":"locked"}}},"goal":null,"progress":{"id":6660056,"name":"German vocab","size":1003,"due_review":850,"learned":850,"ignored":0,"difficult":89,"completed_this_session":false,"percent_complete":84}},{"id":"6689548","name":"Random stuff","slug":"random-stuff","is_official":false,"photo_url":"https://static.memrise.com/garden/img/placeholders/course-3.png","next_session":{"single_continue":{"session_type":"learn","is_pro_mode":false,"url":"/aprender/learn?course_id=6689548?recommendation_id=8965747b-c4cf-4de9-b5e7-aea56a1ac479","unlocked_state":"always_unlocked","badge_count":null},"mode_selector":{}},"goal":null,"progress":{"id":6689548,"name":"Random stuff","size":20,"due_review":0,"learned":0,"ignored":0,"difficult":0,"completed_this_session":false,"percent_complete":0}}],"has_more_pages":true}
+{
+    "applied_filter": "recent",
+    "applied_category": null,
+    "categories": [{
+        "id": "632",
+        "name": "Animals",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/animals.png",
+        "slug": "animals"
+    }, {
+        "id": "624",
+        "name": "Biology",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/biology.png",
+        "slug": "biology"
+    }, {
+        "id": "638",
+        "name": "Capitals",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/capitals.png",
+        "slug": "capitals"
+    }, {
+        "id": "625",
+        "name": "Chemistry",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/chemistry.png",
+        "slug": "chemistry"
+    }, {
+        "id": "650",
+        "name": "Computers & Engineering",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/computers-engineering.png",
+        "slug": "computers-engineering"
+    }, {
+        "id": "627",
+        "name": "Economics",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "economics"
+    }, {
+        "id": "629",
+        "name": "Engineering",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "engineering"
+    }, {
+        "id": "6",
+        "name": "English",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/en.png",
+        "slug": "english"
+    }, {
+        "id": "621",
+        "name": "Fashion",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "fashion"
+    }, {
+        "id": "564",
+        "name": "Flags",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/flags.png",
+        "slug": "flags"
+    }, {
+        "id": "2",
+        "name": "French",
+        "photo_url": "https://static.memrise.com/uploads/language_photos/DemoFlags-02_copy.png",
+        "slug": "french"
+    }, {
+        "id": "4",
+        "name": "German",
+        "photo_url": "https://static.memrise.com/uploads/language_photos/german.png",
+        "slug": "german-2"
+    }, {
+        "id": "631",
+        "name": "Health Sciences",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "health-sciences"
+    }, {
+        "id": "636",
+        "name": "History",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "history"
+    }, {
+        "id": "8",
+        "name": "Korean",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/korean-flag.png",
+        "slug": "korean"
+    }, {
+        "id": "273",
+        "name": "Latin",
+        "photo_url": "https://static.memrise.com/uploads/language_photos/latin.png",
+        "slug": "latin"
+    }, {
+        "id": "618",
+        "name": "Literature",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "literature"
+    }, {
+        "id": "639",
+        "name": "Maps",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/maps.png",
+        "slug": "maps"
+    }, {
+        "id": "628",
+        "name": "Maths",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/maths.png",
+        "slug": "maths"
+    }, {
+        "id": "647",
+        "name": "Medicine & Healthcare",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "medicine-healthcare"
+    }, {
+        "id": "763",
+        "name": "Miscellaneous",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "miscellaneous"
+    }, {
+        "id": "722",
+        "name": "Morse Code",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/morse-code.png",
+        "slug": "morse-code"
+    }, {
+        "id": "616",
+        "name": "Music",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/music.png",
+        "slug": "music"
+    }, {
+        "id": "656",
+        "name": "Other Standardized Tests",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "other-standardized-tests"
+    }, {
+        "id": "640",
+        "name": "Places",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "places"
+    }, {
+        "id": "760",
+        "name": "Psychology",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/psychology.png",
+        "slug": "psychology"
+    }, {
+        "id": "10",
+        "name": "Russian",
+        "photo_url": "https://static.memrise.com/uploads/language_photos/DemoFlags-20_copy.png",
+        "slug": "russian"
+    }, {
+        "id": "661",
+        "name": "Science and Nature",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "science-and-nature"
+    }, {
+        "id": "662",
+        "name": "Sports and Leisure",
+        "photo_url": "https://static.memrise.com/garden/img/flag-circles/small/placeholder@2x.png",
+        "slug": "sports-and-leisure"
+    }, {
+        "id": "771",
+        "name": "Yoga",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/yoga.png",
+        "slug": "yoga"
+    }],
+    "courses": [{
+        "id": "6698294",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-4.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "learn",
+                "is_pro_mode": false,
+                "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 4,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6698294,
+            "name": "German vocab",
+            "size": 274,
+            "due_review": 0,
+            "learned": 50,
+            "ignored": 0,
+            "difficult": 4,
+            "completed_this_session": false,
+            "percent_complete": 18
+        }
+    }, {
+        "id": "6687517",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "speed_review",
+                "is_pro_mode": false,
+                "url": "/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 274,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 68,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6687517,
+            "name": "German vocab",
+            "size": 274,
+            "due_review": 274,
+            "learned": 274,
+            "ignored": 0,
+            "difficult": 68,
+            "completed_this_session": false,
+            "percent_complete": 100
+        }
+    }, {
+        "id": "6660056",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-1.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "classic_review",
+                "is_pro_mode": false,
+                "url": "/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/learn?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 850,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 89,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6660056,
+            "name": "German vocab",
+            "size": 1003,
+            "due_review": 850,
+            "learned": 850,
+            "ignored": 0,
+            "difficult": 89,
+            "completed_this_session": false,
+            "percent_complete": 84
+        }
+    }, {
+        "id": "6689548",
+        "name": "Random stuff",
+        "slug": "random-stuff",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-3.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "learn",
+                "is_pro_mode": false,
+                "url": "/aprender/learn?course_id=6689548?recommendation_id=8965747b-c4cf-4de9-b5e7-aea56a1ac479",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {}
+        },
+        "goal": null,
+        "progress": {
+            "id": 6689548,
+            "name": "Random stuff",
+            "size": 20,
+            "due_review": 0,
+            "learned": 0,
+            "ignored": 0,
+            "difficult": 0,
+            "completed_this_session": false,
+            "percent_complete": 0
+        }
+    }],
+    "has_more_pages": true
+}
