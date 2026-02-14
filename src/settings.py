@@ -5,7 +5,12 @@ ROOTDIR = path.dirname(path.realpath(__file__))
 AUTORELOAD = bool(getenv('AUTORELOAD', None))
 DEBUG = bool(getenv('DEBUG', False))
 IS_TEST = getenv('WEBPY_ENV', '') == 'test'
+
 DATABASE_URL = getenv('DATABASE_URL', '')
+
+MEMRISE_BACKEND = 'memrise.backends.api.ApiMemrise'
+if True or IS_TEST:
+    MEMRISE_BACKEND = 'memrise.backends.dummy.DummyMemrise'
 
 # Import global web object to hold web.py config
 import web

@@ -5,6 +5,8 @@ import json
 from cache import mc
 from bs4 import BeautifulSoup, Tag
 from variables import categories_code, levels
+from .base import Memrise
+
 
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
 USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
@@ -12,7 +14,8 @@ USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, li
 def get_time():
     return '%d' % (time.time() * 1000)
 
-class Memrise:
+
+class ApiMemrise(Memrise):
 
     #+-----------------------------------------------------
     #| AUTH
@@ -441,14 +444,14 @@ class Memrise:
         if item != None:
             text = item.find(text=True, recursive=False)
             if text:
-                res = re.search("^(\d+) ?/ ?(\d+)", text.strip())
+                res = re.search(r"^(\d+) ?/ ?(\d+)", text.strip())
                 if res:
                     stats["learned"]      = int(res.group(1))
                     stats["num_things"]   = int(res.group(2))
 
             text = item.find(attrs={"class":"pull-right"})
             if text:
-                res = re.search("^(\d+)", text.text.strip())
+                res = re.search(r"^(\d+)", text.text.strip())
                 if res:
                     stats["ignored"]     = int(res.group(1))
                     stats["num_things"] += int(res.group(1))
@@ -463,7 +466,7 @@ class Memrise:
         # Review
         item = div.find('a',{'class':'blue'})
         if item != None:
-            res = re.search("\((\d+)\)", item.text)
+            res = re.search(r"\((\d+)\)", item.text)
             if res:
                 stats["review"] = int(res.group(1))
 
@@ -561,7 +564,7 @@ class Memrise:
             @param integer lvl
             @return string - Retrieved JSON
         """
-        pattern = re.search("/course/(\d+)/", urlCourse)
+        pattern = re.search(r"/course/(\d+)/", urlCourse)
         if pattern:
             idCourse = pattern.group(1)
         else:
@@ -701,7 +704,7 @@ class Memrise:
                             continue
 
                         text   = child.text.strip()
-                        result = re.search('([0-9,]+)([\n\w ]*)', text)
+                        result = re.search(r'([0-9,]+)([\n\w ]*)', text)
                         if result:
                             tab = result.group(2).strip().lower()
 
@@ -734,7 +737,7 @@ class Memrise:
                             if not isinstance(child, Tag):
                                 continue
 
-                            result = re.search('\(([0-9,]+)\)', child.text)
+                            result = re.search(r'\(([0-9,]+)\)', child.text)
                             if result:
                                 tab = child.attrs['href'].strip('/').split('/')[-1]
                                 user["stats"][tab] = result.group(1)
@@ -961,7 +964,7 @@ class Memrise:
                 "cell_type": "column",
                 "thing_id": idThing
             },
-            files={"f": (file.filename, file.value)},  # dict of {'filename': file-like-objects}
+            files={"f": (file.filename, file.value)},  # files={FILENAME: file-like-object}
             cookies={"sessionid_2": sessionid, "csrftoken": csrftoken},
             headers={
                 "Origin": "https://app.memrise.com",
@@ -1093,5 +1096,3 @@ class Memrise:
         data['levels'] = levels
 
         return data
-
-memrise = Memrise()

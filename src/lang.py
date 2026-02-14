@@ -1,6 +1,6 @@
-import importlib
 from os.path import isfile
 from settings import DEFAULT_LANG, ROOTDIR
+from utils.module_loading import load_source
 import web
 import logging
 
@@ -25,16 +25,6 @@ class Lang(object):
         """
         return ROOTDIR + '/locales/' + lang + '.py'
 
-    def load_source(self, modname, filename):
-        """
-        Replaces imp.load_source with importlib logic
-        """
-        loader = importlib.machinery.SourceFileLoader(modname, filename)
-        spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)
-        module = importlib.util.module_from_spec(spec)
-        loader.exec_module(module)
-        return module
-
     def get_module(self, lang=None, retry=True):
         if lang is None:
             lang = DEFAULT_LANG
@@ -44,7 +34,7 @@ class Lang(object):
 
             path = self.get_locale_path(lang)
             if isfile(path):
-                self.locales[lang] = self.load_source(lang, path)
+                self.locales[lang] = load_source(lang, path)
 
             # Session.lang contains a language that doesn't have
             # an associated file in locales/ (not supposed to happen)

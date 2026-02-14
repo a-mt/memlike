@@ -7,23 +7,15 @@ import web
 from cache import mc
 from bs4 import BeautifulSoup, Tag
 from variables import categories_code, levels
+from .base import Memrise
 
 
-def get_time():
-    return '%d' % (time.time() * 1000)
-
-class Memrise:
+class DummyMemrise(Memrise):
 
     #+-----------------------------------------------------
     #| AUTH
     #+-----------------------------------------------------
     def login(self, username, password):
-        """
-            Authenticate with the given username and password
-
-            @param string username
-            @param string password
-        """
         data = {'username': username} # json['user']
 
         data["sessionid"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
@@ -32,11 +24,7 @@ class Memrise:
 
     def whoami(self, sessionid):
         """
-            Retrieve the username and photo of current user
-
-            Testset: settings.html
-            @param string sessionid
-            @return dict - {sessionid, username, photo}
+        Testset: settings.html
         """
         return {
             "sessionid": sessionid,
@@ -46,11 +34,7 @@ class Memrise:
 
     def whatistudy(self, sessionid):
         """
-            Retrieve the list of courses of current user
-
-            Testset: dashboard_courses.json
-            @param string sessionid
-            @return dict
+        Testset: dashboard_courses.json
         """
         page1 = [{
             "id": "6698294",
@@ -128,12 +112,7 @@ class Memrise:
 
     def my_leaderboard(self, sessionid, period):
         """
-            Retrieve the learderboard of the current user (50 first)
-
-            Testset: profile_leaderboard.html
-            @param string sessionid
-            @param string period - month, week, alltime
-            @return dict
+        Testset: profile_leaderboard.html
         """
         return {
             "rows": [{
@@ -204,18 +183,6 @@ class Memrise:
         }
 
     def track_progress(self, path, data, sessionid, csrftoken, referer):
-        """
-            TODO
-            Post play progress
-
-            Testset: progress_register_{request,response}.json
-            @param string path - register | session_end
-            @param dict data
-            @param string sessionid
-            @param string csrftoken
-            @param string referer
-            @return dict
-        """
         return {}
 
     #+-----------------------------------------------------
@@ -223,14 +190,7 @@ class Memrise:
     #+-----------------------------------------------------
     def courses(self, lang, page=1, cat="", query=""):
         """
-            Retrieve the list of courses for the given language, category, query string and page
-
-            Testset: browse_cat-languages_scat-french_page-2.json
-            @param string lang
-            @param integer[optional] page - [1]
-            @param string[optional] cat   - [""]
-            @param string[optional] query - [""]
-            @return string                - Retrieved JSON
+        Testset: browse_cat-languages_scat-french_page-2.json
         """
         return {
             "page": 1,
@@ -242,16 +202,6 @@ class Memrise:
     #| CATEGORIES
     #+-----------------------------------------------------
     def categories(self, lang):
-        """
-            Retrieve  the list of categories that have courses for the given language
-
-            Testset: courses.html
-            @param string lang
-            @return dict - {<idCourse>: True}
-        """
-
-        # For users that speak [LANG]
-        # List of categories that do have associated courses (catId: true)
         return {
             "569": True,
             "578": True,
@@ -425,11 +375,7 @@ class Memrise:
     #+-----------------------------------------------------
     def course(self, id, sessionid=False, csrftoken=None):
         """
-            Retrieve the info about a course
-
-            Testset: course-6698294.html
-            @param integer id
-            @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
+        Testset: course-6698294.html
         """
         course = {
             "id"         : id,
@@ -486,11 +432,6 @@ class Memrise:
         return course
 
     def _course_progress(self):
-        """
-            Retrieve the given user progress for a given course
-
-            @return dict - {ignored, learned, percent_complete, review_num_things}
-        """
         stats = {
             "ignored": 0,
             "learned": 0,
@@ -535,15 +476,6 @@ class Memrise:
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None, retry=True):
-        """
-            Retrieve the list of items of a level (wont work for multimedia)
-
-            @param integer idCourse
-            @param integer|string lvl - index | "all"
-            @param string slug
-            @param string session
-            @return dict
-        """
         import json
 
         with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
@@ -553,12 +485,7 @@ class Memrise:
 
     def level_multimedia(self, urlCourse, lvl):
         """
-            Retrieve the content of a multimedia level
-
-            Testset: level_multimedia.html
-            @param string urlCourse - ex "/course/43238/durham-university-medicine-year-one/"
-            @param integer lvl
-            @return string
+        Testset: level_multimedia.html
         """
         return r'"img:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20genre\u000A\u000AEn allemand, il existe trois genres: féminin, masculin et neutre. L\u0027article placé devant le nom (le, la) indique le genre:\u000A\u000A• *der* devant les noms **masculins**\u000A\u000A• *die* devant les noms **féminins**\u000A\u000A• *das* devant les noms **neutres**\u000A\u000ATout nom doit être appris avec son article, le genre d\u0027un mot en allemand n\u0027étant pas toujours le même qu\u0027en français: *der Wagen* (la voiture), *die Katze* (le chat), *das Buch* (le livre).\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000APour l\u0027article indéfini (un, une):\u000A\u000A• *ein* devant les noms **masculins ou neutres**\u000A\u000A• *eine* devant les noms **féminins**\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20pluriel\u000A\u000AL\u0027article défini du pluriel (les) est toujours *die*.\u000A\u000AL\u0027article indéfini du pluriel (des) n\u0027existe pas.\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000AEn plus de l\u0027article, les noms prennent également les marques du pluriel:\u000A\u000A• \u002De: *der Hund* / *die Hunde* (le chien)\u000A\u000A•  ̈\u002De: *der Zug* / *die Züge* (le train)\u000A\u000A• \u002Der: *das Kind* / *die Kinder* (l\u0027enfant)\u000A\u000A•  ̈\u002Der: *der Wald* / *die Wälder* (la forêt)\u000A\u000A• \u002Ds: *das Radio* / *die Radios* (la radio)\u000A\u000A• \u002Dn: *der Junge* / *die Jungen* (le garçon)\u000A\u000A• \u002Den: *das Bett* / *die Betten* (le lit)\u000A\u000A•  ̈: *die Tochter* / *die Töchter* (la fille de)\u000A\u000ATout comme pour le genre, un nom doit donc être appris avec son pluriel.\u000A\u000A͏\u000A\u000ACertains noms n\u0027existent qu\u0027au pluriel: *die Leute* (les gens), *die Ferien* (les vacances).\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20cas\u000A\u000ALe groupe nominal (article + nom) change de forme selon qu\u0027il est\u000A\u000A• s͟u͟j͟e͟t͟ ͟(͟n͟o͟m͟i͟n͟a͟t͟i͟f͟):\u000A\u000A  ⇒ _**Der** Hund is süß_ (le chien est mignon)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟D͟i͟r͟e͟c͟t͟ ͟(͟a͟c͟c͟u͟s͟a͟t͟i͟f͟) \u002D qui:\u000A\u000A  ⇒ *Siehst du **den** Hund ?* (vois\u002Dtu le chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟I͟n͟d͟i͟r͟e͟c͟t͟ ͟o͟u͟ ͟S͟e͟c͟o͟n͟d͟ ͟(͟d͟a͟t͟i͟f͟) \u002D à qui:\u000A\u000A  ⇒ *Gib **dem** Hund das Essen* (donne le repas au chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟u͟ ͟N͟o͟m͟ ͟(͟g͟é͟n͟i͟t͟i͟f͟) \u002D de qui:\u000A\u000A  ⇒ *Es ist das Essen **des** Hund**es** * (c\u0027est le repas du chien)\u000A\u000ANotons qu\u0027en Allemand, le COI précède le COD.\u000A\u000A͏\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/ec63a4f901c54e9c089dd0466c187da7/raw/4f9fcac662effec634ca0cd2b2137847fdd64388/dec_article_defini.svg\u000A\u000AOn décline *diese* (ce), *jede* (chaque) et *welche* (quel) comme *der*/*die*/*das*\u000A\u000A  ⇒ *Ich gebe dies**em** Hund das Essen* (je donne le repas à ce chien).\u000A\u000AOn décline *alle* (tous) et *keine* (aucun) comme *die* (les).\u000A\u000A  ⇒ *Ich gebe all**en** Tiere**n** das Essen* (je donne le repas à tous les animaux)\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/bfd71cb08b8b399065e35ca9fb713dc2/raw/ca47bd26088cb620f5b4da25f115c6d4ec9a434d/dec_article_indefini.svg\u000A\u000AOn décline *mein* (mon), *dein* (ton) et *sein* (son) comme *ein*/*eine*.\u000A\u000A  ⇒ *Ich gebe mein**er** Katze das Essen* (je donne le repas à mon chat) \u002D *Katze* est féminin\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DCas%20particuliers\u000A\u000ACertaines prépositions forcent la forme du groupe du nominal:\u000A\u000A• **accusatif** après les prépositions *durch*, *für*, *gegen*, *ohne*, *um* et dans les compléments de lieu répondant à la question *wohin ?* (directionnel).\u000A\u000A• **datif** après les prépositions *aus*, *bei*, *mit*, *nach*, *seit*, *von*, *zu* et dans les compléments de lieu répondant à la question *wo ?* (location): *Ich spiele **mit** d**em** Hund* (je joue avec le chien).\u000A\u000A• **génitif** après les prépositions *wegen*, *trozt*, *während*, *statt*.\u000A\u000ANB Un chapitre est dédié aux prépositions plus loin"'
 
@@ -567,12 +494,7 @@ class Memrise:
     #+-----------------------------------------------------
     def course_leaderboard(self, idCourse, period):
         """
-            Retrieve the learderboard of a course (50 first)
-
-            Testset: course_leaderboard.json
-            @param integer idCourse
-            @param string period - month, week, alltime
-            @return dict
+        Testset: course_leaderboard.json
         """
         return {
             "rows": [{
@@ -590,15 +512,9 @@ class Memrise:
     #+-----------------------------------------------------
     def user(self, username, force=False):
         """
-            Retrieve the info about a user
-
-            Testset: user_courses.html
-            @param string username
-            @param boolean[optional] force - [false] Get data from Memrise even if already cached
-            @return dict - {username, photo, rank, stats}
+        Testset: user_courses.html
+        URL: https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
         """
-
-        # https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
         user = {
             "username": "Decks",
             "photo"   : "https://static.memrise.com/img/400sqf/from/uploads/profiles/45119304_190219_0936_02.png",
@@ -635,13 +551,7 @@ class Memrise:
 
     def _user_mempals(self, mempals, username, page=1):
         """
-            Retrieve the list of followers of a user or followed users
-
-            Testset: user_mempals_followers.html
-            @param string mempals - followers  following
-            @param string username
-            @param integer page - [1]
-            @return dict - {page, lastpage, has_next, users}
+        Testset: user_mempals_followers.html
         """
         page = int(page)
         data  = {
@@ -693,14 +603,6 @@ class Memrise:
         return self.user_courses("learning", username)
 
     def user_courses(self, tab, username):
-        """
-            Retrieve the courses of an user
-
-            @param string tab - teaching | learning
-            @param string username
-            @return dict - {content, nbCourse}
-        """
-
         # https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0
         with open(settings.ROOTDIR + "/tests/testset/user_courses_teaching_min.html") as f:
             text = f.read()
@@ -737,10 +639,6 @@ class Memrise:
         }
 
     def level_thing_add(self, sessionid, csrftoken, referer, idLevel, data):
-        data = '''{
-            columns: {"1":"a","2":"b","4":"plural"},
-            level_id: "16258912"
-        }'''
         return {
             "success": True,
             "thing": {
@@ -799,59 +697,23 @@ class Memrise:
         }
 
     def level_thing_edit(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
-        data = '''{
-            thing_id: "477757811",
-            cell_id: "2",
-            cell_type: "column",
-            new_val: "b2",
-        }'''
         return {
             "success": None,
         }
 
     def level_thing_upload(self, sessionid, csrftoken, referer, idThing, cellId, file):
-        data = '''
-        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
-        Content-Disposition: form-data; name="thing_id"
-
-        477757811
-        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
-        Content-Disposition: form-data; name="cell_id"
-
-        3
-        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
-        Content-Disposition: form-data; name="cell_type"
-
-        column
-        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
-        Content-Disposition: form-data; name="csrfmiddlewaretoken"
-
-        YsnZH2DPNXxtderlM6Zmgi7keR0tTyCg73uladFBfgta2FkniqAf4bd8Kv1hb3dh
-        ------geckoformboundary57905344b557dcb9d0c3e6a18ccb7ce4
-        Content-Disposition: form-data; name="f"; filename="a1.mp3"
-        '''
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n    <div class=\"dropdown-row\" data-file-id=\"1\">\n        <i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i>\n        <a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/477757811_260208_1842_02.mp3\"></a>\n    </div>\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
     def level_thing_upload_remove(self, sessionid, csrftoken, referer, idThing, cellId, fileId):
-        data = '''
-        thing_id    "477757811"
-        column_key  "3"
-        file_id "1"
-        cell_type   "column"
-        '''
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
     def level_thing_remove(self, sessionid, csrftoken, referer, idLevel, idThing):
-        data = '''
-        level_id    "16258912"
-        thing_id    "477757811"
-        '''
         return {
             "success": True,
         }
@@ -946,11 +808,6 @@ class Memrise:
         }
 
     def level_thing_alt_edit(self, sessionid, csrftoken, referer, idThing, alts, column_key):
-        data = '''
-        thing_id    "477757876"
-        column_key  "2"
-        alts    '["a2","a3"]'
-        '''
         return {
             "success": None,
         }
@@ -962,7 +819,9 @@ class Memrise:
         }
 
     def course_edit_get(self, sessionid, idCourse, slugCourse):
-        # response = read("tests/testset/course_edit.html")
+        """
+        Testset: tests/testset/course_edit.html
+        """
         return {
             "csrftoken": "",
             "referer": "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/",
@@ -977,5 +836,3 @@ class Memrise:
                 {"id": "16258912", "pool": "7758772", "name": "New level"},
             ]
         }
-
-memrise = Memrise()
