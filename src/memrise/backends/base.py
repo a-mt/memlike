@@ -104,12 +104,12 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, id, sessionid=False, csrftoken=None):
+    def course(self, idCourse, sessionid=False, csrftoken=None):
         """
             Retrieve the info about a course
 
             Testset: course-6698294.html
-            @param integer id
+            @param integer idCourse
             @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
         """
         raise NotImplementedError("subclasses of Memrise must provide a course() method")
@@ -117,7 +117,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None, retry=True):
+    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None):
         """
             Retrieve the list of items of a level (wont work for multimedia)
 

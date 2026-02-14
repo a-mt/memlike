@@ -373,12 +373,12 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, id, sessionid=False, csrftoken=None):
+    def course(self, idCourse, sessionid=False, csrftoken=None):
         """
         Testset: course-6698294.html
         """
         course = {
-            "id"         : id,
+            "id"         : idCourse,
             "title"      : "Grammaire • Le groupe nominal",
             "url"        : "/community/course/6698294/german-vocab/",
             "author"     : "4v15721",
@@ -475,7 +475,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None, retry=True):
+    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None):
         import json
 
         with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
@@ -544,12 +544,12 @@ class DummyMemrise(Memrise):
         return user
 
     def user_followers(self, username, page=1):
-        return self._user_mempals("followers", username, page)
+        return self.user_mempals("followers", username, page)
 
     def user_following(self, username, page=1):
-        return self._user_mempals("following", username, page)
+        return self.user_mempals("following", username, page)
 
-    def _user_mempals(self, mempals, username, page=1):
+    def user_mempals(self, tab, username, page=1):
         """
         Testset: user_mempals_followers.html
         """
