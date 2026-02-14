@@ -1,15 +1,16 @@
+import settings
 import web
+from os import getenv
 from memrise import memrise
-from _globals import GLOBALS
 from variables import levels
 from requests.exceptions import HTTPError
 
 urls = (
-  "/([^/]+)/courses/(teaching)/?", "user",
-  "/([^/]+)/courses/(learning)/?", "user",
-  "/([^/]+)/mempals/(followers)/?", "user",
-  "/([^/]+)/mempals/(following)/?", "user",
-  "/(.*)", "user"
+  r"/([^/]+)/courses/(teaching)/?", "user",
+  r"/([^/]+)/courses/(learning)/?", "user",
+  r"/([^/]+)/mempals/(followers)/?", "user",
+  r"/([^/]+)/mempals/(following)/?", "user",
+  r"/(.*)", "user"
 )
 
 class user:
@@ -20,8 +21,8 @@ class user:
             user = memrise.user(username)
         except HTTPError as e:
             print(e)
-            return GLOBALS['prender']._404()
+            return web.config.template.prender._404()
 
-        return GLOBALS['render'].user(user, tab, levels)
+        return web.config.template.render.user(user, tab, levels)
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=False)

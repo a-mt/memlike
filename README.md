@@ -56,4 +56,47 @@ If you need to update files in static/js6:
 * Compile JS6 to JS (with watch)
 
       npm install
-      npm run build
+      npm run build-dev
+
+## Architecture
+
+### Backend
+
+Location: src
+
+The backend is developed with web.py  
+([website](https://webpy.org/) / [github](https://github.com/webpy/webpy) / [readthedocs](https://webpy.readthedocs.io/en/latest/))
+
+It roughly follows the folder organization from [web2py](https://www.web2py.com/books/default/chapter/29/04/the-core#Applications)
+
+### Front
+
+Location: static
+
+```
+js6: origin react files
+js: transpiled/served js files
+img: served images
+css: served css files
+```
+
+## Deploy
+
+See [docs](https://webpy.readthedocs.io/en/latest/deploying.html#nginx-gunicorn)
+
+## Tests
+
+### Backend
+
+```
+pip install tox
+tox
+tox -e flake8
+tox -e test
+
+# python -m tox --recreate -e test
+# python -m pytest
+
+# pip install pytest; cd src; export WEBPY_ENV=test DEFAULT_LANG=english
+# python -m pytest tests/test_lang.py
+```

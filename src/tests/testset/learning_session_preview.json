@@ -1,0 +1,5872 @@
+{
+  "learnables": [
+    {
+      "id": 11866753532162,
+      "learning_element": "Der Hund ist süß",
+      "definition_element": "Le chien est mignon",
+      "learning_element_tokens": [
+        "Der",
+        "Hund",
+        "ist",
+        "süß"
+      ],
+      "definition_element_tokens": [
+        "Le",
+        "chien",
+        "est",
+        "mignon"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Der Hund ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le chien est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chien est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Der Hund ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Der Hund ist süß"
+          ],
+          "choices": [
+            "Der weiße Hund ist süß",
+            "Siehst du den Hund ?",
+            "Du suchst deinen Hund",
+            "Ich spiele mit dem Hund",
+            "Siehst du den weißen Hund ?",
+            "Der Hund läuft um den Tisch",
+            "Wir suchen unseren Hund",
+            "Sie suchen ihren Hund",
+            "Er sucht seinen Hund",
+            "Ihr sucht eueren Hund",
+            "Ich suche meinen Hund",
+            "Sie sucht ihren Hund"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Der Hund ist süß",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le chien est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Le chien est mignon"
+          ],
+          "choices": [
+            "Vois-tu le chien ?",
+            "Ils cherchent leur chien",
+            "C'est le repas du chien",
+            "Vois-tu le chien blanc ?",
+            "Je joue avec le chien",
+            "Le plus grand chien est blanc",
+            "Je prend le plus grand chien",
+            "Le chien blanc est mignon",
+            "C'est le repas du chien blanc",
+            "J'aime bien ce chien",
+            "Je donne le repas au chien",
+            "Je donne le repas au chien blanc"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chien est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Der Hund ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Der Hund ist süß",
+            "der hund ist suss",
+            "der hund ist suß",
+            "Der Hund ist suss",
+            "der hund ist süß",
+            "Der Hund ist suß"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chien est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Der Hund ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Der",
+              "Hund",
+              "ist",
+              "süß"
+            ],
+            [
+              "der",
+              "hund",
+              "ist",
+              "süß"
+            ],
+            [
+              "der",
+              "hund",
+              "ist",
+              "suss"
+            ],
+            [
+              "der",
+              "hund",
+              "ist",
+              "süß"
+            ]
+          ],
+          "choices": [
+            "Der",
+            "weiße",
+            "Hund",
+            "ist",
+            "süß",
+            "Siehst",
+            "du",
+            "den",
+            "Hund",
+            "?",
+            "Du",
+            "suchst",
+            "deinen",
+            "Hund",
+            "Ich",
+            "spiele",
+            "mit",
+            "dem",
+            "Hund",
+            "Siehst",
+            "du",
+            "den",
+            "weißen",
+            "Hund",
+            "?",
+            "Der",
+            "Hund",
+            "läuft",
+            "um",
+            "den",
+            "Tisch",
+            "Wir",
+            "suchen",
+            "unseren",
+            "Hund",
+            "Sie",
+            "suchen",
+            "ihren",
+            "Hund",
+            "Er",
+            "sucht",
+            "seinen",
+            "Hund",
+            "Ihr",
+            "sucht",
+            "eueren",
+            "Hund",
+            "Ich",
+            "suche",
+            "meinen",
+            "Hund",
+            "Sie",
+            "sucht",
+            "ihren",
+            "Hund"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874527609090,
+      "learning_element": "Siehst du den Hund ?",
+      "definition_element": "Vois-tu le chien ?",
+      "learning_element_tokens": [
+        "Siehst",
+        "du",
+        "den",
+        "Hund"
+      ],
+      "definition_element_tokens": [
+        "Vois",
+        "tu",
+        "le",
+        "chien"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du den Hund ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le chien ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chien ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du den Hund ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du den Hund ?"
+          ],
+          "choices": [
+            "Siehst du das Pferd ?",
+            "Siehst du die Katze ?",
+            "Siehst du die Tiere ?",
+            "Die Tiere sind süß",
+            "Der Hund ist süß",
+            "Gib der Katze des Essen",
+            "Gib dem Hund das Essen",
+            "Die Katze ist süß",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen der Tiere",
+            "Das Pferd ist süß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Siehst du den Hund ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le chien ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Vois-tu le chien ?"
+          ],
+          "choices": [
+            "Vois-tu le chat ?",
+            "Vois-tu l'éléphant ?",
+            "Vois-tu le cheval ?",
+            "Vois-tu le chat blanc ?",
+            "Vois-tu le cheval blanc ?",
+            "Vois-tu le chien blanc ?",
+            "Vois-tu les éléphants ?",
+            "Vois-tu les animaux ?",
+            "Vois-tu tous les animaux sauvages ?",
+            "Tu te lèves",
+            "Il vous demande (vous: politesse)",
+            "Je vais en Allemagne"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chien ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du den Hund ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du den Hund ?",
+            "Siehst du den Hund?",
+            "siehst du den hund"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chien ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du den Hund ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Siehst",
+              "du",
+              "den",
+              "Hund",
+              "?"
+            ],
+            [
+              "siehst",
+              "du",
+              "den",
+              "hund"
+            ],
+            [
+              "siehst",
+              "du",
+              "den",
+              "hund"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "das",
+            "Pferd",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Katze",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Tiere",
+            "?",
+            "Die",
+            "Tiere",
+            "sind",
+            "süß",
+            "Der",
+            "Hund",
+            "ist",
+            "süß",
+            "Gib",
+            "der",
+            "Katze",
+            "des",
+            "Essen",
+            "Gib",
+            "dem",
+            "Hund",
+            "das",
+            "Essen",
+            "Die",
+            "Katze",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Das",
+            "Pferd",
+            "ist",
+            "süß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874502443266,
+      "learning_element": "Ich gebe dem Hund das Essen",
+      "definition_element": "Je donne le repas au chien",
+      "learning_element_tokens": [
+        "Ich",
+        "gebe",
+        "dem",
+        "Hund",
+        "das",
+        "Essen"
+      ],
+      "definition_element_tokens": [
+        "Je",
+        "donne",
+        "le",
+        "repas",
+        "au",
+        "chien"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Hund das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au chien",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Hund das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe dem Hund das Essen"
+          ],
+          "choices": [
+            "Gib der Katze des Essen",
+            "Der Hund ist süß",
+            "Die Katze ist süß",
+            "Es ist das Essen der Tiere",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen des Pferdes",
+            "Gib den Tieren das Essen",
+            "Gib dem Pferd das Essen",
+            "Das Pferd ist süß",
+            "Es ist das Essen der Katze",
+            "Die Tiere sind süß",
+            "Siehst du den Hund ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Ich gebe dem Hund das Essen",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au chien",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Je donne le repas au chien"
+          ],
+          "choices": [
+            "Je te donne plus de gateau qu'à elle",
+            "Je donne le repas au cheval",
+            "Je donne le repas aux animaux",
+            "Je donne le repas au chat",
+            "Je donne le repas au cheval blanc",
+            "Je donne le repas au chien blanc",
+            "Je donne le repas au chat blanc",
+            "Je donne le repas à tous les animaux sauvages",
+            "Ce dont nous avons le moins besoin",
+            "Plus je mange, plus je grossis",
+            "Celui-là et ceux-là",
+            "Ce dont nous avons le plus besoin"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Hund das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe dem Hund das Essen",
+            "ich gebe dem hund das essen"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Hund das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Ich",
+              "gebe",
+              "dem",
+              "Hund",
+              "das",
+              "Essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "dem",
+              "hund",
+              "das",
+              "essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "dem",
+              "hund",
+              "das",
+              "essen"
+            ]
+          ],
+          "choices": [
+            "Gib",
+            "der",
+            "Katze",
+            "des",
+            "Essen",
+            "Der",
+            "Hund",
+            "ist",
+            "süß",
+            "Die",
+            "Katze",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Gib",
+            "den",
+            "Tieren",
+            "das",
+            "Essen",
+            "Gib",
+            "dem",
+            "Pferd",
+            "das",
+            "Essen",
+            "Das",
+            "Pferd",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Die",
+            "Tiere",
+            "sind",
+            "süß",
+            "Siehst",
+            "du",
+            "den",
+            "Hund",
+            "?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874502836482,
+      "learning_element": "Es ist das Essen des Hundes",
+      "definition_element": "C'est le repas du chien",
+      "learning_element_tokens": [
+        "Es",
+        "ist",
+        "das",
+        "Essen",
+        "des",
+        "Hundes"
+      ],
+      "definition_element_tokens": [
+        "C",
+        "est",
+        "le",
+        "repas",
+        "du",
+        "chien"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Hundes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du chien",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Hundes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen des Hundes"
+          ],
+          "choices": [
+            "Es ist in dir",
+            "Es ist in ihr",
+            "Es ist in ihm",
+            "Es ist in mir",
+            "Es ist für dich",
+            "Es ist das Essen der Katze",
+            "Es ist in uns",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen der Tiere",
+            "Es ist das Essen der weißen Katze",
+            "Es ist das Essen des weißen Pferdes",
+            "Es ist das Essen des weißen Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Es ist das Essen des Hundes",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du chien",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "C'est le repas du chien"
+          ],
+          "choices": [
+            "Le chien est mignon",
+            "Le cheval est mignon",
+            "Le chat blanc est mignon",
+            "Le chien blanc est mignon",
+            "Le cheval blanc est mignon",
+            "C'est le repas du chat",
+            "C'est en lui",
+            "C'est le repas du cheval",
+            "C'est le repas du cheval blanc",
+            "C'est le repas des animaux",
+            "C'est en elle",
+            "C'est le repas de tous les animaux sauvages"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Hundes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen des Hundes",
+            "es ist das essen des hundes"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chien",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Hundes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Es",
+              "ist",
+              "das",
+              "Essen",
+              "des",
+              "Hundes"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "des",
+              "hundes"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "des",
+              "hundes"
+            ]
+          ],
+          "choices": [
+            "Es",
+            "ist",
+            "in",
+            "dir",
+            "Es",
+            "ist",
+            "in",
+            "ihr",
+            "Es",
+            "ist",
+            "in",
+            "ihm",
+            "Es",
+            "ist",
+            "in",
+            "mir",
+            "Es",
+            "ist",
+            "für",
+            "dich",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Es",
+            "ist",
+            "in",
+            "uns",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "weißen",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "weißen",
+            "Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "der Hund"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874516205826,
+      "learning_element": "Das Pferd ist süß",
+      "definition_element": "Le cheval est mignon",
+      "learning_element_tokens": [
+        "Das",
+        "Pferd",
+        "ist",
+        "süß"
+      ],
+      "definition_element_tokens": [
+        "Le",
+        "cheval",
+        "est",
+        "mignon"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Das Pferd ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le cheval est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le cheval est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Das Pferd ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Das Pferd ist süß"
+          ],
+          "choices": [
+            "Siehst du das Pferd ?",
+            "Das weiße Pferd is süß",
+            "Siehst du das weiße Pferd ?",
+            "Ich gebe dem Pferd das Essen",
+            "Es ist das Essen des Pferdes",
+            "Ich gebe das Essen dem weißen Pferd",
+            "Es ist das Essen des weißen Pferdes",
+            "Es ist das Essen der Katze",
+            "Ich gebe den Tieren das Essen",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen der Tiere",
+            "Es ist das Essen aller wilden Tiere"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Das Pferd ist süß",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le cheval est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Le cheval est mignon"
+          ],
+          "choices": [
+            "Vois-tu le cheval ?",
+            "C'est le repas du cheval",
+            "Vois-tu le cheval blanc ?",
+            "Je donne le repas au cheval",
+            "C'est le repas du cheval blanc",
+            "Je donne le repas au cheval blanc",
+            "Le cheval blanc est mignon",
+            "Ils cherchent leur chien",
+            "Vois-tu le chat ?",
+            "C'est le repas du chat",
+            "C'est le repas du chien",
+            "Nous cherchons notre chien"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le cheval est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Das Pferd ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Das Pferd ist süß",
+            "das pferd ist süß",
+            "das pferd ist suss",
+            "das pferd ist suß",
+            "Das Pferd ist suß",
+            "Das Pferd ist suss"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le cheval est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Das Pferd ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Das",
+              "Pferd",
+              "ist",
+              "süß"
+            ],
+            [
+              "das",
+              "pferd",
+              "ist",
+              "süß"
+            ],
+            [
+              "das",
+              "pferd",
+              "ist",
+              "süß"
+            ],
+            [
+              "das",
+              "pferd",
+              "ist",
+              "suss"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "das",
+            "Pferd",
+            "?",
+            "Das",
+            "weiße",
+            "Pferd",
+            "is",
+            "süß",
+            "Siehst",
+            "du",
+            "das",
+            "weiße",
+            "Pferd",
+            "?",
+            "Ich",
+            "gebe",
+            "dem",
+            "Pferd",
+            "das",
+            "Essen",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Ich",
+            "gebe",
+            "das",
+            "Essen",
+            "dem",
+            "weißen",
+            "Pferd",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "weißen",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Ich",
+            "gebe",
+            "den",
+            "Tieren",
+            "das",
+            "Essen",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "aller",
+            "wilden",
+            "Tiere"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874516664578,
+      "learning_element": "Siehst du das Pferd ?",
+      "definition_element": "Vois-tu le cheval ?",
+      "learning_element_tokens": [
+        "Siehst",
+        "du",
+        "das",
+        "Pferd"
+      ],
+      "definition_element_tokens": [
+        "Vois",
+        "tu",
+        "le",
+        "cheval"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du das Pferd ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le cheval ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le cheval ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du das Pferd ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du das Pferd ?"
+          ],
+          "choices": [
+            "Siehst du die Katze ?",
+            "Siehst du die Tiere ?",
+            "Siehst du den Hund ?",
+            "Siehst du das weiße Pferd ?",
+            "Siehst du die weiße Katze ?",
+            "Siehst du den weißen Hund ?",
+            "Sprechen Sie Deutsch ?",
+            "Sie suchen ihren Hund",
+            "Er fragt Sie",
+            "Sie erinnert sich",
+            "Siesht du alle wilden Tiere ?",
+            "Sie fragt sie"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Siehst du das Pferd ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le cheval ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Vois-tu le cheval ?"
+          ],
+          "choices": [
+            "Vois-tu le chat ?",
+            "Vois-tu le chien ?",
+            "Vois-tu le cheval blanc ?",
+            "Vois-tu le chat blanc ?",
+            "Vois-tu le chien blanc ?",
+            "Vois-tu les animaux ?",
+            "Vois-tu tous les animaux sauvages ?",
+            "Tu te lèves",
+            "Tu te souviens",
+            "Vous nous demandez (pluriel)",
+            "Parlez-vous allemand ? (politesse)",
+            "Il vous demande (politesse)"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le cheval ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du das Pferd ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du das Pferd ?",
+            "Siehst du das Pferd?",
+            "siehst du das pferd"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le cheval ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du das Pferd ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Siehst",
+              "du",
+              "das",
+              "Pferd",
+              "?"
+            ],
+            [
+              "siehst",
+              "du",
+              "das",
+              "pferd"
+            ],
+            [
+              "siehst",
+              "du",
+              "das",
+              "pferd"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "die",
+            "Katze",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Tiere",
+            "?",
+            "Siehst",
+            "du",
+            "den",
+            "Hund",
+            "?",
+            "Siehst",
+            "du",
+            "das",
+            "weiße",
+            "Pferd",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "weiße",
+            "Katze",
+            "?",
+            "Siehst",
+            "du",
+            "den",
+            "weißen",
+            "Hund",
+            "?",
+            "Sprechen",
+            "Sie",
+            "Deutsch",
+            "?",
+            "Sie",
+            "suchen",
+            "ihren",
+            "Hund",
+            "Er",
+            "fragt",
+            "Sie",
+            "Sie",
+            "erinnert",
+            "sich",
+            "Siesht",
+            "du",
+            "alle",
+            "wilden",
+            "Tiere",
+            "?",
+            "Sie",
+            "fragt",
+            "sie"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874517057794,
+      "learning_element": "Ich gebe dem Pferd das Essen",
+      "definition_element": "Je donne le repas au cheval",
+      "learning_element_tokens": [
+        "Ich",
+        "gebe",
+        "dem",
+        "Pferd",
+        "das",
+        "Essen"
+      ],
+      "definition_element_tokens": [
+        "Je",
+        "donne",
+        "le",
+        "repas",
+        "au",
+        "cheval"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Pferd das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au cheval",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Pferd das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe dem Pferd das Essen"
+          ],
+          "choices": [
+            "Gib dem Hund das Essen",
+            "Gib der Katze des Essen",
+            "Der Hund ist süß",
+            "Die Katze ist süß",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen der Tiere",
+            "Gib den Tieren das Essen",
+            "Das Pferd ist süß",
+            "Es ist das Essen der Katze",
+            "Die Tiere sind süß",
+            "Siehst du den Hund ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Ich gebe dem Pferd das Essen",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au cheval",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Je donne le repas au cheval"
+          ],
+          "choices": [
+            "Je donne le repas au chien",
+            "Donne le repas au chat",
+            "Donne le repas aux animaux",
+            "Vois-tu le chien ?",
+            "Le chien est mignon",
+            "Vois-tu le cheval ?",
+            "Les animaux sont mignons",
+            "Le chat est mignon",
+            "C'est le repas du cheval",
+            "C'est le repas du chien",
+            "C'est le repas des animaux",
+            "Vois-tu le chat ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Pferd das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe dem Pferd das Essen",
+            "ich gebe dem pferd das essen"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe dem Pferd das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Ich",
+              "gebe",
+              "dem",
+              "Pferd",
+              "das",
+              "Essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "dem",
+              "pferd",
+              "das",
+              "essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "dem",
+              "pferd",
+              "das",
+              "essen"
+            ]
+          ],
+          "choices": [
+            "Gib",
+            "dem",
+            "Hund",
+            "das",
+            "Essen",
+            "Gib",
+            "der",
+            "Katze",
+            "des",
+            "Essen",
+            "Der",
+            "Hund",
+            "ist",
+            "süß",
+            "Die",
+            "Katze",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Gib",
+            "den",
+            "Tieren",
+            "das",
+            "Essen",
+            "Das",
+            "Pferd",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Die",
+            "Tiere",
+            "sind",
+            "süß",
+            "Siehst",
+            "du",
+            "den",
+            "Hund",
+            "?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874517319938,
+      "learning_element": "Es ist das Essen des Pferdes",
+      "definition_element": "C'est le repas du cheval",
+      "learning_element_tokens": [
+        "Es",
+        "ist",
+        "das",
+        "Essen",
+        "des",
+        "Pferdes"
+      ],
+      "definition_element_tokens": [
+        "C",
+        "est",
+        "le",
+        "repas",
+        "du",
+        "cheval"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Pferdes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du cheval",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Pferdes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen des Pferdes"
+          ],
+          "choices": [
+            "Es ist in dir",
+            "Es ist in ihr",
+            "Es ist in ihm",
+            "Es ist in mir",
+            "Es ist das Essen der Katze",
+            "Es ist für dich",
+            "Es ist in uns",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen der Tiere",
+            "Es ist das Essen der weißen Katze",
+            "Es ist in euch",
+            "Es ist das Essen des weißen Pferdes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Es ist das Essen des Pferdes",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du cheval",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "C'est le repas du cheval"
+          ],
+          "choices": [
+            "Le cheval est mignon",
+            "Le chien est mignon",
+            "Le chat blanc est mignon",
+            "Le chien blanc est mignon",
+            "Le cheval blanc est mignon",
+            "C'est le repas du chat",
+            "C'est le repas du chien",
+            "C'est en lui",
+            "C'est le repas des animaux",
+            "C'est en elle",
+            "C'est le repas du cheval blanc",
+            "C'est le repas du chat blanc"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Pferdes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen des Pferdes",
+            "es ist das essen des pferdes"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du cheval",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen des Pferdes",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Es",
+              "ist",
+              "das",
+              "Essen",
+              "des",
+              "Pferdes"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "des",
+              "pferdes"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "des",
+              "pferdes"
+            ]
+          ],
+          "choices": [
+            "Es",
+            "ist",
+            "in",
+            "dir",
+            "Es",
+            "ist",
+            "in",
+            "ihr",
+            "Es",
+            "ist",
+            "in",
+            "ihm",
+            "Es",
+            "ist",
+            "in",
+            "mir",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Es",
+            "ist",
+            "für",
+            "dich",
+            "Es",
+            "ist",
+            "in",
+            "uns",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Es",
+            "ist",
+            "in",
+            "euch",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "weißen",
+            "Pferdes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "das Pferd"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874521186562,
+      "learning_element": "Die Katze ist süß",
+      "definition_element": "Le chat est mignon",
+      "learning_element_tokens": [
+        "Die",
+        "Katze",
+        "ist",
+        "süß"
+      ],
+      "definition_element_tokens": [
+        "Le",
+        "chat",
+        "est",
+        "mignon"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Katze ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le chat est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chat est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Katze ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Die Katze ist süß"
+          ],
+          "choices": [
+            "Siehst du die Katze ?",
+            "Die weiße Katze ist süß",
+            "Siehst du die weiße Katze ?",
+            "Es ist das Essen der Katze",
+            "Es ist das Essen der weißen Katze",
+            "Ich gebe der Katze des Essen",
+            "Ich gebe das Essen der weißen Katze",
+            "Siehst du die Tiere ?",
+            "Die nächsten Toiletten",
+            "Die Tiere sind süß",
+            "Du stehst auf",
+            "Das Pferd ist süß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Die Katze ist süß",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Le chat est mignon",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Le chat est mignon"
+          ],
+          "choices": [
+            "Vois-tu le chat ?",
+            "C'est le repas du chat",
+            "Le chat blanc est mignon",
+            "Vois-tu le chat blanc ?",
+            "Je donne le repas au chat",
+            "C'est le repas du chat blanc",
+            "Je donne le repas au chat blanc",
+            "Le cheval est mignon",
+            "Je donne le repas au cheval",
+            "Le plus grand est moins cher",
+            "Ils cherchent leur chien",
+            "Vois-tu le cheval ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chat est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Katze ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Die Katze ist süß",
+            "die katze ist suß",
+            "die katze ist süß",
+            "die katze ist suss",
+            "Die Katze ist suss",
+            "Die Katze ist suß"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Le chat est mignon",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Katze ist süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Die",
+              "Katze",
+              "ist",
+              "süß"
+            ],
+            [
+              "die",
+              "katze",
+              "ist",
+              "süß"
+            ],
+            [
+              "die",
+              "katze",
+              "ist",
+              "süß"
+            ],
+            [
+              "die",
+              "katze",
+              "ist",
+              "suss"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "die",
+            "Katze",
+            "?",
+            "Die",
+            "weiße",
+            "Katze",
+            "ist",
+            "süß",
+            "Siehst",
+            "du",
+            "die",
+            "weiße",
+            "Katze",
+            "?",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Ich",
+            "gebe",
+            "der",
+            "Katze",
+            "des",
+            "Essen",
+            "Ich",
+            "gebe",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Siehst",
+            "du",
+            "die",
+            "Tiere",
+            "?",
+            "Die",
+            "nächsten",
+            "Toiletten",
+            "Die",
+            "Tiere",
+            "sind",
+            "süß",
+            "Du",
+            "stehst",
+            "auf",
+            "Das",
+            "Pferd",
+            "ist",
+            "süß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874521710850,
+      "learning_element": "Siehst du die Katze ?",
+      "definition_element": "Vois-tu le chat ?",
+      "learning_element_tokens": [
+        "Siehst",
+        "du",
+        "die",
+        "Katze"
+      ],
+      "definition_element_tokens": [
+        "Vois",
+        "tu",
+        "le",
+        "chat"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Katze ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le chat ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chat ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Katze ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du die Katze ?"
+          ],
+          "choices": [
+            "Siehst du das Pferd ?",
+            "Der Hund ist süß",
+            "Gib dem Hund das Essen",
+            "Das Pferd ist süß",
+            "Gib dem Pferd das Essen",
+            "Die Katze ist süß",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen des Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Siehst du die Katze ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu le chat ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Vois-tu le chat ?"
+          ],
+          "choices": [
+            "Vois-tu le cheval ?",
+            "Le chien est mignon",
+            "Donne le repas au chien",
+            "C'est le repas du chien",
+            "C'est le repas du cheval",
+            "Le cheval est mignon",
+            "Donne le repas au cheval"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chat ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Katze ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du die Katze ?",
+            "siehst du die katze",
+            "Siehst du die Katze?"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu le chat ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Katze ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Siehst",
+              "du",
+              "die",
+              "Katze",
+              "?"
+            ],
+            [
+              "siehst",
+              "du",
+              "die",
+              "katze"
+            ],
+            [
+              "siehst",
+              "du",
+              "die",
+              "katze"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "das",
+            "Pferd",
+            "?",
+            "Der",
+            "Hund",
+            "ist",
+            "süß",
+            "Gib",
+            "dem",
+            "Hund",
+            "das",
+            "Essen",
+            "Das",
+            "Pferd",
+            "ist",
+            "süß",
+            "Gib",
+            "dem",
+            "Pferd",
+            "das",
+            "Essen",
+            "Die",
+            "Katze",
+            "ist",
+            "süß",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874522235138,
+      "learning_element": "Ich gebe der Katze das Essen",
+      "definition_element": "Je donne le repas au chat",
+      "learning_element_tokens": [
+        "Ich",
+        "gebe",
+        "der",
+        "Katze",
+        "das",
+        "Essen"
+      ],
+      "definition_element_tokens": [
+        "Je",
+        "donne",
+        "le",
+        "repas",
+        "au",
+        "chat"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe der Katze das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au chat",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe der Katze das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe der Katze das Essen"
+          ],
+          "choices": [
+            "Ich gebe den Tieren das Essen",
+            "Ich gebe dem Pferd das Essen",
+            "Ich gebe dem Hund das Essen",
+            "Ich gebe dem weißen Hund das Essen",
+            "Ich gebe allen wilden Tieren das Essen",
+            "Ich gebe das Essen der weißen Katze",
+            "Ich gebe das Essen dem weißen Pferd",
+            "Ich gehe schnell nach Hause",
+            "Ich gehe zu meinem Onkel",
+            "Ich gehe in meine Wohnung",
+            "Ich will nicht gegen dich spielen",
+            "Ich mache mehr"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Ich gebe der Katze das Essen",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas au chat",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Je donne le repas au chat"
+          ],
+          "choices": [
+            "Je donne le repas au chien",
+            "Donne le repas au cheval",
+            "Donne le repas aux animaux",
+            "Vois-tu le chien ?",
+            "Le chien est mignon",
+            "Vois-tu le cheval ?",
+            "Les animaux sont mignons",
+            "Le chat est mignon",
+            "C'est le repas du cheval",
+            "C'est le repas du chien",
+            "C'est le repas des animaux",
+            "Vois-tu les animaux ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe der Katze das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe der Katze das Essen",
+            "ich gebe der katze das essen"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas au chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe der Katze das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Ich",
+              "gebe",
+              "der",
+              "Katze",
+              "das",
+              "Essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "der",
+              "katze",
+              "das",
+              "essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "der",
+              "katze",
+              "das",
+              "essen"
+            ]
+          ],
+          "choices": [
+            "Ich",
+            "gebe",
+            "den",
+            "Tieren",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "Pferd",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "Hund",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "weißen",
+            "Hund",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "allen",
+            "wilden",
+            "Tieren",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Ich",
+            "gebe",
+            "das",
+            "Essen",
+            "dem",
+            "weißen",
+            "Pferd",
+            "Ich",
+            "gehe",
+            "schnell",
+            "nach",
+            "Hause",
+            "Ich",
+            "gehe",
+            "zu",
+            "meinem",
+            "Onkel",
+            "Ich",
+            "gehe",
+            "in",
+            "meine",
+            "Wohnung",
+            "Ich",
+            "will",
+            "nicht",
+            "gegen",
+            "dich",
+            "spielen",
+            "Ich",
+            "mache",
+            "mehr"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874522300674,
+      "learning_element": "Es ist das Essen der Katze",
+      "definition_element": "C'est le repas du chat",
+      "learning_element_tokens": [
+        "Es",
+        "ist",
+        "das",
+        "Essen",
+        "der",
+        "Katze"
+      ],
+      "definition_element_tokens": [
+        "C",
+        "est",
+        "le",
+        "repas",
+        "du",
+        "chat"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Katze",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du chat",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Katze",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen der Katze"
+          ],
+          "choices": [
+            "Es ist in dir",
+            "Es ist in ihr",
+            "Es ist höher",
+            "Es ist das Essen des Hundes",
+            "Es ist das Essen des Pferdes",
+            "Es ist das Essen der Tiere",
+            "Es ist in ihm",
+            "Es ist in mir",
+            "Es ist niemand da",
+            "Es ist für dich",
+            "Es ist in uns",
+            "Es ist immer schwieriger"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Es ist das Essen der Katze",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas du chat",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "C'est le repas du chat"
+          ],
+          "choices": [
+            "Le chien est mignon",
+            "Le chat est mignon",
+            "Le cheval est mignon",
+            "C'est le repas du chien",
+            "C'est le repas du cheval",
+            "Donne le repas au chien",
+            "Vois-tu le chat ?",
+            "Vois-tu le cheval ?",
+            "Donne le repas au cheval"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Katze",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen der Katze",
+            "es ist das essen der katze"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas du chat",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Katze",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Es",
+              "ist",
+              "das",
+              "Essen",
+              "der",
+              "Katze"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "der",
+              "katze"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "der",
+              "katze"
+            ]
+          ],
+          "choices": [
+            "Es",
+            "ist",
+            "in",
+            "dir",
+            "Es",
+            "ist",
+            "in",
+            "ihr",
+            "Es",
+            "ist",
+            "höher",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Pferdes",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "in",
+            "ihm",
+            "Es",
+            "ist",
+            "in",
+            "mir",
+            "Es",
+            "ist",
+            "niemand",
+            "da",
+            "Es",
+            "ist",
+            "für",
+            "dich",
+            "Es",
+            "ist",
+            "in",
+            "uns",
+            "Es",
+            "ist",
+            "immer",
+            "schwieriger"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Katze"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874524332290,
+      "learning_element": "Die Tiere sind süß",
+      "definition_element": "Les animaux sont mignons",
+      "learning_element_tokens": [
+        "Die",
+        "Tiere",
+        "sind",
+        "süß"
+      ],
+      "definition_element_tokens": [
+        "Les",
+        "animaux",
+        "sont",
+        "mignons"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Tiere sind süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Les animaux sont mignons",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Les animaux sont mignons",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Tiere sind süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Die Tiere sind süß"
+          ],
+          "choices": [
+            "Siehst du die Tiere ?",
+            "Ich gebe den Tieren das Essen",
+            "Ich mag diesen Hund",
+            "Siehst du alle wilden Tiere ?",
+            "Siehst du die Katze ?",
+            "Es ist das Essen der Tiere",
+            "Es ist immer schwieriger",
+            "Es ist das Essen aller wilden Tiere",
+            "Ich gebe dir mehr Kuchen als ihr",
+            "Ich gebe allen wilden Tieren das Essen",
+            "Du stehst auf",
+            "Siehst du den Elefanten ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Die Tiere sind süß",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Les animaux sont mignons",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Les animaux sont mignons"
+          ],
+          "choices": [
+            "Donne le repas au chien",
+            "Donne le repas au chat",
+            "Le chien est mignon",
+            "Le chat est mignon",
+            "Vois-tu le cheval ?",
+            "C'est le repas du chien",
+            "C'est le repas du cheval",
+            "Donne le repas au cheval",
+            "Vois-tu le chat ?",
+            "C'est le repas du chat",
+            "Le cheval est mignon"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Les animaux sont mignons",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Tiere sind süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Die Tiere sind süß",
+            "Die Tiere sind suß",
+            "die tiere sind suss",
+            "die tiere sind suß",
+            "Die Tiere sind suss",
+            "die tiere sind süß"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Les animaux sont mignons",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Die Tiere sind süß",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Die",
+              "Tiere",
+              "sind",
+              "süß"
+            ],
+            [
+              "die",
+              "tiere",
+              "sind",
+              "süß"
+            ],
+            [
+              "die",
+              "tiere",
+              "sind",
+              "süß"
+            ],
+            [
+              "die",
+              "tiere",
+              "sind",
+              "suss"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "die",
+            "Tiere",
+            "?",
+            "Ich",
+            "gebe",
+            "den",
+            "Tieren",
+            "das",
+            "Essen",
+            "Ich",
+            "mag",
+            "diesen",
+            "Hund",
+            "Siehst",
+            "du",
+            "alle",
+            "wilden",
+            "Tiere",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Katze",
+            "?",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Tiere",
+            "Es",
+            "ist",
+            "immer",
+            "schwieriger",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "aller",
+            "wilden",
+            "Tiere",
+            "Ich",
+            "gebe",
+            "dir",
+            "mehr",
+            "Kuchen",
+            "als",
+            "ihr",
+            "Ich",
+            "gebe",
+            "allen",
+            "wilden",
+            "Tieren",
+            "das",
+            "Essen",
+            "Du",
+            "stehst",
+            "auf",
+            "Siehst",
+            "du",
+            "den",
+            "Elefanten",
+            "?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874525249794,
+      "learning_element": "Siehst du die Tiere ?",
+      "definition_element": "Vois-tu les animaux ?",
+      "learning_element_tokens": [
+        "Siehst",
+        "du",
+        "die",
+        "Tiere"
+      ],
+      "definition_element_tokens": [
+        "Vois",
+        "tu",
+        "les",
+        "animaux"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Tiere ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu les animaux ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu les animaux ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Tiere ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du die Tiere ?"
+          ],
+          "choices": [
+            "Siehst du das Pferd ?",
+            "Siehst du die Katze ?",
+            "Siehst du den Hund ?",
+            "Siehst du den Elefanten ?",
+            "Siehst du die Elefanten ?",
+            "Siehst du den weißen Hund ?",
+            "Siehst du das weiße Pferd ?",
+            "Siehst du die weiße Katze ?",
+            "Siehst du alle wilden Tiere ?",
+            "Sprechen Sie Deutsch ?",
+            "Sie suchen ihren Hund",
+            "Was sie am liebsten isst"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Siehst du die Tiere ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Vois-tu les animaux ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Vois-tu les animaux ?"
+          ],
+          "choices": [
+            "Vois-tu le cheval ?",
+            "Vois-tu le chat ?",
+            "Les animaux sont mignons",
+            "Le chien est mignon",
+            "Donne le repas au chat",
+            "Donne le repas au chien",
+            "C'est le repas du cheval",
+            "Le chat est mignon",
+            "C'est le repas du chien",
+            "Le cheval est mignon",
+            "C'est le repas du chat",
+            "Donne le repas au cheval"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu les animaux ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Tiere ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Siehst du die Tiere ?",
+            "siehst du die tiere",
+            "Siehst du die Tiere?"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Vois-tu les animaux ?",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Siehst du die Tiere ?",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Siehst",
+              "du",
+              "die",
+              "Tiere",
+              "?"
+            ],
+            [
+              "siehst",
+              "du",
+              "die",
+              "tiere"
+            ],
+            [
+              "siehst",
+              "du",
+              "die",
+              "tiere"
+            ]
+          ],
+          "choices": [
+            "Siehst",
+            "du",
+            "das",
+            "Pferd",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Katze",
+            "?",
+            "Siehst",
+            "du",
+            "den",
+            "Hund",
+            "?",
+            "Siehst",
+            "du",
+            "den",
+            "Elefanten",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "Elefanten",
+            "?",
+            "Siehst",
+            "du",
+            "den",
+            "weißen",
+            "Hund",
+            "?",
+            "Siehst",
+            "du",
+            "das",
+            "weiße",
+            "Pferd",
+            "?",
+            "Siehst",
+            "du",
+            "die",
+            "weiße",
+            "Katze",
+            "?",
+            "Siehst",
+            "du",
+            "alle",
+            "wilden",
+            "Tiere",
+            "?",
+            "Sprechen",
+            "Sie",
+            "Deutsch",
+            "?",
+            "Sie",
+            "suchen",
+            "ihren",
+            "Hund",
+            "Was",
+            "sie",
+            "am",
+            "liebsten",
+            "isst"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874525708546,
+      "learning_element": "Ich gebe den Tieren das Essen",
+      "definition_element": "Je donne le repas aux animaux",
+      "learning_element_tokens": [
+        "Ich",
+        "gebe",
+        "den",
+        "Tieren",
+        "das",
+        "Essen"
+      ],
+      "definition_element_tokens": [
+        "Je",
+        "donne",
+        "le",
+        "repas",
+        "aux",
+        "animaux"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe den Tieren das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas aux animaux",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas aux animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe den Tieren das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe den Tieren das Essen"
+          ],
+          "choices": [
+            "Ich gebe dem Pferd das Essen",
+            "Ich gebe dem weißen Hund das Essen",
+            "Ich gebe dem Hund das Essen",
+            "Ich gebe der Katze das Essen",
+            "Ich gebe dem weißen Pferd das Essen",
+            "Ich gebe allen wilden Tieren das Essen",
+            "Ich gebe der weißen Katze das Essen",
+            "Ich gebe dir mehr Kuchen als ihr",
+            "Ich gehe nach Deutschland",
+            "Ich gehe zu meinem Onkel",
+            "Ich gehe in meine Wohnung",
+            "Ich will nicht gegen dich spielen"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Ich gebe den Tieren das Essen",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "Je donne le repas aux animaux",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "Je donne le repas aux animaux"
+          ],
+          "choices": [
+            "Je donne le repas au chien",
+            "Donne le repas au chat",
+            "Je donne le repas au cheval",
+            "Vois-tu le chien ?",
+            "Le chien est mignon",
+            "Vois-tu le cheval ?",
+            "Les animaux sont mignons",
+            "Le chat est mignon",
+            "C'est le repas du chien",
+            "C'est le repas du cheval",
+            "C'est le repas des animaux",
+            "Vois-tu les animaux ?"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas aux animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe den Tieren das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Ich gebe den Tieren das Essen",
+            "ich gebe den tieren das essen"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "Je donne le repas aux animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Ich gebe den Tieren das Essen",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Ich",
+              "gebe",
+              "den",
+              "Tieren",
+              "das",
+              "Essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "den",
+              "tieren",
+              "das",
+              "essen"
+            ],
+            [
+              "ich",
+              "gebe",
+              "den",
+              "tieren",
+              "das",
+              "essen"
+            ]
+          ],
+          "choices": [
+            "Ich",
+            "gebe",
+            "dem",
+            "Pferd",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "weißen",
+            "Hund",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "Hund",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "der",
+            "Katze",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dem",
+            "weißen",
+            "Pferd",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "allen",
+            "wilden",
+            "Tieren",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "der",
+            "weißen",
+            "Katze",
+            "das",
+            "Essen",
+            "Ich",
+            "gebe",
+            "dir",
+            "mehr",
+            "Kuchen",
+            "als",
+            "ihr",
+            "Ich",
+            "gehe",
+            "nach",
+            "Deutschland",
+            "Ich",
+            "gehe",
+            "zu",
+            "meinem",
+            "Onkel",
+            "Ich",
+            "gehe",
+            "in",
+            "meine",
+            "Wohnung",
+            "Ich",
+            "will",
+            "nicht",
+            "gegen",
+            "dich",
+            "spielen"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    },
+    {
+      "id": 11874526232834,
+      "learning_element": "Es ist das Essen der Tiere",
+      "definition_element": "C'est le repas des animaux",
+      "learning_element_tokens": [
+        "Es",
+        "ist",
+        "das",
+        "Essen",
+        "der",
+        "Tiere"
+      ],
+      "definition_element_tokens": [
+        "C",
+        "est",
+        "le",
+        "repas",
+        "des",
+        "animaux"
+      ],
+      "difficulty": "unknown",
+      "item_type": "word",
+      "screens": {
+        "1": {
+          "item": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Tiere",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "definition": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas des animaux",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "visible_info": [],
+          "hidden_info": [],
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "audio": null,
+          "markdown": false,
+          "video": null,
+          "template": "presentation",
+          "nugget": null
+        },
+        "2": {
+          "template": "multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas des animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Tiere",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen der Tiere"
+          ],
+          "choices": [
+            "Es ist in dir",
+            "Es ist in ihr",
+            "Es ist in uns",
+            "Es ist in ihm",
+            "Es ist in mir",
+            "Es ist das Essen der weißen Katze",
+            "Es ist das Essen der Katze",
+            "Es ist für dich",
+            "Es ist niemand da",
+            "Es ist höher",
+            "Es ist in euch",
+            "Es ist das Essen des Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "3": {
+          "template": "reversed_multiple_choice",
+          "prompt": {
+            "text": {
+              "label": "German",
+              "kind": "text",
+              "value": "Es ist das Essen der Tiere",
+              "alternatives": [],
+              "style": [],
+              "direction": "target",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "French",
+            "kind": "text",
+            "value": "C'est le repas des animaux",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "correct": [
+            "C'est le repas des animaux"
+          ],
+          "choices": [
+            "Le chien est mignon",
+            "Le chat est mignon",
+            "Le cheval est mignon",
+            "C'est le repas du cheval",
+            "C'est le repas du chien",
+            "C'est le repas du chat",
+            "Donne le repas au chien",
+            "Donne le repas au chat",
+            "Les animaux sont mignons",
+            "Vois-tu le cheval ?",
+            "Vois-tu le chat ?",
+            "Donne le repas au cheval"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "4": {
+          "template": "typing",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas des animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Tiere",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            "Es ist das Essen der Tiere",
+            "es ist das essen der tiere"
+          ],
+          "choices": [
+            "ä",
+            "é",
+            "ö",
+            "ü",
+            "ß"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        },
+        "5": {
+          "template": "tapping",
+          "prompt": {
+            "text": {
+              "label": "French",
+              "kind": "text",
+              "value": "C'est le repas des animaux",
+              "alternatives": [],
+              "style": [],
+              "direction": "source",
+              "markdown": false
+            },
+            "audio": null,
+            "video": null,
+            "image": null
+          },
+          "answer": {
+            "label": "German",
+            "kind": "text",
+            "value": "Es ist das Essen der Tiere",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "correct": [
+            [
+              "Es",
+              "ist",
+              "das",
+              "Essen",
+              "der",
+              "Tiere"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "der",
+              "tiere"
+            ],
+            [
+              "es",
+              "ist",
+              "das",
+              "essen",
+              "der",
+              "tiere"
+            ]
+          ],
+          "choices": [
+            "Es",
+            "ist",
+            "in",
+            "dir",
+            "Es",
+            "ist",
+            "in",
+            "ihr",
+            "Es",
+            "ist",
+            "in",
+            "uns",
+            "Es",
+            "ist",
+            "in",
+            "ihm",
+            "Es",
+            "ist",
+            "in",
+            "mir",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "weißen",
+            "Katze",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "der",
+            "Katze",
+            "Es",
+            "ist",
+            "für",
+            "dich",
+            "Es",
+            "ist",
+            "niemand",
+            "da",
+            "Es",
+            "ist",
+            "höher",
+            "Es",
+            "ist",
+            "in",
+            "euch",
+            "Es",
+            "ist",
+            "das",
+            "Essen",
+            "des",
+            "Hundes"
+          ],
+          "audio": null,
+          "markdown": false,
+          "attributes": [
+            {
+              "label": "Gender",
+              "value": "die Tiere (pl.)"
+            }
+          ],
+          "post_answer_info": null,
+          "placeholder": null,
+          "feedback_screen": null,
+          "is_strict": false,
+          "translation_prompt": null,
+          "gap_prompt": null
+        }
+      }
+    }
+  ],
+  "progress": [
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:28:29Z",
+      "created_date": "2018-03-30T02:54:45Z",
+      "next_date": "2024-02-06T00:31:48Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11866753532162"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:27:51Z",
+      "created_date": "2018-03-30T02:54:49Z",
+      "next_date": "2024-02-06T00:28:13Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874527609090"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:30:08Z",
+      "created_date": "2018-03-30T02:54:57Z",
+      "next_date": "2024-02-06T00:35:26Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 5,
+      "starred": false,
+      "correct": 14,
+      "attempts": 15,
+      "total_streak": 5,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874502443266"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:29:10Z",
+      "created_date": "2018-03-30T02:55:00Z",
+      "next_date": "2024-02-06T00:39:01Z",
+      "interval": 96.01,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874502836482"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:27:16Z",
+      "created_date": "2018-03-30T02:55:16Z",
+      "next_date": "2023-12-20T00:36:28Z",
+      "interval": 48.01,
+      "growth_level": 12,
+      "current_streak": 10,
+      "starred": false,
+      "correct": 15,
+      "attempts": 16,
+      "total_streak": 10,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874516205826"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:29:51Z",
+      "created_date": "2018-03-30T02:55:26Z",
+      "next_date": "2024-02-06T00:38:29Z",
+      "interval": 96.01,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874516664578"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:29:32Z",
+      "created_date": "2018-03-30T02:55:51Z",
+      "next_date": "2024-02-06T00:31:26Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874517057794"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:27:44Z",
+      "created_date": "2018-03-30T02:55:53Z",
+      "next_date": "2024-02-06T00:31:43Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 9,
+      "starred": false,
+      "correct": 16,
+      "attempts": 17,
+      "total_streak": 9,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874517319938"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:27:21Z",
+      "created_date": "2018-03-30T02:58:21Z",
+      "next_date": "2023-12-20T00:34:17Z",
+      "interval": 48,
+      "growth_level": 12,
+      "current_streak": 10,
+      "starred": false,
+      "correct": 15,
+      "attempts": 16,
+      "total_streak": 10,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874521186562"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:28:55Z",
+      "created_date": "2018-03-30T02:58:24Z",
+      "next_date": "2024-02-06T00:29:23Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 5,
+      "starred": false,
+      "correct": 14,
+      "attempts": 15,
+      "total_streak": 5,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874521710850"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:27:34Z",
+      "created_date": "2018-03-30T03:13:17Z",
+      "next_date": "2023-12-20T00:35:14Z",
+      "interval": 48.01,
+      "growth_level": 11,
+      "current_streak": 2,
+      "starred": false,
+      "correct": 14,
+      "attempts": 15,
+      "total_streak": 2,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874522235138"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:26:49Z",
+      "created_date": "2018-03-30T03:13:20Z",
+      "next_date": "2023-12-20T00:28:34Z",
+      "interval": 48,
+      "growth_level": 12,
+      "current_streak": 12,
+      "starred": false,
+      "correct": 15,
+      "attempts": 16,
+      "total_streak": 12,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874522300674"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:28:35Z",
+      "created_date": "2018-03-30T03:13:28Z",
+      "next_date": "2024-02-06T00:31:20Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874524332290"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:28:43Z",
+      "created_date": "2018-03-30T03:13:31Z",
+      "next_date": "2024-02-06T00:30:47Z",
+      "interval": 96,
+      "growth_level": 12,
+      "current_streak": 15,
+      "starred": false,
+      "correct": 15,
+      "attempts": 15,
+      "total_streak": 15,
+      "is_difficult": false,
+      "not_difficult": false,
+      "learnable_id": "11874525249794"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:28:20Z",
+      "created_date": "2018-03-30T03:14:03Z",
+      "next_date": "2023-11-03T00:36:08Z",
+      "interval": 1.01,
+      "growth_level": 11,
+      "current_streak": 1,
+      "starred": false,
+      "correct": 16,
+      "attempts": 22,
+      "total_streak": 1,
+      "is_difficult": true,
+      "not_difficult": false,
+      "learnable_id": "11874525708546"
+    },
+    {
+      "user_id": 5892033,
+      "ignored": false,
+      "last_date": "2023-11-02T00:26:07Z",
+      "created_date": "2018-03-30T03:14:07Z",
+      "next_date": "2023-11-26T00:33:09Z",
+      "interval": 24,
+      "growth_level": 11,
+      "current_streak": 2,
+      "starred": false,
+      "correct": 16,
+      "attempts": 18,
+      "total_streak": 2,
+      "is_difficult": true,
+      "not_difficult": false,
+      "learnable_id": "11874526232834"
+    }
+  ],
+  "session_source_info": {
+    "source_id": 1892646,
+    "source_type": "course_id_and_level_index",
+    "name": "Grammaire • Le groupe nominal",
+    "translated_name": "Grammaire • Le groupe nominal",
+    "learnable_ids_to_course_ids": {},
+    "num_due_for_review": 122,
+    "level_id": 7032862,
+    "level_name": "L'article",
+    "source_sub_index": 2,
+    "template_id": null,
+    "parent_source_id": null,
+    "parent_template_id": null
+  },
+  "settings": {
+    "disable_multimedia": false,
+    "disable_tapping": false,
+    "prioritize_typing": false,
+    "disable_typing": false
+  }
+}

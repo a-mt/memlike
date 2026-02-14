@@ -4,7 +4,8 @@
   "description": "Build JS",
   "main": "index.js",
   "scripts": {
-    "build": "babel static/js6 -d static/js -w -s"
+    "build": "babel static/js6 -d static/js -s",
+    "build-dev": "babel static/js6 -d static/js -w -s"
   },
   "author": "",
   "license": "ISC",

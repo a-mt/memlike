@@ -1,42 +1,55 @@
-import web, json
+import json
+import settings
+import web
+from os import getenv
 from memrise import memrise
 from requests.exceptions import HTTPError
 from math import ceil
-from _globals import GLOBALS
+
+# /ajax/level/...
+urls_level = (
+  r"/(\d+)", "level_edit",
+  r"/(\d+)/alt", "level_alt",
+  r"/(\d+)/alt_edit", "level_editalt",
+  r"/(\d+)/add", "level_addrow",
+  r"/(\d+)/edit", "level_editcell",
+  r"/(\d+)/remove", "level_removerow",
+  r"/(\d+)/upload", "level_uploadfile",
+  r"/(\d+)/upload_remove", "level_removefile",
+  r"/(\d+)/edit_multimedia", "level_editmultimedia",
+)
+# /ajax/course/...
+urls_course = (
+  r"/(\d+)/([^/]+)/edit", "course_edit",
+  r"/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
+  r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
+  r"/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
+  r"/(\d+)/([^/]+)", "course",
+)
+subapp_course = web.application(urls_course, locals(), autoreload=False)
 
 urls = (
   "", "api",
 
-  "/courses", "courses",
-  "/level/(\d+)", "level_edit",
-  "/level/(\d+)/alt", "level_alt",
-  "/level/(\d+)/alt_edit", "level_editalt",
-  "/level/(\d+)/add", "level_addrow",
-  "/level/(\d+)/edit", "level_editcell",
-  "/level/(\d+)/remove", "level_removerow",
-  "/level/(\d+)/upload", "level_uploadfile",
-  "/level/(\d+)/upload_remove", "level_removefile",
-  "/level/(\d+)/edit_multimedia", "level_editmultimedia",
-  "/course/(\d+)/([^/]+)/edit", "course_edit",
-  "/course/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  "/course/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
-  "/course/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
-  "/course/(\d+)/([^/]+)", "course",
+  r"/courses", "courses",
+  r"/community/course", subapp_course,
+  r"/course", subapp_course,
+  r"/level", web.application(urls_level, locals(), autoreload=False),
 
-  "/user/([^/]+)", "user",
-  "/user/([^/]+)/(followers)", "user_mempals",
-  "/user/([^/]+)/(following)", "user_mempals",
-  "/user/([^/]+)/(teaching)", "user_courses",
-  "/user/([^/]+)/(learning)", "user_courses",
+  r"/user/([^/]+)", "user",
+  r"/user/([^/]+)/(followers)", "user_mempals",
+  r"/user/([^/]+)/(following)", "user_mempals",
+  r"/user/([^/]+)/(teaching)", "user_courses",
+  r"/user/([^/]+)/(learning)", "user_courses",
 
   # logged-in user only
-  "/dashboard", "user_dashboard",
-  "/leaderboard", "user_leaderboard",
-  "/sync", "user_sync",
-  "/session", "debug_session",
+  r"/dashboard", "user_dashboard",
+  r"/leaderboard", "user_leaderboard",
+  r"/sync", "user_sync",
+  r"/session", "debug_session",
 
-  "/(register)", "track_progress",
-  "/(session_end)", "track_progress"
+  r"/(register)", "track_progress",
+  r"/(session_end)", "track_progress"
 )
 NBPERPAGE = 15
 
@@ -87,13 +100,9 @@ def _response(call):
     else:
         return json.dumps(data)
 
-def saveSession():
-    if not GLOBALS['session'].get('_killed'):
-        GLOBALS['session'].store[GLOBALS['session'].session_id] = dict(GLOBALS['session']._data)
-
 class courses:
     def GET(self):
-        _GET = web.input(lang=GLOBALS['session'].lang, cat="", q="", page=1)
+        _GET = web.input(lang=web.ctx.session.lang, cat="", q="", page=1)
 
         return _response(lambda: memrise.courses(_GET.lang, _GET.page, _GET.cat, _GET.q))
 
@@ -103,9 +112,9 @@ class course:
 
         sessionid = False
         if _GET.session and _GET.session != "0":
-            if not GLOBALS['session']['loggedin']:
+            if not web.ctx.session.get('loggedin', False):
                 return web.Forbidden()
-            sessionid = GLOBALS['session']['loggedin']['sessionid']
+            sessionid = web.ctx.session['loggedin']['sessionid']
 
         return _response(lambda: memrise.course(idCourse, sessionid))
 
@@ -116,10 +125,10 @@ class course_level:
         sessionid = False
         csrftoken = None
         if _GET.session and _GET.session != "0":
-            if not GLOBALS['session']['loggedin']:
+            if not web.ctx.session.get('loggedin', False):
                 return web.Forbidden()
-            sessionid = GLOBALS['session']['loggedin']['sessionid']
-            csrftoken = GLOBALS['session']['loggedin']['csrftoken']
+            sessionid = web.ctx.session['loggedin']['sessionid']
+            csrftoken = web.ctx.session['loggedin']['csrftoken']
 
         if slugCourse == "":
             slugCourse = "-"
@@ -139,103 +148,103 @@ class course_level_multimedia:
 class course_leaderboard:
     def GET(self, idCourse, slug):
         _GET = web.input(period="week")
-        return _response(lambda: memrise.leaderboard(idCourse, _GET.period))
+        return _response(lambda: memrise.course_leaderboard(idCourse, _GET.period))
 
 class course_edit:
     def GET(self, idCourse, slug):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        return _response(lambda: memrise.course_edit(sessionid, idCourse, slug))
+        sessionid = web.ctx.session['loggedin']['sessionid']
+        return _response(lambda: memrise.course_edit_get(sessionid, idCourse, slug))
 
 class level_edit:
     def GET(self, idLevel):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        return _response(lambda: memrise.level_edit(sessionid, idLevel))
+        sessionid = web.ctx.session['loggedin']['sessionid']
+        return _response(lambda: memrise.level_edit_get(sessionid, idLevel))
 
 class level_getcell:
   def GET(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
 
 class level_addrow:
     def POST(self, idLevel):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_add(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.data))
 
 class level_editcell:
     def POST(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_update(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
+        sessionid = web.ctx.session['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
 
 class level_uploadfile:
     def POST(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input(file={})
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_upload(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.file))
 
 class level_removefile:
     def POST(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input(file={})
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_upload_remove(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.fileId))
 
 class level_alt:
     def POST(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
 
 class level_editalt:
     def POST(self, idThing):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_alt(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
+        sessionid = web.ctx.session['loggedin']['sessionid']
+        return _response(lambda: memrise.level_thing_alt_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
 
 class level_editmultimedia:
     def POST(self, idLevel):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_multimedia_edit(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.txt))
 
 class level_removerow:
     def POST(self, idLevel):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         _POST     = web.input()
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         return _response(lambda: memrise.level_thing_remove(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.id_thing))
 
 class user:
@@ -264,7 +273,7 @@ class user_courses:
         if not isinstance(page, int) and not page.isdigit():
             page = 1
 
-        lastpage = int(ceil(data['nbCourse'] / NBPERPAGE) + 1)
+        lastpage = int(ceil(data['nbCourse'] / NBPERPAGE)) or 1
         if page > lastpage:
             page = lastpage
         offset = (page-1)*NBPERPAGE
@@ -278,28 +287,28 @@ class user_courses:
 
 class user_dashboard():
     def GET(self):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         web.header('Content-type','text/plain')
         web.header('Transfer-Encoding','chunked')
 
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         offset    = 0
         c         = 0
         try:
             for courses in memrise.whatistudy(sessionid):
-                content = GLOBALS['prender'].ajax_dashboard(courses, offset)['__body__']
+                content = web.config.template.prender.ajax_dashboard(courses, offset)['__body__']
 
                 yield json.dumps({"content": content }) + '$'
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session
-                for course in courses:
-                    data = {}
-                    for k in ['progress']:
-                        data[k] = course[k]
-                    c += 1
+                # for course in courses:
+                #     data = {}
+                #     for k in ['progress']:
+                #         data[k] = course[k]
+                #     c += 1
 
         except HTTPError as e:
             print('HTTPError', e)
@@ -309,27 +318,24 @@ class user_dashboard():
             else:
                 raise web.NotFound()
 
-        except Exception as e:
-            print('ERR', e)
-
-            raise web.InternalError()
+        return ''
 
 class user_leaderboard():
     def GET(self):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        sessionid = GLOBALS['session']['loggedin']['sessionid']
+        sessionid = web.ctx.session['loggedin']['sessionid']
         _GET = web.input(period="week")
-        return _response(lambda: memrise.user_leaderboard(sessionid, _GET.period))
+        return _response(lambda: memrise.my_leaderboard(sessionid, _GET.period))
 
 class user_sync():
     def GET(self):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
         try:
-          data = memrise.user(GLOBALS['session']['loggedin']['username'], True)
+          data = memrise.user(web.ctx.session['loggedin']['username'], True)
         except HTTPError as e:
             if e.response.status_code == 403:
                 raise web.Forbidden()
@@ -340,19 +346,21 @@ class user_sync():
 
 class debug_session():
     def GET(self):
+        session = dict(web.ctx.session)
         web.header('Content-Type', 'application/json')
-        return json.dumps(GLOBALS['session'].__dict__)
+        return json.dumps(session)
 
 class track_progress():
     def POST(self, path):
-        if not GLOBALS['session']['loggedin']:
+        if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        return _response(lambda: memrise.track_progress(path,
+        progress = memrise.track_progress(path,
           web.input(),
-          GLOBALS['session']['loggedin']['sessionid'],
+          web.ctx.session['loggedin']['sessionid'],
           web.ctx.env.get('HTTP_X_CSRFTOKEN'),
           web.ctx.env.get('HTTP_X_REFERER')
-        ))
+        )
+        return _response(lambda: progress)
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=False)

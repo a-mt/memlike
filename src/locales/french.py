@@ -5,7 +5,7 @@ misc = {
   "all": "Tout",
   "search": "Rechercher",
   "courses_none": "Aucun cours trouvé",
-  "404": "La page que tu cherches n'existe pas.",
+  "404": "La page que vous cherchez n'existe pas.",
   "403": "Votre session a expiré.",
   "back_home": "Retour à l'accueil",
   "levels": "Niveaux",

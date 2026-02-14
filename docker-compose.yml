@@ -1,4 +1,3 @@
-version: '3'
 
 # File to run a "dev" environment locally
 services:
@@ -16,13 +15,13 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      test: ["CMD-SHELL", "pg_isready --dbname=memdb --username=memuser --timeout=5"]
       interval: 10s
       timeout: 5s
       retries: 10
 
   api:
-    image: memlike-api:latest
+    image: memlike-api:3.6
     build:
       context: .
       dockerfile: docker-api.Dockerfile
@@ -40,12 +39,19 @@ services:
       POSTGRES_PASSWORD: mempass
       POSTGRES_DB: memdb
       DEBUG: 1
+      DEBUG_SQL: 1
+      AUTORELOAD: 1
+      PYTHONUNBUFFERED: 1
     platform: linux/amd64
     volumes:
-      - ./clearmemcached.sh:/srv/clearmemcached.sh
-      - ./src:/srv/src:delegated
-      - ./static:/srv/static:delegated
+      - .:/srv
+      - api_logs:/var/logs
+      - api_sessions:/tmp/sessions
     healthcheck:
       disable: true
     command: >
-      python src/app-entrypoint.py
+      python -u src/app-entrypoint.py
+
+volumes:
+  api_logs:
+  api_sessions:

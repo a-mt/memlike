@@ -1,0 +1,1755 @@
+{
+    "learnables": [{
+        "id": 647197556994,
+        "learning_element": "the labour force",
+        "definition_element": "la main d'oeuvre",
+        "learning_element_tokens": ["the", "labour", "force"],
+        "definition_element_tokens": ["la", "main", "d", "oeuvre"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the labour force",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "la main d'oeuvre",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "la main d'oeuvre",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the labour force",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the labour force"],
+                "choices": ["a labourer", "at the last moment", "for the last few weeks", "over the last few days", "Le larynx", "The larynx", "on the left", "The in-laws", "then", "the fog lamp", "The sister-in-law", "La thyroïde"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "the labour force",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "la main d'oeuvre",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["la main d'oeuvre"],
+                "choices": ["La main", "principal", "La paume (de la main)", "le frein à main", "une rue principale", "à maintes reprises", "Un fouet à main", "à partir de maintenant", "donner un coup de main", "Le fouet à main", "le maillot de bain", "maigre"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "la main d'oeuvre",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the labour force",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the labour force"],
+                "choices": ["h", "b", "a", "f", "t", "u", "l", "e", "o", "c", "-", "r"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "la main d'oeuvre",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the labour force",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["the", "labour", "force"],
+                    ["the", "labour", "force"],
+                    ["the", "labour", "force"]
+                ],
+                "choices": ["a", "labourer", "at", "the", "last", "moment", "for", "the", "last", "few", "weeks", "over", "the", "last", "few", "days", "Le", "larynx", "The", "larynx", "on", "the", "left", "The", "in-laws", "then", "the", "fog", "lamp", "The", "sister-in-law", "La", "thyroïde"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647197688066,
+        "learning_element": "a wage earner",
+        "definition_element": "un salarié",
+        "learning_element_tokens": ["a", "wage", "earner"],
+        "definition_element_tokens": ["un", "salarié"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage earner",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un salarié",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un salarié",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage earner",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["a wage earner"],
+                "choices": ["a wage", "a wall", "a wasp", "a walnut", "a waiter", "a heat wave", "a watermelon", "a warthog", "a one-way street", "a curtain wall", "a bearing wall", "a traffic warden"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "a wage earner",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un salarié",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["un salarié"],
+                "choices": ["le traitement", "un salaire", "un salade de fruit", "Le saladier", "une salle d'attente", "Un sac a dos", "un saumon", "Le Salvador", "un menton saillant", "être digne de ce nom", "une pommette saillante", "un travail sans débouchés"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un salarié",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage earner",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["a wage earner"],
+                "choices": ["a", "n", "g", "h", "e", "w", "r", "i"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un salarié",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage earner",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["a", "wage", "earner"],
+                    ["a", "wage", "earner"],
+                    ["a", "wage", "earner"]
+                ],
+                "choices": ["a", "wage", "a", "wall", "a", "wasp", "a", "walnut", "a", "waiter", "a", "heat", "wave", "a", "watermelon", "a", "warthog", "a", "one-way", "street", "a", "curtain", "wall", "a", "bearing", "wall", "a", "traffic", "warden"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647197884674,
+        "learning_element": "skilful",
+        "definition_element": "adroit",
+        "learning_element_tokens": ["skilful"],
+        "definition_element_tokens": ["adroit"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "skilful",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "adroit",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "adroit",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "skilful",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["skilful"],
+                "choices": ["skinny", "tan-skinned", "the skirt", "A skimmer", "A ski resort", "dark-skinned", "fair-skinned", "light-skinned", "a skycraper", "The skull", "sour", "healthy"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "skilful",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "adroit",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["adroit"],
+                "choices": ["l'adresse email", "vous connaissez l'adresse?", "Adéquat", "mûr (adj)", "Un adulte", "Un adjuvant", "humain (adj)", "L'adolescence", "L'âge adulte", "de plus", "admettre ses torts", "Être adolescent"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "adroit",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "skilful",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["skilful"],
+                "choices": ["s", "l", "k", "r", "i", "f", "u", "y"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/9875456_131012_1603_30.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198081282,
+        "learning_element": "unskilled",
+        "definition_element": "non qualifié",
+        "learning_element_tokens": ["unskilled"],
+        "definition_element_tokens": ["non", "qualifié"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "unskilled",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "non qualifié",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "non qualifié",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "unskilled",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["unskilled"],
+                "choices": ["unsettled", "unsavoury", "One man's meat is another man's poison", "a resume", "a wall", "a donkey", "un coq", "un âne", "a walnut", "a rooster", "a trap ", "a tuna"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "unskilled",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "non qualifié",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["non qualifié"],
+                "choices": ["un ouvrier non qualifié", "de mauvaise qualité", "un ouvrier qualifié", "quand", "quant à", "n'importe quand", "les aptitudes nécessaires", "une quantité", "Quand le chat n'est pas là, les souris dansent.", "Non maniable", "un mur non porteur", "combien (dénombreable), quel nombre"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "non qualifié",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "unskilled",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["unskilled"],
+                "choices": ["e", "â", "u", "l", "k", "s", "d", "n", "i"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198277890,
+        "learning_element": "the hierarchy",
+        "definition_element": "la hiérarchie",
+        "learning_element_tokens": ["the", "hierarchy"],
+        "definition_element_tokens": ["la", "hiérarchie"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the hierarchy",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "la hiérarchie",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "la hiérarchie",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the hierarchy",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the hierarchy"],
+                "choices": ["last night", "the day before yesterday", "The hand", "The hip", "the hail", "the horn", "The hair", "There were no flies on him", "the hat", "the health", "the hubcap", "the heating"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "the hierarchy",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "la hiérarchie",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["la hiérarchie"],
+                "choices": ["La hanche", "un agneau", "Faire du stop", "Il ne sait pas à quel saint se vouer.", "gros, grand", "La veine", "la barbe", "la canne", "enfin", "La tante", "la dent", "La Chine"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "la hiérarchie",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the hierarchy",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the hierarchy"],
+                "choices": ["f", "y", "e", "i", "c", "a", "h", "r", "t"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198343426,
+        "learning_element": "the boss",
+        "definition_element": "le patron",
+        "learning_element_tokens": ["the", "boss"],
+        "definition_element_tokens": ["le", "patron"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the boss",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "le patron",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "le patron",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the boss",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the boss"],
+                "choices": ["bossy", "the body", "the boot", "the bow tie", "the bonnet", "The breast bone", "the polling booth", "the cheek bone", "The salad bowl", "The collar bone", "The bowl", "Bosnia and Herzegovina"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "the boss",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "le patron",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["le patron"],
+                "choices": ["être son propre patron", "patient", "Les Pays Bas", "le parapluie", "le pare-choc", "le pardessus", "le noeud papillon", "le pare-brise", "Les grands-parents", "le pare-soleil", "Le grille-pain", "des pattes d'oies"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "le patron",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the boss",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the boss"],
+                "choices": ["t", "b", "e", "B", "o", "s", "h", "d"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198408962,
+        "learning_element": "the employer",
+        "definition_element": "l'employeur",
+        "learning_element_tokens": ["the", "employer"],
+        "definition_element_tokens": ["l", "employeur"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the employer",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "l'employeur",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "l'employeur",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the employer",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the employer"],
+                "choices": ["to be self-employed", "a location  ", "unemployed", "a job seeker", "an office worker", "a bank clerk", "a white-collar worker", "the job security", "an executive", "the ears", "The ear", "The eyes"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "the employer",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "l'employeur",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["l'employeur"],
+                "choices": ["être son propre patron", "un employé de bureau", "un employé de banque", "sans emploi", "un col blanc (employé de bureau)", "la sécurité d'emploi", "un demandeur d'emploi", "rivaliser pour un emploi", "un cadre (employé)", "un emplacement", "être emporté par le vent", "un repas à emporter"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "l'employeur",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the employer",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the employer"],
+                "choices": ["m", "h", "p", "y", "o", "e", "l", "r", "t", "f"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198540034,
+        "learning_element": "a wage",
+        "definition_element": "un salaire",
+        "learning_element_tokens": ["a", "wage"],
+        "definition_element_tokens": ["un", "salaire"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un salaire",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un salaire",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["a wage"],
+                "choices": ["a wage earner", "a wall", "a wasp", "a walnut", "a waiter", "a heat wave", "a watermelon", "a warthog", "a one-way street", "a curtain wall", "a bearing wall", "Where there's a will, there's a way"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "a wage",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un salaire",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["un salaire"],
+                "choices": ["un salarié", "un salade de fruit", "le traitement", "Le saladier", "une salle d'attente", "Un sac a dos", "un saumon", "Le Salvador", "un menton saillant", "être digne de ce nom", "une pommette saillante", "un travail sans débouchés"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un salaire",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "a wage",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["a wage"],
+                "choices": ["v", "a", "h", "e", "c", "p", "g", "w"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198671106,
+        "learning_element": "the paid holidays",
+        "definition_element": "les congés payés",
+        "learning_element_tokens": ["the", "paid", "holidays"],
+        "definition_element_tokens": ["les", "congés", "payés"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the paid holidays",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "les congés payés",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "les congés payés",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the paid holidays",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the paid holidays"],
+                "choices": ["the pain  ", "The patella", "a pail  ", "painstaking", "The palm", "the elections to the European Parliament", "Your hard work has paid off", "The plate", "the petrol  ", "the pumpkin", "Leave me alone", "then"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "the paid holidays",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "les congés payés",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["les congés payés"],
+                "choices": ["Le congélateur", "Le Congo", "embouteillé", "Les cils", "les clés", "les compétences", "comparer les prix", "les collants", "The ribs", "Les côtes", "Les cheveux", "Prendre un jour de congé"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "les congés payés",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the paid holidays",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["the paid holidays"],
+                "choices": ["y", "d", "p", "t", "o", "e", "u", "a", "h", "i", "s", "l"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "les congés payés",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "the paid holidays",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["the", "paid", "holidays"],
+                    ["the", "paid", "holidays"],
+                    ["the", "paid", "holidays"]
+                ],
+                "choices": ["the", "pain", "The", "patella", "a", "pail", "painstaking", "The", "palm", "the", "elections", "to", "the", "European", "Parliament", "Your", "hard", "work", "has", "paid", "off", "The", "plate", "the", "petrol", "the", "pumpkin", "Leave", "me", "alone", "then"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 647198998786,
+        "learning_element": "an unpaid leave",
+        "definition_element": "un congé sans solde",
+        "learning_element_tokens": ["an", "unpaid", "leave"],
+        "definition_element_tokens": ["un", "congé", "sans", "solde"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "an unpaid leave",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un congé sans solde",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un congé sans solde",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "an unpaid leave",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["an unpaid leave"],
+                "choices": ["an undecided voter", "an offspring", "to have an uncontrollable fit", "an acute angle", "an antelope", "un agneau", "an obtuse angle", "An anchorage", "a right angle", "a baby", "a pineapple", "un coq"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English word",
+                        "kind": "text",
+                        "value": "an unpaid leave",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "French word",
+                    "kind": "text",
+                    "value": "un congé sans solde",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["un congé sans solde"],
+                "choices": ["Prendre un jour de congé", "Le congélateur", "les congés payés", "Le Congo", "embouteillé", "un conflit", "une construction", "un coq", "une contrebasse", "une conférence", "une contractuelle", "un conducteur de travaux"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un congé sans solde",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "an unpaid leave",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["an unpaid leave"],
+                "choices": ["a", "i", "p", "d", "u", "v", "l", "e", "n", "b"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": {
+                        "label": "French word",
+                        "kind": "text",
+                        "value": "un congé sans solde",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English word",
+                    "kind": "text",
+                    "value": "an unpaid leave",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["an", "unpaid", "leave"],
+                    ["an", "unpaid", "leave"],
+                    ["an", "unpaid", "leave"]
+                ],
+                "choices": ["an", "undecided", "voter", "an", "offspring", "to", "have", "an", "uncontrollable", "fit", "an", "acute", "angle", "an", "antelope", "un", "agneau", "an", "obtuse", "angle", "An", "anchorage", "a", "right", "angle", "a", "baby", "a", "pineapple", "un", "coq"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [],
+    "session_source_info": {
+        "source_id": 51903,
+        "source_type": "course_id_and_level_index",
+        "name": "Liste de vocabulaire anglais (TOEIC)",
+        "translated_name": "Liste de vocabulaire anglais (TOEIC)",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 0,
+        "level_id": 468702,
+        "level_name": "Working life 1/ la vie active 1",
+        "source_sub_index": 1,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

@@ -1,0 +1,244 @@
+[
+    {
+        "id": "6698294",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-4.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "learn",
+                "is_pro_mode": false,
+                "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
+                    "badge_count": 4,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6698294,
+            "name": "German vocab",
+            "size": 274,
+            "due_review": 0,
+            "learned": 50,
+            "ignored": 0,
+            "difficult": 4,
+            "completed_this_session": false,
+            "percent_complete": 18
+        }
+    }, {
+        "id": "6687517",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "speed_review",
+                "is_pro_mode": false,
+                "url": "/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 274,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6687517?recommendation_id=399c2407-90ec-4caa-9542-1587c05eb4f7",
+                    "badge_count": 68,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6687517,
+            "name": "German vocab",
+            "size": 274,
+            "due_review": 274,
+            "learned": 274,
+            "ignored": 0,
+            "difficult": 68,
+            "completed_this_session": false,
+            "percent_complete": 100
+        }
+    }, {
+        "id": "6660056",
+        "name": "German vocab",
+        "slug": "german-vocab",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-1.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "classic_review",
+                "is_pro_mode": false,
+                "url": "/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {
+                "learn": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/learn?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "classic_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/review?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 850,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "speed_review": {
+                    "is_pro_mode": false,
+                    "url": "/aprender/speed?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 0,
+                    "is_enabled": true,
+                    "unlocked_state": "always_unlocked"
+                },
+                "difficult_words": {
+                    "is_pro_mode": true,
+                    "url": "/aprender/difficult?course_id=6660056?recommendation_id=e2a9f552-9485-4480-9f6e-e03f9572648f",
+                    "badge_count": 89,
+                    "is_enabled": true,
+                    "unlocked_state": "locked"
+                },
+                "listening_skills": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                },
+                "video": {
+                    "is_pro_mode": true,
+                    "url": null,
+                    "badge_count": 0,
+                    "is_enabled": false,
+                    "unlocked_state": "locked"
+                }
+            }
+        },
+        "goal": null,
+        "progress": {
+            "id": 6660056,
+            "name": "German vocab",
+            "size": 1003,
+            "due_review": 850,
+            "learned": 850,
+            "ignored": 0,
+            "difficult": 89,
+            "completed_this_session": false,
+            "percent_complete": 84
+        }
+    }, {
+        "id": "6689548",
+        "name": "Random stuff",
+        "slug": "random-stuff",
+        "is_official": false,
+        "photo_url": "https://static.memrise.com/garden/img/placeholders/course-3.png",
+        "next_session": {
+            "single_continue": {
+                "session_type": "learn",
+                "is_pro_mode": false,
+                "url": "/aprender/learn?course_id=6689548?recommendation_id=8965747b-c4cf-4de9-b5e7-aea56a1ac479",
+                "unlocked_state": "always_unlocked",
+                "badge_count": null
+            },
+            "mode_selector": {}
+        },
+        "goal": null,
+        "progress": {
+            "id": 6689548,
+            "name": "Random stuff",
+            "size": 20,
+            "due_review": 0,
+            "learned": 0,
+            "ignored": 0,
+            "difficult": 0,
+            "completed_this_session": false,
+            "percent_complete": 0
+        }
+    }
+]

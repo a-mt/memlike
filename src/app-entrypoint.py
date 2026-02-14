@@ -5,6 +5,7 @@ To restart:
 import signal
 
 import os
+import sys
 from subprocess import Popen, PIPE, CalledProcessError
 
 # ---------------------------------------------------------
@@ -32,7 +33,7 @@ def stop(signum, frame):
 
     dispatch_signal(signum, frame)
 
-print('Listen...')
+print('Listening keyboard input...')
 signal.signal(signal.SIGINT, restart)
 signal.signal(signal.SIGTERM, stop)
 
@@ -45,18 +46,12 @@ src = os.environ.get('WWWDIR', '')
 cmd = f'python {src}/app.py'
 
 while run:
-    print('Start child...')
+    print('Starting wsgi...')
 
-    with Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, bufsize=1, universal_newlines=True, preexec_fn=os.setsid) as p:
+    with Popen(cmd, stdout=sys.stdout, stderr=sys.stderr, shell=True, bufsize=1, universal_newlines=True, preexec_fn=os.setsid) as p:
         current_subprocs.add(p)
 
-        for line in p.stdout:
-            print(line, end='') # process line here
-
-        for line in p.stderr:
-            print('Err:', line, end='') # process line here
-
-    print('Exit child...')
+    print('Exiting wsgi...')
     current_subprocs.remove(p)
 
     if p.returncode > 1:

@@ -1,36 +1,49 @@
-# Make it work no matter the current directory
-from os import path, environ, getenv
-import sys
-
-pwd = path.dirname(path.realpath(__file__))
-sys.path.insert(0, pwd)
-
-# Import app
-from dotenv import load_dotenv
-from variables import menu, locales
-from _globals import GLOBALS
-
-# Import web server
-import web, controllers
-from lang import Lang
-import pprint, re, time, json
-from math import ceil
-from datetime import datetime
-
 # Load .env file
-dotenv_path = path.join(pwd, '..', '.env')
-load_dotenv(dotenv_path)
+# from dotenv import load_dotenv
+# load_dotenv(path.join(pwd, '..', '.env'))
+import settings
+import web
 
-# Configure web server
-if getenv('DEBUG', False):
-    web.config.debug = True
-else:
-    web.config.debug = False # to be able to use session
+# Make it work no matter the current directory
+import sys
+sys.path.insert(0, settings.ROOTDIR)
 
-web.config.session_parameters.cookie_path = '/'
+# ---
+# Configure routes
+import controllers
+import session
+import re
+
+class logout():
+    def GET(self):
+        web.ctx.session['loggedin'] = False
+        web.ctx.session['learning'] = {}
+        raise web.seeother('/')
+
+class switchLang():
+    def GET(self, name):
+
+        # Check that languages exists
+        for l in web.config.template.locales:
+            if l['slug'] == name:
+                web.ctx.session['lang'] = name
+                break
+
+        # Redirect to referer
+        if 'HTTP_REFERER' in web.ctx.environ:
+            referer = re.search(r'(https?://[^/]+)(.*)$', web.ctx.environ['HTTP_REFERER'])
+
+            if referer.group(1) + ':80' == web.ctx.home:
+                raise web.seeother(referer.group(2))
+
+        raise web.seeother('/')
+
+def notfound():
+    return web.notfound(web.config.template.prender._404())
 
 urls = (
     '/fr/courses', controllers.courses.app,
+    '/community/course', controllers.course.app,
     '/course', controllers.course.app,
     '/user', controllers.user.app,
     '/ajax', controllers.ajax.app,
@@ -40,97 +53,101 @@ urls = (
     '', controllers.index.app
 )
 
-app = web.application(urls, globals())
-
-# Save session to database or to disk
-if environ.get('DATABASE_URL', ''):
-    db      = web.database()
-    store   = web.session.DBStore(db, 'sessions')
-    session = web.session.Session(app, store, initializer=GLOBALS['defaults'])
-else:
-    session = web.session.Session(app, web.session.DiskStore('sessions'), initializer=GLOBALS['defaults'])
-
-lang     = Lang(app, session, pwd)
-render   = web.template.render(pwd + '/templates/', base='_layout', globals=GLOBALS)
-prender  = web.template.render(pwd + '/templates/', globals=GLOBALS)
-
-def debug(x):
-    return '<pre class="debug">' + pprint.pformat(x, indent=4) \
-        .replace('\\n', '\n') \
-        .replace('&', '&amp;') \
-        .replace("<", "&lt;") \
-        .replace(">", "&gt;") \
-        .replace('"', '&quot;') + '</pre>';
-
-# Methods accessible globally in templates
-GLOBALS['render']        = render
-GLOBALS['prender']       = prender
-
-GLOBALS['sorted']        = sorted
-GLOBALS['str']           = str
-GLOBALS['ceil']          = ceil
-GLOBALS['now']           = lambda: datetime.now()
-GLOBALS['time']          = lambda: int(datetime.now().timestamp())
-GLOBALS['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
-GLOBALS['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
-GLOBALS['number_format'] = lambda x: "{:,}".format(x)
-GLOBALS['floatval']      = lambda x: float(re.sub('[^\d]', '', x))
-GLOBALS['debug']         = debug
-
-# Variables accessible globally in templates
-GLOBALS['session']       = session
-GLOBALS['LANG']          = lang
-GLOBALS['env']           = {
-    "GITHUB_REPO": environ.get("GITHUB_REPO"),
-}
-GLOBALS['MENU']          = menu
-GLOBALS['locales']       = locales
-
-class logout():
-    def GET(self):
-        GLOBALS['session'].loggedin = False
-        GLOBALS['session'].learning = {}
-        raise web.seeother('/')
-
-class switchLang():
-    def GET(self, name):
-
-        # Check that languages exists
-        for l in locales:
-            if l['slug'] == name:
-                session['lang'] = name
-                break
-
-        # Redirect to referer
-        if 'HTTP_REFERER' in web.ctx.environ:
-            referer = re.search('(https?://[^/]+)(.*)$', web.ctx.environ['HTTP_REFERER'])
-
-            if referer.group(1) + ':80' == web.ctx.home:
-                raise web.seeother(referer.group(2))
-
-        raise web.seeother('/')
-
-def notfound():
-    return web.notfound(prender._404())
-
+# ---
+# Worker-wide settings
+app = web.application(
+    mapping=urls,
+    fvars=globals(),
+    autoreload=False,
+)
 app.notfound = notfound
 
-def flash():
+if settings.DEBUG:
+    app.debug = True
+else:
+    app.debug = False
+
+# ---
+# Session processor
+if settings.IS_TEST:
+    store =  session.MemoryStore()
+else:
+    # if settings.DATABASE_URL: store = session.DBStore(web.database(), 'sessions')
+    store = session.DiskStore('/tmp/sessions')
+
+session = session.Session(app=None, store=store, initializer=settings.DEFAULT_SESSION)
+
+def session_load():
+    """
+    Prerequisite:
+    At this point the session processor should habe been called
+    (cookies have been read and the associated data has been loaded)
+
+    Note:
+    We create one session store per app, which fetch the sessions
+    The sessions are cleaned from the store at the beginning of each request
+    (if session._last_cleanup_time < session_parameters.timeout)
+
+    web.ctx contains info about the current request
+    It is cleaned at the beggining of each request
+    be careful with manipulating the session object: it is both a global object
+    and used as holder after reading the current context
+    """
+
+    # session._data is a threaded dict that is saved at the end of the request
+    web.ctx.session = session._data
+    web.ctx.session_id = session.session_id
+
+    # Make it accessible in templates
+    web.config.template['session'] = session._data
+
+if settings.IS_TEST:
+    web.test = web.storage({'session': session})
+
+# Processors are run at each request
+app.add_processor(session._processor)
+app.add_processor(web.loadhook(session_load))
+
+# ---
+# Lang processor
+lang = web.config.lang
+app.add_processor(lang._processor)
+
+# ---
+# Flash messages processor
+def flash_load():
+
     # Redirect HTTP ot HTTPS
     if web.ctx.environ.get('HTTP_X_FORWARDED_PROTO') == 'http':
         raise web.seeother(web.ctx.home.replace('http://', 'https://').replace(':80', '') + web.ctx.fullpath)
 
     # Handle flash messages
-    if "flash" in session:
-        web.flash = session.flash
-        del session.flash
+    if 'flash' in web.ctx.session:
+        web.ctx.flash = web.ctx.session.flash
+        del web.ctx.session.flash
     else:
-        web.flash = {}
+        web.ctx.flash = {}
 
-app.add_processor(web.loadhook(flash))
+app.add_processor(web.loadhook(flash_load))
 
-if __name__ == "__main__":
-    print('Run...')
+# ---
+# Run app
+if __name__ == '__main__' and not settings.IS_TEST:
+    print(f'web2py: {web.__version__}')
+    print(f'Autoreload: {settings.AUTORELOAD}')
+    print(f'Debug: app={app.debug} web={web.config.debug} sql={web.config.debug_sql}')
+
+    # Reload modules that have changed
+    # Is checked at the beginning of each request
+    # Note that the main app isn't reloaded (so if the URLs mapping is updated, you should restart the entrypoint)
+    if settings.AUTORELOAD:
+        from autoreload import AutoreloadMagics
+        auto_reload_extension = AutoreloadMagics()
+        app.processors.insert(0, web.loadhook(auto_reload_extension.pre_execute_hook))
+        app.processors.append(web.loadhook(auto_reload_extension.post_execute_hook))
+        auto_reload_extension.autoreload(mode='all', log=settings.DEBUG)
+
+    print('Running...')
     app.run()
 
 # Translations: https://d2rhekw5qr4gcj.cloudfront.net/dist/locales/fr/translation-54de43979713.json

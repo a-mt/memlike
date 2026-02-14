@@ -1,39 +1,42 @@
-from variables import *
+import settings
 import web
+import variables
+from os import getenv
 from memrise import memrise
-from _globals import GLOBALS
 
 urls = (
-  "", "courses",
-  "/(.*)", "courses"
+  r"", "courses",
+  r"/(.*)", "courses"
 )
 
 class courses:
     def GET(self, path=""):
         _GET = web.input(q="")
 
+        # ex https://community-courses.memrise.com/de/community/courses/arabic/swedish/
+        # [path: arabic/swedish] = swedish courses for users that speak arabic
         parts = path.strip('/').split('/')
         lang  = parts[0]
         cat   = ""
         catId = ""
 
         # Filter courses in a given language
+        # "I speak..." (french,german,arabic,etc)
         if lang == "":
-            lang = GLOBALS['session'].lang
+            lang = web.ctx.session['lang']
 
         # Filter courses in a given category
-        if len(parts) > 1 and parts[1] in categories_code:
+        if len(parts) > 1 and parts[1] in variables.categories_code:
             cat   = parts[1]
-            catId = categories_code[cat]
+            catId = variables.categories_code[cat]
 
         # Retrieve list of categories that have a course
         catHaveCourse = memrise.categories(lang)
-
-        return GLOBALS['render'].courses({
+        return web.config.template.render.courses({
             "lang"  : lang,
             "cat"   : cat,
             "catId" : catId,
             "q"     : _GET.q
-        }, languages, categories, catHaveCourse)
+        }, variables.languages, variables.categories, catHaveCourse)
 
-app = web.application(urls, locals())
+app = web.application(urls, locals(), autoreload=False)

@@ -2,21 +2,32 @@ FROM python:3.6-slim-bullseye
 
 ENV PYTHONUNBUFFERED=1
 
+# ---
 # install system dependencies
 RUN apt update \
   && apt install -y gettext wget curl procps \
   && apt install -y memcached libmemcached-dev \
+  && apt install -y python3-pip python3-wheel git \
   # cleanup apt cache
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# ---
+# install NVM
+ARG NODE_VERSION=12.22
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+
+# install node
+ENV NVM_DIR=/root/.nvm
+RUN bash -c "source $NVM_DIR/nvm.sh && nvm install $NODE_VERSION"
+
+# ---
 # install app dependencies
 ENV APPDIR='/srv'
 ENV WWWDIR='/srv/src'
 
 WORKDIR $APPDIR
 
-RUN pip3 install --upgrade pip
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 
