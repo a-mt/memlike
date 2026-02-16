@@ -17,18 +17,18 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| CURRENT USER
     #+-----------------------------------------------------
-    def whoami(self, sessionid):
+    def whoami(self, sessionid=None):
         return self.get_testset_text("settings.html")
 
-    def whatistudy(self, sessionid, offset, nbperpage):
+    def whatistudy(self, offset, nbperpage, sessionid=None):
         data = self.get_testset_json("dashboard_courses.json")
         data["has_more_pages"] = offset == 0
         return data
 
-    def my_leaderboard(self, sessionid, period):
+    def my_leaderboard(self, period, sessionid=None):
         return self.get_testset_json("profile_leaderboard.json")
 
-    def track_progress(self, path, data, sessionid, csrftoken, referer):
+    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
         pass
 
     #+-----------------------------------------------------
@@ -48,16 +48,16 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, sessionid, idCourse):
+    def course(self, idCourse, slugCourse="", sessionid=None):
         return self.get_testset_text("course-6698294.html")
 
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, sessionid, csrftoken, idCourse, lvl):
+    def level(self, idCourse, lvl, sessionid=None, csrftoken=None):
         return self.get_testset_json("learning_session_learn.json")
 
-    def level_learning_session(self, sessionid, idCourse, slugCourse, sessionType):
+    def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
         return {
             "referer": "",
             "csrftoken": "",
@@ -69,7 +69,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def course_leaderboard(self, sessionid, idCourse, period):
+    def course_leaderboard(self, idCourse, period, sessionid=None):
         return self.get_testset_json("course_leaderboard.json")
 
     #+-----------------------------------------------------
@@ -90,7 +90,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def course_edit_get(self, sessionid, idCourse, slugCourse):
+    def course_edit_get(self, idCourse, slugCourse, sessionid=None):
         html = self.get_testset_text("course_get_edit.html")
         return {
             "csrftoken": "",

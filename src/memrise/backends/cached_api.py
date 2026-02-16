@@ -86,7 +86,7 @@ class CachedApiMemrise(ApiMemrise):
 
         return categories
 
-    def course(self, idCourse, sessionid=False, csrftoken=None):
+    def course(self, idCourse, slugCourse="", sessionid=False, csrftoken=None):
         """
             Retrieve the course data
             Is cached via memcached for 1day unless we're logged in to (retrieve the progress / reviews)

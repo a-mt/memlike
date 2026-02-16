@@ -64,7 +64,7 @@ class MemriseGetTest(unittest.TestCase):
     def test_memrise_leaderboard(self):
         self.assertIsNotNone(self.session['session_id'])
 
-        result = memrise.my_leaderboard(self.session['session_id'], period='alltime')
+        result = memrise.my_leaderboard(period='alltime', sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue('rows' in result)
@@ -143,7 +143,12 @@ class MemriseGetTest(unittest.TestCase):
     def test_memrise_course(self):
         self.assertIsNotNone(self.session['session_id'])
 
-        result = memrise.course(COURSE_ID, sessionid=self.session['session_id'], csrftoken=self.session['csrftoken'])
+        result = memrise.course(
+            COURSE_ID,
+            COURSE_SLUG,
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+        )
 
         self.assertEqual(result.get('id', None), COURSE_ID)
         self.assertIsNotNone(result.get('title', None))

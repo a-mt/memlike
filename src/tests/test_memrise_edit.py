@@ -26,7 +26,7 @@ class MemriseEditTest(unittest.TestCase):
         self.session['csrftoken'] = result['csrftoken']
 
     def test_memrise_course_edit_get(self):
-        result = memrise.course_edit_get(sessionid=self.session['session_id'], idCourse=COURSE_ID, slugCourse=COURSE_SLUG)
+        result = memrise.course_edit_get(idCourse=COURSE_ID, slugCourse=COURSE_SLUG, sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('csrftoken', None))
@@ -42,7 +42,7 @@ class MemriseEditTest(unittest.TestCase):
         self.assertIsNotNone(level.get('name', None))
 
     def test_memrise_level_edit_get(self):
-        result = memrise.level_edit_get(sessionid=self.session['session_id'], idLevel='16180581')
+        result = memrise.level_edit_get(idLevel='16180581', sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
@@ -53,14 +53,14 @@ class MemriseEditTest(unittest.TestCase):
     # -------------------------------------------------------------------------
     def test_memrise_course_level_thing_add(self):
         result = memrise.level_thing_add(
-            sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
             referer='',
             idLevel='16258912',
             data={
                 'columns': {"1":"a","2":"b","4":"plural"},
                 'level_id': "16258912"
-            }
+            },
+            sessionid=self.session['session_id'],
         )
 
         self.assertIs(type(result), dict)
@@ -85,10 +85,10 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_thing_get(self):
         result = memrise.level_thing_get(
+            idThing='477757876',
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
             referer='',
-            idThing='477757876',
         )
         self.assertIs(type(result), dict)
         self.assertIs(type(result.get('thing', None)), dict)
@@ -110,12 +110,12 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_thing_edit(self):
         result = memrise.level_thing_edit(
-            sessionid=self.session['session_id'],
-            csrftoken=self.session['csrftoken'],
-            referer='',
             idThing='477757811',
             cellId='2',
             cellValue='b2',
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+            referer='',
         )
 
         self.assertIs(type(result), dict)
@@ -123,12 +123,12 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_thing_alt_edit(self):
         result = memrise.level_thing_alt_edit(
-            sessionid=self.session['session_id'],
-            csrftoken=self.session['csrftoken'],
-            referer='',
             idThing='477757811',
             column_key='2',
             alts='["a2","a3"]',
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+            referer='',
         )
 
         self.assertIs(type(result), dict)
@@ -142,12 +142,12 @@ class MemriseEditTest(unittest.TestCase):
             'value': 'Lorem ispum',
         })
         result = memrise.level_thing_upload(
-            sessionid=self.session['session_id'],
-            csrftoken=self.session['csrftoken'],
-            referer='',
             idThing='477757811',
             cellId='2',
             file=None,
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+            referer='',
         )
         self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
@@ -155,12 +155,12 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_thing_upload_remove(self):
         result = memrise.level_thing_upload_remove(
-            sessionid=self.session['session_id'],
-            csrftoken=self.session['csrftoken'],
-            referer='',
             idThing='477757811',
             cellId='2',
             fileId='1',
+            sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+            referer='',
         )
 
         self.assertIs(type(result), dict)
@@ -169,11 +169,11 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_thing_remove(self):
         result = memrise.level_thing_remove(
+            idLevel='16258912',
+            idThing='16258912',
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
             referer='',
-            idLevel='16258912',
-            idThing='16258912',
         )
 
         self.assertIs(type(result), dict)
@@ -185,11 +185,11 @@ class MemriseEditTest(unittest.TestCase):
 
     def test_memrise_course_level_multimedia_edit(self):
         result = memrise.level_multimedia_edit(
+            idLevel='16258913',
+            txt='',
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
             referer='',
-            idLevel='16258913',
-            txt='',
         )
 
         self.assertIs(type(result), dict)

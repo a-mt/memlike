@@ -16,29 +16,29 @@ class SessionExpired(web.Unauthorized):
 
 class DiskStore(DiskStore):
     def __contains__(self, key):
-        logger.debug('DiskStore.has %s', key)
+        logger.debug('DiskStore:Has %s', key)
         return super().__contains__(key)
 
     def __getitem__(self, key):
-        logger.debug('DiskStore.get %s', key)
+        logger.debug('DiskStore:Get %s', key)
         return super().__getitem__(key)
 
     def __setitem__(self, key, value):
-        logger.debug('DiskStore.set %s=%s', key, value)
+        logger.debug('DiskStore:Set %s=%s', key, value)
         return super().__setitem__(key, value)
 
 
 class DBStore(DBStore):
     def __contains__(self, key):
-        logger.debug('DBStore.has %s', key)
+        logger.debug('DBStore:Has %s', key)
         return super().__contains__(key)
 
     def __getitem__(self, key):
-        logger.debug('DBStore.get %s', key)
+        logger.debug('DBStore:Get %s', key)
         return super().__getitem__(key)
 
     def __setitem__(self, key, value):
-        logger.debug('DBStore.set %s=%s', key, value)
+        logger.debug('DBStore:Set %s=%s', key, value)
         # Remove the leading `b` of bytes object (`b"..."`), otherwise encoded
         # value is invalid base64 format.
         pickled = self.encode(value).decode()
@@ -103,7 +103,7 @@ class Session(Session):
         """
         Delete the old session
         """
-        logger.debug('Session.expired')
+        logger.debug('Session expired')
         try:
             super().kill()
         except Exception as e:
