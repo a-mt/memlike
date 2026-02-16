@@ -9,9 +9,10 @@ from .base import Memrise
 
 
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
+USER_AGENT      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0"
 USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
-ORIGIN          = "https://app.memrise.com"
-
+HOST            = "https://community-courses.memrise.com"
+API_VERSION     = "v1.25"
 
 def get_time():
     return '%d' % (time.time() * 1000)
@@ -33,10 +34,10 @@ class Requestor:
         #-----------------------------------------------------------------------
         # Retrieve CRSF token
         headers = {
-            "Referer": "https://app.memrise.com/signin",
+            "Referer": f"{HOST}/signin",
             "User-Agent": USER_AGENT,
         }
-        response  = requests.get("https://app.memrise.com/v1.17/web/ensure_csrf")
+        response  = requests.get(f"{HOST}/{API_VERSION}/web/ensure_csrf")
         response.raise_for_status()
 
         json      = response.json()
@@ -44,7 +45,7 @@ class Requestor:
 
         #-----------------------------------------------------------------------
         # Retrieve access_token (login)
-        headers['Origin']      = ORIGIN
+        headers['Origin']      = HOST
         headers['X-CSRFToken'] = csrftoken
 
         cookies = {
@@ -56,11 +57,11 @@ class Requestor:
             'username'  : username,
             'password'  : password
         }
-        response  = requests.post("https://app.memrise.com/v1.17/auth/access_token/", cookies=cookies, headers=headers, data=data)
+        response  = requests.post(f"{HOST}/{API_VERSION}/auth/access_token/", cookies=cookies, headers=headers, data=data)
         response.raise_for_status()
 
         json = response.json()
-        data = json['user']
+        data = json['user']  # {username, is_new, id}
 
         #-----------------------------------------------------------------------
         # Retrieve sessionid_2
@@ -68,10 +69,10 @@ class Requestor:
         del headers['X-CSRFToken']
 
         token     = json['access_token']['access_token']
-        response  = requests.get("https://app.memrise.com/v1.17/auth/web/?invalidate_token_after=true&token=" + token, cookies=cookies, headers=headers)
+        response  = requests.get(f"{HOST}/{API_VERSION}/auth/web/?invalidate_token_after=true&token=" + token, cookies=cookies, headers=headers)
         response.raise_for_status()
 
-        data['sessionid'] = response.cookies["sessionid_2"]
+        data['sessionid'] = response.cookies["sessionid_2"]  # j74y9ut8nwrw4wqomtvqmyt5k9g4gvwng
         data['csrftoken'] = response.cookies["csrftoken"]
 
         return data
@@ -79,25 +80,36 @@ class Requestor:
     #+-----------------------------------------------------
     #| CURRENT USER
     #+-----------------------------------------------------
-    def whoami(self, sessionid):
-        url = "https://app.memrise.com/settings/"
+    def buildCookies(self, sessionid=None, csrftoken=None):
+        cookies = {}
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        if sessionid:
+            cookies["sessionid_2"] = sessionid
+
+        if csrftoken:
+            cookies["csrftoken"] = csrftoken
+
+        return cookies
+
+    def whoami(self, sessionid):
+        url = f"{HOST}/settings/"
+
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
     def whatistudy(self, sessionid, offset, nbperpage):
         #url = f"https://app.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset={offset}&limit={nbperpage-1}&get_review_count=true"
-        url = f"https://app.memrise.com/v1.21/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage-1}"
+        url = f"{HOST}/{API_VERSION}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.json()
 
     def my_leaderboard(self, sessionid, period):
-        url = "https://app.memrise.com/ajax/leaderboard/mempals/?period=" + period + "&how_many=50"
+        url = f"{HOST}/ajax/leaderboard/mempals/?period={period}&how_many=50"
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.json()
 
@@ -119,8 +131,8 @@ class Requestor:
         else:
             url = "https://app.memrise.com/api/garden/register/"
 
-        response = requests.post(url, data=data, cookies={"sessionid_2": sessionid, "csrftoken": csrftoken}, headers={
-            "Origin": ORIGIN,
+        response = requests.post(url, data=data, cookies=self.buildCookies(sessionid, csrftoken), headers={
+            "Origin": HOST,
             "Referer": referer,
             "User-Agent": USER_AGENT,
             "X-CSRFToken": csrftoken
@@ -132,7 +144,7 @@ class Requestor:
     #| COURSES
     #+-----------------------------------------------------
     def courses(self, lang, page, cat, query):
-        url  = 'https://app.memrise.com/ajax/browse/?s_cat=' + lang
+        url  = f"{HOST}/ajax/browse/?s_cat={lang}"
         if cat != "":
             url += "&cat=" + cat
         if query != "":
@@ -146,7 +158,7 @@ class Requestor:
     #| CATEGORIES
     #+-----------------------------------------------------
     def categories(self, lang):
-        url = "https://app.memrise.com/fr/courses/" + lang + "/"
+        url = f"{HOST}/fr/courses/{lang}/"
 
         response = requests.get(url)
         response.raise_for_status()
@@ -155,10 +167,12 @@ class Requestor:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, sessionid, idCourse):
-        url = "https://app.memrise.com/course/" + idCourse
+    def course(self, sessionid, idCourse, slugCourse=""):
+        url = f"{HOST}/community/course/{idCourse}/"
+        if slugCourse:
+            url += url + "/"
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
@@ -166,17 +180,14 @@ class Requestor:
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level(self, sessionid, csrftoken, idCourse, lvl):
-        url = "https://app.memrise.com/v1.21/learning_sessions/preview/"
-        referer = f"https://app.memrise.com/aprender/preview?course_id=${idCourse}&level_index=${lvl}"
+        url = f"{HOST}/{API_VERSION}/learning_sessions/preview/"
 
+        referer  = f"{HOST}/aprender/preview?course_id=${idCourse}&level_index=${lvl}"
         response = requests.post(
             url,
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -193,9 +204,9 @@ class Requestor:
         return response.json()
 
     def level_learning_session(self, sessionid, idCourse, slugCourse, sessionType):
-        url = "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/garden/" + sessionType + "/"
+        url = f"{HOST}/course/{idCourse}/{slugCourse}/garden/{sessionType}/"
 
-        response = requests.head(url, cookies={"sessionid_2": sessionid})
+        response = requests.head(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return {
             "referer": url,
@@ -203,7 +214,9 @@ class Requestor:
         }
 
     def level_multimedia(self, urlCourse, lvl):
-        url = "https://app.memrise.com" + urlCourse + lvl + "/"
+        # https://community-courses.memrise.com/community/course/1892646/grammaire-le-groupe-nominal/3/
+        # url = f"{HOST}/course/{idCourse}/slugCourse/{lvl}/"
+        url = HOST + urlCourse + lvl + "/"
 
         response = requests.get(url)
         response.raise_for_status()
@@ -213,9 +226,9 @@ class Requestor:
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
     def course_leaderboard(self, sessionid, idCourse, period):
-        url = "https://app.memrise.com/ajax/leaderboard/course/" + idCourse + "/?period=" + period + "&how_many=50"
+        url = f"{HOST}/ajax/leaderboard/course/{idCourse}/?period={period}&how_many=50"
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.json()
 
@@ -223,14 +236,14 @@ class Requestor:
     #| USER
     #+-----------------------------------------------------
     def user(self, username):
-        url = "https://app.memrise.com/user/" + username + "/courses/teaching/"
+        url = f"{HOST}/user/{username}/courses/teaching/"
 
         response = requests.get(url)
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
     def user_mempals(self, tab, username, page):
-        url = "https://app.memrise.com/user/" + username + "/mempals/" + tab + "/?page=" + str(page)
+        url = f"{HOST}/user/{username}/mempals/{tab}/?page={page}"
 
         response = requests.get(url)
         response.raise_for_status()
@@ -240,7 +253,7 @@ class Requestor:
     #| USER's COURSES
     #+-----------------------------------------------------
     def user_courses(self, tab, username):
-        url = "https://app.memrise.com/user/" + username + "/courses/" + tab + "/"
+        url = f"{HOST}/user/{username}/courses/{tab}/"
 
         response = requests.get(url)
         response.raise_for_status()
@@ -250,27 +263,24 @@ class Requestor:
     #| EDIT
     #+-----------------------------------------------------
     def level_edit_get(self, sessionid, idLevel):
-        url = "https://app.memrise.com/ajax/level/editing_html/?level_id=" + idLevel + "&_=" + get_time()
+        url = f"{HOST}/ajax/level/editing_html/?level_id={idLevel}&_=" + get_time()
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
         return response.text.encode('utf-8').strip()
 
     def level_thing_add(self, sessionid, csrftoken, referer, idLevel, data):
-        url = "https://app.memrise.com/ajax/level/thing/add/"
+        url = f"{HOST}/ajax/level/thing/add/"
 
         response = requests.post(
             url,
             data={
-                "columns":data,
-                "level_id":idLevel,
+                "columns": data,
+                "level_id": idLevel,
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -281,7 +291,7 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_edit(self, sessionid, csrftoken, referer, idThing, cellId, cellValue):
-        url = "https://app.memrise.com/ajax/thing/cell/update/"
+        url = f"{HOST}/ajax/thing/cell/update/"
 
         response = requests.post(
             url,
@@ -291,12 +301,9 @@ class Requestor:
                 "new_val": cellValue,
                 "thing_id": idThing
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -306,7 +313,7 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_upload(self, sessionid, csrftoken, referer, idThing, cellId, file):
-        url = "https://app.memrise.com/ajax/thing/cell/upload_file/"
+        url = f"{HOST}/ajax/thing/cell/upload_file/"
 
         """
         Possible File-like-object:
@@ -329,12 +336,9 @@ class Requestor:
             files={
                 "f": (file.filename, file.value),  # files={FILENAME: file-like-object}
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -344,7 +348,7 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_upload_remove(self, sessionid, csrftoken, referer, idThing, cellId, fileId):
-        url = "https://app.memrise.com/ajax/thing/column/delete_from/"
+        url = f"{HOST}/ajax/thing/column/delete_from/"
 
         response = requests.post(
             url,
@@ -354,12 +358,9 @@ class Requestor:
                 "thing_id": idThing,
                 "file_id": fileId
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -369,20 +370,17 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_remove(self, sessionid, csrftoken, referer, idLevel, idThing):
-        url = "https://www.memrise.com/ajax/level/thing_remove/"
+        url = f"{HOST}/ajax/level/thing_remove/"
 
         response = requests.post(
             url,
             data={
-                "thing_id":idThing,
-                "level_id":idLevel,
+                "thing_id": idThing,
+                "level_id": idLevel,
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -393,16 +391,13 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_get(self, sessionid, csrftoken, referer, idThing):
-        url = "https://app.memrise.com/api/thing/get/?thing_id=" + idThing + "&_=" + get_time()
+        url = f"{HOST}/api/thing/get/?thing_id={idThing}&_=" + get_time()
 
         response = requests.get(
             url,
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -413,7 +408,7 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_thing_alt_edit(self, sessionid, csrftoken, referer, idThing, alts, column_key):
-        url = "https://app.memrise.com/ajax/thing/column/update_alts/"
+        url = f"{HOST}/ajax/thing/column/update_alts/"
 
         response = requests.post(
             url,
@@ -422,12 +417,9 @@ class Requestor:
                 "column_key": column_key,
                 "thing_id": idThing
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -438,7 +430,7 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def level_multimedia_edit(self, sessionid, csrftoken, referer, idLevel, txt):
-        url = "https://app.memrise.com/ajax/level/set_multimedia/"
+        url = f"{HOST}/ajax/level/set_multimedia/"
 
         response = requests.post(
             url,
@@ -446,12 +438,9 @@ class Requestor:
                 "multimedia":txt,
                 "level_id":idLevel,
             },
-            cookies={
-                "sessionid_2": sessionid,
-                "csrftoken": csrftoken,
-            },
+            cookies=self.buildCookies(sessionid, csrftoken),
             headers={
-                "Origin": ORIGIN,
+                "Origin": HOST,
                 "Referer": referer,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
@@ -462,9 +451,9 @@ class Requestor:
         return response.text.encode('utf-8').strip()
 
     def course_edit_get(self, sessionid, idCourse, slugCourse):
-        url = "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/"
+        url = f"{HOST}/course/{idCourse}/{slugCourse}/edit/"
 
-        response = requests.get(url, cookies={"sessionid_2": sessionid})
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
         response.raise_for_status()
 
         html = response.text.encode('utf-8').strip()
@@ -874,16 +863,23 @@ class ApiMemrise(Memrise):
 
         return self.scraper.whoami(sessionid, html)
 
-    def whatistudy(self, sessionid):
+    def whatistudy(self, sessionid, offset=0):
         nbperpage = 4
-        offset    = 0
+        load_n_pages = 4
 
-        while True:
+        c = 0
+        while c < load_n_pages:
+            c += 1
+
             data    = self.requestor.whatistudy(sessionid, offset, nbperpage)
             offset += nbperpage
-            yield data['courses']
+            has_more_pages = "has_more_pages" in data and data["has_more_pages"]
 
-            if not 'has_more_pages' in data or not data['has_more_pages']:
+            yield {
+                "courses": data["courses"],
+                "next_offset": offset if has_more_pages else None,
+            }
+            if not has_more_pages:
                 break
 
     def my_leaderboard(self, sessionid, period):

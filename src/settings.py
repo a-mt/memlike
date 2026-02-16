@@ -9,7 +9,7 @@ IS_TEST = getenv('WEBPY_ENV', '') == 'test'
 DATABASE_URL = getenv('DATABASE_URL', '')
 
 MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
-if True or IS_TEST:
+if IS_TEST:
     MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
 
 # Import global web object to hold web.py config
@@ -64,11 +64,14 @@ DEFAULT_SESSION = {
 
 # ---
 # Configure templating system
+
+# Modules that need to stay in scope after reloading the settings (used in lambdas)
+import datetime
+import pprint, re, json
+
 if web.config.get('template', None) is None:
     from variables import menu, locales
     from math import ceil
-    from datetime import datetime
-    import pprint, re, json
 
     def debug(x):
         return (
@@ -91,9 +94,9 @@ if web.config.get('template', None) is None:
     template['sorted']        = sorted
     template['str']           = str
     template['ceil']          = ceil
-    template['now']           = lambda: datetime.now()
-    template['time']          = lambda: int(datetime.now().timestamp())
-    template['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
+    template['now']           = lambda: datetime.datetime.now()
+    template['time']          = lambda: int(datetime.datetime.now().timestamp())
+    template['date']          = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
     template['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
     template['number_format'] = lambda x: "{:,}".format(x)
     template['floatval']      = lambda x: float(re.sub(r'[^\d]', '', x))

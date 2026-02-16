@@ -532,20 +532,29 @@ function user_courses() {
 var Dashboard = {
   container: false,
   sort: "i",
+  sortOptions: {},
+  offset: 0,
 
   init: function() {
-    Dashboard.container = $('#dashboard');
-    Dashboard.sort      = $('#dashboard-sort');
+    Dashboard.container   = $('#dashboard');
+    Dashboard.sortActions = $('#dashboard-sort');
+    Dashboard.loadNext    = $('#content-next');
     Dashboard.getCourses();
 
-    $('select', Dashboard.sort).on('change', function(){
+    $(Dashboard.loadNext).on('click', '.btn', function(){
+      Dashboard.loadMore();
+    });
+
+    $('select', Dashboard.sortActions).on('change', function(){
       var sort = this.value;
 
       if(sort != Dashboard.sort) {
         var option = $("option:selected", this);
+        var sortOptions = {numeric: option.attr('data-numeric'), desc: option.attr('data-desc')};
 
         Dashboard.sort = sort;
-        Dashboard.sortCourses(sort, option.attr('data-numeric'), option.attr('data-desc'));
+        Dashboard.sortOptions = sortOptions;
+        Dashboard.sortCourses(sort, sortOptions.numeric || false, sortOptions.desc || false);
       }
     });
   },
@@ -571,12 +580,20 @@ var Dashboard = {
     Dashboard.container.append(courses);
   },
 
+  loadMore: function() {
+    Dashboard.loadNext.empty();
+    Dashboard.loadNext.after('<div id="content-loader" class="loading-spinner"></div>');
+    Dashboard.getCourses();
+  },
+
   getCourses: function() {
+    const requestOffset = Dashboard.offset;
+
     var offsetResponse = 0;
 
     /* global $ */
     var runner = $.ajax({
-        url: '/ajax/dashboard?_=' + new Date().getTime(),
+        url: '/ajax/dashboard?offset=' + requestOffset + '&_=' + new Date().getTime(),
         data: {},
         processData: false,
         xhrFields: {
@@ -595,7 +612,13 @@ var Dashboard = {
 
                     for(var i=0; i<=n; i++) {
                       var data = JSON.parse(parts[i] + '}');
-                      Dashboard.container.append(data.content);
+                      if (data.content) {
+                        Dashboard.container.append(data.content);
+
+                      } else if(data.next_offset) {
+                        Dashboard.offset = data.next_offset;
+                        Dashboard.loadNext.html('<button class="btn">Load more</button>');
+                      }
                     }
                   } catch(e) { }
                 }
@@ -605,14 +628,32 @@ var Dashboard = {
 
     // Ajax done running
     runner.done(function(data) {
-     if(data == '{"content": "\\n"}') {
-       Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
-     } else {
-       Dashboard.sort.show();
-     }
+      if(data == '{"content": "\\n"}') {
+         Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+      } else {
+        Dashboard.sortActions.show();
+
+        try {
+          requestOffset && setTimeout(function(){
+            console.info('Resorting...');
+
+            if(Dashboard.sort != "i" || Dashboard.sortOptions.desc) {
+              Dashboard.sortCourses(
+                Dashboard.sort,
+                Dashboard.sortOptions.numeric || false,
+                Dashboard.sortOptions.desc || false,
+              );
+            }
+          });
+        } catch(e) {
+          console.error(e);
+        }
+      }
     });
     runner.always(function(data) {
-     $('.loading-spinner').remove();
+      setTimeout(function(){
+        $('.loading-spinner').remove();
+      }, 0);
     });
     runner.fail(function(xhr){
       if(xhr.readyState == 0 || xhr.status == 0) { // request has been canceled (change page)

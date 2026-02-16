@@ -80,7 +80,7 @@ $var title: $(user['username'])
           </div>
 
         <!-- Progress bar -->
-        $if user['stats']['points']:
+        $if 'points' in user['stats'] and user['stats']['points']:
           $ points = floatval(user['stats']['points'])
           $if nextLvl and user['rank']:
             $ nextPoints = levels[user['rank']]

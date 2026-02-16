@@ -290,14 +290,21 @@ class user_dashboard():
         if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
+        _GET = web.input(offset=0)
+        offset = _GET.offset
+        if type(offset) is not int and not offset.isdigit():
+            offset = 0
+        else:
+            offset = int(offset)
+
         web.header('Content-type','text/plain')
         web.header('Transfer-Encoding','chunked')
 
         sessionid = web.ctx.session['loggedin']['sessionid']
-        offset    = 0
         c         = 0
         try:
-            for courses in memrise.whatistudy(sessionid):
+            for page in memrise.whatistudy(sessionid, offset=offset):
+                courses = page['courses']
                 content = web.config.template.prender.ajax_dashboard(courses, offset)['__body__']
 
                 yield json.dumps({"content": content }) + '$'
@@ -309,6 +316,9 @@ class user_dashboard():
                 #     for k in ['progress']:
                 #         data[k] = course[k]
                 #     c += 1
+
+            if page and page['next_offset']:
+                yield json.dumps({"next_offset": page['next_offset'] }) + '$'
 
         except HTTPError as e:
             print('HTTPError', e)

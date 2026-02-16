@@ -1,0 +1,13 @@
+{
+    "access_token": {
+        "access_token": "4e3d719a0565b1d0fe86c3ae9a4be8ae7df66c91",
+        "token_type": "Bearer",
+        "expires_in": 315359999,
+        "scope": "read"
+    },
+    "user": {
+        "username": "Decks",
+        "is_new": false,
+        "id": 5895633
+    }
+}

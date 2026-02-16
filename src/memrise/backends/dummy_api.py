@@ -22,7 +22,7 @@ class DummyRequestor:
 
     def whatistudy(self, sessionid, offset, nbperpage):
         data = self.get_testset_json("dashboard_courses.json")
-        data["has_more_pages"] = False
+        data["has_more_pages"] = offset == 0
         return data
 
     def my_leaderboard(self, sessionid, period):

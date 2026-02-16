@@ -43,7 +43,7 @@ class Memrise:
 
             Testset: dashboard_courses.json
             @param string sessionid
-            @return list of pages > courses - [[{id, name, slug, is_official,photo_url, next_session, goal, progress}]]
+            @return list of pages - [{offset, has_more_pages, courses: [{id, name, slug, is_official,photo_url, next_session, goal, progress}]}]
         """
         raise NotImplementedError("subclasses of Memrise must provide a whatistudy() method")
 

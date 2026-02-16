@@ -43,16 +43,16 @@ class MemriseGetTest(unittest.TestCase):
 
         # Depending on the backend we might retrieve a generator or a list
         if isgenerator(pages):
-            courses = next(pages)
+            data = next(pages)
         else:
             self.assertIs(type(pages), list)
             self.assertTrue(len(pages) > 0)
-            courses = pages[0]
+            data = pages[0]
 
-        self.assertIs(type(courses), list)
-        self.assertTrue(len(courses) > 0)
+        self.assertIs(type(data.get('courses', None)), list)
+        self.assertTrue(len(data['courses']) > 0)
 
-        course = courses[0]
+        course = data['courses'][0]
         self.assertIsNotNone(course.get('id', None))
         self.assertIsNotNone(course.get('name', None))
         self.assertIsNotNone(course.get('slug', None))

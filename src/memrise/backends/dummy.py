@@ -18,8 +18,8 @@ class DummyMemrise(Memrise):
     def login(self, username, password):
         data = {'username': username} # json['user']
 
-        data["sessionid"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
-        data["csrftoken"] = "zwrpo2uktmjzby5fla2wl23nlm0vcuto4"
+        data["sessionid"] = "DUMMY_SESSIONID"
+        data["csrftoken"] = "DUMMY_CSRFTOKEN"
         return data
 
     #+-----------------------------------------------------
@@ -39,7 +39,7 @@ class DummyMemrise(Memrise):
         """
         Testset: dashboard_courses.json
         """
-        page1 = [{
+        courses = [{
             "id": "6698294",
             "name": "German vocab",
             "slug": "german-vocab",
@@ -111,7 +111,13 @@ class DummyMemrise(Memrise):
                 "percent_complete": 18
             }
         }]
-        return [page1]
+
+        # Returns a list of pages
+        return [{
+            "courses": courses,
+            "offset": 0,
+            "has_more_pages": False,
+        }]
 
     def my_leaderboard(self, sessionid, period):
         """
