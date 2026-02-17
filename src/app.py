@@ -64,6 +64,9 @@ app.notfound = notfound
 
 if settings.DEBUG:
     app.debug = True
+
+    from debug import decorate_app
+    decorate_app(app)
 else:
     app.debug = False
 
