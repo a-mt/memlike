@@ -1,16 +1,17 @@
 from os import environ, getenv, path
 
 ROOTDIR = path.dirname(path.realpath(__file__))
-
 AUTORELOAD = bool(getenv('AUTORELOAD', None))
 DEBUG = bool(getenv('DEBUG', False))
 IS_TEST = getenv('WEBPY_ENV', '') == 'test'
 
-DATABASE_URL = getenv('DATABASE_URL', '')
-
 MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
-if IS_TEST:
+if True or IS_TEST:
     MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
+
+DATABASE_URL = getenv('DATABASE_URL', '')
+MEMRISE_ANON_USERNAME = "66b1d91e8e"
+MEMRISE_ANON_PASSWORD = "66b1d91e8e66b1d91e8e!"
 
 # Import global web object to hold web.py config
 import web
@@ -112,8 +113,34 @@ if web.config.get('template', None) is None:
 
 # ---
 # Configure logging
-import logging
+import logging.config
 
 # Sets the root logger level to write to stdout (default is WARNING)
-# It's equivalent to both previous statements combined:
-logging.basicConfig(level=logging.DEBUG if DEBUG else logging.WARNING)
+# logging.basicConfig()
+conf = {
+    'version': 1,
+    'formatters': {
+        'form1': {
+            'format': '%(asctime)s ++ %(levelname)s ++ %(name)s ++ %(message)s',
+            'datefmt': '%H:%M:%S', #'%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers' : {
+        'hand1' : {
+            'class': 'logging.StreamHandler',
+            'formatter': 'form1',
+            'level': 'NOTSET',
+            'stream': 'ext://sys.stdout',
+        },
+    },
+    'root': {
+        'level': logging.DEBUG if DEBUG else logging.WARNING,
+        'handlers': ['hand1'],
+    },
+    'loggers': {
+        'session': {
+            'level': logging.WARNING,
+        }
+    }
+}
+logging.config.dictConfig(conf)

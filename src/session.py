@@ -5,13 +5,10 @@ from copy import deepcopy
 
 # Just re-exporting web.session(__all__), with some overwrites
 from web.session import *
+from exceptions import SessionExpired
 
 
 logger = logging.getLogger(__name__)
-
-
-class SessionExpired(web.Unauthorized):
-    pass
 
 
 class DiskStore(DiskStore):
@@ -106,11 +103,13 @@ class Session(Session):
         logger.debug('Session expired')
         try:
             super().kill()
+        except KeyError:
+            pass
         except Exception as e:
-            logger.error(e)
+            logger.error('Could not kill session', exc_info=e)
         finally:
             if not self._config.ignore_expiry:
-                raise SessionExpired(message=self._config.expired_message)
+                raise SessionExpired(self._config.expired_message)
 
             if self.get('_killed'):
                 del self._killed
