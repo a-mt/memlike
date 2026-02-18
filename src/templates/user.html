@@ -74,9 +74,9 @@ $var title: $(user['username'])
           $ nextLvl = (user['rank'] + 1 < len(levels))
           <div class="level-persona">
             $if user['rank']:
-              <img src="https://d2rhekw5qr4gcj.cloudfront.net/img/icons/ranks/ziggy_$(user['rank']).svg" title="$(LANG.misc['rank'].replace('%', str(user['rank'])))" height="125px" class="current">
+              <img src="/static/img/ranks/rank_$(user['rank']).jpg" title="$(LANG.misc['rank'].replace('%', str(user['rank'])))" height="125px" class="current">
             $if nextLvl:
-              <img src="https://d2rhekw5qr4gcj.cloudfront.net/img/icons/ranks/ziggy_$(user['rank']+1).svg" title="$(LANG.misc['rank'].replace('%', str(user['rank']+1)))" height="125px" class="hide next">
+              <img src="/static/img/ranks/rank_$(user['rank']+1).jpg" title="$(LANG.misc['rank'].replace('%', str(user['rank']+1)))" height="125px" class="hide next">
           </div>
 
         <!-- Progress bar -->

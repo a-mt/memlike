@@ -14,7 +14,7 @@ img {
   border: 0;
 }
 img.hide {
-  filter: brightness(0);
+  filter: grayscale(100%);
   opacity: .2;
 }
 a {
@@ -568,7 +568,7 @@ footer .active a {
  *-------------------------------------------------------*/
 
 .ico {
-  background-image: url("https://i.imgur.com/1YSCe97.png");
+  background-image: url("/static/img/1YSCe97.png");
   display: inline-block;
   vertical-align: middle;
   width: 18px;
@@ -576,10 +576,10 @@ footer .active a {
   background-size: 126px 180px;
 }
 .ico-white {
-  background-image: url("https://i.imgur.com/gbogAZy.png");
+  background-image: url("/static/img/gbogAZy.png");
 }
 .ico-grey {
-  background-image: url("https://i.imgur.com/gbogAZy.png");
+  background-image: url("/static/img/gbogAZy.png");
   opacity: .3;
 }
 .ico-l {
@@ -694,7 +694,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   display: block;
   min-width: 32px;
   min-height: 32px;
-  background-image: url("https://i.imgur.com/8mxiVSL.gif");
+  background-image: url("/static/img/8mxiVSL.gif");
   background-position: center center;
   background-size: 32px 32px;
   background-repeat: no-repeat;
@@ -712,7 +712,7 @@ a > .expand-icon { /* ico-s icon-arr-right */
   display: block;
   min-width: 32px;
   min-height: 32px;
-  background-image: url("https://i.imgur.com/8mxiVSL.gif");
+  background-image: url("/static/img/8mxiVSL.gif");
   background-position: center center;
   background-size: 32px 32px;
   background-repeat: no-repeat;
@@ -1060,7 +1060,7 @@ h1 small {
 }
 .level-box.multimedia .level-card {
   background-color: #f5f5f5;
-  background-image: url("https://i.imgur.com/ZghvRD8.png");
+  background-image: url("/static/img/ZghvRD8.png");
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
@@ -1138,7 +1138,7 @@ h1 small {
   display: inline-block;
   height: 18px;
   width: 12px;
-  background: url("https://gistcdn.githack.com/a-mt/c23fc955f741cd94dbfcabc3d7a22af4/raw/c7f2f73d015e45ebeeb0ffb6855e66ae77a32b81/scb-icon-water.svg");
+  background: url("/static/img/scb-icon-water.svg");
   background-size: 100%;
   vertical-align: middle;
   margin-top: -5px;
@@ -1406,19 +1406,19 @@ code.header {
   letter-spacing: 0.2px;
 }
 .mode-icon.speed_review {
-  background-image: url("https://gistcdn.githack.com/a-mt/a73b81aa05402f312c0746b39fa786a7/raw/603e202ea4fc9f1e38dc179f8faf40fd06538ede/scb-icon-speedreview.svg");
+  background-image: url("/static/img/scb-icon-speedreview.svg");
   background-color: #f83c25;
 }
 .mode-icon.classic_review {
-  background-image: url("https://gistcdn.githack.com/a-mt/02095364d08b9e6e498cc29230e8f818/raw/f47c9ff97932d0442e261ef0c4add012a313c304/scb-icon-review.svg");
+  background-image: url("/static/img/scb-icon-review.svg");
   background-color: #02a0fb;
 }
 .mode-icon.learn {
-  background-image: url("https://gistcdn.githack.com/a-mt/f1d9b03ae6f81629e7dd025f9fac936a/raw/828a91a4cf742977f3ed970ee1040792c27498cc/scb-icon-learn.svg");
+  background-image: url("/static/img/scb-icon-learn.svg");
   background-color: #00c622;
 }
 .mode-icon.preview {
-  background-image: url("https://gistcdn.githack.com/a-mt/458746ed4dce13ae34ac7fd73579c77e/raw/c9861813212e2839b6acca45f66f31253e5ee0fc/scb-icon-preview.svg");
+  background-image: url("/static/img/scb-icon-preview.svg");
   background-color: #858585;
 }
 
@@ -1647,12 +1647,12 @@ code.header {
   transition: transform .3s;
 }
 .slideshow-trigger.prev::before {
-  background: url('https://i.imgur.com/5dLNozU.png') no-repeat left center rgba(0,0,0,0.3);
+  background: url('/static/img/5dLNozU.png') no-repeat left center rgba(0,0,0,0.3);
   left: 0;
   transform: translateX(-100%);
 }
 .slideshow-trigger.next::before {
-  background: url('https://i.imgur.com/R8rHuJP.png') no-repeat left center rgba(0,0,0,0.3);
+  background: url('/static/img/R8rHuJP.png') no-repeat left center rgba(0,0,0,0.3);
   transform: translateX(100%);
 }
 .slideshow-trigger:hover::before {
@@ -2022,7 +2022,7 @@ table.learn:not(.recap) td:last-child {
   margin-right: 2px;
 }
 .heart {
-  background-image: url("https://i.imgur.com/vYYJg8a.png");
+  background-image: url("/static/img/vYYJg8a.png");
   width: 26px;
   height: 26px;
   background-position: 0px 0px;
@@ -2065,7 +2065,7 @@ table.learn:not(.recap) td:last-child {
   background: rgba(255,255,255,0.5);
 }
 .overlay .no-heart {
-  background: url("https://i.imgur.com/5M529D7.png") no-repeat;
+  background: url("/static/img/5M529D7.png") no-repeat;
   background-size: 250px 180px;
   width: 250px;
   height: 180px;

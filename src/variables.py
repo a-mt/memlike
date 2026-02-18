@@ -6,293 +6,294 @@ menu = [
 ]
 
 locales = [
-    { "slug": "english", "name": "English", "photo": "https://gistcdn.githack.com/a-mt/963f6a89d6543a8eef2d06c309c0e3be/raw/aae58d158943c8915627168aa6d8e31d1b653da9/flag_uk.svg" },
-    { "slug": "french", "name": "Français", "photo": "https://gistcdn.githack.com/a-mt/1a0631773bb11baa25e86637dde216d8/raw/05786bf73bbb72b72c7d769519e907b00168e20f/flag_french.svg" }
+    { "slug": "english", "name": "English", "photo": "/static/img/flag_uk.svg" },
+    { "slug": "french", "name": "Français", "photo": "/static/img/flag_french.svg" }
 ]
 
+# https://static.memrise.com/uploads/language_photos/german.png
 languages = {
     "afrikaans": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Afrikaans.png"
+        "url": "/static/img/language_photos/Afrikaans.png"
     },
     "albanian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/albanian.png"
+        "url": "/static/img/language_photos/albanian.png"
     },
     "american-sign-language-asl": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/sign-american.png"
+        "url": "/static/img/language_photos/sign-american.png"
     },
     "ancient-greek": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/Ancient-Greek.png"
+        "url": "/static/img/language_photos/Ancient-Greek.png"
     },
     "arabic": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/arabic.png"
+        "url": "/static/img/language_photos/arabic.png"
     },
     "armenian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/armenian.png"
+        "url": "/static/img/language_photos/armenian.png"
     },
     "azerbaijani": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/azerbaijini.png"
+        "url": "/static/img/language_photos/azerbaijini.png"
     },
     "basque": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-38_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-38_copy.png"
     },
     "belarusian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/belarus.png"
+        "url": "/static/img/language_photos/belarus.png"
     },
     "bengali": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-61_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-61_copy.png"
     },
     "bosnian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-71_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-71_copy.png"
     },
     "bulgarian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-66_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-66_copy.png"
     },
     "burmese": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/burmese.png"
+        "url": "/static/img/language_photos/burmese.png"
     },
     "cantonese": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-01.png"
+        "url": "/static/img/language_photos/DemoFlags-01.png"
     },
     "cantonese-jyutping": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-01.png"
+        "url": "/static/img/language_photos/DemoFlags-01.png"
     },
     "catalan": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-29_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-29_copy.png"
     },
     "chinese-simplified": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-01.png"
+        "url": "/static/img/language_photos/DemoFlags-01.png"
     },
     "chinese-traditional": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-01.png"
+        "url": "/static/img/language_photos/DemoFlags-01.png"
     },
     "croatian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-30_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-30_copy.png"
     },
     "czech": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-19_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-19_copy.png"
     },
     "danish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-25_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-25_copy.png"
     },
     "dutch": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_Dutch_copy.png"
+        "url": "/static/img/language_photos/Flags_Dutch_copy.png"
     },
     "english": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/en.png"
+        "url": "/static/img/language_photos/en.png"
     },
     "english-us": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/us_flag.png"
+        "url": "/static/img/language_photos/us_flag.png"
     },
     "esperanto": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-34_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-34_copy.png"
     },
     "estonian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-32_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-32_copy.png"
     },
     "faroese": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_BenExtras_Faroese.png"
+        "url": "/static/img/language_photos/Flags_BenExtras_Faroese.png"
     },
     "finnish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-22_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-22_copy.png"
     },
     "flemish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/flemish.png"
+        "url": "/static/img/language_photos/flemish.png"
     },
     "french": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-02_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-02_copy.png"
     },
     "french-sign-language-lsf": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/sign-french.png"
+        "url": "/static/img/language_photos/sign-french.png"
     },
     "galician": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/galician-flag.png"
+        "url": "/static/img/language_photos/galician-flag.png"
     },
     "georgian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/georgian.png"
+        "url": "/static/img/language_photos/georgian.png"
     },
     "german": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/german.png"
+        "url": "/static/img/language_photos/german.png"
     },
     "greek": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-26_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-26_copy.png"
     },
     "greenlandic": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/greenland.png"
+        "url": "/static/img/language_photos/greenland.png"
     },
     "hakka": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/hakka.png"
+        "url": "/static/img/language_photos/hakka.png"
     },
     "hebrew": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-24_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-24_copy.png"
     },
     "hindi": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-28_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-28_copy.png"
     },
     "hungarian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-21_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-21_copy.png"
     },
     "icelandic": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-35_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-35_copy.png"
     },
     "indonesian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-64_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-64_copy.png"
     },
     "irish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-12_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-12_copy.png"
     },
     "italian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-06_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-06_copy.png"
     },
     "japanese-4": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-09_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-09_copy.png"
     },
     "japanese-no-script": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-09_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-09_copy.png"
     },
     "kanji": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-09_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-09_copy.png"
     },
     "kazakh": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-62_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-62_copy.png"
     },
     "khmer": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/khmer.png"
+        "url": "/static/img/language_photos/khmer.png"
     },
     "korean": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/korean-flag.png"
+        "url": "/static/img/language_photos/korean-flag.png"
     },
     "kurdish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/kurdish-flag1.png"
+        "url": "/static/img/language_photos/kurdish-flag1.png"
     },
     "kyrgyz": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/kyrgyz.png"
+        "url": "/static/img/language_photos/kyrgyz.png"
     },
     "ladin": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/ladin.png"
+        "url": "/static/img/language_photos/ladin.png"
     },
     "latin": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/latin.png"
+        "url": "/static/img/language_photos/latin.png"
     },
     "latvian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_BenExtras_Latvian.png"
+        "url": "/static/img/language_photos/Flags_BenExtras_Latvian.png"
     },
     "lithuanian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-37_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-37_copy.png"
     },
     "luxembourgish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_BenExtras_Luxembourgish.png"
+        "url": "/static/img/language_photos/Flags_BenExtras_Luxembourgish.png"
     },
     "macedonian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_BenExtras_Macedonian.png"
+        "url": "/static/img/language_photos/Flags_BenExtras_Macedonian.png"
     },
     "malay": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-60_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-60_copy.png"
     },
     "malayalam": {
     },
     "maltese": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/maltese-flag1.png"
+        "url": "/static/img/language_photos/maltese-flag1.png"
     },
     "mandarin-spoken-only": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/DemoFlags-01.png"
+        "url": "/static/img/language_photos/DemoFlags-01.png"
     },
     "maori": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-55_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-55_copy.png"
     },
     "marathi": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-41_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-41_copy.png"
     },
     "mongolian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_BenExtras_Mongolian.png"
+        "url": "/static/img/language_photos/Flags_BenExtras_Mongolian.png"
     },
     "nepali": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/Nepalese.png"
+        "url": "/static/img/language_photos/Nepalese.png"
     },
     "norwegian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-23_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-23_copy.png"
     },
     "occitan": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/occitan_flag.png"
+        "url": "/static/img/language_photos/occitan_flag.png"
     },
     "other-language": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/other-languages.png"
+        "url": "/static/img/language_photos/other-languages.png"
     },
     "persian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/farsi.png"
+        "url": "/static/img/language_photos/farsi.png"
     },
     "polish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-51_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-51_copy.png"
     },
     "portuguese-brazil": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/pt-br.png"
+        "url": "/static/img/language_photos/pt-br.png"
     },
     "portuguese-portugal-2": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-31_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-31_copy.png"
     },
     "punjabi": {
     },
     "romanian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Romanian.png"
+        "url": "/static/img/language_photos/Romanian.png"
     },
     "russian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-20_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-20_copy.png"
     },
     "sanskrit": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/sanskrit.png"
+        "url": "/static/img/language_photos/sanskrit.png"
     },
     "scots": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-36_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-36_copy.png"
     },
     "serbian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-43_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-43_copy.png"
     },
     "slovak": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-11_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-11_copy.png"
     },
     "slovenian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-16_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-16_copy.png"
     },
     "somali": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/somali.png"
+        "url": "/static/img/language_photos/somali.png"
     },
     "spanish-mexico": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/MEX.png"
+        "url": "/static/img/language_photos/MEX.png"
     },
     "spanish-spain": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-03_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-03_copy.png"
     },
     "swahili": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-45_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-45_copy.png"
     },
     "swedish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-18_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-18_copy.png"
     },
     "tagalog": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/Tagalog.png"
+        "url": "/static/img/language_photos/Tagalog.png"
     },
     "tamil": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/tamil-flag.v1.png"
+        "url": "/static/img/language_photos/tamil-flag.v1.png"
     },
     "thai": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-47_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-47_copy.png"
     },
     "turkish": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-13_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-13_copy.png"
     },
     "ukrainian": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/DemoFlags-49_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-49_copy.png"
     },
     "urdu": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/urdu.png"
+        "url": "/static/img/language_photos/urdu.png"
     },
     "vietnamese": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/vietnamese.png"
+        "url": "/static/img/language_photos/vietnamese.png"
     },
     "welsh": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/language_photos/Flags_Welsh_copy.png"
+        "url": "/static/img/language_photos/Flags_Welsh_copy.png"
     },
     "zulu": {
-        "url": "https://d2rhekw5qr4gcj.cloudfront.net/uploads/category_photos/Zulu.png"
+        "url": "/static/img/language_photos/Zulu.png"
     }
 }
 
@@ -584,7 +585,7 @@ categories = [
     { "id": "511", "code": "pokemon" },
     { "id": "771", "code": "yoga" }
   ]}
-];
+]
 
 categories_code = {
   "advanced-placement": "654",
@@ -847,7 +848,7 @@ categories_code = {
   "yiddish": "488",
   "yoga": "771",
   "zulu": "496"
-};
+}
 
 levels = [
   0,

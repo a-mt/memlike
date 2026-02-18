@@ -811,6 +811,8 @@ class Scraper:
                     rank = i
                 else:
                     break
+
+            # https://community-courses.memrise.com/community/course/1601869/all-about-ziggy-no-difficult-typing/
             user["rank"] = rank+1
 
         div = DOM.find(id="content")
