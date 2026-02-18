@@ -75,7 +75,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
-    def courses(self, lang, page=1, cat="", query=""):
+    def courses(self, lang, page=1, cat="", query="", **kwargs):
         """
             Retrieve the list of courses for the given language, category, query string and page
 
@@ -91,7 +91,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang):
+    def categories(self, lang, **kwargs):
         """
             Retrieve the list of categories that have courses for the given language
             That is: for users that speak [LANG],
@@ -133,12 +133,13 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level() method")
 
-    def level_multimedia(self, urlCourse, lvl):
+    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         """
             Retrieve the content of a multimedia level
 
             Testset: level_multimedia.html
-            @param string urlCourse - ex "/course/43238/durham-university-medicine-year-one/"
+            @param string idCourse - "43238"
+            @param string slugCourse - "durham-university-medicine-year-one"
             @param integer lvl
             @return string
         """
@@ -147,7 +148,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def course_leaderboard(self, idCourse, period):
+    def course_leaderboard(self, idCourse, period, **kwargs):
         """
             Retrieve the learderboard of a course (50 first)
 
@@ -161,7 +162,7 @@ class Memrise:
      #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
-    def user(self, username):
+    def user(self, username, **kwargs):
         """
             Retrieve the info about a user
 
@@ -172,7 +173,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a user() method")
 
-    def user_followers(self, username, page=1):
+    def user_followers(self, username, page=1, **kwargs):
         """
             Retrieve the list of followers of a user
 
@@ -181,9 +182,9 @@ class Memrise:
             @param integer page - [1]
             @return dict - {page, lastpage, has_next, users}
         """
-        return self.user_mempals("followers", username, page)
+        return self.user_mempals("followers", username, page, **kwargs)
 
-    def user_following(self, username, page=1):
+    def user_following(self, username, page=1, **kwargs):
         """
             Retrieve the list of followed users
 
@@ -192,9 +193,9 @@ class Memrise:
             @param integer page - [1]
             @return dict - {page, lastpage, has_next, users}
         """
-        return self.user_mempals("following", username, page)
+        return self.user_mempals("following", username, page, **kwargs)
 
-    def user_mempals(self, tab, username, page=1):
+    def user_mempals(self, tab, username, page=1, **kwargs):
         """
             Retrieve the users associated to an user (follower or following)
 
@@ -208,13 +209,13 @@ class Memrise:
     #+-----------------------------------------------------
     #| USER's COURSES
     #+-----------------------------------------------------
-    def user_teaching(self, username):
-        return self.user_courses("teaching", username)
+    def user_teaching(self, username, **kwargs):
+        return self.user_courses("teaching", username, **kwargs)
 
-    def user_learning(self, username):
-        return self.user_courses("learning", username)
+    def user_learning(self, username, **kwargs):
+        return self.user_courses("learning", username, **kwargs)
 
-    def user_courses(self, tab, username):
+    def user_courses(self, tab, username, **kwargs):
         """
             Retrieve the courses of an user
 
@@ -342,7 +343,7 @@ class Memrise:
             @param string referer
             @param string idLevel - "7030263"
             @param string txt - "img:http://cdni.wired.co.uk/620x413..."
-            àreturn dict - {success, multimedia}
+            @return dict - {success, multimedia}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_multimedia_edit() method")
 

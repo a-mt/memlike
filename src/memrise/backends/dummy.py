@@ -157,7 +157,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
-    def courses(self, lang, page=1, cat="", query=""):
+    def courses(self, lang, page=1, cat="", query="", **kwargs):
         """
         Testset: browse_cat-languages_scat-french_page-1.json
         """
@@ -170,7 +170,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang):
+    def categories(self, lang, **kwargs):
         return {
             "569": True,
             "578": True,
@@ -393,7 +393,7 @@ class DummyMemrise(Memrise):
                 })
 
         # Add stats
-        if sessionid:
+        if kwargs.get("sessionid", None):
             stats = self._course_progress()
             if stats != None:
                 course["stats"] = stats
@@ -448,7 +448,7 @@ class DummyMemrise(Memrise):
         with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
             return json.loads(f.read())
 
-    def level_multimedia(self, urlCourse, lvl):
+    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         """
         Testset: level_multimedia.html
         """
@@ -457,7 +457,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def course_leaderboard(self, idCourse, period):
+    def course_leaderboard(self, idCourse, period, **kwargs):
         """
         Testset: course_leaderboard.json
         """
@@ -475,7 +475,7 @@ class DummyMemrise(Memrise):
      #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
-    def user(self, username):
+    def user(self, username, **kwargs):
         """
         Testset: user_courses.html
         URL: https://www.memrise.com/api/user/get/?user_id=2224242&with_leaderboard=true&_=1520004351621
@@ -508,7 +508,7 @@ class DummyMemrise(Memrise):
 
         return user
 
-    def user_mempals(self, tab, username, page=1):
+    def user_mempals(self, tab, username, page=1, **kwargs):
         """
         Testset: user_mempals_followers.html
         """
@@ -555,7 +555,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| USER's COURSES
     #+-----------------------------------------------------
-    def user_courses(self, tab, username):
+    def user_courses(self, tab, username, **kwargs):
         # https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0
         with open(settings.ROOTDIR + "/tests/testset/user_courses_teaching_min.html") as f:
             text = f.read()

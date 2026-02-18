@@ -1,21 +1,46 @@
-from memrise import memrise
+from memrise import load_memrise
 from inspect import isgenerator
-import unittest
+from .testcases import SimpleTestCase
+import settings
 
 
-COURSE_ID = '6698294'
-COURSE_SLUG = 'german-vocab'
+COURSE_ID = '1892646'
+COURSE_SLUG = 'grammaire-le-groupe-nominal'
+
+memrise = load_memrise('memrise.backends.DummyMemrise')
 
 
-class MemriseGetTest(unittest.TestCase):
+class MemriseGetTest(SimpleTestCase):
     session = {}
 
-    def test_first_memrise_login(self):
-        username = 'bob'
-        password = 'pass'
+    def setUp(self):
+        if 'session_id' in self.session:
+            return
+
+        self.init_context()
+        self.init_memrise_login()
+
+    def init_context(self):
+        """
+        Ensure web.ctx exists
+        """
+        response = self.client.request('/')
+        self.assertEqual(response.status_code, 200)
+
+    def init_memrise_login(self):
+        username = settings.MEMRISE_ANON_USERNAME or 'bob'
+        password = settings.MEMRISE_ANON_PASSWORD or 'pass'
 
         result = memrise.login(username, password)
-
+        '''
+        result = {
+            'username': '4v15721',
+            'is_new': False,
+            'id': 34497740,
+            'sessionid': 'j74y9ut8nwrw4wqomtvqmyt5k9g4gvwng',
+            'csrftoken': 'QSgyjcoxy4BLlz2Wg4FGTOMO2a0gNsX4fyYVKjZvvqhms8EX48Hz7pMuZYtfo8cl',
+        }
+        '''
         self.assertIsNotNone(result)
         self.assertIs(type(result), dict)
         self.assertEqual(result.get('username', None), username)
@@ -61,7 +86,7 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(course.get('next_session', None))
         self.assertIsNotNone(course.get('progress', None))
 
-    def test_memrise_leaderboard(self):
+    def test_memrise_my_leaderboard(self):
         self.assertIsNotNone(self.session['session_id'])
 
         result = memrise.my_leaderboard(period='alltime', sessionid=self.session['session_id'])
@@ -79,10 +104,12 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(row.get('uid', None))
 
     def test_memrise_categories(self):
+        self.assertIsNotNone(self.session['session_id'])
+
         lang_code = 'french'
         lang_id = '2'
 
-        result = memrise.categories(lang_code)
+        result = memrise.categories(lang_code, sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue(lang_id in result)
@@ -91,8 +118,10 @@ class MemriseGetTest(unittest.TestCase):
         # at least the "french" category should have coursess - so {"2": True} is included in result
         self.assertTrue({lang_id: True}.items() <= result.items())
 
-    def test_course_leaderboard(self):
-        result = memrise.course_leaderboard(COURSE_ID, period='alltime')
+    def test_memrise_course_leaderboard(self):
+        self.assertIsNotNone(self.session['session_id'])
+
+        result = memrise.course_leaderboard(COURSE_ID, period='alltime', sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue('rows' in result)
@@ -107,7 +136,9 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(row.get('uid', None))
 
     def test_memrise_user(self):
-        result = memrise.user(username='bob')
+        self.assertIsNotNone(self.session['session_id'])
+
+        result = memrise.user(username='Decks', sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('username', None))
@@ -123,8 +154,10 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(stats.get('learning', None))
         self.assertIsNotNone(stats.get('teaching', None))
 
-    def test_user_courses(self):
-        result = memrise.user_courses(tab='teaching', username='bob')
+    def test_memrise_user_courses(self):
+        self.assertIsNotNone(self.session['session_id'])
+
+        result = memrise.user_courses(tab='teaching', username='Decks', sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue(result.get('nbCourse', 0) > 0)
@@ -132,7 +165,7 @@ class MemriseGetTest(unittest.TestCase):
         self.assertTrue(len(result['content']) > 0)
         self.assertIs(type(result['content'][0]), str)
 
-    def test_courses(self):
+    def test_memrise_courses(self):
         result = memrise.courses(lang='french', page=1)
 
         self.assertIs(type(result), dict)
@@ -178,7 +211,9 @@ class MemriseGetTest(unittest.TestCase):
         self.assertIsNotNone(result['stats'].get('num_things', None))
 
     def test_memrise_level_multimedia(self):
-        result = memrise.level_multimedia(f"/course/{COURSE_ID}/{COURSE_SLUG}/", "1")
+        self.assertIsNotNone(self.session['session_id'])
+
+        result = memrise.level_multimedia(COURSE_ID, COURSE_SLUG, '1', sessionid=self.session['session_id'])
         self.assertIs(type(result), str)
 
         first_char = result[0]
@@ -190,7 +225,7 @@ class MemriseGetTest(unittest.TestCase):
         result = memrise.level(
             COURSE_ID,
             COURSE_SLUG,
-            '1',
+            '2',
             'preview',
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],

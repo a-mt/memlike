@@ -141,17 +141,11 @@ class CachedApiMemrise(ApiMemrise):
                 mc.set(cache_key, level, time=60*60*24)
         return level
 
-    def level_multimedia(self, urlCourse, lvl):
+    def level_multimedia(self, idCourse, slugCourse, lvl):
         """
             Retrieve the level multimedia content
             Is cached via memcached for 1day
         """
-        pattern = re.search(r"/course/(\d+)/", urlCourse)
-        if pattern:
-            idCourse = pattern.group(1)
-        else:
-            return False
-
         cache_key = "course_" + idCourse + "_" + lvl + "_multimedia"
         data      = mc.get(cache_key)
 
@@ -164,7 +158,7 @@ class CachedApiMemrise(ApiMemrise):
                     if data:
                         return data
 
-                data = super().level_multimedia(urlCourse, lvl)
+                data = super().level_multimedia(idCourse, slugCourse, lvl)
                 mc.set(cache_key, data, time=60*60*24)
         return data
 

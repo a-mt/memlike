@@ -6,7 +6,7 @@ DEBUG = bool(getenv('DEBUG', False))
 IS_TEST = getenv('WEBPY_ENV', '') == 'test'
 
 MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
-if True or IS_TEST:
+if IS_TEST:
     MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
 
 DATABASE_URL = getenv('DATABASE_URL', '')
@@ -140,7 +140,10 @@ conf = {
     'loggers': {
         'session': {
             'level': logging.WARNING,
-        }
+        },
+        'autoreload': {
+            'level': logging.WARNING,
+        },
     }
 }
 logging.config.dictConfig(conf)

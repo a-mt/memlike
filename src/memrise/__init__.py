@@ -5,8 +5,8 @@ from . import backends
 
 
 # memrise.backends.dummy.DummyMemrise
-def load_memrise():
-    klass = import_string(MEMRISE_BACKEND)
+def load_memrise(backend=None):
+    klass = import_string(backend or MEMRISE_BACKEND)
     return klass()
 
 

@@ -14,7 +14,8 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
     session = {}
 
     def test_first_memrise_login(self):
-        # data = requestor.login(settings.MEMRISE_ANON_USERNAME, settings.MEMRISE_ANON_PASSWORD)
+        data = requestor.login(settings.MEMRISE_ANON_USERNAME, settings.MEMRISE_ANON_PASSWORD)
+        '''
         data = {
             'username': '66b1d91e8e',
             'is_new': False,
@@ -22,6 +23,7 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
             'sessionid': '3kynx9h9rz3y39dnlbettooa7tmmdfri1',
             'csrftoken': 'FLGeZ73gj52vXs0loEw7TkhgtS9URX5d',
         }
+        '''
         self.assertIsNotNone(data.get('username', None))
         self.assertIsNotNone(data.get('sessionid', None))
         self.assertIsNotNone(data.get('csrftoken', None))
@@ -54,9 +56,20 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
 
         result = requestor.level(
             COURSE_ID,
-            "1",
+            '1',
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
         )
         self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('learnables', None))
+
+    def disable_test_memrise_requestor_leaderboard(self):
+        self.assertIsNotNone(self.session.get('session_id'))
+
+        result = requestor.course_leaderboard(
+            COURSE_ID,
+            period='alltime',
+            sessionid=self.session['session_id'],
+        )
+        self.assertIs(type(result), dict)
+        self.assertIsNotNone(result.get('rows', None))

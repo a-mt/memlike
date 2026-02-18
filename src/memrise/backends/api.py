@@ -13,10 +13,10 @@ from .base import Memrise
 
 
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
-USER_AGENT      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0"
 USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
 HOST            = "https://community-courses.memrise.com"
 API_VERSION     = "v1.25"
+ACCEPT_LANGUAGE = "fr;q=0.8,en-US;q=0.5,en;q=0.3"
 
 
 logger = logging.getLogger(__name__)
@@ -38,7 +38,7 @@ class Requestor:
 
         # might redirect to canonical URL
         # which isn't supposed to happen if we have the correct slug
-        if response.status_code >= 300:
+        if 300 <= response.status_code < 400:
             loc = response.headers.get('Location', '')
 
             http_error_msg = (
@@ -130,7 +130,8 @@ class Requestor:
         return ",".join(args)
 
     def whoami(self, sessionid=None):
-        logger.debug(f"Requestor:Who am I")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Who am I ({log_session})")
 
         url = f"{HOST}/settings/"
 
@@ -139,7 +140,8 @@ class Requestor:
         return response.text.encode("utf-8").strip()
 
     def whatistudy(self, offset, nbperpage, sessionid=None):
-        logger.debug(f"Requestor:What I study [offset={offset}]")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:What I study [offset={offset}] ({log_session})")
 
         #url = f"https://app.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset={offset}&limit={nbperpage-1}&get_review_count=true"
         url = f"{HOST}/{API_VERSION}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
@@ -149,7 +151,8 @@ class Requestor:
         return response.json()
 
     def my_leaderboard(self, period, sessionid=None):
-        logger.debug(f"Requestor:My leaderboard [period={period}]")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:My leaderboard [period={period}] ({log_session})")
 
         url = f"{HOST}/ajax/leaderboard/mempals/?period={period}&how_many=50"
 
@@ -170,7 +173,8 @@ class Requestor:
             @param string referer
             @return dict - Retrieved JSON
         """
-        logger.debug(f"Requestor:Track progress [path={path}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Track progress [path={path}] ({log_session})")
 
         if path == "session_end":
             url = "https://app.memrise.com/ajax/session_end/"
@@ -199,18 +203,24 @@ class Requestor:
             url += "&q=" + query
         url += "&page=" + str(page) + "&_=" + get_time()
 
-        response = requests.get(url, headers={"Accept-Language": "fr;q=0.8,en-US;q=0.5,en;q=0.3"})
-        return response.text.encode("utf-8").strip()
+        response = requests.get(url, headers={"Accept-Language": ACCEPT_LANGUAGE})
+        return response.json()
 
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang):
-        logger.debug(f"Requestor:Categories [lang={lang}]")
+    def categories(self, lang, sessionid=None, csrftoken=None):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Categories [lang={lang}] ({log_session})")
 
-        url = f"{HOST}/fr/courses/{lang}/"
+        locale = lang[:2]
+        if locale not in ("fr", "en"):
+            locale = "fr"
 
-        response = requests.get(url)
+        # /de/community/courses/french = "Ich spreche französicsch"
+        url = f"{HOST}/{locale}/community/courses/{lang}/"
+
+        response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
@@ -234,7 +244,8 @@ class Requestor:
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level(self, idCourse, lvl, sessionid=None, csrftoken=None):
-        logger.debug(f"Requestor:Level [id_course={idCourse},level={lvl}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level [id_course={idCourse},level={lvl}] ({log_session})")
 
         url = f"{HOST}/{API_VERSION}/learning_sessions/preview/"
 
@@ -260,7 +271,8 @@ class Requestor:
         return response.json()
 
     def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
-        logger.debug(f"Requestor:Level learning session [id_course={idCourse},slug={slugCourse}],session_type={sessionType}")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Level learning session [id_course={idCourse},slug={slugCourse}],session_type={sessionType} ({log_session})")
 
         url = f"{HOST}/course/{idCourse}/{slugCourse}/garden/{sessionType}/"
 
@@ -271,13 +283,14 @@ class Requestor:
             "csrftoken": response.cookies.get("csrftoken"),
         }
 
-    def level_multimedia(self, idCourse, slugCourse, lvl):
-        logger.debug(f"Requestor:Level multimedia [id_course={idCourse},slug={slugCourse},level={lvl}]")
+    def level_multimedia(self, idCourse, slugCourse, lvl, sessionid=None):
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Level multimedia [id_course={idCourse},slug={slugCourse},level={lvl}] ({log_session})")
 
         # https://community-courses.memrise.com/community/course/1892646/grammaire-le-groupe-nominal/3/
         url = f"{HOST}/community/course/{idCourse}/{slugCourse}/{lvl}/"
 
-        response = requests.get(url)
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
@@ -285,23 +298,25 @@ class Requestor:
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
     def course_leaderboard(self, idCourse, period, sessionid=None):
-        logger.debug(f"Requestor:Course leaderboard [id_course={idCourse},period={period}]")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Course leaderboard [id_course={idCourse},period={period}] ({log_session})")
 
         url = f"{HOST}/ajax/leaderboard/course/{idCourse}/?period={period}&how_many=50"
 
-        response = requests.get(url, cookies=self.buildCookies(sessionid))
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.json()
 
     #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
-    def user(self, username):
-        logger.debug(f"Requestor:User profile [username={username}]")
+    def user(self, username, sessionid=None):
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:User profile [username={username}] ({log_session})")
 
         url = f"{HOST}/user/{username}/courses/teaching/"
 
-        response = requests.get(url)
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
@@ -317,12 +332,13 @@ class Requestor:
     #+-----------------------------------------------------
     #| USER"s COURSES
     #+-----------------------------------------------------
-    def user_courses(self, tab, username):
-        logger.debug(f"Requestor:User courses [username={username},tab={tab}]")
+    def user_courses(self, tab, username, sessionid=None):
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:User courses [username={username},tab={tab}] ({log_session})")
 
         url = f"{HOST}/user/{username}/courses/{tab}/"
 
-        response = requests.get(url)
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
@@ -330,16 +346,18 @@ class Requestor:
     #| EDIT
     #+-----------------------------------------------------
     def level_edit_get(self, idLevel, sessionid=None):
-        logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={idLevel}]")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={idLevel}] ({log_session})")
 
         url = f"{HOST}/ajax/level/editing_html/?level_id={idLevel}&_=" + get_time()
 
-        response = requests.get(url, cookies=self.buildCookies(sessionid))
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: add thing [level_id={idLevel}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: add thing [level_id={idLevel}] ({log_session})")
 
         url = f"{HOST}/ajax/level/thing/add/"
 
@@ -359,10 +377,11 @@ class Requestor:
             }
         )
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: edit thing [thing_id={idThing},cell_id={cellId}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: edit thing [thing_id={idThing},cell_id={cellId}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/cell/update/"
 
@@ -383,10 +402,11 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest"
             })
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: upload file to thing [thing_id={idThing},cell_id={cellId}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: upload file to thing [thing_id={idThing},cell_id={cellId}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/cell/upload_file/"
 
@@ -420,10 +440,11 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             })
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: delete file from thing [thing_id={idThing},cell_id={cellId},file_id={fileId}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: delete file from thing [thing_id={idThing},cell_id={cellId},file_id={fileId}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/delete_from/"
 
@@ -444,10 +465,11 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             })
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: delete thing [level_id={idLevel},thing_id={idThing}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: delete thing [level_id={idLevel},thing_id={idThing}] ({log_session})")
 
         url = f"{HOST}/ajax/level/thing_remove/"
 
@@ -467,12 +489,13 @@ class Requestor:
             }
         )
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: get thing [thing_id={idThing}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: get thing [thing_id={idThing}] ({log_session})")
 
-        url = f"{HOST}/api/thing/get/?thing_id={idThing}&_=" + get_time()
+        url = f"{HOST}/ajax/thing/get/?thing_id={idThing}&_=" + get_time()
 
         response = requests.get(
             url,
@@ -486,10 +509,11 @@ class Requestor:
             }
         )
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: edit thing alternative values [thing_id={idThing},column={column_key}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: edit thing alternative values [thing_id={idThing},column={column_key}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/update_alts/"
 
@@ -510,10 +534,11 @@ class Requestor:
             }
         )
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None):
-        logger.debug(f"Requestor:Level edition: update multimedia [level_id={idLevel}]")
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level edition: update multimedia [level_id={idLevel}] ({log_session})")
 
         url = f"{HOST}/ajax/level/set_multimedia/"
 
@@ -533,10 +558,11 @@ class Requestor:
             }
         )
         self.raise_for_status(response)
-        return response.text.encode("utf-8").strip()
+        return response.json()
 
     def course_edit_get(self, idCourse, slugCourse, sessionid=None):
-        logger.debug(f"Requestor:Course edition: get levels [level_id={idLevel}]")
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:Course edition: get levels [course_id={idCourse}] ({log_session})")
 
         url = f"{HOST}/course/{idCourse}/{slugCourse}/edit/"
 
@@ -962,7 +988,7 @@ class ApiMemrise(Memrise):
         kwargs.setdefault('sessionid', session.get('sessionid', None))
         kwargs.setdefault('csrftoken', session.get('csrftoken', None))
 
-    def _login_as_anonymous(self):
+    def _login_as_anonymous(self, **kwargs):
         """
             Retrieve sessionid to retrieve content (using our own account)
 
@@ -1015,8 +1041,9 @@ class ApiMemrise(Memrise):
 
         return self.requestor.courses(lang=lang, page=page, cat=cat, query=query)
 
-    def categories(self, lang):
-        html = self.requestor.categories(lang)
+    def categories(self, lang, **kwargs):
+        self.set_default_kwargs(kwargs)
+        html = self.requestor.categories(lang, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
 
         return self.scraper.categories(html)
 
@@ -1067,8 +1094,10 @@ class ApiMemrise(Memrise):
 
         return level
 
-    def level_multimedia(self, urlCourse, lvl):
-        html = self.requestor.level_multimedia(urlCourse, lvl)
+    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        html = self.requestor.level_multimedia(idCourse, slugCourse, lvl, sessionid=kwargs['sessionid'])
 
         return self.scraper.level_multimedia(html)
 
@@ -1093,22 +1122,30 @@ class ApiMemrise(Memrise):
             finally:
                 retry_login = False
 
-        return {
-            "rows": ldboard.get("users", []),
-        }
+        if "users" in ldboard:
+            return {
+                "rows": ldboard.get("users", []),
+            }
+        return ldboard
 
-    def user(self, username):
-        html = self.requestor.user(username)
+    def user(self, username, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        html = self.requestor.user(username, sessionid=kwargs['sessionid'])
 
         return self.scraper.user(username, html)
 
-    def user_mempals(self, tab, username, page=1):
-        html = self.requestor.user_mempals(tab, username, page)
+    def user_mempals(self, tab, username, page=1, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        html = self.requestor.user_mempals(tab, username, page, sessionid=kwargs['sessionid'])
 
         return self.scraper.user_mempals(username, page, html)
 
-    def user_courses(self, tab, username):
-        html = self.requestor.user_courses(tab, username)
+    def user_courses(self, tab, username, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        html = self.requestor.user_courses(tab, username, sessionid=kwargs['sessionid'])
 
         return self.scraper.user_courses(html)
 

@@ -34,7 +34,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
-    def courses(self, lang, page, cat, query):
+    def courses(self, lang, page, cat, query, **kwargs):
         data = self.get_testset_json("browse_cat-languages_scat-french_page-1.json")
         data["has_next"] = False
         return data
@@ -42,7 +42,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang):
+    def categories(self, lang, **kwargs):
         return self.get_testset_text("courses.html")
 
     #+-----------------------------------------------------
@@ -63,7 +63,7 @@ class DummyRequestor:
             "csrftoken": "",
         }
 
-    def level_multimedia(self, urlCourse, lvl):
+    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         return self.get_testset_text("level_multimedia.html")
 
     #+-----------------------------------------------------
@@ -75,16 +75,16 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| USER
     #+-----------------------------------------------------
-    def user(self, username):
+    def user(self, username, **kwargs):
         return self.get_testset_text("user_courses_en.html")
 
-    def user_mempals(self, tab, username, page):
+    def user_mempals(self, tab, username, page, **kwargs):
         return self.get_testset_text("user_mempals_following.html")
 
     #+-----------------------------------------------------
     #| USER's COURSES
     #+-----------------------------------------------------
-    def user_courses(self, tab, username):
+    def user_courses(self, tab, username, **kwargs):
         return self.get_testset_text("user_courses_teaching.html")
 
     #+-----------------------------------------------------
