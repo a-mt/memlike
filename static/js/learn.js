@@ -231,7 +231,11 @@ class Learn extends Component {
     // Update level title
     if (!this.state.get_all) {
       if (!prevState.data || prevState.level != this.state.level) {
-        var name = window.course.levels[this.state.level].name;
+        var name = "Unknown";
+
+        if (this.state.level in window.course.levels) {
+          window.course.levels[this.state.level].name;
+        }
         document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
       }
     } else if (this.props.session_type == "speed_review") {
@@ -405,10 +409,16 @@ class Learn extends Component {
 
   // Retrieve the current level datas
   getData(level, callback) {
-    const session_type = this.props.session_type;
+    if (!(level in window.course.levels)) {
+      return this.setState({
+        error: 'Level data cannot be retrieved'
+      });
+    }
 
-    var level_type = window.course.levels[level].type,
-        url = '/ajax' + window.course.url;
+    const session_type = this.props.session_type;
+    const level_type = window.course.levels[level].type;
+
+    var url = '/ajax' + window.course.url;
 
     if (this.state.get_all) {
       url += 'all/' + session_type;
