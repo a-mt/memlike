@@ -17,18 +17,18 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| CURRENT USER
     #+-----------------------------------------------------
-    def whoami(self, sessionid=None):
+    def whoami(self, **kwargs):
         return self.get_testset_text("settings.html")
 
-    def whatistudy(self, offset, nbperpage, sessionid=None):
+    def whatistudy(self, offset, nbperpage, **kwargs):
         data = self.get_testset_json("dashboard_courses.json")
         data["has_more_pages"] = offset == 0
         return data
 
-    def my_leaderboard(self, period, sessionid=None):
+    def my_leaderboard(self, period, **kwargs):
         return self.get_testset_json("profile_leaderboard.json")
 
-    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
+    def track_progress(self, path, data, **kwargs):
         pass
 
     #+-----------------------------------------------------
@@ -48,16 +48,16 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", sessionid=None):
+    def course(self, idCourse, slugCourse="", **kwargs):
         return self.get_testset_text("course-6698294.html")
 
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, lvl, sessionid=None, csrftoken=None):
+    def level(self, idCourse, lvl, **kwargs):
         return self.get_testset_json("learning_session_learn.json")
 
-    def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
+    def level_learning_session(self, idCourse, slugCourse, sessionType, **kwargs):
         return {
             "referer": "",
             "csrftoken": "",
@@ -69,7 +69,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def course_leaderboard(self, idCourse, period, sessionid=None):
+    def course_leaderboard(self, idCourse, period, **kwargs):
         return self.get_testset_json("course_leaderboard.json")
 
     #+-----------------------------------------------------
@@ -90,7 +90,7 @@ class DummyRequestor:
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def course_edit_get(self, idCourse, slugCourse, sessionid=None):
+    def course_edit_get(self, idCourse, slugCourse, **kwargs):
         html = self.get_testset_text("course_get_edit.html")
         return {
             "csrftoken": "",
@@ -105,7 +105,7 @@ class DummyApiMemrise(ApiMemrise):
         self.scraper = Scraper()
 
     def _login_as_anonymous(self):
-        return self.login(None, None)["sessionid"]
+        return self.login(None, None)
 
     login = DummyMemrise.__dict__["login"]
     level_edit_get = DummyMemrise.__dict__["level_edit_get"]

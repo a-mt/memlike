@@ -2,6 +2,9 @@ import requests, re, sys
 import time
 import json
 import logging
+import settings
+import web
+from exceptions import SessionExpired
 
 from cache import mc
 from bs4 import BeautifulSoup, Tag
@@ -28,6 +31,23 @@ class Requestor:
     Performs requests to Memrise
     The result might still need to be scraped to conform to our Memrise interface
     """
+    def raise_for_status(self, response):
+        if response.status_code == 302:
+            if response.headers['Location'].startswith('/signin'):
+                raise SessionExpired()
+
+        # might redirect to canonical URL
+        # which isn't supposed to happen if we have the correct slug
+        if response.status_code >= 300:
+            loc = response.headers.get('Location', '')
+
+            http_error_msg = (
+                f"{response.status_code} Redirect Error: {response.reason} for url: {response.url} -> {loc}"
+            )
+            raise requests.exceptions.HTTPError(http_error_msg, response=response)
+
+        # Raise exception if response status code >= 400
+        response.raise_for_status()
 
     #+-----------------------------------------------------
     #| AUTH
@@ -98,13 +118,24 @@ class Requestor:
 
         return cookies
 
+    def buildCookiesLog(self, sessionid=None, csrftoken=None):
+        args = []
+
+        if sessionid:
+            args.append("session")
+
+        if csrftoken:
+            args.append("csrftoken")
+
+        return ",".join(args)
+
     def whoami(self, sessionid=None):
         logger.debug(f"Requestor:Who am I")
 
         url = f"{HOST}/settings/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def whatistudy(self, offset, nbperpage, sessionid=None):
@@ -114,7 +145,7 @@ class Requestor:
         url = f"{HOST}/{API_VERSION}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     def my_leaderboard(self, period, sessionid=None):
@@ -123,7 +154,7 @@ class Requestor:
         url = f"{HOST}/ajax/leaderboard/mempals/?period={period}&how_many=50"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
@@ -152,7 +183,7 @@ class Requestor:
             "User-Agent": USER_AGENT,
             "X-CSRFToken": csrftoken
         })
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     #+-----------------------------------------------------
@@ -180,21 +211,23 @@ class Requestor:
         url = f"{HOST}/fr/courses/{lang}/"
 
         response = requests.get(url)
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", sessionid=None):
-        logger.debug(f"Requestor:Course [id={idCourse},slug={slugCourse}]")
+    def course(self, idCourse, slugCourse="", sessionid=None, csrftoken=None):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Course [id={idCourse},slug={slugCourse}] ({log_session})")
 
         url = f"{HOST}/community/course/{idCourse}/"
         if slugCourse:
             url += slugCourse + "/"
 
-        response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
+        self.raise_for_status(response)
+
         return response.text.encode("utf-8").strip()
 
     #+-----------------------------------------------------
@@ -223,7 +256,7 @@ class Requestor:
                 "session_source_type": "course_id_and_level_index",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
@@ -232,7 +265,7 @@ class Requestor:
         url = f"{HOST}/course/{idCourse}/{slugCourse}/garden/{sessionType}/"
 
         response = requests.head(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return {
             "referer": url,
             "csrftoken": response.cookies.get("csrftoken"),
@@ -245,7 +278,7 @@ class Requestor:
         url = f"{HOST}/community/course/{idCourse}/{slugCourse}/{lvl}/"
 
         response = requests.get(url)
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     #+-----------------------------------------------------
@@ -257,7 +290,7 @@ class Requestor:
         url = f"{HOST}/ajax/leaderboard/course/{idCourse}/?period={period}&how_many=50"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.json()
 
     #+-----------------------------------------------------
@@ -269,7 +302,7 @@ class Requestor:
         url = f"{HOST}/user/{username}/courses/teaching/"
 
         response = requests.get(url)
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def user_mempals(self, tab, username, page):
@@ -278,7 +311,7 @@ class Requestor:
         url = f"{HOST}/user/{username}/mempals/{tab}/?page={page}"
 
         response = requests.get(url)
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     #+-----------------------------------------------------
@@ -290,7 +323,7 @@ class Requestor:
         url = f"{HOST}/user/{username}/courses/{tab}/"
 
         response = requests.get(url)
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     #+-----------------------------------------------------
@@ -302,10 +335,10 @@ class Requestor:
         url = f"{HOST}/ajax/level/editing_html/?level_id={idLevel}&_=" + get_time()
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
-    def level_thing_add(self, referer, idLevel, data, sessionid=None, csrftoken=None):
+    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None):
         logger.debug(f"Requestor:Level edition: add thing [level_id={idLevel}]")
 
         url = f"{HOST}/ajax/level/thing/add/"
@@ -325,7 +358,7 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None):
@@ -349,7 +382,7 @@ class Requestor:
                 "X-CSRFToken": csrftoken,
                 "X-Requested-With": "XMLHttpRequest"
             })
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
@@ -386,7 +419,7 @@ class Requestor:
                 "X-CSRFToken": csrftoken,
                 "X-Requested-With": "XMLHttpRequest",
             })
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
@@ -410,7 +443,7 @@ class Requestor:
                 "X-CSRFToken": csrftoken,
                 "X-Requested-With": "XMLHttpRequest",
             })
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None):
@@ -433,7 +466,7 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None):
@@ -452,7 +485,7 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
@@ -476,7 +509,7 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None):
@@ -499,7 +532,7 @@ class Requestor:
                 "X-Requested-With": "XMLHttpRequest",
             }
         )
-        response.raise_for_status()
+        self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
     def course_edit_get(self, idCourse, slugCourse, sessionid=None):
@@ -508,7 +541,7 @@ class Requestor:
         url = f"{HOST}/course/{idCourse}/{slugCourse}/edit/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
-        response.raise_for_status()
+        self.raise_for_status(response)
 
         html = response.text.encode("utf-8").strip()
         csrftoken = response.cookies.get("csrftoken")
@@ -526,6 +559,8 @@ class Scraper:
     #| CURRENT USER
     #+-----------------------------------------------------
     def whoami(self, sessionid, html):
+        assert len(html) > 0
+
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         data = {
             "sessionid": sessionid
@@ -550,6 +585,8 @@ class Scraper:
     #| CATEGORIES
     #+-----------------------------------------------------
     def categories(self, html):
+        assert len(html) > 0
+
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         ul_list = DOM.find_all("ul",{"class":"categories-list"})
 
@@ -574,6 +611,8 @@ class Scraper:
     #| COURSE
     #+-----------------------------------------------------
     def course(self, idCourse, html, isLoggedIn=False):
+        assert len(html) > 0
+
         DOM    = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         course = {
             "id"         : idCourse,
@@ -700,6 +739,8 @@ class Scraper:
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level_multimedia(self, html):
+        assert len(html) > 0
+
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         data = None
 
@@ -719,6 +760,8 @@ class Scraper:
     #| USER
     #+-----------------------------------------------------
     def user(self, username, html):
+        assert len(html) > 0
+
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         user = {
             "username": username,
@@ -791,6 +834,8 @@ class Scraper:
         return user
 
     def user_mempals(self, username, page, html):
+        assert len(html) > 0
+
         DOM   = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         data  = {
             "page": page,
@@ -842,6 +887,8 @@ class Scraper:
     #| USER"s COURSES
     #+-----------------------------------------------------
     def user_courses(self, html):
+        assert len(html) > 0
+
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         courses = {
             "nbCourse": 0,
@@ -863,6 +910,8 @@ class Scraper:
     #| EDIT
     #+-----------------------------------------------------
     def course_edit_get(self, data_pointer, html):
+        assert len(html) > 0
+
         data = data_pointer
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
 
@@ -900,24 +949,37 @@ class ApiMemrise(Memrise):
         self.requestor = Requestor()
         self.scraper = Scraper()
 
+    def get_saved_login(self):
+        return web.ctx.get('session', {}).get('loggedin', None)
+
+        # csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN"),
+        # referer=web.ctx.env.get("HTTP_X_REFERER"),
+
+    def set_default_kwargs(self, kwargs, session=None):
+        session = self.get_saved_login() or {}
+        kwargs.setdefault('sessionid', session.get('sessionid', None))
+        kwargs.setdefault('csrftoken', session.get('csrftoken', None))
+
     def _login_as_anonymous(self):
         """
             Retrieve sessionid to retrieve content (using our own account)
 
             @return string - sessionid
         """
-        session = self.login("66b1d91e8e", "66b1d91e8e66b1d91e8e!")
-        return session["sessionid"]
+        return self.login(settings.MEMRISE_ANON_USERNAME, settings.MEMRISE_ANON_PASSWORD)
 
     def login(self, username, password):
         return self.requestor.login(username, password)
 
-    def whoami(self, sessionid=None):
-        html = self.requestor.whoami(sessionid)
+    def whoami(self, **kwargs):
+        self.set_default_kwargs(kwargs)
 
-        return self.scraper.whoami(sessionid, html)
+        html = self.requestor.whoami(sessionid=kwargs['sessionid'])
 
-    def whatistudy(self, offset=0, sessionid=None):
+        return self.scraper.whoami(kwargs['sessionid'], html)
+
+    def whatistudy(self, offset=0, **kwargs):
+        self.set_default_kwargs(kwargs)
         nbperpage = 4
         load_n_pages = 4
 
@@ -925,7 +987,7 @@ class ApiMemrise(Memrise):
         while c < load_n_pages:
             c += 1
 
-            data    = self.requestor.whatistudy(offset, nbperpage, sessionid=sessionid)
+            data    = self.requestor.whatistudy(offset, nbperpage, sessionid=kwargs['sessionid'])
             offset += nbperpage
             has_more_pages = "has_more_pages" in data and data["has_more_pages"]
 
@@ -937,11 +999,13 @@ class ApiMemrise(Memrise):
             if not has_more_pages:
                 break
 
-    def my_leaderboard(self, period, sessionid=None):
-        return self.requestor.my_leaderboard(period, sessionid=sessionid)
+    def my_leaderboard(self, period, **kwargs):
+        self.set_default_kwargs(kwargs)
+        return self.requestor.my_leaderboard(period, sessionid=kwargs['sessionid'])
 
-    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
-        return self.requestor.track_progress(path, data, sessionid=sessionid, csrftoken=csrftoken, referer=referer)
+    def track_progress(self, path, data, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+        return self.requestor.track_progress(path, data, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'], referer=referer)
 
     def courses(self, lang, page=1, cat="", query=""):
         if not isinstance(page, int) and not page.isdigit():
@@ -954,15 +1018,21 @@ class ApiMemrise(Memrise):
 
         return self.scraper.categories(html)
 
-    def course(self, idCourse, slugCourse="", sessionid=None, csrftoken=None):
-        html = self.requestor.course(idCourse, slugCourse, sessionid=sessionid)
+    def course(self, idCourse, slugCourse="", **kwargs):
+        self.set_default_kwargs(kwargs)
+        html = self.requestor.course(idCourse, slugCourse, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
 
-        return self.scraper.course(idCourse, html, isLoggedIn=sessionid)
+        return self.scraper.course(idCourse, html, isLoggedIn=kwargs['sessionid'])
 
-    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=None, csrftoken=None):
-        if not sessionid:
+    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        if not kwargs['sessionid']:
             is_anonymous_session = True
-            sessionid = self._login_as_anonymous()
+            session = self._login_as_anonymous()
+
+            kwargs['sessionid'] = session['sessionid']
+            kwargs['csrftoken'] = session['csrftoken']
         else:
             is_anonymous_session = False
 
@@ -974,12 +1044,15 @@ class ApiMemrise(Memrise):
         level = {}
         while retry_login:
             try:
-                level = self.requestor.level(idCourse, lvl, sessionid=sessionid, csrftoken=csrftoken)
+                level = self.requestor.level(idCourse, lvl, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
             except requests.exceptions.HTTPError as e:
 
                 # Try reauthenticate
                 if e.response.status_code == 403 and is_anonymous_session and retry_login:
-                    sessionid = self._login_as_anonymous(True)
+                    session = self._login_as_anonymous(nocache=True)
+
+                    kwargs['sessionid'] = session['sessionid']
+                    kwargs['csrftoken'] = session['csrftoken']
                 else:
                     raise e
             finally:
@@ -987,7 +1060,7 @@ class ApiMemrise(Memrise):
 
         # Start learning session (to be able to send results to memrise)
         if not is_anonymous_session and slug != "preview":
-            session = self.requestor.level_learning_session(idCourse, slugCourse, sessionType=slug, sessionid=sessionid)
+            session = self.requestor.level_learning_session(idCourse, slugCourse, sessionType=slug, sessionid=kwargs['sessionid'])
             level.update(session)
 
         return level
@@ -997,18 +1070,22 @@ class ApiMemrise(Memrise):
 
         return self.scraper.level_multimedia(html)
 
-    def course_leaderboard(self, idCourse, period):
-        sessionid = self._login_as_anonymous()
+    def course_leaderboard(self, idCourse, period, **kwargs):
+        self.set_default_kwargs(kwargs)
+
         retry_login = True
         ldboard = {}
         while retry_login:
             try:
-                ldboard = self.requestor.course_leaderboard(idCourse, period, sessionid=sessionid)
+                ldboard = self.requestor.course_leaderboard(idCourse, period, sessionid=kwargs['sessionid'])
             except requests.exceptions.HTTPError as e:
 
                 # Try reauthenticate
                 if e.response.status_code == 403 and retry_login:
-                    sessionid = self._login_as_anonymous(True)
+                    session = self._login_as_anonymous(nocache=True)
+
+                    kwargs['sessionid'] = session['sessionid']
+                    kwargs['csrftoken'] = session['csrftoken']
                 else:
                     raise e
             finally:
@@ -1060,8 +1137,10 @@ class ApiMemrise(Memrise):
     def level_multimedia_edit(self, *args, **kwargs):
         return self.requestor.level_multimedia_edit(*args, **kwargs)
 
-    def course_edit_get(self, sessionid, idCourse, slugCourse):
-        data = self.requestor.course_edit_get(idCourse, slugCourse, sessionid=sessionid)
+    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        data = self.requestor.course_edit_get(idCourse, slugCourse, sessionid=kwargs['sessionid'])
         html = data.pop("html")
         self.scraper.course_edit_get(data, html)
 

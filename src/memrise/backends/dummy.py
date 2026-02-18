@@ -35,7 +35,7 @@ class DummyMemrise(Memrise):
             "photo": "https://static.memrise.com/img/400sqf/from/uploads/profiles/amistri_140708_0656_52.jpg",
         }
 
-    def whatistudy(self, offset=0, sessionid=None):
+    def whatistudy(self, offset=0, **kwargs):
         """
         Testset: dashboard_courses.json
         """
@@ -119,7 +119,7 @@ class DummyMemrise(Memrise):
             "has_more_pages": False,
         }]
 
-    def my_leaderboard(self, period, sessionid=None):
+    def my_leaderboard(self, period, **kwargs):
         """
         Testset: profile_leaderboard.json
         """
@@ -151,7 +151,7 @@ class DummyMemrise(Memrise):
             }]
         }
 
-    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
+    def track_progress(self, path, data, **kwargs):
         return {}
 
     #+-----------------------------------------------------
@@ -342,7 +342,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", sessionid=False, csrftoken=None):
+    def course(self, idCourse, slugCourse="", **kwargs):
         """
         Testset: course-6698294.html
         """
@@ -444,7 +444,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None):
+    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
         with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
             return json.loads(f.read())
 
@@ -579,7 +579,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def level_edit_get(self, idLevel, sessionid=None):
+    def level_edit_get(self, idLevel, **kwargs):
         # Type things
         return {
             "success": True,
@@ -591,7 +591,7 @@ class DummyMemrise(Memrise):
             "rendered": "<div id=\"l_16260539\"\n     class=\"level\"\n     data-level-id=\"16260539\"\n     ><div class=\"level-header clearfix\"><div class=\"level-actions\"><div class=\"btn-group\"><a class=\"show-hide btn btn-small\" data-role=\"level-toggle\">Einblenden/Ausblenden</a><a class=\"btn btn-small\" data-role=\"level-preview\" href=\"/community/course/6698294/german-vocab/7/\">\n                    Vorschau\n                </a><a class=\"btn btn-small\" data-role=\"level-duplicate\">\n                    Duplizieren\n                </a><a class=\"btn btn-small\" data-role=\"level-delete\">\n                    L\u00f6schen\n                </a></div></div><div class=\"level-handle\">7</div><h3 class=\"level-name\" title=\"Doppelklick um den Namen dieses Levels zu \u00e4ndern\">\n            New level\n        </h3></div><div class=\"level-options\"><div class=\"options-col clearfix\"><a href=\"#\" class=\"toggle-edit btn btn-icos-active\"><i class=\"ico ico-edit\"></i>\n        Multimedia bearbeiten\n    </a></div></div><div class=\"level-multimedia\"><div class=\"multimedia-view hide\"><code>\n                None\n            </code></div><div class=\"multimedia-edit \" ><textarea id=\"mmTooltip\" data-placement=\"top\" data-original-title=\"\n\n<p>\n    Wenn du Multimedia aus dem Web einf\u00fcgen willst (Fotos, Videos, gifs, usw.) sind hier ein paar Tipps:\n</p>\n1. F\u00fcr Bilder schreibe \"img:\" vor die URL, z.B.\n\n<br /><b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\"></textarea><button class=\"noMrg btn btn-primary\" data-role=\"level-multimedia-save\">\n                Speichern\n            </button></div></div><script>\n    MEMRISE.renderer.ready(function(){\n        $(\"#mmTooltip\").tooltip({\n            html : true,\n            template :  '<div class=\"tooltip wide\" role=\"tooltip\">' +\n                            '<div class=\"tooltip-arrow\"></div>' +\n                            '<div class=\"tooltip-inner\"></div>' +\n                        '</div>'\n        });\n    })\n    </script></div>\n"
         }
 
-    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_add(self, idLevel, data, **kwargs):
         return {
             "success": True,
             "thing": {
@@ -649,29 +649,29 @@ class DummyMemrise(Memrise):
             "rendered_thing": "\n\n<tr class=\"thing\" data-thing-id=\"477757811\">\n    <td>\n        <div class=\"thing__actions\">\n            <i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i>\n            <i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i>\n        </div>\n    </td>\n    \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">a</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">b</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">plural</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n    \n    \n        \n            \n                \n\n<td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n\n            \n            <div class=\"text\"></div>\n        </div>\n    \n</td>\n\n            \n        \n    \n</tr>\n"
         }
 
-    def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_edit(self, idThing, cellId, cellValue, **kwargs):
         return {
             "success": None,
         }
 
-    def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload(self, idThing, cellId, file, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n    <div class=\"dropdown-row\" data-file-id=\"1\">\n        <i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i>\n        <a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/477757811_260208_1842_02.mp3\"></a>\n    </div>\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload_remove(self, idThing, cellId, fileId, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_remove(self, idLevel, idThing, **kwargs):
         return {
             "success": True,
         }
 
-    def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_get(self, idThing, **kwargs):
         # https://community-courses.memrise.com/ajax/thing/get/?thing_id=477757876&_=1770575744741
         return {
             "thing": {
@@ -760,18 +760,18 @@ class DummyMemrise(Memrise):
                 }
         }
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
         return {
             "success": None,
         }
 
-    def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None):
+    def level_multimedia_edit(self, idLevel, txt, **kwargs):
         return {
             "success": True,
             "multimedia": r"<b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\">",
         }
 
-    def course_edit_get(self, idCourse, slugCourse, sessionid=None):
+    def course_edit_get(self, idCourse, slugCourse, **kwargs):
         """
         Testset: tests/testset/course_edit.html
         """

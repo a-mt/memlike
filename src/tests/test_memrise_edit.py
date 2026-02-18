@@ -53,14 +53,14 @@ class MemriseEditTest(unittest.TestCase):
     # -------------------------------------------------------------------------
     def test_memrise_course_level_thing_add(self):
         result = memrise.level_thing_add(
-            csrftoken=self.session['csrftoken'],
-            referer='',
             idLevel='16258912',
             data={
                 'columns': {"1":"a","2":"b","4":"plural"},
                 'level_id': "16258912"
             },
             sessionid=self.session['session_id'],
+            csrftoken=self.session['csrftoken'],
+            referer='',
         )
 
         self.assertIs(type(result), dict)

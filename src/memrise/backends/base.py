@@ -27,7 +27,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| CURRENT USER
     #+-----------------------------------------------------
-    def whoami(self, sessionid=None):
+    def whoami(self, **kwargs):
         """
             Retrieve the username and photo of current user
 
@@ -37,7 +37,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a whoami() method")
 
-    def whatistudy(self, offset=0, sessionid=None):
+    def whatistudy(self, offset=0, **kwargs):
         """
             Retrieve the list of courses of current user
 
@@ -47,7 +47,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a whatistudy() method")
 
-    def my_leaderboard(self, period, sessionid=None):
+    def my_leaderboard(self, period, **kwargs):
         """
             Retrieve the learderboard of the current user (50 first)
 
@@ -58,7 +58,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a my_leaderboard() method")
 
-    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
+    def track_progress(self, path, data, **kwargs):
         """
             Post play progress
 
@@ -107,7 +107,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", sessionid=False, csrftoken=None):
+    def course(self, idCourse, slugCourse="", **kwargs):
         """
             Retrieve the info about a course
 
@@ -120,7 +120,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, slugCourse, lvl, slug="preview", sessionid=False, csrftoken=None):
+    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
         """
             Retrieve the list of items of a level (wont work for multimedia)
 
@@ -228,7 +228,7 @@ class Memrise:
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def level_edit_get(self, idLevel, sessionid=None):
+    def level_edit_get(self, idLevel, **kwargs):
         """
             Retrieve the content of a level for the edit page
             May be multimedia or list of things
@@ -239,7 +239,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_edit_get() method")
 
-    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_add(self, idLevel, data, **kwargs):
         """
             Add a thing is the given level
 
@@ -252,7 +252,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_add() method")
 
-    def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_edit(self, idThing, cellId, cellValue, **kwargs):
         """
             Edit the value of a thing
 
@@ -266,7 +266,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_edit() method")
 
-    def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload(self, idThing, cellId, file, **kwargs):
         """
             Upload a file in the given thing
 
@@ -280,7 +280,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload() method")
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload_remove(self, idThing, cellId, fileId, **kwargs):
         """
             Removes an uploaded file from the given thing
 
@@ -295,7 +295,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload_remove() method")
 
-    def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_remove(self, idLevel, idThing, **kwargs):
         """
             Removes the given thing
 
@@ -308,7 +308,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_remove() method")
 
-    def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_get(self, idThing, **kwargs):
         """
             Retrieves the data of the given thing
 
@@ -319,7 +319,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_get() method")
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
         """
             Edit the alternative answers of the given column for the given thing
 
@@ -333,7 +333,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_alt_edit() method")
 
-    def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None):
+    def level_multimedia_edit(self, idLevel, txt, **kwargs):
         """
             Edit the content of the given multimedia level
 
@@ -346,7 +346,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_multimedia_edit() method")
 
-    def course_edit_get(self, idCourse, slugCourse, sessionid=None):
+    def course_edit_get(self, idCourse, slugCourse, **kwargs):
         """
             Retrieve the content of a course for the edit page
 
