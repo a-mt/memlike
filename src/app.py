@@ -152,5 +152,3 @@ if __name__ == '__main__' and not settings.IS_TEST:
 
     print('Running...')
     app.run()
-
-# Translations: https://d2rhekw5qr4gcj.cloudfront.net/dist/locales/fr/translation-54de43979713.json
