@@ -275,7 +275,7 @@ var audioPlayer = {
        document.body.addEventListener('ended', function(e){
         if(e.target == audioPlayer.target) {
           audioPlayer.isPlaying = false;
-          audioPlayer.target.classList.remove("active");
+          audioPlayer.target.button.classList.remove("active");
           audioPlayer.target = false;
         }
       }, true);
@@ -284,7 +284,7 @@ var audioPlayer = {
     // Reset audioPlayer state
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.classList.remove("active");
+      audioPlayer.target.button.classList.remove("active");
     }
     audioPlayer.target    = false;
     audioPlayer.isPlaying = false;
@@ -298,22 +298,28 @@ var audioPlayer = {
 
   // Play the target (this) audio element
   play: function(e, force) {
+    let audioBtn = this;
+    let audioElement = this;
+    if ('id' in audioBtn.dataset) {
+      audioElement = document.getElementById(audioBtn.dataset.id);
+    }
+    audioElement.button = audioBtn;
 
     // Toggle play/pause
-    if(audioPlayer.target === this) {
+    if(audioPlayer.target === audioElement) {
       if(force) {
         if(!audioPlayer.isPlaying) {
-          this.play();
+          audioElement.play();
           audioPlayer.isPlaying = true;
         }
         return;
       }
       if(audioPlayer.isPlaying) {
-        this.pause();
-        this.classList.remove("active");
+        audioElement.pause();
+        audioElement.button.classList.remove("active");
       } else {
-        this.play();
-        this.classList.add("active");
+        audioElement.play();
+        audioElement.button.classList.add("active");
       }
       audioPlayer.isPlaying = !audioPlayer.isPlaying;
 
@@ -323,9 +329,9 @@ var audioPlayer = {
         audioPlayer.target.pause();
         audioPlayer.target.classList.remove("active");
       }
-      this.play();
-      this.classList.add("active");
-      audioPlayer.target    = this;
+      audioElement.play();
+      audioElement.button.classList.add("active");
+      audioPlayer.target    = audioElement;
       audioPlayer.isPlaying = true;
     }
   },
@@ -334,7 +340,7 @@ var audioPlayer = {
   pause: function() {
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.classList.remove("active");
+      audioPlayer.target.button.classList.remove("active");
       audioPlayer.isPlaying = false;
     }
   }
@@ -532,20 +538,29 @@ function user_courses() {
 var Dashboard = {
   container: false,
   sort: "i",
+  sortOptions: {},
+  offset: 0,
 
   init: function() {
-    Dashboard.container = $('#dashboard');
-    Dashboard.sort      = $('#dashboard-sort');
+    Dashboard.container   = $('#dashboard');
+    Dashboard.sortActions = $('#dashboard-sort');
+    Dashboard.loadNext    = $('#content-next');
     Dashboard.getCourses();
 
-    $('select', Dashboard.sort).on('change', function(){
+    $(Dashboard.loadNext).on('click', '.btn', function(){
+      Dashboard.loadMore();
+    });
+
+    $('select', Dashboard.sortActions).on('change', function(){
       var sort = this.value;
 
       if(sort != Dashboard.sort) {
         var option = $("option:selected", this);
+        var sortOptions = {numeric: option.attr('data-numeric'), desc: option.attr('data-desc')};
 
         Dashboard.sort = sort;
-        Dashboard.sortCourses(sort, option.attr('data-numeric'), option.attr('data-desc'));
+        Dashboard.sortOptions = sortOptions;
+        Dashboard.sortCourses(sort, sortOptions.numeric || false, sortOptions.desc || false);
       }
     });
   },
@@ -571,12 +586,20 @@ var Dashboard = {
     Dashboard.container.append(courses);
   },
 
+  loadMore: function() {
+    Dashboard.loadNext.empty();
+    Dashboard.loadNext.after('<div id="content-loader" class="loading-spinner"></div>');
+    Dashboard.getCourses();
+  },
+
   getCourses: function() {
+    const requestOffset = Dashboard.offset;
+
     var offsetResponse = 0;
 
     /* global $ */
     var runner = $.ajax({
-        url: '/ajax/dashboard?_=' + new Date().getTime(),
+        url: '/ajax/dashboard?offset=' + requestOffset + '&_=' + new Date().getTime(),
         data: {},
         processData: false,
         xhrFields: {
@@ -595,7 +618,13 @@ var Dashboard = {
 
                     for(var i=0; i<=n; i++) {
                       var data = JSON.parse(parts[i] + '}');
-                      Dashboard.container.append(data.content);
+                      if (data.content) {
+                        Dashboard.container.append(data.content);
+
+                      } else if(data.next_offset) {
+                        Dashboard.offset = data.next_offset;
+                        Dashboard.loadNext.html('<button class="btn">Load more</button>');
+                      }
                     }
                   } catch(e) { }
                 }
@@ -605,14 +634,32 @@ var Dashboard = {
 
     // Ajax done running
     runner.done(function(data) {
-     if(data == '{"content": "\\n"}') {
-       Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
-     } else {
-       Dashboard.sort.show();
-     }
+      if(data == '{"content": "\\n"}') {
+         Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+      } else {
+        Dashboard.sortActions.show();
+
+        try {
+          requestOffset && setTimeout(function(){
+            console.info('Resorting...');
+
+            if(Dashboard.sort != "i" || Dashboard.sortOptions.desc) {
+              Dashboard.sortCourses(
+                Dashboard.sort,
+                Dashboard.sortOptions.numeric || false,
+                Dashboard.sortOptions.desc || false,
+              );
+            }
+          });
+        } catch(e) {
+          console.error(e);
+        }
+      }
     });
     runner.always(function(data) {
-     $('.loading-spinner').remove();
+      setTimeout(function(){
+        $('.loading-spinner').remove();
+      }, 0);
     });
     runner.fail(function(xhr){
       if(xhr.readyState == 0 || xhr.status == 0) { // request has been canceled (change page)
@@ -631,6 +678,8 @@ var Dashboard = {
 //+--------------------------------------------------------
 //| Text To Speech
 //+--------------------------------------------------------
+
+// https://docs.cloud.google.com/translate/docs/languages?hl=de
 var TTS = {
   host: "https://google-tts-api.herokuapp.com/",
   langs: {
@@ -743,6 +792,10 @@ var TTS = {
     if(!TTS.langs[lang] || text.length >= 200) {
       return;
     }
-    return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
+    const tk = Math.floor(Math.random() * 1000000);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(text)}&tk=${tk}&ttsspeed=1`;
+    return 'https://cors-anywhere.99901dev.workers.dev/?q=' + encodeURIComponent(url);
+
+    // return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
   }
 };

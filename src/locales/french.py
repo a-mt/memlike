@@ -77,8 +77,9 @@ misc = {
   "import": "Importer",
   "export": "Exporter",
   "import_err_ext": "Seul les fichiers .csv sont acceptés (séparé par des virgules)",
-  "import_err_empty": "Les entêtes du fichier ne correspondent pas. Assurez-vous que votre fichier est séparé par des virgules."
-};
+  "import_err_empty": "Les entêtes du fichier ne correspondent pas. Assurez-vous que votre fichier est séparé par des virgules.",
+  "play_audio": "Écouter l'audio",
+}
 
 menu = {
   "index": "Accueil",
@@ -86,8 +87,8 @@ menu = {
   "login": "S'identifier",
   "logout": "Se déconnecter",
   "dashboard": "Tableau de bord",
-  "about": "À propos"
-};
+  "about": "À propos",
+}
 
 languages = {
   "afrikaans": "Afrikaans",
@@ -184,8 +185,8 @@ languages = {
   "urdu": "Urdu",
   "vietnamese": "Vietnamien",
   "welsh": "Gallois",
-  "zulu": "Zoulou"
-};
+  "zulu": "Zoulou",
+}
 
 categories = {
   "2": "Français",
@@ -447,10 +448,10 @@ categories = {
   "961": "Autres langues amérindiennes",
   "963": "Anglais (USA)",
   "964": "Espagnol (Mexique)",
-  "965": "Australian"
+  "965": "Australian",
 }
 
 err = {
   "required": "Ce champs est obligatoire",
-  "wrong_credentials": "Le nom d'utilisateur ou le mot de passe est erroné"
-};
+  "wrong_credentials": "Le nom d'utilisateur ou le mot de passe est erroné",
+}

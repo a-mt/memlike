@@ -99,4 +99,5 @@ tox -e test
 
 # pip install pytest; cd src; export WEBPY_ENV=test DEFAULT_LANG=english
 # python -m pytest tests/test_lang.py
+# python -m pytest src/tests/test_memrise_get.py -k 'test_memrise_categories' -s -x
 ```

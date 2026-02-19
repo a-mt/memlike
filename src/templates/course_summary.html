@@ -27,22 +27,25 @@ $:(prender.inc_course_banner(course))
   </div>
 </div>
 
-$def thing(item, attr):
-  $ it = item[attr]
-  <div class="$(attr) $(item[attr]['kind'])">
-    $if it['kind'] == "text":
-      $(it['value'])
-    $elif it['kind'] == "image":
-      <div class="media-list">
-        $for img in it['value']:
-          <img src="$img" class="text-image">
-      </div>
-    $elif it['kind'] == "audio":
-      <div class="media-list">
-        $for song in it['value']:
-          <audio src="$(song['normal'])" class="audio-player ico ico-l ico-audio"></audio>
-      </div>
-  </div>
+$#$def thing(item, attr):
+$#  $ it = item[attr]
+$#  <div class="$(attr) $(item[attr]['kind'])">
+$#    $if it['kind'] == "text":
+$#      $(it['value'])
+$#    $elif it['kind'] == "image":
+$#      <div class="media-list">
+$#        $for img in it['value']:
+$#          <img src="$img" class="text-image">
+$#      </div>
+$#    $elif it['kind'] == "audio":
+$#      <div class="media-list">
+$#        $for song in it['value']:
+$#          <audio id="audio-$(item[attr]['id'])" src="$(song['normal'])"></audio>
+$#          <button type="button" data-id="audio-$(item[attr]['id'])" class="audio-player" aria-label="$(LANG.misc['play_audio'])">
+$#            <i class="ico ico-l ico-audio"></i>
+$#          </button>
+$#      </div>
+$#  </div>
 
 <main>
   <div id="course-container" class="inner">

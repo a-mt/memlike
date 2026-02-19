@@ -13,7 +13,8 @@ $(document).ready(function(){
             session_type={window.$_URL.type}
             preview_thing_id={window.$_URL.thing}
             sendresults={window.$_URL.sendresults}
-            session={window.$_URL.session}
+            session_id={window.$_URL.session}
+            course={Object.freeze(window.course)}
         />, document.getElementById('learn-container'));
 });
 
@@ -182,11 +183,6 @@ class Learn extends Component {
         window.onbeforeunload = this.warnbeforeunload.bind(this);
       }
 
-      if(data.session) {
-        this.langSource = data.session.course.source.language_code;
-        this.langTarget = data.session.course.target.language_code;
-      }
-
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
 
@@ -205,7 +201,7 @@ class Learn extends Component {
     window.audioPlayer && window.audioPlayer.reset();
 
     // Automatically play first audio
-    $('.autoplay .audio .audio-player').random().trigger("click");
+    $('.autoplay .audio .audio-player').random().focus().trigger('click');
 
     // Add text To Speech
     if(window.TTS) {
@@ -213,15 +209,20 @@ class Learn extends Component {
         var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
 
         if(src) {
-          if(this.firstElementChild && this.firstElementChild.nodeName == "AUDIO") {
-            this.firstElementChild.src = src;
+          var $audio = $('audio', this);
+          if($audio.length) {
+            $audio.attr('src', src);
 
           } else {
-            var audio = document.createElement('audio');
-            audio.src = src;
-            audio.className = "audio-player ico ico-audio";
+            var k = Date.now();
+            var elem = document.createElement('span');
+            elem.innerHTML = `
+              <audio id="audio-${k}" src=${src}></audio>
+              <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.i18n.play_audio}">
+                <i class="ico ico-l ico-audio"></i>
+              </button>`;
 
-            this.appendChild(audio);
+            this.appendChild(elem);
           }
         }
       });
@@ -230,7 +231,11 @@ class Learn extends Component {
     // Update level title
     if(!this.state.get_all) {
       if(!prevState.data || prevState.level != this.state.level) {
-        var name = window.course.levels[this.state.level].name;
+        var name = "Unknown";
+
+        if (this.state.level in window.course.levels) {
+          name = window.course.levels[this.state.level].name;
+        }
         document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
       }
     } else if(this.props.session_type == "speed_review"){
@@ -389,9 +394,7 @@ class Learn extends Component {
     }
 
     const boxes = this.buildBoxes(session_type, data.learnables, progress_map);
-    console.log('boxes', boxes);
-    //var id = this.state.data.boxes[this.state.i].learnable_id;
-    //items.push(this.state.data.screen_template_map[id].presentation[0]);
+    console.log('Screens to display:', boxes);
 
     return {
       boxes,
@@ -404,10 +407,16 @@ class Learn extends Component {
 
   // Retrieve the current level datas
   getData(level, callback) {
-    const session_type = this.props.session_type;
+    if (!(level in window.course.levels)) {
+      return this.setState({
+        error: 'Level data cannot be retrieved',
+      });
+    }
 
-    var level_type = window.course.levels[level].type,
-        url        = '/ajax' + window.course.url;
+    const session_type = this.props.session_type;
+    const level_type = window.course.levels[level].type;
+
+    var url = '/ajax' + window.course.url;
 
     if(this.state.get_all) {
       url += 'all/' + session_type;
@@ -419,7 +428,7 @@ class Learn extends Component {
 
     $.ajax({
       url: url,
-      data: { session: this.props.session },
+      data: { session: this.props.session_id },
       success: function(data){
         callback && callback(data);
 
@@ -1195,7 +1204,14 @@ class Learn extends Component {
     return <Presentation item={this.get_screen("presentation")} prompt={prompt} />;
   }
   render_presentation(correct) {
-    return <Presentation item={this.get_screen("presentation")} correct={correct} langTarget={this.langTarget} />;
+    return (
+      <Presentation
+        item={this.get_screen("presentation")}
+        correct={correct}
+        langTarget={this.props.course.target ? this.props.course.target.language_code : null}
+        langSource={this.props.course.source ? this.props.course.source.language_code : null}
+      />
+    );
   }
   recap() {
     var items = [];
@@ -1234,15 +1250,39 @@ const Value = function(props) {
     switch(props.type) {
       case "text" : return <span>{content}</span>;
       case "image": return <img key={k} src={content} class="text-image" />;
-      case "audio": return <audio key={k} src={content} class="audio-player ico ico-l ico-audio"></audio>;
-      case "video": return <video key={k} src={content} class="video-player" controls autoplay>Your browser does not support the video tag.</video>;
+      case "audio": return (
+        <span>
+          <audio key={k} id={"audio-" + k} src={content}></audio>
+          <button type="button" data-id={"audio-" + k} class="audio-player" aria-label={window.i18n.play_audio}>
+            <i class="ico ico-l ico-audio"></i>
+          </button>
+        </span>
+      );
+      case "video": return (
+        <video key={k} src={content} class="video-player" controls autoplay>Your browser does not support the video tag.</video>
+      );
     }
   } else {
     switch(props.type) {
       case "text" : return <div class="text" {...attrs}>{content}</div>;
-      case "image": return <div class="image"><div class="media-list">{content.map(media => <img key={k + i++} src={media} class="text-image loading" />)}</div></div>;
-      case "audio": return <div class="audio"><div class="media-list">{content.map(media => <audio key={k + i++} src={media.normal} class="audio-player ico ico-l ico-audio"></audio>)}</div></div>;
-      case "video": return <div class="video"><div class="media-list"><video key={k + i++} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video></div></div>;
+      case "image": return <div class="image"><div class="media-list">{content.map(media => (
+        <img key={k + i++} src={media} class="text-image loading" />
+      ))}</div></div>;
+      case "audio": return <div class="audio"><div class="media-list">{content.map(media => (
+        <span>
+          <audio key={k + i++} id={"audio-" + (k + i)} src={media.normal}></audio>
+          <button type="button" data-id={"audio-" + (k + i)} class="audio-player" aria-label={window.i18n.play_audio}>
+            <i class="ico ico-l ico-audio"></i>
+          </button>
+        </span>
+      ))}</div></div>;
+      case "video": return (
+        <div class="video">
+          <div class="media-list">
+            <video key={k + i++} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video>
+          </div>
+        </div>
+      );
     }
   }
 };
@@ -1274,8 +1314,12 @@ const Correction = function(props) {
 };
 
 const Presentation = function(props){
-  var item = props.item, correct = props.correct,
-      k    = Date.now(), i = 0;
+  var item = props.item,
+      correct = props.correct,
+      k    = Date.now(),
+      i    = 0,
+      item_lang = item.item.direction == 'target' ? this.props.langTarget : this.props.langSource;
+
 	return <div>
 
     {/*-- Correction --*/}
@@ -1288,7 +1332,7 @@ const Presentation = function(props){
         <tr>
           <td class="label">{item.item.label}</td>
           <td class="item">
-            <Value content={item.item.value} type={item.item.kind} lang={this.props.langTarget} />
+            <Value content={item.item.value} type={item.item.kind} lang={item_lang} />
             {item.item.alternatives.map(txt =>
               <div class="alt">{txt}</div>
             )}

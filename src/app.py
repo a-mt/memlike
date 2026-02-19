@@ -64,6 +64,9 @@ app.notfound = notfound
 
 if settings.DEBUG:
     app.debug = True
+
+    from debug import init_debug_route
+    init_debug_route(app)
 else:
     app.debug = False
 
@@ -149,5 +152,3 @@ if __name__ == '__main__' and not settings.IS_TEST:
 
     print('Running...')
     app.run()
-
-# Translations: https://d2rhekw5qr4gcj.cloudfront.net/dist/locales/fr/translation-54de43979713.json

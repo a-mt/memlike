@@ -1,11 +1,17 @@
 from os import environ, getenv, path
 
 ROOTDIR = path.dirname(path.realpath(__file__))
-
 AUTORELOAD = bool(getenv('AUTORELOAD', None))
 DEBUG = bool(getenv('DEBUG', False))
 IS_TEST = getenv('WEBPY_ENV', '') == 'test'
+
+MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
+if IS_TEST:
+    MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
+
 DATABASE_URL = getenv('DATABASE_URL', '')
+MEMRISE_ANON_USERNAME = "66b1d91e8e"
+MEMRISE_ANON_PASSWORD = "66b1d91e8e66b1d91e8e!"
 
 # Import global web object to hold web.py config
 import web
@@ -59,11 +65,14 @@ DEFAULT_SESSION = {
 
 # ---
 # Configure templating system
+
+# Modules that need to stay in scope after reloading the settings (used in lambdas)
+import datetime
+import pprint, re, json
+
 if web.config.get('template', None) is None:
     from variables import menu, locales
     from math import ceil
-    from datetime import datetime
-    import pprint, re, json
 
     def debug(x):
         return (
@@ -86,9 +95,9 @@ if web.config.get('template', None) is None:
     template['sorted']        = sorted
     template['str']           = str
     template['ceil']          = ceil
-    template['now']           = lambda: datetime.now()
-    template['time']          = lambda: int(datetime.now().timestamp())
-    template['date']          = lambda x: datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
+    template['now']           = lambda: datetime.datetime.now()
+    template['time']          = lambda: int(datetime.datetime.now().timestamp())
+    template['date']          = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")
     template['json']          = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(',', ': '))
     template['number_format'] = lambda x: "{:,}".format(x)
     template['floatval']      = lambda x: float(re.sub(r'[^\d]', '', x))
@@ -104,8 +113,37 @@ if web.config.get('template', None) is None:
 
 # ---
 # Configure logging
-import logging
+import logging.config
 
 # Sets the root logger level to write to stdout (default is WARNING)
-# It's equivalent to both previous statements combined:
-logging.basicConfig(level=logging.DEBUG if DEBUG else logging.WARNING)
+# logging.basicConfig()
+conf = {
+    'version': 1,
+    'formatters': {
+        'form1': {
+            'format': '%(asctime)s ++ %(levelname)s ++ %(name)s ++ %(message)s',
+            'datefmt': '%H:%M:%S', #'%Y-%m-%d %H:%M:%S',
+        },
+    },
+    'handlers' : {
+        'hand1' : {
+            'class': 'logging.StreamHandler',
+            'formatter': 'form1',
+            'level': 'NOTSET',
+            'stream': 'ext://sys.stdout',
+        },
+    },
+    'root': {
+        'level': logging.DEBUG if DEBUG else logging.WARNING,
+        'handlers': ['hand1'],
+    },
+    'loggers': {
+        'session': {
+            'level': logging.WARNING,
+        },
+        'autoreload': {
+            'level': logging.WARNING,
+        },
+    }
+}
+logging.config.dictConfig(conf)

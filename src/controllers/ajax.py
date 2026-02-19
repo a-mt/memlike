@@ -6,6 +6,8 @@ from memrise import memrise
 from requests.exceptions import HTTPError
 from math import ceil
 
+
+
 # /ajax/level/...
 urls_level = (
   r"/(\d+)", "level_edit",
@@ -55,7 +57,7 @@ NBPERPAGE = 15
 
 class api:
     def GET(self):
-        web.header('Content-Type', 'application/json')
+        web.header("Content-Type", "application/json")
 
         return json.dumps({
             "courses": "/ajax/courses?{lang, cat, q, page}",
@@ -94,7 +96,7 @@ def _response(call):
     except HTTPError as e:
         return _error(e)
 
-    web.header('Content-Type', 'application/json')
+    web.header("Content-Type", "application/json")
     if isinstance(data, str):
         return data
     else:
@@ -110,39 +112,33 @@ class course:
     def GET(self, idCourse, slug):
         _GET = web.input(session=False)
 
-        sessionid = False
         if _GET.session and _GET.session != "0":
-            if not web.ctx.session.get('loggedin', False):
+            if not web.ctx.session.get("loggedin", False):
                 return web.Forbidden()
-            sessionid = web.ctx.session['loggedin']['sessionid']
 
-        return _response(lambda: memrise.course(idCourse, sessionid))
+        return _response(lambda: memrise.course(idCourse, slug))
 
 class course_level:
     def GET(self, idCourse, slugCourse, lvl, kind="preview"):
         _GET = web.input(session=False)
 
-        sessionid = False
-        csrftoken = None
         if _GET.session and _GET.session != "0":
-            if not web.ctx.session.get('loggedin', False):
+            if not web.ctx.session.get("loggedin", False):
                 return web.Forbidden()
-            sessionid = web.ctx.session['loggedin']['sessionid']
-            csrftoken = web.ctx.session['loggedin']['csrftoken']
 
         if slugCourse == "":
             slugCourse = "-"
 
-        return _response(lambda: memrise.level(idCourse, slugCourse, lvl, kind, sessionid, csrftoken))
+        return _response(lambda: memrise.level(idCourse, slugCourse, lvl, kind))
 
 class course_level_multimedia:
     def GET(self, idCourse, slug, lvl):
         try:
-            data = memrise.level_multimedia("/course/" + idCourse + "/" + slug + "/", lvl)
+            data = memrise.level_multimedia(idCourse, slug, lvl)
         except HTTPError as e:
             return _error(e)
 
-        web.header('Content-Type', 'text/plain')
+        web.header("Content-Type", "text/plain")
         return data
 
 class course_leaderboard:
@@ -152,100 +148,127 @@ class course_leaderboard:
 
 class course_edit:
     def GET(self, idCourse, slug):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.course_edit_get(sessionid, idCourse, slug))
+        return _response(lambda: memrise.course_edit_get(idCourse, slug))
 
 class level_edit:
     def GET(self, idLevel):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_edit_get(sessionid, idLevel))
+        return _response(lambda: memrise.level_edit_get(idLevel))
 
 class level_getcell:
   def GET(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
+        _GET = web.input()
+        return _response(lambda: memrise.level_thing_get(
+            idThing,
+            referer=_GET.referer,
+        ))
 
 class level_addrow:
     def POST(self, idLevel):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_add(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.data))
+        _POST = web.input()
+        return _response(lambda: memrise.level_thing_add(
+            idLevel,
+            _POST.data,
+            referer=_POST.referer,
+        ))
 
 class level_editcell:
     def POST(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.cellValue))
+        _POST = web.input()
+        return _response(lambda: memrise.level_thing_edit(
+            idThing,
+            _POST.cellId,
+            _POST.cellValue,
+            referer=_POST.referer,
+        ))
 
 class level_uploadfile:
     def POST(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input(file={})
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_upload(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.file))
+        _POST = web.input(file={})
+        return _response(lambda: memrise.level_thing_upload(
+            idThing,
+            _POST.cellId,
+            _POST.file,
+            referer=_POST.referer,
+        ))
 
 class level_removefile:
     def POST(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input(file={})
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_upload_remove(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.cellId, _POST.fileId))
+        _POST = web.input(file={})
+        return _response(lambda: memrise.level_thing_upload_remove(
+            idThing,
+            _POST.cellId,
+            _POST.fileId,
+            referer=_POST.referer,
+        ))
 
 class level_alt:
     def POST(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_get(sessionid, _POST.csrftoken, _POST.referer, idThing))
+        _POST = web.input()
+        return _response(lambda: memrise.level_thing_get(
+            idThing,
+            referer=_POST.referer,
+        ))
 
 class level_editalt:
     def POST(self, idThing):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_alt_edit(sessionid, _POST.csrftoken, _POST.referer, idThing, _POST.alts, _POST.cellId))
+        _POST = web.input()
+        return _response(lambda: memrise.level_thing_alt_edit(
+            idThing,
+            _POST.alts,
+            _POST.cellId,
+            referer=_POST.referer,
+        ))
 
 class level_editmultimedia:
     def POST(self, idLevel):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_multimedia_edit(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.txt))
+        _POST = web.input()
+        return _response(lambda: memrise.level_multimedia_edit(
+            idLevel,
+            _POST.txt,
+            referer=_POST.referer,
+        ))
 
 class level_removerow:
     def POST(self, idLevel):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST     = web.input()
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        return _response(lambda: memrise.level_thing_remove(sessionid, _POST.csrftoken, _POST.referer, idLevel, _POST.id_thing))
+        _POST = web.input()
+        return _response(lambda: memrise.level_thing_remove(
+            idLevel,
+            _POST.id_thing,
+            referer=_POST.referer,
+        ))
 
 class user:
     def GET(self, username):
@@ -255,7 +278,7 @@ class user_mempals:
     def GET(self, username, tab):
         _GET = web.input(page=1)
 
-        return _response(lambda: getattr(memrise, 'user_' + tab)(username, _GET.page))
+        return _response(lambda: getattr(memrise, "user_" + tab)(username, _GET.page))
 
 class user_courses:
     def GET(self, username, tab):
@@ -264,7 +287,7 @@ class user_courses:
         except HTTPError as e:
             return _error(e)
 
-        web.header('Content-Type', 'application/json')
+        web.header("Content-Type", "application/json")
 
         # Pagination
         _GET = web.input(page=1)
@@ -273,69 +296,77 @@ class user_courses:
         if not isinstance(page, int) and not page.isdigit():
             page = 1
 
-        lastpage = int(ceil(data['nbCourse'] / NBPERPAGE)) or 1
+        lastpage = int(ceil(data["nbCourse"] / NBPERPAGE)) or 1
         if page > lastpage:
             page = lastpage
         offset = (page-1)*NBPERPAGE
 
-        data['lastpage'] = lastpage
-        data['page']     = page
-        data['has_next'] = page != lastpage
-        data['content']  = data["content"][offset:offset+1+NBPERPAGE]
+        data["lastpage"] = lastpage
+        data["page"]     = page
+        data["has_next"] = page != lastpage
+        data["content"]  = data["content"][offset:offset+1+NBPERPAGE]
 
         return json.dumps(data)
 
 class user_dashboard():
     def GET(self):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        web.header('Content-type','text/plain')
-        web.header('Transfer-Encoding','chunked')
+        _GET = web.input(offset=0)
+        offset = _GET.offset
+        if type(offset) is not int and not offset.isdigit():
+            offset = 0
+        else:
+            offset = int(offset)
 
-        sessionid = web.ctx.session['loggedin']['sessionid']
-        offset    = 0
-        c         = 0
+        web.header("Content-type","text/plain")
+        web.header("Transfer-Encoding","chunked")
+
+        c = 0
         try:
-            for courses in memrise.whatistudy(sessionid):
-                content = web.config.template.prender.ajax_dashboard(courses, offset)['__body__']
+            for page in memrise.whatistudy(offset=offset):
+                courses = page["courses"]
+                content = web.config.template.prender.ajax_dashboard(courses, offset)["__body__"]
 
-                yield json.dumps({"content": content }) + '$'
+                yield json.dumps({"content": content }) + "$"
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session
                 # for course in courses:
                 #     data = {}
-                #     for k in ['progress']:
+                #     for k in ["progress"]:
                 #         data[k] = course[k]
                 #     c += 1
 
+            if page and page.get("next_offset", 0):
+                yield json.dumps({"next_offset": page["next_offset"] }) + "$"
+
         except HTTPError as e:
-            print('HTTPError', e)
+            print("HTTPError", e)
 
             if e.response.status_code == 403:
                 raise web.Forbidden()
             else:
                 raise web.NotFound()
 
-        return ''
+        return ""
 
 class user_leaderboard():
     def GET(self):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        sessionid = web.ctx.session['loggedin']['sessionid']
         _GET = web.input(period="week")
-        return _response(lambda: memrise.my_leaderboard(sessionid, _GET.period))
+        return _response(lambda: memrise.my_leaderboard(_GET.period))
 
 class user_sync():
     def GET(self):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
         try:
-          data = memrise.user(web.ctx.session['loggedin']['username'], True)
+          data = memrise.user(web.ctx.session["loggedin"]["username"], True)
         except HTTPError as e:
             if e.response.status_code == 403:
                 raise web.Forbidden()
@@ -347,19 +378,18 @@ class user_sync():
 class debug_session():
     def GET(self):
         session = dict(web.ctx.session)
-        web.header('Content-Type', 'application/json')
+        web.header("Content-Type", "application/json")
         return json.dumps(session)
 
 class track_progress():
     def POST(self, path):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
         progress = memrise.track_progress(path,
           web.input(),
-          web.ctx.session['loggedin']['sessionid'],
-          web.ctx.env.get('HTTP_X_CSRFTOKEN'),
-          web.ctx.env.get('HTTP_X_REFERER')
+          csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN"),
+          referer=web.ctx.env.get("HTTP_X_REFERER"),
         )
         return _response(lambda: progress)
 

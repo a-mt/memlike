@@ -1,6 +1,6 @@
 $def with (course, level, items)
 
-$def thing(item, attr):
+$def thing(i, item, attr):
   $ it = item['screens']['1'][attr]
 
   $#{'label': 'Anatomie 101', 'kind': 'image', 'value': ['https://static.memrise.com/uploads/things/images/69984960_150914_1730_57.png', 'https://static.memrise.com/uploads/things/images/69984960_150922_1824_38.png', 'https://static.memrise.com/uploads/things/images/69984960_150922_1824_46.PNG'], 'alternatives': [], 'style': [], 'direction': 'source', 'markdown': False}
@@ -15,8 +15,11 @@ $def thing(item, attr):
       </div>
     $elif it['kind'] == "audio":
       <div class="media-list">
-        $for song in it['value']:
-          <audio src="$(song['normal'])" class="audio-player ico ico-l ico-audio"></audio>
+        $for j, song in enumerate(it['value']):
+          <audio id="audio-$(i)-$(j)" src="$(song['normal'])"></audio>
+          <button type="button" data-id="audio-$(i)-$(j)" class="audio-player" aria-label="$(LANG.misc['play_audio'])">
+            <i class="ico ico-l ico-audio"></i>
+          </button>
       </div>
   </div>
 
@@ -29,7 +32,7 @@ $ t = now()
 $ j = 0
 
 $code:
-    def get_thing(i, learnable_id):
+    def get_progress(i, learnable_id):
         """get progress associated with current learnable"""
         if i >= len(items['progress']):
             return None
@@ -44,27 +47,27 @@ $code:
 <ul class="rows">
   $for i, item in enumerate(items['learnables']):
     <li class="row thing">
-      $:thing(item, 'item')
-      $:thing(item, 'definition')
+      $:thing(i, item, 'item')
+      $:thing(i, item, 'definition')
 
-      $ thing_item = get_thing(j, str(item['id']))
-      $if thing_item:
+      $ progress = get_progress(j, str(item['id']))
+      $if progress:
         $ j += 1
 
-        $if thing_item['ignored']:
+        $if progress['ignored']:
           $ ignored += 1
           <div class="status">$:(LANG.misc['ignored'])</div>
 
-        $elif thing_item['growth_level'] < 6:
+        $elif progress['growth_level'] < 6:
           $ tolearn += 1
-          $ percent = int(thing_item['growth_level'] / 6.0 * 100)
+          $ percent = int(progress['growth_level'] / 6.0 * 100)
           <div class="status">
             <div class="progress"><div class="bar bar-success" style="width:${percent}%"></div></div>
           </div>
 
         $else:
           $ learned += 1
-          $ review = (date(thing_item['next_date']) - t)
+          $ review = (date(progress['next_date']) - t)
           $ days   = review.days
           $ hours  = ceil(review.total_seconds() / 3600)
 

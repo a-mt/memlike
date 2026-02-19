@@ -78,8 +78,9 @@ misc = {
   "import": "Import",
   "export": "Export",
   "import_err_ext": "You should send a .csv file (comma separated)",
-  "import_err_empty": "The headers of your file don\'t match. Make sure your file is comma-separated."
-};
+  "import_err_empty": "The headers of your file don\'t match. Make sure your file is comma-separated.",
+  "play_audio": "Play audio",
+}
 
 menu = {
   "index": "Home",
@@ -87,8 +88,8 @@ menu = {
   "login": "Log in",
   "logout": "Log out",
   "dashboard": "Dashboard",
-  "about": "About"
-};
+  "about": "About",
+}
 
 languages = {
   "afrikaans": "Afrikaans",
@@ -185,8 +186,8 @@ languages = {
   "urdu": "Urdu",
   "vietnamese": "Vietnamese",
   "welsh": "Welsh",
-  "zulu": "Zulu"
-};
+  "zulu": "Zulu",
+}
 
 categories = {
   "2": "French",
@@ -448,10 +449,10 @@ categories = {
   "961": "Other Native American Languages",
   "963": "English (US)",
   "964": "Spanish (Mexico)",
-  "965": "Australian"
-};
+  "965": "Australian",
+}
 
 err = {
   "required": "This field is required",
-  "wrong_credentials": "Username or password is wrong"
-};
+  "wrong_credentials": "Username or password is wrong",
+}

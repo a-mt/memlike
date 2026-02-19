@@ -1,12 +1,13 @@
 $def with (courses, offset)
 
 $for i, course in enumerate(courses):
-  $ idCat = str(course['id'])
+  $ idCat = str(course['target']['id']) if 'target' in course else None
   $ progress = course['progress']
   $if idCat in LANG.categories:
     $ category = LANG.categories[idCat]
   $else:
-    $ category = course['name']
+    $ category = ''
+  $ num_learners = ''
 
   <div class="course-box"
         data-i="$(offset + i)"
@@ -38,17 +39,19 @@ $for i, course in enumerate(courses):
       </a>
       <div class="details-wrapper">
 
-        $#<!-- Language -->
-        $#<div class="target-photo">
-        $#  <img src="$(course['target']['photo'])" alt="">
-        $#</div>
+        <!-- Language -->
+        $if idCat:
+          <div class="target-photo">
+            <img src="$(course['target']['photo_url'])" alt="">
+          </div>
 
-        $#<!-- Author + category -->
-        $#<div class="clearfix">
-        $#  <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
-        $#    $:category
-        $#  </a>
-        $#</div>
+        <!-- Author + category -->
+        $if idCat and 'source' in course:
+          <div class="clearfix">
+            <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
+              $:category
+            </a>
+          </div>
 
         <!-- Title -->
         <h3>
@@ -56,10 +59,11 @@ $for i, course in enumerate(courses):
         </h3>
 
         <!-- Stats -->
-        $# $if course['num_learners'] >= 1000:
-        $#   $ num_learners = "{0:.2f}".format(float(course['num_learners']) / 1000) + "k"
-        $# $else:
-        $#   $ num_learners = str(course['num_learners'])
+        $if 'num_learners' in course:
+          $if course['num_learners'] >= 1000:
+            $ num_learners = "{0:.2f}".format(float(course['num_learners']) / 1000) + "k"
+          $else:
+            $ num_learners = str(course['num_learners'])
 
         $if progress['size'] < 60:
           $ duration = str(progress['size']) + "m"
@@ -68,9 +72,10 @@ $for i, course in enumerate(courses):
 
         <div class="details">
           <div class="stats">
-            $#<span class="stat" title="$:(LANG.misc['course_learners'].replace('%', str(course['num_learners'])))">
-            $#  <span class="ico ico-user"></span> $(num_learners)
-            $#</span>
+            $if num_learners:
+              <span class="stat" title="$:(LANG.misc['course_learners'].replace('%', str(course['num_learners'])))">
+                <span class="ico ico-user"></span> $(num_learners)
+              </span>
             <span class="stat" title="$:(LANG.misc['course_duration'].replace('%', duration))">
               <span class="ico ico-clock"></span> $(duration)
             </span>

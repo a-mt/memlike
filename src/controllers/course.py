@@ -12,6 +12,7 @@ urls = (
   r"/(\d+)/(.*)/(\d+)", "level",
 
   # View course
+  # /6687517/german-vocab/1/garden
   r"/(\d+)/(.*)/garden", "learn_fromform",
   r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
   r"/(\d+)/(.*)/leaderboard", "leaderboard",
@@ -22,10 +23,11 @@ urls = (
 
 class learn_fromform:
     def GET(self, idCourse, path, lvl=False):
-        _GET = web.input(session="", sendresults=0)
+        slugCourse = path.split("/", 2)[0]
 
+        _GET = web.input(session="", sendresults=0)
         try:
-            course = memrise.course(idCourse)
+            course = memrise.course(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
@@ -34,11 +36,13 @@ class learn_fromform:
 
 class learn:
     def GET(self, idCourse, path, lvl, kind=False):
+        slugCourse = path.split("/", 2)[0]
+
         if not kind:
             kind = lvl
             lvl  = False
         try:
-            course = memrise.course(idCourse)
+            course = memrise.course(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
@@ -47,8 +51,10 @@ class learn:
 
 class view:
     def GET(self, idCourse, path, lvl, thing):
+        slugCourse = path.split("/", 2)[0]
+
         try:
-            course = memrise.course(idCourse)
+            course = memrise.course(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
@@ -58,23 +64,16 @@ class view:
 class level:
     def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
-            course = memrise.course(idCourse)
+            course = memrise.course(idCourse, slugCourse)
             if lvl not in course['levels']:
                 return web.config.template.prender._404()
 
             try:
                 if course['levels'][lvl]['type'] == 1:
-                    sessionid = False
-                    csrftoken = None
-
-                    if web.ctx.session.get('loggedin', False):
-                        sessionid = web.ctx.session['loggedin']['sessionid']
-                        csrftoken = web.ctx.session['loggedin']['csrftoken']
-
-                    items = memrise.level(idCourse, slugCourse, lvl, "preview", sessionid, csrftoken)
+                    items = memrise.level(idCourse, slugCourse, lvl, "preview")
                 else:
                     # Type multimedia
-                    items = memrise.level_multimedia(course['url'], lvl)
+                    items = memrise.level_multimedia(idCourse, slugCourse, lvl)
             except HTTPError as e:
                 items = {"learnables":[], "progress":[]}
 
@@ -95,18 +94,11 @@ class course:
         learning = False
         items    = False
         try:
-            sessionid = False
-            csrftoken = None
-
-            if web.ctx.session.get('loggedin', False):
-                sessionid = web.ctx.session['loggedin']['sessionid']
-                csrftoken = web.ctx.session['loggedin']['csrftoken']
-
-            course = memrise.course(idCourse, sessionid, csrftoken)
+            course = memrise.course(idCourse, slugCourse)
 
             # Course without any level ?
             if len(course["levels"]) == 0:
-                items = memrise.level(idCourse, slugCourse, "1", "preview", sessionid, csrftoken)
+                items = memrise.level(idCourse, slugCourse, "1", "preview")
 
         except HTTPError as e:
             print(e)
@@ -123,9 +115,11 @@ class course:
 
 class leaderboard:
     def GET(self, idCourse, path=""):
+        slugCourse = path.split("/", 2)[0]
+
         _GET = web.input(period="week")
         try:
-            course      = memrise.course(idCourse)
+            course      = memrise.course(idCourse, slugCourse=slugCourse)
             leaderboard = memrise.course_leaderboard(idCourse, _GET.period)
         except HTTPError as e:
             print(e)
@@ -135,12 +129,13 @@ class leaderboard:
 
 class edit:
     def GET(self, idCourse, path):
+        slugCourse = path.split("/", 2)[0]
+
         if not web.ctx.session.get('loggedin', False):
             raise web.Forbidden()
 
-        sessionid = web.ctx.session['loggedin']['sessionid']
         try:
-            course = memrise.course_edit_get(sessionid, idCourse, path)
+            course = memrise.course_edit_get(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
