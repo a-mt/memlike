@@ -221,7 +221,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_last_page_num = True
         last_page_num = mc.get(cache_key)
 
-        if last_page_num != None:
+        if last_page_num is not None:
             cache_last_page_num = False
             if page > last_page_num:
                 page = last_page_num

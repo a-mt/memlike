@@ -596,16 +596,16 @@ class Scraper:
         }
 
         div  = DOM.find(id="content")
-        if div != None:
+        if div is not None:
 
             # Get username
             item = div.find(id="id_username")
-            if item != None:
+            if item is not None:
                 data["username"] = item.attrs["value"]
 
             # Get photo
             item = div.find("div", {"class":"thumbnail"})
-            if item != None:
+            if item is not None:
                 data["photo"] = item.img.attrs["src"]
 
         return data
@@ -657,28 +657,28 @@ class Scraper:
         }
 
         div = DOM.find("div",{"class","course-wrapper"})
-        if div != None:
+        if div is not None:
 
             # Title
             item = div.find(itemprop="name")
-            if item != None:
+            if item is not None:
                 course["title"] = item.text
 
             # Description
             item = div.find(itemprop="about")
-            if item != None:
+            if item is not None:
                 course["description"] = item.text
 
             # Author (only when logged in :/)
             item = div.find(itemprop="author")
-            if item != None:
+            if item is not None:
                 course["author"] = item.find(itemprop="additionalName").text
 
             # Breadcrumb
             # (Courses / Languages / European / German / German) = Deutsch für Englisch-Sprecher
             # (Kurse / Maths / Science Chemistry) = Chemie for Deutsche-Sprecher
             item = div.find("div",{"class","course-breadcrumb"})
-            if item != None:
+            if item is not None:
                 for child in item.find_all("a"):
                     cat = child.attrs["href"].strip("/").split("/").pop()
 
@@ -719,13 +719,13 @@ class Scraper:
 
             # Photo + url
             item = div.find("a",{"class","course-photo"})
-            if item != None:
+            if item is not None:
                 course["url"]   = item.attrs["href"]
                 course["photo"] = item.img.attrs["src"]
 
         # List of levels
         div = DOM.find("div",{"class":"levels"})
-        if div != None:
+        if div is not None:
 
             for child in div.children:
                 if not isinstance(child, Tag):
@@ -741,7 +741,7 @@ class Scraper:
                 }
                 if isLoggedIn:
                     status = child.find("div", {"class":"level-status"})
-                    if status != None:
+                    if status is not None:
                         course["levels"][idx]["status"] = re.sub(r"\s+", " ", str(status))
 
         if isLoggedIn:
@@ -766,7 +766,7 @@ class Scraper:
 
         # Ignored, learned, total
         item = div.find("div",{"class":"progress-box-title"})
-        if item != None:
+        if item is not None:
             text = item.find(string=True, recursive=False)
             if text:
                 res = re.search(r"^(\d+) ?/ ?(\d+)", text.strip())
@@ -790,7 +790,7 @@ class Scraper:
 
         # Review
         item = div.find("a",{"class":"blue"})
-        if item != None:
+        if item is not None:
             res = re.search(r"\((\d+)\)", item.text)
             if res:
                 stats["review"] = int(res.group(1))
@@ -834,11 +834,11 @@ class Scraper:
         }
 
         div = DOM.find(id="page-head")
-        if div != None:
+        if div is not None:
 
             # Get avatar
             item = div.find("img", {"class":"avatar"})
-            if item != None:
+            if item is not None:
                 user["photo"] = item.attrs["src"]
 
             # Get stats (num followers, following, word|words|word|wörter, leaderboard)
@@ -878,12 +878,12 @@ class Scraper:
             user["rank"] = rank+1
 
         div = DOM.find(id="content")
-        if div != None:
+        if div is not None:
 
             # Get stats
             # {"following": "1", "": "1", "wort": "0", "punkte": "660", "learning": "1", "teaching": "61"}
             item = div.find("div",{"class","btn-group"})
-            if item != None:
+            if item is not None:
                 for child in item.children:
                     if not isinstance(child, Tag):
                         continue
@@ -909,7 +909,7 @@ class Scraper:
 
         # Get list of followers
         div   = DOM.find(id="content")
-        if div != None:
+        if div is not None:
             users = div.find_all(attrs={"class": "user-box"})
             for user in users:
                 username = user.find(attrs={"class": "username"})
@@ -928,7 +928,7 @@ class Scraper:
         currentPage = page
         lastpage    = 0
 
-        if div != None:
+        if div is not None:
             for child in div.children:
                 if not isinstance(child, Tag):
                     continue
@@ -981,9 +981,9 @@ class Scraper:
 
         # Course data
         div = DOM.find(id="page-head")
-        if div != None:
+        if div is not None:
             item = div.find("div", {"class":"course-details"})
-            if item != None:
+            if item is not None:
                 data["url"]   = item.a.attrs["href"]
                 data["title"] = item.text.strip()
 
@@ -991,7 +991,7 @@ class Scraper:
         div    = DOM.find(id="levels")
         levels = []
 
-        if div != None:
+        if div is not None:
             for child in div.find_all(attrs={"class":"level"}, recursive=False):
                 level  = {"id": child.attrs["data-level-id"]}
                 header = child.find("div", {"class": "level-header"}, recursive=False)
@@ -999,7 +999,7 @@ class Scraper:
                 if "data-pool-id" in child.attrs:
                     level["pool"] = child.attrs["data-pool-id"]
 
-                if header != None:
+                if header is not None:
                     level["name"] = header.h3.text.strip()
 
                 levels.append(level)

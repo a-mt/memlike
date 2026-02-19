@@ -199,8 +199,10 @@ class MemriseDummyGetTest(SimpleTestCase):
         self.assertTrue(len(result['levels']) > 0)
         level = result['levels']['1']
         self.assertIsNotNone(level.get('name', None))
-        self.assertIsNotNone(level.get('type', None))   # 1 | 2
-        self.assertIsNotNone(level.get('status', None))  # <span class="ico ico-complete ico-correct ico-m ico-green"></span>
+        self.assertIsNotNone(level.get('type', None))
+        self.assertTrue(level.get('type', None) in (1, 2))
+        self.assertIsNotNone(level.get('status', None))
+        # <span class="ico ico-complete ico-correct ico-m ico-green"></span>
 
         self.assertIsNotNone(result.get('stats', None))
         self.assertIsNotNone(result['stats'].get('ignored', None))

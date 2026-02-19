@@ -15,10 +15,14 @@ line-length = 120
 indent-width = 4
 target-version = "py312"
 
+# Ruleset for ruff check
+# You can override it using CLI args: ruff check --select F401
+# https://moritzguck.github.io/Code-Cheatsheets/cheatsheets/Languages/Python/ruff.html
 [tool.ruff.lint]
-select = []
+select = ["E", "F"]
 ignore = ["E203", "E402"]
 
+# Ruleset for ruff format --check
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
