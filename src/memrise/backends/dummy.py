@@ -428,7 +428,9 @@ class DummyMemrise(Memrise):
             if stats["num_things"] == 0:
                 stats["percent_complete"] = 100
             else:
-                stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
+                percent  = float(stats["learned"])
+                percent /= float(stats["num_things"]) - float(stats["ignored"])
+                stats["percent_complete"] = int(percent * 100)
 
         # Review
         text = "Wiederholen (274)"

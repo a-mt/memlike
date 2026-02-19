@@ -12,7 +12,7 @@ from .base import Memrise
 
 
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
-USER_AGENT      = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/64.0.3282.167 Chrome/64.0.3282.167 Safari/537.36"
+USER_AGENT      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0"
 HOST            = "https://community-courses.memrise.com"
 API_VERSION     = "v1.25"
 ACCEPT_LANGUAGE = "fr;q=0.8,en-US;q=0.5,en;q=0.3"
@@ -63,7 +63,8 @@ class Requestor:
             "Referer": f"{HOST}/signin",
             "User-Agent": USER_AGENT,
         }
-        response  = requests.get(f"{HOST}/{API_VERSION}/web/ensure_csrf")
+        url       = f"{HOST}/{API_VERSION}/web/ensure_csrf"
+        response  = requests.get(url)
         response.raise_for_status()
 
         json      = response.json()
@@ -83,7 +84,8 @@ class Requestor:
             "username"  : username,
             "password"  : password
         }
-        response  = requests.post(f"{HOST}/{API_VERSION}/auth/access_token/", cookies=cookies, headers=headers, data=data)
+        url       = f"{HOST}/{API_VERSION}/auth/access_token/"
+        response  = requests.post(url, cookies=cookies, headers=headers, data=data)
         response.raise_for_status()
 
         json = response.json()
@@ -95,7 +97,8 @@ class Requestor:
         del headers["X-CSRFToken"]
 
         token     = json["access_token"]["access_token"]
-        response  = requests.get(f"{HOST}/{API_VERSION}/auth/web/?invalidate_token_after=true&token=" + token, cookies=cookies, headers=headers)
+        url       = f"{HOST}/{API_VERSION}/auth/web/?invalidate_token_after=true&token={token}"
+        response  = requests.get(url, cookies=cookies, headers=headers)
         response.raise_for_status()
 
         data["sessionid"] = response.cookies["sessionid_2"]  # j74y9ut8nwrw4wqomtvqmyt5k9g4gvwng
@@ -275,7 +278,8 @@ class Requestor:
 
     def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
         log_session = self.buildCookiesLog(sessionid)
-        logger.debug(f"Requestor:Level learning session [id_course={idCourse},slug={slugCourse}],session_type={sessionType} ({log_session})")
+        log_params = f"id_course={idCourse},slug={slugCourse}],session_type={sessionType}"
+        logger.debug(f"Requestor:Level learning session [{log_params}] ({log_session})")
 
         url = f"{HOST}/course/{idCourse}/{slugCourse}/garden/{sessionType}/"
 
@@ -288,7 +292,8 @@ class Requestor:
 
     def level_multimedia(self, idCourse, slugCourse, lvl, sessionid=None):
         log_session = self.buildCookiesLog(sessionid)
-        logger.debug(f"Requestor:Level multimedia [id_course={idCourse},slug={slugCourse},level={lvl}] ({log_session})")
+        log_params = f"id_course={idCourse},slug={slugCourse},level={lvl}"
+        logger.debug(f"Requestor:Level multimedia [{log_params}] ({log_session})")
 
         # https://community-courses.memrise.com/community/course/1892646/grammaire-le-groupe-nominal/3/
         url = f"{HOST}/community/course/{idCourse}/{slugCourse}/{lvl}/"
@@ -409,7 +414,8 @@ class Requestor:
 
     def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: upload file to thing [thing_id={idThing},cell_id={cellId}] ({log_session})")
+        log_params = f"thing_id={idThing},cell_id={cellId}"
+        logger.debug(f"Requestor:Level edition: upload file to thing [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/cell/upload_file/"
 
@@ -447,7 +453,8 @@ class Requestor:
 
     def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: delete file from thing [thing_id={idThing},cell_id={cellId},file_id={fileId}] ({log_session})")
+        log_params = f"thing_id={idThing},cell_id={cellId},file_id={fileId}"
+        logger.debug(f"Requestor:Level edition: delete file from thing [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/delete_from/"
 
@@ -516,7 +523,8 @@ class Requestor:
 
     def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: edit thing alternative values [thing_id={idThing},column={column_key}] ({log_session})")
+        log_params = f"thing_id={idThing},column={column_key}"
+        logger.debug(f"Requestor:Level edition: edit thing alternative values [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/update_alts/"
 
@@ -786,7 +794,9 @@ class Scraper:
                 if stats["num_things"] == 0:
                     stats["percent_complete"] = 100
                 else:
-                    stats["percent_complete"] = int(float(stats["learned"]) / (stats["num_things"] - stats["ignored"]) * 100)
+                    percent  = float(stats["learned"])
+                    percent /= float(stats["num_things"]) - float(stats["ignored"])
+                    stats["percent_complete"] = int(percent * 100)
 
         # Review
         item = div.find("a",{"class":"blue"})
@@ -1051,7 +1061,11 @@ class ApiMemrise(Memrise):
         while c < load_n_pages:
             c += 1
 
-            data    = self.requestor.whatistudy(offset, nbperpage, sessionid=kwargs['sessionid'])
+            data    = self.requestor.whatistudy(
+                offset,
+                nbperpage,
+                sessionid=kwargs['sessionid'],
+            )
             offset += nbperpage
             has_more_pages = "has_more_pages" in data and data["has_more_pages"]
 
@@ -1065,11 +1079,22 @@ class ApiMemrise(Memrise):
 
     def my_leaderboard(self, period, **kwargs):
         self.set_default_kwargs(kwargs)
-        return self.requestor.my_leaderboard(period, sessionid=kwargs['sessionid'])
+
+        return self.requestor.my_leaderboard(
+            period,
+            sessionid=kwargs['sessionid'],
+        )
 
     def track_progress(self, path, data, referer=None, **kwargs):
         self.set_default_kwargs(kwargs)
-        return self.requestor.track_progress(path, data, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'], referer=referer)
+
+        return self.requestor.track_progress(
+            path,
+            data,
+            sessionid=kwargs['sessionid'],
+            csrftoken=kwargs['csrftoken'],
+            referer=referer,
+        )
 
     def courses(self, lang, page=1, cat="", query=""):
         if not isinstance(page, int) and not page.isdigit():
@@ -1079,14 +1104,23 @@ class ApiMemrise(Memrise):
 
     def categories(self, lang, **kwargs):
         self.set_default_kwargs(kwargs)
-        html = self.requestor.categories(lang, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
 
+        html = self.requestor.categories(
+            lang,
+            sessionid=kwargs['sessionid'],
+            csrftoken=kwargs['csrftoken'],
+        )
         return self.scraper.categories(html)
 
     def course(self, idCourse, slugCourse="", **kwargs):
         self.set_default_kwargs(kwargs)
-        html = self.requestor.course(idCourse, slugCourse, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
 
+        html = self.requestor.course(
+            idCourse,
+            slugCourse,
+            sessionid=kwargs['sessionid'],
+            csrftoken=kwargs['csrftoken'],
+        )
         return self.scraper.course(idCourse, html, isLoggedIn=kwargs['sessionid'])
 
     def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
@@ -1109,7 +1143,12 @@ class ApiMemrise(Memrise):
         level = {}
         while retry_login:
             try:
-                level = self.requestor.level(idCourse, lvl, sessionid=kwargs['sessionid'], csrftoken=kwargs['csrftoken'])
+                level = self.requestor.level(
+                    idCourse,
+                    lvl,
+                    sessionid=kwargs['sessionid'],
+                    csrftoken=kwargs['csrftoken'],
+                )
             except requests.exceptions.HTTPError as e:
 
                 # Try reauthenticate
@@ -1125,7 +1164,12 @@ class ApiMemrise(Memrise):
 
         # Start learning session (to be able to send results to memrise)
         if not is_anonymous_session and slug != "preview":
-            session = self.requestor.level_learning_session(idCourse, slugCourse, sessionType=slug, sessionid=kwargs['sessionid'])
+            session = self.requestor.level_learning_session(
+                idCourse,
+                slugCourse,
+                sessionType=slug,
+                sessionid=kwargs['sessionid'],
+            )
             level.update(session)
 
         return level
@@ -1133,8 +1177,12 @@ class ApiMemrise(Memrise):
     def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        html = self.requestor.level_multimedia(idCourse, slugCourse, lvl, sessionid=kwargs['sessionid'])
-
+        html = self.requestor.level_multimedia(
+            idCourse,
+            slugCourse,
+            lvl,
+            sessionid=kwargs['sessionid'],
+        )
         return self.scraper.level_multimedia(html)
 
     def course_leaderboard(self, idCourse, period, **kwargs):
@@ -1144,7 +1192,11 @@ class ApiMemrise(Memrise):
         ldboard = {}
         while retry_login:
             try:
-                ldboard = self.requestor.course_leaderboard(idCourse, period, sessionid=kwargs['sessionid'])
+                ldboard = self.requestor.course_leaderboard(
+                    idCourse,
+                    period,
+                    sessionid=kwargs['sessionid'],
+                )
             except requests.exceptions.HTTPError as e:
 
                 # Try reauthenticate

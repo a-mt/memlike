@@ -35,7 +35,20 @@ class Memrise:
 
             Testset: dashboard_courses.json
             @param string sessionid
-            @return list of pages - [{offset, has_more_pages, courses: [{id, name, slug, is_official,photo_url, next_session, goal, progress}]}]
+            @return list of pages - [{
+                    offset,
+                    has_more_pages,
+                    courses: [{
+                        id,
+                        name,
+                        slug,
+                        is_official,
+                        photo_url,
+                        next_session,
+                        goal,
+                        progress,
+                    }]
+                }]
         """
         raise NotImplementedError("subclasses of Memrise must provide a whatistudy() method")
 
@@ -46,7 +59,16 @@ class Memrise:
             Testset: profile_leaderboard.json
             @param string sessionid
             @param string period - month, week, alltime
-            @return dict - {rows: [{position, points, username, uid, photo, is_premium, following}]}
+            @return dict - {
+                rows: [{
+                    position,
+                    points,
+                    username,
+                    uid,
+                    photo,
+                    is_premium,
+                    following,
+                }]}
         """
         raise NotImplementedError("subclasses of Memrise must provide a my_leaderboard() method")
 

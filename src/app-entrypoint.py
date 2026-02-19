@@ -48,7 +48,15 @@ cmd = f'python {src}/app.py'
 while run:
     print('Starting wsgi...')
 
-    with Popen(cmd, stdout=sys.stdout, stderr=sys.stderr, shell=True, bufsize=1, universal_newlines=True, preexec_fn=os.setsid) as p:
+    with Popen(
+        cmd,
+        stdout=sys.stdout,
+        stderr=sys.stderr,
+        shell=True,
+        bufsize=1,
+        universal_newlines=True,
+        preexec_fn=os.setsid,
+    ) as p:
         current_subprocs.add(p)
 
     print('Exiting wsgi...')
