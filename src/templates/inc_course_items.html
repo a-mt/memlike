@@ -11,7 +11,7 @@ $def thing(i, item, attr):
     $elif it['kind'] == "image":
       <div class="media-list">
         $for img in it['value']:
-          <img src="$img" class="text-image">
+          <img src="$(img)" class="text-image">
       </div>
     $elif it['kind'] == "audio":
       <div class="media-list">

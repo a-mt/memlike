@@ -28,7 +28,7 @@ $ currentLang = page['lang']
       <ul class="dropdown-menu">
         $for lang, item in sorted(languages.items(), key=lambda x: LANG.languages[x[0]]):
          <li>
-           <a href="/fr/courses/$lang/">
+           <a href="/fr/courses/$(lang)/">
             $if "url" in item:
               <img class="flag-circle" src="$(item['url'])" alt="">
             $(LANG.languages[lang])
@@ -61,22 +61,22 @@ $ currentLang = page['lang']
           $if "children" in item:
             $ children = [x for x in item["children"] if x['id'] in catHaveCourse]
 
-          <li data-category-id="$id">
+          <li data-category-id="$(id)">
               $if len(children) > 0:
-                  <a href="/fr/courses/$currentLang/$code/" title="$:name">
+                  <a href="/fr/courses/$(currentLang)/$(code)/" title="$:name">
                       <span class="ico expand-icon ico-s"></span>
                       $:name
                   </a>
                   <ul>
                     <li>
-                      <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" class="$('active' if item['id'] == page['catId'] else None)">
+                      <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" class="$('active' if item['id'] == page['catId'] else None)">
                         $(LANG.misc['all']) $:name
                       </a>
                       </li>
                       $:tree(children)
                   </ul>
               $else:
-                  <a data-category-leaf="" href="/fr/courses/$currentLang/$code/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
+                  <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
                       $:name
                   </a>
           </li>

@@ -41,7 +41,7 @@ $var title: $(user['username'])
           ($(user['stats'][name] if name in user['stats'] else 0))
       </button>
     $else:
-      <a href="/user/$(user['username'])$url" class="pill">
+      <a href="/user/$(user['username'])$(url)" class="pill">
         $(LANG.misc[name])
         $if name != "stats":
           ($(user['stats'][name] if name in user['stats'] else 0))
@@ -91,10 +91,10 @@ $var title: $(user['username'])
             $ percent    = 100
             $ counter    = number_format(int(points))
 
-          <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$nextPoints">
-            <div class="counter">$counter</div>
+          <div class="progress-bar" role="progressbar" aria-valuenow="$(points)" aria-valuemin="0" aria-valuemax="$(nextPoints)">
+            <div class="counter">$(counter)</div>
             <div class="progress-bar-active" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
-              <div class="counter">$counter</div>
+              <div class="counter">$(counter)</div>
             </div>
           </div>
         </div>
@@ -112,9 +112,9 @@ $var title: $(user['username'])
 
     <!-- List of mempals -->
     $if currentTab == "following" or currentTab == "followers":
-      <div id="mempals-container" data-tab="$currentTab"></div>
+      <div id="mempals-container" data-tab="$(currentTab)"></div>
     $else:
-      <div id="usercourses-container" data-tab="$currentTab"></div>
+      <div id="usercourses-container" data-tab="$(currentTab)"></div>
 
     <!-- Pagination -->
     <div id="content-loader" class="paging clearfix">

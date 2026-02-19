@@ -9,7 +9,7 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
 <header class="white">
   <div class="inner">
     <p class="course-title">
-      <a href="$url" tabindex="-1"><span class="ico ico-arr-left"></span></a>
+      <a href="$(url)" tabindex="-1"><span class="ico ico-arr-left"></span></a>
       $(course['title'])
       <span id="level-title"></span>
     </p>
@@ -21,8 +21,8 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
 
   ${"$"}_URL = {
     lvl        : $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
-    type       : "$type",
-    urlFrom    : "$url",
+    type       : "$(type)",
+    urlFrom    : "$(url)",
     thing      : $(thing if thing else 0),
     sendresults : $(sendresults if session["loggedin"] else 0),
     session     : $(1 if session["loggedin"] else 0)

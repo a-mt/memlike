@@ -62,17 +62,17 @@ $:(prender.inc_course_banner(course))
         </ul>
 
         <!-- Progress bar -->
-        <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$maxPoints">
-          <div class="counter">$counter</div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="$(points)" aria-valuemin="0" aria-valuemax="$(maxPoints)">
+          <div class="counter">$(counter)</div>
 
           <div class="progress-bar-active yellow" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
-            <div class="counter">$counter</div>
+            <div class="counter">$(counter)</div>
           </div>
 
           $if toreview:
             $ percentReview = int(float(points - toreview) / maxPoints * 100) if maxPoints > 0 else 0
             <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
-              <div class="counter">$counter</div>
+              <div class="counter">$(counter)</div>
             </div>
         </div>
       </div>
@@ -94,15 +94,15 @@ $:(prender.inc_course_banner(course))
         $if i > 0:
           $ idx = levels[i-1]
 
-          <a href="$(course['url'])$idx" class="paging-trigger prev">
+          <a href="$(course['url'])$(idx)" class="paging-trigger prev">
             <span class="ico ico-arr-left"></span>
-            <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
+            <span class="page">$(idx) &ndash; $(course['levels'][idx]['name'])</span>
           </a>
         $if i + 1 < len(levels):
           $ idx = levels[i+1]
 
-          <a href="$(course['url'])$idx" class="paging-trigger next">
-            <span class="page">$idx &ndash; $(course['levels'][idx]['name'])</span>
+          <a href="$(course['url'])$(idx)" class="paging-trigger next">
+            <span class="page">$(idx) &ndash; $(course['levels'][idx]['name'])</span>
             <span class="ico ico-arr-right"></span>
           </a>
       </div>

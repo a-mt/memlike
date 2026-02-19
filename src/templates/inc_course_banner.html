@@ -14,10 +14,10 @@ $def with (course)
           <li>
             $if i == 0:
               $ baseUrl = '/fr/courses/' + cat["name"]
-              <a href="$baseUrl">$:(LANG.categories[cat['id']])</a>
+              <a href="$(baseUrl)">$:(LANG.categories[cat['id']])</a>
             $else:
               <i class="ico ico-grey ico-arr-right ico-s"></i>
-              <a href="$baseUrl/$(cat['name'])">$:(LANG.categories[cat['id']])</a>
+              <a href="$(baseUrl)/$(cat['name'])">$:(LANG.categories[cat['id']])</a>
           </li>
       </ul>
 

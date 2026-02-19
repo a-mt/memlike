@@ -69,19 +69,19 @@ $#  </div>
         $ maxPoints = stats['num_things'] - stats['ignored']
         $ counter   = str(points) + "/" + str(maxPoints)
 
-        <div class="progress-bar" role="progressbar" aria-valuenow="$points" aria-valuemin="0" aria-valuemax="$maxPoints">
-          <div class="counter">$counter</div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="$(points)" aria-valuemin="0" aria-valuemax="$(maxPoints)">
+          <div class="counter">$(counter)</div>
 
           $if stats['percent_complete']:
             $ percent = stats['percent_complete']
             <div class="progress-bar-active yellow" style="clip-path: polygon(0 0, ${percent}% 0, ${percent}% 100%, 0 100%);">
-              <div class="counter">$counter</div>
+              <div class="counter">$(counter)</div>
             </div>
 
           $if stats['review']:
             $ percentReview = int(float(points - stats['review']) / maxPoints * 100)
             <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
-              <div class="counter">$counter</div>
+              <div class="counter">$(counter)</div>
             </div>
         </div>
 
@@ -95,9 +95,9 @@ $#  </div>
         $ level = course['levels'][str(idx)]
         <li class="level-box $('multimedia' if level['type'] == 2 else 'learn')">
           <div class="level-card">
-            <span class="level-index">$idx</span>
+            <span class="level-index">$(idx)</span>
           </div>
-          <a class="level" href="$(course['url'])$idx">
+          <a class="level" href="$(course['url'])$(idx)">
             <span class="level-title">$:(level['name'].replace("/", "<wbr>/"))</span>
 
             $if "status" in level:

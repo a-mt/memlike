@@ -19,7 +19,7 @@ $var title: $(LANG.menu["index"])
         $if currentTab == name:
           <button type="button" class="pill active">$:icon $(LANG.misc[name])</button>
         $else:
-          <a href="$url" class="pill">$:icon $(LANG.misc[name])</a>
+          <a href="$(url)" class="pill">$:icon $(LANG.misc[name])</a>
 
       <!-- Sort by -->
       $if currentTab == "courses":
@@ -50,7 +50,9 @@ $var title: $(LANG.menu["index"])
         <div class="leaderboard-controls">
           <div class="btn-group">
             $for period in ['week', 'month', 'alltime']:
-              <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$period">$(LANG.misc[period])</a>
+              <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$(period)">
+                $:(LANG.misc[period])
+              </a>
           </div>
         </div>
 

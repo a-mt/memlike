@@ -29,7 +29,9 @@ $:(prender.inc_course_banner(course))
       <div class="leaderboard-controls">
         <div class="btn-group">
           $for period in ['week', 'month', 'alltime']:
-            <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$period">$(LANG.misc[period])</a>
+            <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$(period)">
+              $:(LANG.misc[period])
+            </a>
         </div>
       </div>
 
