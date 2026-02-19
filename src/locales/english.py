@@ -1,3 +1,4 @@
+# ruff: noqa F401
 # coding=utf-8
 misc = {
   "error": "Something went wrong. Please try again later",

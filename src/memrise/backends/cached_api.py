@@ -1,4 +1,4 @@
-
+# ruff: noqa
 from cache import mc
 from .api import ApiMemrise
 

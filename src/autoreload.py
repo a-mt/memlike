@@ -1,3 +1,4 @@
+# ruff: noqa
 # Based on https://github.com/ipython/ipython/blob/main/IPython/extensions/autoreload.py
 
 # -----------------------------------------------------------------------------

@@ -24,8 +24,8 @@ class switchLang():
     def GET(self, name):
 
         # Check that languages exists
-        for l in web.config.template.locales:
-            if l['slug'] == name:
+        for locale in web.config.template.locales:
+            if locale['slug'] == name:
                 web.ctx.session['lang'] = name
                 break
 

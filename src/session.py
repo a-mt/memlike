@@ -4,7 +4,15 @@ import web
 from copy import deepcopy
 
 # Just re-exporting web.session(__all__), with some overwrites
-from web.session import *
+# ruff: noqa F401
+from web.session import (
+    Session,
+    SessionExpired,
+    Store,
+    DiskStore,
+    DBStore,
+    MemoryStore,
+)
 from exceptions import SessionExpired
 
 

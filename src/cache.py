@@ -23,7 +23,7 @@ class Lock:
         tries     = 0
         max_tries = 1000
 
-        while lock == False and tries < max_tries:
+        while lock is False and tries < max_tries:
           try:
               lock = self.mc.add('lock:' + self.cache_key, 1, 60)  # lock lasts 1 min max
           except Exception as e:

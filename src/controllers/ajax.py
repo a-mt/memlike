@@ -321,7 +321,6 @@ class user_dashboard():
         web.header("Content-type","text/plain")
         web.header("Transfer-Encoding","chunked")
 
-        c = 0
         try:
             for page in memrise.whatistudy(offset=offset):
                 courses = page["courses"]
@@ -335,7 +334,6 @@ class user_dashboard():
                 #     data = {}
                 #     for k in ["progress"]:
                 #         data[k] = course[k]
-                #     c += 1
 
             if page and page.get("next_offset", 0):
                 yield json.dumps({"next_offset": page["next_offset"] }) + "$"

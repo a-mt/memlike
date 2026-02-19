@@ -89,8 +89,7 @@ class level:
 
 class course:
     def GET(self, idCourse, slugCourse=""):
-        learning = False
-        items    = False
+        items = False
         try:
             course = memrise.course(idCourse, slugCourse)
 
