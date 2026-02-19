@@ -1,6 +1,11 @@
 {
     "applied_filter": "recent",
-    "applied_category": null,
+    "applied_category": {
+        "id": "625",
+        "name": "Chemistry",
+        "photo_url": "https://static.memrise.com/uploads/category_photos/chemistry.png",
+        "slug": "chemistry"
+    },
     "categories": [{
         "id": "632",
         "name": "Animals",
@@ -158,6 +163,19 @@
         "slug": "german-vocab",
         "is_official": false,
         "photo_url": "https://static.memrise.com/garden/img/placeholders/course-4.png",
+        "source": {
+            "id": "2",
+            "name": "Français",
+            "photo_url": "/static/img/language_photos/DemoFlags-02_copy.png",
+            "slug": "french"
+        },
+        "target": {
+            "id": "625",
+            "name": "Chemistry",
+            "photo_url": "https://static.memrise.com/uploads/category_photos/chemistry.png",
+            "slug": "chemistry"
+        },
+        "num_learners": 1200,
         "next_session": {
             "single_continue": {
                 "session_type": "learn",

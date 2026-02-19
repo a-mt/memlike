@@ -79,10 +79,12 @@ languages = {
         "url": "/static/img/language_photos/Flags_Dutch_copy.png"
     },
     "english": {
-        "url": "/static/img/language_photos/en.png"
+        "url": "/static/img/language_photos/en.png",
+        "code": "en",
     },
     "english-us": {
-        "url": "/static/img/language_photos/us_flag.png"
+        "url": "/static/img/language_photos/us_flag.png",
+        "code": "en",
     },
     "esperanto": {
         "url": "/static/img/language_photos/DemoFlags-34_copy.png"
@@ -100,7 +102,8 @@ languages = {
         "url": "/static/img/language_photos/flemish.png"
     },
     "french": {
-        "url": "/static/img/language_photos/DemoFlags-02_copy.png"
+        "url": "/static/img/language_photos/DemoFlags-02_copy.png",
+        "code": "fr",
     },
     "french-sign-language-lsf": {
         "url": "/static/img/language_photos/sign-french.png"
@@ -112,7 +115,8 @@ languages = {
         "url": "/static/img/language_photos/georgian.png"
     },
     "german": {
-        "url": "/static/img/language_photos/german.png"
+        "url": "/static/img/language_photos/german.png",
+        "code": "de",
     },
     "greek": {
         "url": "/static/img/language_photos/DemoFlags-26_copy.png"

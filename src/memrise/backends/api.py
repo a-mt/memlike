@@ -8,7 +8,7 @@ from exceptions import SessionExpired
 
 from cache import mc
 from bs4 import BeautifulSoup, Tag
-from variables import categories_code, levels
+from variables import categories_code, levels, languages
 from .base import Memrise
 
 
@@ -218,7 +218,11 @@ class Requestor:
             locale = "fr"
 
         # /de/community/courses/french = "Ich spreche französicsch"
-        url = f"{HOST}/{locale}/community/courses/{lang}/"
+        host = HOST
+        if locale != "en":
+            host += "/" + locale
+
+        url = f"{host}/community/courses/{lang}/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
         self.raise_for_status(response)
@@ -649,6 +653,8 @@ class Scraper:
             "photo"      : "",
             "levels"     : {},
             "breadcrumb" : [],
+            "source"     : None,  # for users that speak (=breadcrumb.0)
+            "target"     : None,  # for users that want to learn (=breadcrumb.last if present in languages)
         }
 
         div = DOM.find("div",{"class","course-wrapper"})
@@ -669,7 +675,9 @@ class Scraper:
             if item != None:
                 course["author"] = item.find(itemprop="additionalName").text
 
-            # Categories
+            # Breadcrumb
+            # (Courses / Languages / European / German / German) = Deutsch für Englisch-Sprecher
+            # (Kurse / Maths / Science Chemistry) = Chemie for Deutsche-Sprecher
             item = div.find("div",{"class","course-breadcrumb"})
             if item != None:
                 for child in item.find_all("a"):
@@ -678,8 +686,37 @@ class Scraper:
                     if cat in categories_code:
                         course["breadcrumb"].append({
                             "id"  : categories_code[cat],
-                            "name": cat
+                            "name": cat,
                         })
+
+            # Add source and target languages
+            if len(course["breadcrumb"]) >= 3:
+                def add_language(course, category, to_key="source"):
+                    slug = category["name"]
+                    if slug not in languages:
+                        return False
+
+                    lang = languages[slug]
+                    course[to_key] = {
+                        "slug": slug,  # ie portuguese-brazil (lang=pt)
+                        "photo_url": lang["url"],
+                        "id": category["id"],
+                        "language_code": lang.get("code", None),
+                    }
+
+                # Add source language
+                categories = course["breadcrumb"].copy()
+
+                add_language(course, to_key="source", category=categories.pop(0))
+
+                # Add target language
+                if categories[0]["name"] == "languages":
+                    categories.pop(0)
+
+                    # Unravel target until we reach a language we known (ie german / german-2)
+                    while len(categories):
+                        if add_language(course, to_key="target", category=categories.pop(-1)):
+                            break
 
             # Photo + url
             item = div.find("a",{"class","course-photo"})
