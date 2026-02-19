@@ -10,3 +10,5 @@ docker_volumes
 =*
 *.log
 build/
+.pytest_cache
+.ruff_cache
