@@ -49,7 +49,7 @@ $for i, course in enumerate(courses):
         $if idCat and 'source' in course:
           <div class="clearfix">
             <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
-              $:category
+              $:(category)
             </a>
           </div>
 

@@ -9,7 +9,7 @@ $(document).ready(function(){
   }
   Object.freeze(window.course);
   render(<Learn
-            level={window.$_URL.lvl}
+            level_idx={window.$_URL.lvl}
             session_type={window.$_URL.type}
             preview_thing_id={window.$_URL.thing}
             sendresults={window.$_URL.sendresults}
@@ -103,7 +103,7 @@ class Learn extends Component {
     screen: false,
     recap: {}, num_scheduled_correct: 0, num_scheduled: 0,
     points: 0, hearts: 3, speed_bonus: 0,
-    level: 1, maxlevel: 1, level_type: 1,
+    level_idx: 1, maxlevel: 1, level_type: 1,
     get_all: false
   };
 
@@ -115,16 +115,17 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    if(typeof this.props.level =="string") { // all
-      this.levels         = this.props.level.split(',').map((i) => parseInt(i));
+    if(typeof this.props.level_idx == "string") { // all
+      this.levels          = this.props.level_idx.split(',').map((i) => parseInt(i));
 
-      this.state.level    = this.levels[0] || 1;
-      this.state.maxlevel = this.levels[this.levels.length-1] || 1;
-      this.state.get_all  = (this.props.session_type != "preview");
+      this.state.level_idx = this.levels[0] || 1;
+      this.state.maxlevel  = this.levels[this.levels.length-1] || 1;
+      this.state.get_all   = (this.props.session_type != "preview");
     } else {
-      this.state.level    = parseInt(this.props.level);
-      this.state.maxlevel = parseInt(this.props.level);
+      this.state.level_idx = parseInt(this.props.level_idx);
+      this.state.maxlevel  = parseInt(this.props.level_idx);
     }
+    console.log(this.state);
 
     this.setChoices = this.setChoices.bind(this);
   }
@@ -178,7 +179,7 @@ class Learn extends Component {
     });
 
     // Retrieve data
-    this.getData(this.state.level, function(data){
+    this.getData(this.state.level_idx, function(data){
       if(!this.props.preview_thing_id) {
         window.onbeforeunload = this.warnbeforeunload.bind(this);
       }
@@ -230,13 +231,18 @@ class Learn extends Component {
 
     // Update level title
     if(!this.state.get_all) {
-      if(!prevState.data || prevState.level != this.state.level) {
-        var name = "Unknown";
+      if(!prevState.data || prevState.level_idx != this.state.level_idx) {
+        var name = "";
+        var idx = this.state.level_idx;
 
-        if (this.state.level in window.course.levels) {
-          name = window.course.levels[this.state.level].name;
+        if (idx < 1) {
+          idx += 1;
         }
-        document.getElementById('level-title').innerHTML = this.state.level + (name ? " - " + name : "");
+        if (idx in window.course.levels) {
+          name = window.course.levels[idx].name;
+        }
+        var title = idx + (name ? " - " + name : "");
+        document.getElementById('level-title').innerHTML = title;
       }
     } else if(this.props.session_type == "speed_review"){
       Timer.start(this.time_over.bind(this));
@@ -295,10 +301,10 @@ class Learn extends Component {
 
           // How many times do we have to repeat the test to learn it
           const progress = progress_map[learnable_id];
-          const level = progress ? progress.growth_level : 0;
+          const target_level = progress ? progress.growth_level : 0;
 
-          const from_target_level = level + 1 | 0;
-          const to_target_level = Math.min(level + 3 | 0, REPEAT_UNTIL_GROWTH_LEVEL);
+          const from_target_level = target_level + 1 | 0;
+          const to_target_level = Math.min(target_level + 3 | 0, REPEAT_UNTIL_GROWTH_LEVEL);
 
           if (to_target_level <= from_target_level) {
             console.warning('The following learnable has already been learned:', learnable);
@@ -406,24 +412,30 @@ class Learn extends Component {
   }
 
   // Retrieve the current level datas
-  getData(level, callback) {
-    if (!(level in window.course.levels)) {
+  getData(level_idx, callback) {
+    const session_type = this.props.session_type;
+
+    // Retrieve level type
+    var level_type = 1;
+    if (level_idx == 0) {
+      level_idx = 1;
+    }
+    if (level_idx == 1 && !window.course.levels.length) {
+      // pass
+    } else if (!(level_idx in window.course.levels)) {
       return this.setState({
         error: 'Level data cannot be retrieved',
       });
+      level_type = window.course.levels[level_idx].type;
     }
 
-    const session_type = this.props.session_type;
-    const level_type = window.course.levels[level].type;
-
     var url = '/ajax' + window.course.url;
-
     if(this.state.get_all) {
       url += 'all/' + session_type;
     } else if(level_type == 2) {
-      url += level + '/media';
+      url += level_idx + '/media';
     } else {
-      url += level + '/' + session_type;
+      url += level_idx + '/' + session_type;
     }
 
     $.ajax({
@@ -437,8 +449,8 @@ class Learn extends Component {
           recap: {},
           screen: false,
           error: false,
-          level: level,
-          level_type: level_type,
+          level_idx,
+          level_type,
 
           data : gameData,
           i    : 0,
@@ -777,12 +789,12 @@ class Learn extends Component {
 
     // Next level or go back to course's page
     } else if(this.state.screen == "recap" || this.state.level_type == 2){
-      if(!this.state.get_all && this.state.level < this.state.maxlevel) {
+      if(!this.state.get_all && this.state.level_idx < this.state.maxlevel) {
         if(this.state.data) {
           this.setState({
             data: false
           });
-          this.getData(this.levels[this.levels.indexOf(this.state.level) + 1]);
+          this.getData(this.levels[this.levels.indexOf(this.state.level_idx) + 1]);
         }
       } else {
         this.state.error = 1; // prevent warning

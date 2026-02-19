@@ -9,6 +9,9 @@ from variables import categories_code, levels
 from .base import Memrise
 
 
+DUMMY_SINGLE_LEVEL = "6618687"
+
+
 class DummyMemrise(Memrise):
 
     #+-----------------------------------------------------
@@ -26,7 +29,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     def whoami(self, sessionid=None):
         """
-        Testset: settings.html
+        Testset: profile_settings.html
         """
         return {
             "sessionid": sessionid,
@@ -343,12 +346,48 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     def course(self, idCourse, slugCourse="", **kwargs):
         """
-        Testset: course-6698294.html
+        Testset: course-1892646.html
         """
+        if idCourse == DUMMY_SINGLE_LEVEL:
+            return {
+                "id": DUMMY_SINGLE_LEVEL,
+                "title": "Tables de multiplication",
+                "url": "/community/course/6618687/tables-de-multiplication/",
+                "author": "",
+                "description": "",
+                "photo": "https://static.memrise.com/garden/img/placeholders/course-2.png",
+                "levels": {},
+                "num_things": 10,
+                "breadcrumb": [{
+                    "id": "62",
+                    "name": "afrikaans"
+                }, {
+                    "id": "605",
+                    "name": "maths-science"
+                }, {
+                    "id": "628",
+                    "name": "maths"
+                }],
+                "source": {
+                    "slug": "afrikaans",
+                    "photo_url": "/static/img/language_photos/Afrikaans.png",
+                    "id": "62",
+                    "language_code": None
+                },
+                "target": None,
+                "stats": {
+                    "ignored": 0,
+                    "learned": 11,
+                    "percent_complete": 100,
+                    "review": 0,
+                    "num_things": 11,
+                }
+            }
+
         course = {
             "id"         : idCourse,
             "title"      : "Grammaire • Le groupe nominal",
-            "url"        : "/community/course/6698294/german-vocab/",
+            "url"        : "/community/course/1892646/grammaire-le-groupe-nominal/",
             "author"     : "4v15721",
             "description": "Des mots de vocabulaire",
             "photo"      : "https://static.memrise.com/garden/img/placeholders/course-4.png",
@@ -446,12 +485,15 @@ class DummyMemrise(Memrise):
     #| COURSE > LEVEL
     #+-----------------------------------------------------
     def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
-        with open(settings.ROOTDIR + "/tests/testset/learning_session_learn.json") as f:
+        """
+        Testset: course-1892646_level-2_learning_session_preview.json
+        """
+        with open(settings.ROOTDIR + "/tests/testset/course-1892646_level-2_learning_session_preview.json") as f:
             return json.loads(f.read())
 
     def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         """
-        Testset: level_multimedia.html
+        Testset: course-1892646_level-1_multimedia.html
         """
         return r'"img:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20genre\u000A\u000AEn allemand, il existe trois genres: féminin, masculin et neutre. L\u0027article placé devant le nom (le, la) indique le genre:\u000A\u000A• *der* devant les noms **masculins**\u000A\u000A• *die* devant les noms **féminins**\u000A\u000A• *das* devant les noms **neutres**\u000A\u000ATout nom doit être appris avec son article, le genre d\u0027un mot en allemand n\u0027étant pas toujours le même qu\u0027en français: *der Wagen* (la voiture), *die Katze* (le chat), *das Buch* (le livre).\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000APour l\u0027article indéfini (un, une):\u000A\u000A• *ein* devant les noms **masculins ou neutres**\u000A\u000A• *eine* devant les noms **féminins**\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20pluriel\u000A\u000AL\u0027article défini du pluriel (les) est toujours *die*.\u000A\u000AL\u0027article indéfini du pluriel (des) n\u0027existe pas.\u000A\u000Aimg:https://i.imgur.com/n2KZqpr.png \u000A\u000AEn plus de l\u0027article, les noms prennent également les marques du pluriel:\u000A\u000A• \u002De: *der Hund* / *die Hunde* (le chien)\u000A\u000A•  ̈\u002De: *der Zug* / *die Züge* (le train)\u000A\u000A• \u002Der: *das Kind* / *die Kinder* (l\u0027enfant)\u000A\u000A•  ̈\u002Der: *der Wald* / *die Wälder* (la forêt)\u000A\u000A• \u002Ds: *das Radio* / *die Radios* (la radio)\u000A\u000A• \u002Dn: *der Junge* / *die Jungen* (le garçon)\u000A\u000A• \u002Den: *das Bett* / *die Betten* (le lit)\u000A\u000A•  ̈: *die Tochter* / *die Töchter* (la fille de)\u000A\u000ATout comme pour le genre, un nom doit donc être appris avec son pluriel.\u000A\u000A͏\u000A\u000ACertains noms n\u0027existent qu\u0027au pluriel: *die Leute* (les gens), *die Ferien* (les vacances).\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DLe%20cas\u000A\u000ALe groupe nominal (article + nom) change de forme selon qu\u0027il est\u000A\u000A• s͟u͟j͟e͟t͟ ͟(͟n͟o͟m͟i͟n͟a͟t͟i͟f͟):\u000A\u000A  ⇒ _**Der** Hund is süß_ (le chien est mignon)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟D͟i͟r͟e͟c͟t͟ ͟(͟a͟c͟c͟u͟s͟a͟t͟i͟f͟) \u002D qui:\u000A\u000A  ⇒ *Siehst du **den** Hund ?* (vois\u002Dtu le chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟\u0027͟O͟b͟j͟e͟t͟ ͟I͟n͟d͟i͟r͟e͟c͟t͟ ͟o͟u͟ ͟S͟e͟c͟o͟n͟d͟ ͟(͟d͟a͟t͟i͟f͟) \u002D à qui:\u000A\u000A  ⇒ *Gib **dem** Hund das Essen* (donne le repas au chien)\u000A\u000A• C͟o͟m͟p͟l͟é͟m͟e͟n͟t͟ ͟d͟u͟ ͟N͟o͟m͟ ͟(͟g͟é͟n͟i͟t͟i͟f͟) \u002D de qui:\u000A\u000A  ⇒ *Es ist das Essen **des** Hund**es** * (c\u0027est le repas du chien)\u000A\u000ANotons qu\u0027en Allemand, le COI précède le COD.\u000A\u000A͏\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/ec63a4f901c54e9c089dd0466c187da7/raw/4f9fcac662effec634ca0cd2b2137847fdd64388/dec_article_defini.svg\u000A\u000AOn décline *diese* (ce), *jede* (chaque) et *welche* (quel) comme *der*/*die*/*das*\u000A\u000A  ⇒ *Ich gebe dies**em** Hund das Essen* (je donne le repas à ce chien).\u000A\u000AOn décline *alle* (tous) et *keine* (aucun) comme *die* (les).\u000A\u000A  ⇒ *Ich gebe all**en** Tiere**n** das Essen* (je donne le repas à tous les animaux)\u000A\u000Aimg:https://gistcdn.githack.com/a\u002Dmt/bfd71cb08b8b399065e35ca9fb713dc2/raw/ca47bd26088cb620f5b4da25f115c6d4ec9a434d/dec_article_indefini.svg\u000A\u000AOn décline *mein* (mon), *dein* (ton) et *sein* (son) comme *ein*/*eine*.\u000A\u000A  ⇒ *Ich gebe mein**er** Katze das Essen* (je donne le repas à mon chat) \u002D *Katze* est féminin\u000A\u000A͏\u000A\u000Aimg:https://dummyimage.com/600x35/282828/eae0d0\u0026text\u003DCas%20particuliers\u000A\u000ACertaines prépositions forcent la forme du groupe du nominal:\u000A\u000A• **accusatif** après les prépositions *durch*, *für*, *gegen*, *ohne*, *um* et dans les compléments de lieu répondant à la question *wohin ?* (directionnel).\u000A\u000A• **datif** après les prépositions *aus*, *bei*, *mit*, *nach*, *seit*, *von*, *zu* et dans les compléments de lieu répondant à la question *wo ?* (location): *Ich spiele **mit** d**em** Hund* (je joue avec le chien).\u000A\u000A• **génitif** après les prépositions *wegen*, *trozt*, *während*, *statt*.\u000A\u000ANB Un chapitre est dédié aux prépositions plus loin"'
 

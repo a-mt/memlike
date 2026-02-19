@@ -19,7 +19,7 @@ class Memrise:
         """
         Retrieve the username and photo of current user
 
-        Testset: settings.html
+        Testset: profile_settings.html
         @param string sessionid
         @return dict - {sessionid, username, photo}
         """
@@ -72,7 +72,7 @@ class Memrise:
         """
         Post play progress
 
-        Testset: progress_register_{request,response}.json
+        Testset: learning_register_progress_{request,response}.json
         @param string path - register | session_end
         @param dict data
         @param string sessionid
@@ -121,7 +121,7 @@ class Memrise:
         """
         Retrieve the info about a course
 
-        Testset: course-6698294.html
+        Testset: course-1892646.html
         @param integer idCourse
         @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
         """
@@ -147,7 +147,7 @@ class Memrise:
         """
         Retrieve the content of a multimedia level
 
-        Testset: level_multimedia.html
+        Testset: course-1892646_level-1_multimedia.html
         @param string idCourse - "43238"
         @param string slugCourse - "durham-university-medicine-year-one"
         @param integer lvl

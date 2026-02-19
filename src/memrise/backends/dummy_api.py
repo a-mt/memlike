@@ -2,7 +2,7 @@ import json
 import settings
 
 from .api import ApiMemrise, Scraper
-from .dummy import DummyMemrise
+from .dummy import DummyMemrise, DUMMY_SINGLE_LEVEL
 
 
 class DummyRequestor:
@@ -18,7 +18,7 @@ class DummyRequestor:
     # | CURRENT USER
     # +-----------------------------------------------------
     def whoami(self, **kwargs):
-        return self.get_testset_text("settings.html")
+        return self.get_testset_text("profile_settings.html")
 
     def whatistudy(self, offset, nbperpage, **kwargs):
         data = self.get_testset_json("dashboard_courses.json")
@@ -49,13 +49,22 @@ class DummyRequestor:
     # | COURSE
     # +-----------------------------------------------------
     def course(self, idCourse, slugCourse="", **kwargs):
-        return self.get_testset_text("course-6698294.html")
+        if idCourse == DUMMY_SINGLE_LEVEL:
+            return self.get_testset_text("course-6618687.html")
+
+        return self.get_testset_text("course-1892646.html")
 
     # +-----------------------------------------------------
     # | COURSE > LEVEL
     # +-----------------------------------------------------
     def level(self, idCourse, lvl, **kwargs):
-        return self.get_testset_json("learning_session_learn.json")
+        if idCourse == DUMMY_SINGLE_LEVEL:
+            return self.get_testset_json("course-6618687_level-1_learning_session_preview.json")
+
+        return self.get_testset_json("course-1892646_level-2_learning_session_preview.json") # attributes
+        return self.get_testset_json("course-399843_level-1_learning_session_preview.json") # image
+        return self.get_testset_json("course-365747_level-3_learning_session_preview.json") # audio
+        return self.get_testset_json("course-57289_level-1_learning_session_preview.json") # hidden_info
 
     def level_learning_session(self, idCourse, slugCourse, sessionType, **kwargs):
         return {
@@ -64,7 +73,7 @@ class DummyRequestor:
         }
 
     def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
-        return self.get_testset_text("level_multimedia.html")
+        return self.get_testset_text("course-1892646_level-1_multimedia.html")
 
     # +-----------------------------------------------------
     # | COURSE > LEADERBOARD

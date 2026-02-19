@@ -752,6 +752,16 @@ class Scraper:
                     if status is not None:
                         course["levels"][idx]["status"] = re.sub(r"\s+", " ", str(status))
 
+        # List of things (course without levels)
+        div = DOM.find("div", {"class": "things"})
+        if div is not None:
+            things = 0
+
+            for child in div.find_all("div", {"class": "thing"}, recursive=False):
+                things += 1
+
+            course["num_things"] = things
+
         if isLoggedIn:
             stats = self._course_progress(DOM)
             if stats is not None:
@@ -768,9 +778,9 @@ class Scraper:
             "num_things": 0,
         }
 
-        div = DOM.find("div", {"class", "progress-box-course"})
+        div = DOM.find("div", {"class", "progress-box"})
         if div is None:
-            return None
+            return stats
 
         # Ignored, learned, total
         item = div.find("div", {"class": "progress-box-title"})

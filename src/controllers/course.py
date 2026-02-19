@@ -5,13 +5,14 @@ from requests.exceptions import HTTPError
 # fmt: off
 urls = (
     # Learn
+    # /6687517/german-vocab/1/garden
+    # /6618687/tables-de-multiplication/0/28918327345410
     r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
     r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
     r"/(\d+)/(.*)/(\d+)/(.*)", "level",
     r"/(\d+)/(.*)/(\d+)", "level",
 
     # View course
-    # /6687517/german-vocab/1/garden
     r"/(\d+)/(.*)/garden", "learn_fromform",
     r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
     r"/(\d+)/(.*)/leaderboard", "leaderboard",
@@ -69,15 +70,30 @@ class level:
     def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
             course = memrise.course(idCourse, slugCourse)
-            if lvl not in course["levels"]:
-                return web.config.template.prender._404()
+            index = int(lvl)
 
+            # Check that the giving level index is known
+            if index <= 1 and not len(course["levels"]):
+                index = 1
+                level = {
+                    "name": "",
+                    "type": 1,
+                }
+            else:
+                if lvl not in course["levels"]:
+                    return web.config.template.prender._404()
+
+                level = course["levels"][lvl]
+
+            # Request the content of that level
             try:
-                if course["levels"][lvl]["type"] == 1:
-                    items = memrise.level(idCourse, slugCourse, lvl, "preview")
+                if level["type"] == 1:
+                    # A list of things
+                    items = memrise.level(idCourse, slugCourse, index, "preview")
                 else:
-                    # Type multimedia
-                    items = memrise.level_multimedia(idCourse, slugCourse, lvl)
+                    # A multimedia
+                    items = memrise.level_multimedia(idCourse, slugCourse, index)
+
             except HTTPError:
                 items = {"learnables": [], "progress": []}
 
@@ -87,12 +103,13 @@ class level:
             else:
                 return web.config.template.prender._404()
 
+        # Render the level content
         return web.config.template.render.course_level(
             course,
             {
-                "name": course["levels"][lvl]["name"],
-                "type": course["levels"][lvl]["type"],
-                "index": int(lvl),
+                "name": level["name"],
+                "type": level["type"],
+                "index": index,
             },
             items,
         )
@@ -118,7 +135,7 @@ class course:
                 {
                     "name": False,
                     "type": 1,
-                    "index": -1,
+                    "index": 1,
                 },
                 items,
             )
