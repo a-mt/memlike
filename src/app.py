@@ -25,7 +25,6 @@ class logout:
 
 class switchLang:
     def GET(self, name):
-
         # Check that languages exists
         for locale in web.config.template.locales:
             if locale["slug"] == name:
@@ -130,7 +129,6 @@ app.add_processor(lang._processor)
 # ---
 # Flash messages processor
 def flash_load():
-
     # Redirect HTTP ot HTTPS
     if web.ctx.environ.get("HTTP_X_FORWARDED_PROTO") == "http":
         raise web.seeother(web.ctx.home.replace("http://", "https://").replace(":80", "") + web.ctx.fullpath)

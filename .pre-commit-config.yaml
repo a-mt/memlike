@@ -1,12 +1,12 @@
 # minimum_pre_commit_version: "4.4.0"
 repos:
-# -   repo: https://github.com/astral-sh/ruff-pre-commit
-#     rev: "v0.14.7"
-#     hooks:
-#     -   id: ruff-check
-#         files: ^src/
-#         args: ["--fix"]
-#     -   id: ruff-format
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.14.7"
+    hooks:
+    -   id: ruff-check
+        files: ^src/
+        args: ["--fix"]
+    -   id: ruff-format
 -   repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0
     hooks:
@@ -111,3 +111,4 @@ repos:
 #                xml\.
 #            )
 #        types: [python]
+exclude: "statc/img/.*"

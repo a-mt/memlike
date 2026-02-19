@@ -24,7 +24,6 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertEqual(payload.get("learning", None), {})
 
     def test_login(self):
-
         # user isn't logged in
         response = self.client.request("/ajax/session")
         self.assertEqual(response.status_code, 200)
@@ -153,7 +152,6 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertIsNotNone(payload.get("lang", None))
 
     def test_session_deleted2(self):
-
         # Unauthenticated request = cannot access dashboard
         response = self.client.request("/ajax/dashboard")
         self.assertEqual(response.status_code, 403)

@@ -67,7 +67,6 @@ class Session(Session):
         self.ip = web.ctx.ip
 
     def _load(self):
-
         # Reset _data
         self._reset()
 
