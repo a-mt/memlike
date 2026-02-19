@@ -6,6 +6,7 @@ import web
 
 # Make it work no matter the current directory
 import sys
+
 sys.path.insert(0, settings.ROOTDIR)
 
 # ---
@@ -14,32 +15,36 @@ import controllers
 import session
 import re
 
-class logout():
-    def GET(self):
-        web.ctx.session['loggedin'] = False
-        web.ctx.session['learning'] = {}
-        raise web.seeother('/')
 
-class switchLang():
+class logout:
+    def GET(self):
+        web.ctx.session["loggedin"] = False
+        web.ctx.session["learning"] = {}
+        raise web.seeother("/")
+
+
+class switchLang:
     def GET(self, name):
 
         # Check that languages exists
         for locale in web.config.template.locales:
-            if locale['slug'] == name:
-                web.ctx.session['lang'] = name
+            if locale["slug"] == name:
+                web.ctx.session["lang"] = name
                 break
 
         # Redirect to referer
-        if 'HTTP_REFERER' in web.ctx.environ:
-            referer = re.search(r'(https?://[^/]+)(.*)$', web.ctx.environ['HTTP_REFERER'])
+        if "HTTP_REFERER" in web.ctx.environ:
+            referer = re.search(r"(https?://[^/]+)(.*)$", web.ctx.environ["HTTP_REFERER"])
 
-            if referer.group(1) + ':80' == web.ctx.home:
+            if referer.group(1) + ":80" == web.ctx.home:
                 raise web.seeother(referer.group(2))
 
-        raise web.seeother('/')
+        raise web.seeother("/")
+
 
 def notfound():
     return web.notfound(web.config.template.prender._404())
+
 
 # fmt: off
 urls = (
@@ -68,6 +73,7 @@ if settings.DEBUG:
     app.debug = True
 
     from debug import init_debug_route
+
     init_debug_route(app)
 else:
     app.debug = False
@@ -75,12 +81,13 @@ else:
 # ---
 # Session processor
 if settings.IS_TEST:
-    store =  session.MemoryStore()
+    store = session.MemoryStore()
 else:
     # if settings.DATABASE_URL: store = session.DBStore(web.database(), 'sessions')
-    store = session.DiskStore('/tmp/sessions')
+    store = session.DiskStore("/tmp/sessions")
 
 session = session.Session(app=None, store=store, initializer=settings.DEFAULT_SESSION)
+
 
 def session_load():
     """
@@ -104,10 +111,11 @@ def session_load():
     web.ctx.session_id = session.session_id
 
     # Make it accessible in templates
-    web.config.template['session'] = session._data
+    web.config.template["session"] = session._data
+
 
 if settings.IS_TEST:
-    web.test = web.storage({'session': session})
+    web.test = web.storage({"session": session})
 
 # Processors are run at each request
 app.add_processor(session._processor)
@@ -118,39 +126,42 @@ app.add_processor(web.loadhook(session_load))
 lang = web.config.lang
 app.add_processor(lang._processor)
 
+
 # ---
 # Flash messages processor
 def flash_load():
 
     # Redirect HTTP ot HTTPS
-    if web.ctx.environ.get('HTTP_X_FORWARDED_PROTO') == 'http':
-        raise web.seeother(web.ctx.home.replace('http://', 'https://').replace(':80', '') + web.ctx.fullpath)
+    if web.ctx.environ.get("HTTP_X_FORWARDED_PROTO") == "http":
+        raise web.seeother(web.ctx.home.replace("http://", "https://").replace(":80", "") + web.ctx.fullpath)
 
     # Handle flash messages
-    if 'flash' in web.ctx.session:
+    if "flash" in web.ctx.session:
         web.ctx.flash = web.ctx.session.flash
         del web.ctx.session.flash
     else:
         web.ctx.flash = {}
 
+
 app.add_processor(web.loadhook(flash_load))
 
 # ---
 # Run app
-if __name__ == '__main__' and not settings.IS_TEST:
-    print(f'web2py: {web.__version__}')
-    print(f'Autoreload: {settings.AUTORELOAD}')
-    print(f'Debug: app={app.debug} web={web.config.debug} sql={web.config.debug_sql}')
+if __name__ == "__main__" and not settings.IS_TEST:
+    print(f"web2py: {web.__version__}")
+    print(f"Autoreload: {settings.AUTORELOAD}")
+    print(f"Debug: app={app.debug} web={web.config.debug} sql={web.config.debug_sql}")
 
     # Reload modules that have changed
     # Is checked at the beginning of each request
     # Note that the main app isn't reloaded (so if the URLs mapping is updated, you should restart the entrypoint)
     if settings.AUTORELOAD:
         from autoreload import AutoreloadMagics
+
         auto_reload_extension = AutoreloadMagics()
         app.processors.insert(0, web.loadhook(auto_reload_extension.pre_execute_hook))
         app.processors.append(web.loadhook(auto_reload_extension.post_execute_hook))
-        auto_reload_extension.autoreload(mode='all', log=settings.DEBUG)
+        auto_reload_extension.autoreload(mode="all", log=settings.DEBUG)
 
-    print('Running...')
+    print("Running...")
     app.run()

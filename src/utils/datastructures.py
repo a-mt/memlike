@@ -30,9 +30,9 @@ class CaseInsensitiveMapping(Mapping):
         return len(self._store)
 
     def __eq__(self, other):
-        return isinstance(other, Mapping) and {
-            k.lower(): v for k, v in self.items()
-        } == {k.lower(): v for k, v in other.items()}
+        return isinstance(other, Mapping) and {k.lower(): v for k, v in self.items()} == {
+            k.lower(): v for k, v in other.items()
+        }
 
     def __iter__(self):
         return (original_key for original_key, value in self._store.values())
@@ -54,13 +54,10 @@ class CaseInsensitiveMapping(Mapping):
         for i, elem in enumerate(data):
             if len(elem) != 2:
                 raise ValueError(
-                    "dictionary update sequence element #{} has length {}; "
-                    "2 is required.".format(i, len(elem))
+                    "dictionary update sequence element #{} has length {}; 2 is required.".format(i, len(elem))
                 )
             if not isinstance(elem[0], str):
-                raise ValueError(
-                    "Element key %r invalid, only strings are allowed" % elem[0]
-                )
+                raise ValueError("Element key %r invalid, only strings are allowed" % elem[0])
             yield elem
 
 
@@ -84,4 +81,4 @@ class SimpleCookie(BaseSimpleCookie):
         super().__init__(items)
 
     def simple_output(self):
-        return self.output(attrs={}, header='')
+        return self.output(attrs={}, header="")

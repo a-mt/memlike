@@ -12,6 +12,7 @@ class Lang(object):
     """
     Translations management for web.py
     """
+
     def __init__(self, app=None):
         self.locales = {}
 
@@ -23,14 +24,14 @@ class Lang(object):
         Get the location of the file
         containing the translation strings for the given language
         """
-        return ROOTDIR + '/locales/' + lang + '.py'
+        return ROOTDIR + "/locales/" + lang + ".py"
 
     def get_module(self, lang=None, retry=True):
         if lang is None:
             lang = DEFAULT_LANG
 
         if lang not in self.locales:
-            logger.debug(f'Loading lang={lang}')
+            logger.debug(f"Loading lang={lang}")
 
             path = self.get_locale_path(lang)
             if isfile(path):
@@ -40,10 +41,10 @@ class Lang(object):
             # an associated file in locales/ (not supposed to happen)
             else:
                 if retry:
-                    logger.warning(f'lang={lang} does not exist')
+                    logger.warning(f"lang={lang} does not exist")
                     return self.get_module(retry=False)
 
-                raise Exception(f'Could not load lang={lang}')
+                raise Exception(f"Could not load lang={lang}")
 
         return self.locales[lang]
 
@@ -58,9 +59,9 @@ class Lang(object):
         """
         Puts the translation string of the current language into self._data
         """
-        lang = web.ctx.session.get('lang', DEFAULT_LANG)
+        lang = web.ctx.session.get("lang", DEFAULT_LANG)
         mod = self.get_module(lang=lang)
         web.ctx.lang = mod
 
         # Make it accessible in templates
-        web.config.template['LANG'] = mod
+        web.config.template["LANG"] = mod

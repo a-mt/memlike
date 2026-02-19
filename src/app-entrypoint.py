@@ -1,7 +1,8 @@
-'''
+"""
 To restart:
     docker kill --signal=INT CONTAINER_ID
-'''
+"""
+
 import signal
 
 import os
@@ -15,8 +16,9 @@ from subprocess import Popen, CalledProcessError
 run = True
 current_subprocs = set()
 
+
 def dispatch_signal(signum, frame):
-    print(f'Dispatching signal {signum}')
+    print(f"Dispatching signal {signum}")
 
     for proc in current_subprocs:
         if proc.poll() is None:
@@ -24,8 +26,10 @@ def dispatch_signal(signum, frame):
             # https://stackoverflow.com/questions/4789837/how-to-terminate-a-python-subprocess-launched-with-shell-true/4791612#4791612
             os.killpg(os.getpgid(proc.pid), signum)
 
+
 def restart(signum, frame):
     dispatch_signal(signal.SIGTERM, frame)
+
 
 def stop(signum, frame):
     global run
@@ -33,7 +37,8 @@ def stop(signum, frame):
 
     dispatch_signal(signum, frame)
 
-print('Listening keyboard input...')
+
+print("Listening keyboard input...")
 signal.signal(signal.SIGINT, restart)
 signal.signal(signal.SIGTERM, stop)
 
@@ -42,11 +47,11 @@ signal.signal(signal.SIGTERM, stop)
 # RUN APP IN FORK
 # ---------------------------------------------------------
 
-src = os.environ.get('WWWDIR', '')
-cmd = f'python {src}/app.py'
+src = os.environ.get("WWWDIR", "")
+cmd = f"python {src}/app.py"
 
 while run:
-    print('Starting wsgi...')
+    print("Starting wsgi...")
 
     with Popen(
         cmd,
@@ -59,7 +64,7 @@ while run:
     ) as p:
         current_subprocs.add(p)
 
-    print('Exiting wsgi...')
+    print("Exiting wsgi...")
     current_subprocs.remove(p)
 
     if p.returncode > 1:

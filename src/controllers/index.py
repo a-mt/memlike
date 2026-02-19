@@ -11,16 +11,18 @@ urls = (
 )
 # fmt: on
 
+
 class index:
     def GET(self):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             return web.config.template.render.index()
         else:
             return web.config.template.render.dashboard("courses", False, False)
 
+
 class leaderboard:
     def GET(self):
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             return web.config.template.render.Forbidden()
 
         _GET = web.input(period="alltime")
@@ -35,9 +37,10 @@ class leaderboard:
 
         return web.config.template.render.dashboard("leaderboard", _GET.period, leaderboard)
 
+
 class about:
     def GET(self):
         return web.config.template.render.about()
 
-app = web.application(urls, locals(), autoreload=False)
 
+app = web.application(urls, locals(), autoreload=False)

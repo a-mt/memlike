@@ -26,10 +26,7 @@ def import_string(dotted_path):
     try:
         return cached_import(module_path, class_name)
     except AttributeError as err:
-        raise ImportError(
-            'Module "%s" does not define a "%s" attribute/class'
-            % (module_path, class_name)
-        ) from err
+        raise ImportError('Module "%s" does not define a "%s" attribute/class' % (module_path, class_name)) from err
 
 
 def load_source(modname, filename):

@@ -5,7 +5,7 @@ import logging
 
 
 logger = logging.getLogger(__name__)
-logger_proxy = logger.getChild(suffix='route')
+logger_proxy = logger.getChild(suffix="route")
 
 
 def debug_route(origin, pattern, fn):
@@ -30,7 +30,6 @@ def init_debug_route(app):
     for each classes served by our app
     """
     for i, (pattern, handler) in enumerate(app.mapping):
-
         if isinstance(handler, web.application):
             if handler.fvars.get("print_info", False):
                 continue

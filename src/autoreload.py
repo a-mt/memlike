@@ -142,9 +142,7 @@ class ModuleReloader:
             modules = list(self.modules.keys())
 
         # Use the persistent import_from_tracker
-        import_from_tracker = (
-            self.import_from_tracker if self.import_from_tracker.imports_froms else None
-        )
+        import_from_tracker = self.import_from_tracker if self.import_from_tracker.imports_froms else None
         for modname in modules:
             m = sys.modules.get(modname, None)
 
@@ -185,13 +183,9 @@ class ModuleReloader:
                 except:
                     if not self.hide_errors:
                         logger = logging.getLogger("autoreload")
-                        logger.exception(
-                            f"Failed to reload module '{modname}' from file '{py_filename}'"
-                        )
+                        logger.exception(f"Failed to reload module '{modname}' from file '{py_filename}'")
                         print(
-                            "[autoreload of {} failed: {}]".format(
-                                modname, traceback.format_exc(10)
-                            ),
+                            "[autoreload of {} failed: {}]".format(modname, traceback.format_exc(10)),
                             file=sys.stderr,
                         )
                     self.failed[py_filename] = pymtime
@@ -345,9 +339,7 @@ class ImportFromTracker:
         else:
             self.symbol_map = symbol_map or {}
 
-    def add_import(
-        self, module_name: str, original_name: str, resolved_name: str
-    ) -> None:
+    def add_import(self, module_name: str, original_name: str, resolved_name: str) -> None:
         """Add an import, handling conflicts with existing imports.
 
         This method is called after successful code execution, so we know the import is valid.
@@ -363,9 +355,7 @@ class ImportFromTracker:
             if resolved_name in res_names and orig_name != original_name:
                 # Remove the conflicting resolved_name from the other original_name's list
                 res_names.remove(resolved_name)
-                if (
-                    not res_names
-                ):  # If the list is now empty, remove the original_name entirely
+                if not res_names:  # If the list is now empty, remove the original_name entirely
                     if orig_name in self.imports_froms[module_name]:
                         self.imports_froms[module_name].remove(orig_name)
                     del self.symbol_map[module_name][orig_name]
@@ -400,9 +390,7 @@ def append_obj(module, d, name, obj, autoload=False):
     return True
 
 
-def superreload(
-    module, reload=reload, old_objects=None, import_from_tracker=None
-):
+def superreload(module, reload=reload, old_objects=None, import_from_tracker=None):
     """Enhanced version of the builtin reload function.
 
     superreload remembers objects previously in the module, and

@@ -21,29 +21,29 @@ logger = logging.getLogger(__name__)
 
 class DiskStore(DiskStore):
     def __contains__(self, key):
-        logger.debug('DiskStore:Has %s', key)
+        logger.debug("DiskStore:Has %s", key)
         return super().__contains__(key)
 
     def __getitem__(self, key):
-        logger.debug('DiskStore:Get %s', key)
+        logger.debug("DiskStore:Get %s", key)
         return super().__getitem__(key)
 
     def __setitem__(self, key, value):
-        logger.debug('DiskStore:Set %s=%s', key, value)
+        logger.debug("DiskStore:Set %s=%s", key, value)
         return super().__setitem__(key, value)
 
 
 class DBStore(DBStore):
     def __contains__(self, key):
-        logger.debug('DBStore:Has %s', key)
+        logger.debug("DBStore:Has %s", key)
         return super().__contains__(key)
 
     def __getitem__(self, key):
-        logger.debug('DBStore:Get %s', key)
+        logger.debug("DBStore:Get %s", key)
         return super().__getitem__(key)
 
     def __setitem__(self, key, value):
-        logger.debug('DBStore:Set %s=%s', key, value)
+        logger.debug("DBStore:Set %s=%s", key, value)
         # Remove the leading `b` of bytes object (`b"..."`), otherwise encoded
         # value is invalid base64 format.
         pickled = self.encode(value).decode()
@@ -108,18 +108,18 @@ class Session(Session):
         """
         Delete the old session
         """
-        logger.debug('Session expired')
+        logger.debug("Session expired")
         try:
             super().kill()
         except KeyError:
             pass
         except Exception as e:
-            logger.error('Could not kill session', exc_info=e)
+            logger.error("Could not kill session", exc_info=e)
         finally:
             if not self._config.ignore_expiry:
                 raise SessionExpired(self._config.expired_message)
 
-            if self.get('_killed'):
+            if self.get("_killed"):
                 del self._killed
 
             self.session_id = None

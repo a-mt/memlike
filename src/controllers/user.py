@@ -13,9 +13,10 @@ urls = (
 )
 # fmt: on
 
+
 class user:
     def GET(self, username, tab="stats"):
-        username = username.strip('/').split('/')[0]
+        username = username.strip("/").split("/")[0]
 
         try:
             user = memrise.user(username)
@@ -24,5 +25,6 @@ class user:
             return web.config.template.prender._404()
 
         return web.config.template.render.user(user, tab, levels)
+
 
 app = web.application(urls, locals(), autoreload=False)

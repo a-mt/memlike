@@ -19,9 +19,7 @@ class Client:
                 raw = response.data
                 response._json = json.loads(raw, **extra)
             except json.JSONDecodeError:
-                raise ValueError(
-                    "Response is not valid JSON: %r" % raw
-                )
+                raise ValueError("Response is not valid JSON: %r" % raw)
         return response._json
 
     def _parse_headers(self, response, **extra):
@@ -39,9 +37,7 @@ class Client:
         :mod:`http.cookies` module for more.
         """
         if not hasattr(response, "_cookies"):
-            response._cookies = SimpleCookie([
-                x[1] for x in response.header_items if x[0].lower() == 'set-cookie'
-            ])
+            response._cookies = SimpleCookie([x[1] for x in response.header_items if x[0].lower() == "set-cookie"])
         return response._cookies
 
     @property
@@ -53,7 +49,7 @@ class Client:
         response.json = partial(self._parse_json, response)
         response.get_headers = partial(self._parse_headers, response)
         response.get_cookies = partial(self._parse_cookies, response)
-        response.status_code = int(response.status.split(' ', 2)[0])
+        response.status_code = int(response.status.split(" ", 2)[0])
         return response
 
 
@@ -95,7 +91,7 @@ class SimpleTestCase(unittest.TestCase):
         cls.client = cls.client_class()
 
     def get_auth_cookies(self):
-        response = self.client.request('/login', method='TEST')
+        response = self.client.request("/login", method="TEST")
 
         assert response.status_code == 303
         return response.get_cookies()

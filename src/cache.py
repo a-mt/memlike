@@ -3,6 +3,7 @@ import json
 import time
 from os import environ
 
+
 class Lock:
     """
     Lock to make computations set to memcached unique
@@ -12,28 +13,28 @@ class Lock:
     """
 
     def __init__(self, mc, cache_key):
-        self.mc        = mc
+        self.mc = mc
         self.cache_key = cache_key
 
     def __enter__(self):
         if not self.cache_key:
             return 0
 
-        lock      = False
-        tries     = 0
+        lock = False
+        tries = 0
         max_tries = 1000
 
         while lock is False and tries < max_tries:
-          try:
-              lock = self.mc.add('lock:' + self.cache_key, 1, 60)  # lock lasts 1 min max
-          except Exception as e:
-              print(e)
-              break
+            try:
+                lock = self.mc.add("lock:" + self.cache_key, 1, 60)  # lock lasts 1 min max
+            except Exception as e:
+                print(e)
+                break
 
-          if lock:
-              break
-          tries += 1
-          time.sleep(1)
+            if lock:
+                break
+            tries += 1
+            time.sleep(1)
 
         return tries
 
@@ -42,9 +43,10 @@ class Lock:
             return
 
         try:
-            self.mc.delete('lock:' + self.cache_key)
+            self.mc.delete("lock:" + self.cache_key)
         except Exception as e:
             print(e)
+
 
 class Client(pylibmc.Client):
     """
@@ -56,19 +58,19 @@ class Client(pylibmc.Client):
     def lock(self, cache_key):
         return Lock(self, cache_key)
 
-    #+-----------------------------------------------------
-    #| JSON SERIALIZATION/DESERIALIZATION
-    #+-----------------------------------------------------
+    # +-----------------------------------------------------
+    # | JSON SERIALIZATION/DESERIALIZATION
+    # +-----------------------------------------------------
     def serialize(self, value):
-        return json.dumps(value).encode('utf-8'), 0
+        return json.dumps(value).encode("utf-8"), 0
 
     def deserialize(self, bytes_, flags):
         assert flags == 0
-        return json.loads(bytes_.decode('utf-8'))
+        return json.loads(bytes_.decode("utf-8"))
 
-    #+-----------------------------------------------------
-    #| CATCH FAILURES
-    #+-----------------------------------------------------
+    # +-----------------------------------------------------
+    # | CATCH FAILURES
+    # +-----------------------------------------------------
     def delete(self, key):
         try:
             res = super(Client, self).delete(key)
@@ -93,11 +95,12 @@ class Client(pylibmc.Client):
             print(e)
             return None
 
+
 # https://devcenter.heroku.com/articles/memcachier#python
-if environ.get('MEMCACHIER_SERVERS', ''):
-    servers = environ.get('MEMCACHIER_SERVERS', '').split(',')
-    user    = environ.get('MEMCACHIER_USERNAME', '')
-    passw   = environ.get('MEMCACHIER_PASSWORD', '')
+if environ.get("MEMCACHIER_SERVERS", ""):
+    servers = environ.get("MEMCACHIER_SERVERS", "").split(",")
+    user = environ.get("MEMCACHIER_USERNAME", "")
+    passw = environ.get("MEMCACHIER_PASSWORD", "")
 
     # fmt: off
     mc = Client(servers, binary=True, username=user, password=passw, behaviors={
@@ -122,4 +125,4 @@ if environ.get('MEMCACHIER_SERVERS', ''):
     # fmt: on
 
 else:
-    mc = Client(['127.0.0.1'])
+    mc = Client(["127.0.0.1"])

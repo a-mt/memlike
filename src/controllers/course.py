@@ -21,6 +21,7 @@ urls = (
 )
 # fmt: on
 
+
 class learn_fromform:
     def GET(self, idCourse, path, lvl=False):
         slugCourse = path.split("/", 2)[0]
@@ -34,13 +35,14 @@ class learn_fromform:
 
         return web.config.template.render.learn(course, _GET.session, lvl, False, _GET.sendresults)
 
+
 class learn:
     def GET(self, idCourse, path, lvl, kind=False):
         slugCourse = path.split("/", 2)[0]
 
         if not kind:
             kind = lvl
-            lvl  = False
+            lvl = False
         try:
             course = memrise.course(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
@@ -48,6 +50,7 @@ class learn:
             return web.config.template.prender._404()
 
         return web.config.template.render.learn(course, kind, lvl, False, 1)
+
 
 class view:
     def GET(self, idCourse, path, lvl, thing):
@@ -61,21 +64,22 @@ class view:
 
         return web.config.template.render.learn(course, "preview", lvl, thing, 0)
 
+
 class level:
     def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
             course = memrise.course(idCourse, slugCourse)
-            if lvl not in course['levels']:
+            if lvl not in course["levels"]:
                 return web.config.template.prender._404()
 
             try:
-                if course['levels'][lvl]['type'] == 1:
+                if course["levels"][lvl]["type"] == 1:
                     items = memrise.level(idCourse, slugCourse, lvl, "preview")
                 else:
                     # Type multimedia
                     items = memrise.level_multimedia(idCourse, slugCourse, lvl)
             except HTTPError:
-                items = {"learnables":[], "progress":[]}
+                items = {"learnables": [], "progress": []}
 
         except HTTPError as e:
             if e.response.status_code == 403:
@@ -83,11 +87,16 @@ class level:
             else:
                 return web.config.template.prender._404()
 
-        return web.config.template.render.course_level(course, {
-            "name": course['levels'][lvl]['name'],
-            "type": course['levels'][lvl]['type'],
-            "index": int(lvl),
-        }, items)
+        return web.config.template.render.course_level(
+            course,
+            {
+                "name": course["levels"][lvl]["name"],
+                "type": course["levels"][lvl]["type"],
+                "index": int(lvl),
+            },
+            items,
+        )
+
 
 class course:
     def GET(self, idCourse, slugCourse=""):
@@ -104,13 +113,18 @@ class course:
             return web.config.template.prender._404()
 
         if items:
-            return web.config.template.render.course_level(course, {
-                "name": False,
-                "type": 1,
-                "index": -1,
-            }, items)
+            return web.config.template.render.course_level(
+                course,
+                {
+                    "name": False,
+                    "type": 1,
+                    "index": -1,
+                },
+                items,
+            )
 
         return web.config.template.render.course_summary(course)
+
 
 class leaderboard:
     def GET(self, idCourse, path=""):
@@ -118,7 +132,7 @@ class leaderboard:
 
         _GET = web.input(period="week")
         try:
-            course      = memrise.course(idCourse, slugCourse=slugCourse)
+            course = memrise.course(idCourse, slugCourse=slugCourse)
             leaderboard = memrise.course_leaderboard(idCourse, _GET.period)
         except HTTPError as e:
             print(e)
@@ -126,11 +140,12 @@ class leaderboard:
 
         return web.config.template.render.course_leaderboard(course, _GET.period, leaderboard)
 
+
 class edit:
     def GET(self, idCourse, path):
         slugCourse = path.split("/", 2)[0]
 
-        if not web.ctx.session.get('loggedin', False):
+        if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
         try:
@@ -140,5 +155,6 @@ class edit:
             return web.config.template.prender._404()
 
         return web.config.template.render.course_edit(course)
+
 
 app = web.application(urls, locals(), autoreload=False)
