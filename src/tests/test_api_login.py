@@ -246,7 +246,6 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertNotEqual(response.get_cookies()[cookie_name].value, cookies[cookie_name].value)
 
     def test_session_ip_expired2(self):
-        cookie_name = self.session_parameters['cookie_name']
         cookies = self.get_auth_cookies()
         headers = {'Cookie': cookies.simple_output()}
 

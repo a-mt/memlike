@@ -392,7 +392,7 @@ class DummyMemrise(Memrise):
         # Add stats
         if kwargs.get("sessionid", None):
             stats = self._course_progress()
-            if stats != None:
+            if stats is not None:
                 course["stats"] = stats
 
         return course

@@ -41,7 +41,7 @@ class login:
         # Try login
         try:
             data = memrise.login(_POST['username'], _POST['password'])
-            if data == None:
+            if data is None:
                 web.ctx.session.loggedin = False
             else:
                 web.ctx.session.loggedin = data

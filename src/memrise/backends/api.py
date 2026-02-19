@@ -746,7 +746,7 @@ class Scraper:
 
         if isLoggedIn:
             stats = self._course_progress(DOM)
-            if stats != None:
+            if stats is not None:
                 course["stats"] = stats
 
         return course
@@ -761,7 +761,7 @@ class Scraper:
         }
 
         div = DOM.find("div",{"class","progress-box-course"})
-        if div == None:
+        if div is None:
             return None
 
         # Ignored, learned, total
@@ -914,7 +914,7 @@ class Scraper:
             for user in users:
                 username = user.find(attrs={"class": "username"})
                 img      = user.find("img")
-                if username == None:
+                if username is None:
                     continue
 
                 item = {

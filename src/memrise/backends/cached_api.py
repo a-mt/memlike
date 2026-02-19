@@ -14,7 +14,7 @@ class CachedApiMemrise(ApiMemrise):
         """
         cache_key = "login"
         session = mc.get(cache_key)
-        if force or session == None:
+        if force or session is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -45,7 +45,7 @@ class CachedApiMemrise(ApiMemrise):
         courses   = mc.get(cache_key)
 
         # Query memrise
-        if courses == None:
+        if courses is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -69,7 +69,7 @@ class CachedApiMemrise(ApiMemrise):
         categories = mc.get(cache_key)
 
         # Query memrise
-        if categories == None:
+        if categories is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -95,7 +95,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "course_" + idCourse
         course    = mc.get(cache_key)
 
-        if course == None:
+        if course is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -125,7 +125,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "course_" + idCourse + "_" + lvl + "_" + slug
         level     = mc.get(cache_key)
 
-        if level == None:
+        if level is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -147,7 +147,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "course_" + idCourse + "_" + lvl + "_multimedia"
         data      = mc.get(cache_key)
 
-        if data == None:
+        if data is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -168,7 +168,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "course_" + idCourse + "_learderboard_" + period
         ldboard   = mc.get(cache_key)
 
-        if ldboard == None:
+        if ldboard is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -190,7 +190,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "user_" + username
         user      = None if force else mc.get(cache_key)
 
-        if user == None:
+        if user is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -230,7 +230,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key_page = cache_key + "_" + str(page)
         data = mc.get(cache_key_page)
 
-        if data == None:
+        if data is None:
             with mc.lock(cache_key_page) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
@@ -257,7 +257,7 @@ class CachedApiMemrise(ApiMemrise):
         cache_key = "user_" + username + "_" + tab
         courses   = mc.get(cache_key)
 
-        if courses == None:
+        if courses is None:
             with mc.lock(cache_key) as retries:
 
                 # Check if we set memcached while we were waiting for the lock
