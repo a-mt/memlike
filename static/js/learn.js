@@ -1248,7 +1248,7 @@ class Learn extends Component {
           "gap_prompt": null
         }
     */
-    var id = this.props.preview_thing || this.state.data.boxes[this.state.i].learnable_id;
+    var id = this.props.preview_thing_id || this.state.data.boxes[this.state.i].learnable_id;
     return this.state.data.screen_template_map[id][tpl][0];
   }
 
