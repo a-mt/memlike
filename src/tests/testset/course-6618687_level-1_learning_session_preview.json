@@ -1,0 +1,1839 @@
+{
+    "learnables": [{
+        "id": 28918326821122,
+        "learning_element": "8*3",
+        "definition_element": "24",
+        "learning_element_tokens": ["8", "3"],
+        "definition_element_tokens": ["24"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "24",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "24",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*3"],
+                "choices": ["8*8", "9*9", "8*6", "9*8", "8*7", "8*4", "9*3", "9*4", "9*6", "9*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "8*3",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "24",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["24"],
+                "choices": ["27", "48", "72", "32", "54", "63", "36", "64", "81", "56"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "24",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*3", "83"],
+                "choices": ["*", "8", "3", "9", "7", "4", "6"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918326952194,
+        "learning_element": "8*4",
+        "definition_element": "32",
+        "learning_element_tokens": ["8", "4"],
+        "definition_element_tokens": ["32"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "32",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "32",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*4"],
+                "choices": ["8*8", "9*9", "9*8", "8*3", "8*7", "8*6", "9*4", "9*6", "9*7", "9*3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "8*4",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "32",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["32"],
+                "choices": ["36", "27", "24", "48", "72", "54", "63", "64", "81", "56"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "32",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*4", "84"],
+                "choices": ["4", "6", "3", "9", "*", "8", "7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327083266,
+        "learning_element": "8*6",
+        "definition_element": "48",
+        "learning_element_tokens": ["8", "6"],
+        "definition_element_tokens": ["48"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "48",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "48",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*6"],
+                "choices": ["8*8", "8*4", "9*9", "9*8", "8*3", "8*7", "9*6", "9*7", "9*4", "9*3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "8*6",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "48",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["48"],
+                "choices": ["32", "36", "72", "24", "54", "63", "64", "81", "56", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "48",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*6", "86"],
+                "choices": ["4", "6", "7", "9", "8", "3", "*"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327214338,
+        "learning_element": "8*7",
+        "definition_element": "56",
+        "learning_element_tokens": ["8", "7"],
+        "definition_element_tokens": ["56"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "56",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "56",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*7"],
+                "choices": ["8*8", "8*4", "9*9", "8*6", "8*3", "9*8", "9*7", "9*6", "9*4", "9*3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "8*7",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "56",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["56"],
+                "choices": ["54", "48", "72", "24", "32", "63", "36", "64", "81", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "56",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*7", "87"],
+                "choices": ["4", "6", "*", "8", "7", "3", "9"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327345410,
+        "learning_element": "8*8",
+        "definition_element": "64",
+        "learning_element_tokens": ["8", "8"],
+        "definition_element_tokens": ["64"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "64",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "64",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*8"],
+                "choices": ["9*9", "8*4", "8*6", "9*8", "8*3", "8*7", "9*6", "9*7", "9*4", "9*3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "8*8",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "64",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["64"],
+                "choices": ["48", "54", "63", "72", "24", "32", "36", "81", "56", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "64",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "8*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["8*8", "88"],
+                "choices": ["6", "3", "*", "4", "8", "7", "9"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327542018,
+        "learning_element": "9*3",
+        "definition_element": "27",
+        "learning_element_tokens": ["9", "3"],
+        "definition_element_tokens": ["27"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "27",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "27",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*3"],
+                "choices": ["9*9", "9*6", "9*7", "9*8", "9*4", "8*4", "8*3", "8*6", "8*8", "8*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*3",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "27",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["27"],
+                "choices": ["24", "48", "72", "32", "54", "63", "36", "64", "81", "56"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "27",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*3",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*3", "93"],
+                "choices": ["4", "6", "8", "7", "9", "3", "*"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327673090,
+        "learning_element": "9*4",
+        "definition_element": "36",
+        "learning_element_tokens": ["9", "4"],
+        "definition_element_tokens": ["36"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "36",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "36",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*4"],
+                "choices": ["9*9", "9*3", "9*6", "9*7", "9*8", "8*4", "8*6", "8*3", "8*8", "8*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*4",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "36",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["36"],
+                "choices": ["27", "32", "24", "48", "72", "54", "63", "64", "81", "56"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "36",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*4",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*4", "94"],
+                "choices": ["6", "8", "*", "4", "3", "7", "9"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327869698,
+        "learning_element": "9*6",
+        "definition_element": "54",
+        "learning_element_tokens": ["9", "6"],
+        "definition_element_tokens": ["54"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "54",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "54",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*6"],
+                "choices": ["9*4", "9*3", "8*6", "8*8", "8*3", "8*4", "8*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*6",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "54",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["54"],
+                "choices": ["56", "24", "48", "32", "36", "64", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "54",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*6",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*6", "96"],
+                "choices": ["9", "6", "7", "4", "3", "*", "8"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918327935234,
+        "learning_element": "9*7",
+        "definition_element": "63",
+        "learning_element_tokens": ["9", "7"],
+        "definition_element_tokens": ["63"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "63",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "63",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*7"],
+                "choices": ["9*4", "9*3", "9*6", "8*7", "8*3", "8*6", "8*4", "8*8"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*7",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "63",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["63"],
+                "choices": ["48", "54", "64", "24", "32", "36", "27", "56"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "63",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*7",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*7", "97"],
+                "choices": ["4", "7", "3", "6", "9", "*", "8"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918328066306,
+        "learning_element": "9*8",
+        "definition_element": "72",
+        "learning_element_tokens": ["9", "8"],
+        "definition_element_tokens": ["72"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "72",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "72",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*8"],
+                "choices": ["8*8", "9*4", "9*3", "9*6", "9*7", "8*3", "8*6", "8*4", "8*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*8",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "72",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["72"],
+                "choices": ["63", "56", "24", "48", "32", "54", "64", "36", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "72",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*8",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*8", "98"],
+                "choices": ["9", "6", "4", "3", "*", "7", "8"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 28918328131842,
+        "learning_element": "9*9",
+        "definition_element": "81",
+        "learning_element_tokens": ["9", "9"],
+        "definition_element_tokens": ["81"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*9",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "81",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "81",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*9",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*9"],
+                "choices": ["9*3", "9*4", "9*6", "9*7", "9*8", "8*3", "8*6", "8*4", "8*8", "8*7"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Maths",
+                        "kind": "text",
+                        "value": "9*9",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Afrikaans",
+                    "kind": "text",
+                    "value": "81",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["81"],
+                "choices": ["64", "24", "48", "72", "32", "56", "54", "63", "36", "27"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "Afrikaans",
+                        "kind": "text",
+                        "value": "81",
+                        "alternatives": [],
+                        "style": ["rtl"],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Maths",
+                    "kind": "text",
+                    "value": "9*9",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["9*9", "99"],
+                "choices": ["8", "9", "*", "7", "3", "6", "4"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [{
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:55:27Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T21:58:09Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918326821122"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:56:01Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:02:09Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 4,
+        "starred": false,
+        "correct": 6,
+        "attempts": 7,
+        "total_streak": 4,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918326952194"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:56:47Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:01:08Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327083266"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:59:05Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:00:32Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327214338"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:58:44Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:07:43Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327345410"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T18:00:09Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:06:25Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327542018"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:58:57Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T21:58:58Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327673090"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:59:55Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:06:00Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 4,
+        "starred": false,
+        "correct": 6,
+        "attempts": 7,
+        "total_streak": 4,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327869698"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T18:00:29Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:03:19Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 4,
+        "starred": false,
+        "correct": 6,
+        "attempts": 7,
+        "total_streak": 4,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918327935234"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T18:00:16Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:09:18Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918328066306"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2024-10-13T17:59:22Z",
+        "created_date": "2024-10-13T17:49:19Z",
+        "next_date": "2024-10-13T22:07:06Z",
+        "interval": 0.17,
+        "growth_level": 6,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 6,
+        "attempts": 6,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "28918328131842"
+    }],
+    "session_source_info": {
+        "source_id": 6618687,
+        "source_type": "course_id_and_level_index",
+        "name": "Tables de multiplication",
+        "translated_name": "Tables de multiplication",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 11,
+        "level_id": 15877923,
+        "level_name": "New level",
+        "source_sub_index": 1,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

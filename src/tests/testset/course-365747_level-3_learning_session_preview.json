@@ -1,0 +1,4030 @@
+{
+    "learnables": [{
+        "id": 2423339418115,
+        "learning_element": "A Masked Ball",
+        "definition_element": null,
+        "learning_element_tokens": ["A", "Masked", "Ball"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "A Masked Ball",
+                    "alternatives": ["Un ballo in maschera "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Verdi",
+                    "alternatives": ["Giuseppe Verdi"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Alla vita che t'arride",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1859"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "A Masked Ball",
+                    "alternatives": ["Un ballo in maschera "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["A Masked Ball"],
+                "choices": ["The Bartered Bride", "The Pearl Fishers", "Elektra", "Iolanta", "Don Pasquale", "Andrea Chénier", "La bohème", "Siegfried", "Fidelio", "Orpheus in the Underworld"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "A Masked Ball",
+                        "alternatives": ["Un ballo in maschera "],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962978_140810_2056_01.mp3", "https://static.memrise.com/uploads/things/audio/36963198_140810_2205_18.mp3", "https://static.memrise.com/uploads/things/audio/36976655_140812_1850_15.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979426_140816_1942_58.mp3", "https://static.memrise.com/uploads/things/audio/36979606_140817_2101_12.mp3", "https://static.memrise.com/uploads/things/audio/36980174_140820_2106_24.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "A Masked Ball",
+                    "alternatives": ["Un ballo in maschera "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["A Masked Ball", "a masked ball", "Un ballo in maschera ", "un ballo in maschera"],
+                "choices": ["e", "M", "a", "s", "d", "k", "b", "B", "A", "l"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "A Masked Ball",
+                    "alternatives": ["Un ballo in maschera "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["A", "Masked", "Ball"],
+                    ["a", "masked", "ball"],
+                    ["un", "ballo", "in", "maschera"],
+                    ["un", "ballo", "in", "maschera"]
+                ],
+                "choices": ["The", "Bartered", "Bride", "The", "Pearl", "Fishers", "Elektra", "Iolanta", "Don", "Pasquale", "Andrea", "Chénier", "La", "bohème", "Siegfried", "Fidelio", "Orpheus", "in", "the", "Underworld"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423342629379,
+        "learning_element": "The Queen of Spades",
+        "definition_element": null,
+        "learning_element_tokens": ["The", "Queen", "of", "Spades"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Queen of Spades",
+                    "alternatives": ["Pikovaya Dama ", "Пиковая дама"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Tchaikovsky",
+                    "alternatives": ["Pyotr Ilyich Tchaikovsky"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Gospod! Prosti yemu!",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1890"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Queen of Spades",
+                    "alternatives": ["Pikovaya Dama ", "Пиковая дама"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Queen of Spades"],
+                "choices": ["Così fan tutte", "Gianni Schicchi", "The Tsar's Bride", "Romeo and Juliet", "Cavalleria rusticana", "Orpheus in the Underworld", "Dialogues des Carmélites ", "Prince Igor", "La cenerentola", "La fille du régiment"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "The Queen of Spades",
+                        "alternatives": ["Pikovaya Dama ", "Пиковая дама"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962961_140810_2049_07.mp3", "https://static.memrise.com/uploads/things/audio/36973562_140812_1846_14.mp3", "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Queen of Spades",
+                    "alternatives": ["Pikovaya Dama ", "Пиковая дама"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Queen of Spades", "pikovaya dama", "пиковая дама", "Пиковая дама", "Pikovaya Dama ", "the queen of spades"],
+                "choices": ["n", "d", "s", "T", "Q", "e", "S", "u", "a", "f", "é", "p", "h", "o"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Queen of Spades",
+                    "alternatives": ["Pikovaya Dama ", "Пиковая дама"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["The", "Queen", "of", "Spades"],
+                    ["the", "queen", "of", "spades"],
+                    ["pikovaya", "dama"],
+                    ["пиковая", "дама"],
+                    ["pikovaya", "dama"],
+                    ["пиковая", "дама"]
+                ],
+                "choices": ["Così", "fan", "tutte", "Gianni", "Schicchi", "The", "Tsar's", "Bride", "Romeo", "and", "Juliet", "Cavalleria", "rusticana", "Orpheus", "in", "the", "Underworld", "Dialogues", "des", "Carmélites", "Prince", "Igor", "La", "cenerentola", "La", "fille", "du", "régiment"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423349510659,
+        "learning_element": "Don Giovanni",
+        "definition_element": null,
+        "learning_element_tokens": ["Don", "Giovanni"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Giovanni",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Mozart",
+                    "alternatives": ["Wolfgang Amadeus Mozart"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Madamina, il catalogo è questo",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1787"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Giovanni",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Don Giovanni"],
+                "choices": ["Romeo and Juliet", "Gianni Schicchi", "Boris Godunov", "Die Csárdásfürstin", "Prince Igor", "Nabucco", "Don Pasquale", "Eugene Onegin", "The Flying Dutchman", "Pelléas and Mélisande"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Don Giovanni",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3", "https://static.memrise.com/uploads/things/audio/36963198_140810_2205_18.mp3", "https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36963688_140810_2122_18.mp3", "https://static.memrise.com/uploads/things/audio/36965223_140810_2135_08.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Giovanni",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Don Giovanni", "don giovanni"],
+                "choices": ["c", "D", "v", "i", "n", "o", "G", "a"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423365566979,
+        "learning_element": "Romeo and Juliet",
+        "definition_element": null,
+        "learning_element_tokens": ["Romeo", "and", "Juliet"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Romeo and Juliet",
+                    "alternatives": ["Roméo et Juliette"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Gounod",
+                    "alternatives": ["Charles Gounod", "Charles-François Gounod"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Je veux vivre",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1867"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Romeo and Juliet",
+                    "alternatives": ["Roméo et Juliette"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Romeo and Juliet"],
+                "choices": ["La fille du régiment", "Dido and Aeneas ", "Samson and Delilah", "Don Giovanni", "Eugene Onegin", "A Masked Ball", "The Rake's Progress", "The Pearl Fishers", "Parsifal ", "Dialogues des Carmélites "],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Romeo and Juliet",
+                        "alternatives": ["Roméo et Juliette"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3", "https://static.memrise.com/uploads/things/audio/36963522_140810_2116_10.mp3", "https://static.memrise.com/uploads/things/audio/36972872_140811_2212_30.mp3", "https://static.memrise.com/uploads/things/audio/36974107_140812_2049_35.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3", "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3", "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Romeo and Juliet",
+                    "alternatives": ["Roméo et Juliette"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Romeo and Juliet", "roméo et juliette", "romeo and juliet", "Roméo et Juliette", "romeo et juliette", "Romeo et Juliette"],
+                "choices": ["D", "u", "l", "d", "m", "e", "t", "R", "J", "a", "o", "i", "n"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Romeo and Juliet",
+                    "alternatives": ["Roméo et Juliette"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["Romeo", "and", "Juliet"],
+                    ["romeo", "and", "juliet"],
+                    ["roméo", "et", "juliette"],
+                    ["roméo", "et", "juliette"],
+                    ["romeo", "et", "juliette"]
+                ],
+                "choices": ["La", "fille", "du", "régiment", "Dido", "and", "Aeneas", "Samson", "and", "Delilah", "Don", "Giovanni", "Eugene", "Onegin", "A", "Masked", "Ball", "The", "Rake's", "Progress", "The", "Pearl", "Fishers", "Parsifal", "Dialogues", "des", "Carmélites"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423380967939,
+        "learning_element": "The Pearl Fishers",
+        "definition_element": null,
+        "learning_element_tokens": ["The", "Pearl", "Fishers"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Pearl Fishers",
+                    "alternatives": ["Les Pêcheurs de perles"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Bizet",
+                    "alternatives": ["Georges Bizet"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Je crois entendre encore",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1863"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Pearl Fishers",
+                    "alternatives": ["Les Pêcheurs de perles"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Pearl Fishers"],
+                "choices": ["The Tales of Hoffman", "The Queen of Spades", "La traviata", "Die Entführung", "Manon Lescaut", "The Italian Girl in Algiers", "Manon", "Fidelio", "Faust", "Salome"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "The Pearl Fishers",
+                        "alternatives": ["Les Pêcheurs de perles"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963198_140810_2205_18.mp3", "https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36972808_140811_2208_40.mp3", "https://static.memrise.com/uploads/things/audio/36972962_140811_2218_12.mp3", "https://static.memrise.com/uploads/things/audio/36973231_140811_2223_16.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Pearl Fishers",
+                    "alternatives": ["Les Pêcheurs de perles"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Pearl Fishers", "les pêcheurs de perles", "les pecheurs de perles", "Les Pecheurs de perles", "the pearl fishers", "Les Pêcheurs de perles"],
+                "choices": ["e", "h", "r", "a", "i", "F", "l", "s", "P", "ü", "T"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Pearl Fishers",
+                    "alternatives": ["Les Pêcheurs de perles"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["The", "Pearl", "Fishers"],
+                    ["the", "pearl", "fishers"],
+                    ["les", "pêcheurs", "de", "perles"],
+                    ["les", "pêcheurs", "de", "perles"]
+                ],
+                "choices": ["The", "Tales", "of", "Hoffman", "The", "Queen", "of", "Spades", "La", "traviata", "Die", "Entführung", "Manon", "Lescaut", "The", "Italian", "Girl", "in", "Algiers", "Manon", "Fidelio", "Faust", "Salome"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423385424387,
+        "learning_element": "Parsifal ",
+        "definition_element": null,
+        "learning_element_tokens": ["Parsifal"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Parsifal ",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Wagner",
+                    "alternatives": ["Richard Wagner"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Karfreitagszauber (Good Friday Music)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1882"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Parsifal ",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Parsifal "],
+                "choices": ["Carmen", "Prince Igor", "Nabucco", "La bohème", "Dido and Aeneas ", "Lucia di Lammermoor", "Romeo and Juliet", "Hansel and Gretel", "The Magic Flute"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Parsifal ",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963257_140810_2103_00.mp3", "https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36965189_140810_2134_34.mp3", "https://static.memrise.com/uploads/things/audio/36972672_140811_2201_07.mp3", "https://static.memrise.com/uploads/things/audio/36973054_140811_2221_34.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Parsifal ",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Parsifal ", "parsifal"],
+                "choices": ["r", "P", "N", "l", "i", "f", "s", "a"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423391126019,
+        "learning_element": "Gianni Schicchi",
+        "definition_element": null,
+        "learning_element_tokens": ["Gianni", "Schicchi"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Gianni Schicchi",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Puccini",
+                    "alternatives": ["Giacomo Puccini"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "O mio babbino caro",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1918"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Gianni Schicchi",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Gianni Schicchi"],
+                "choices": ["Don Giovanni", "Samson and Delilah", "Romeo and Juliet", "Cavalleria rusticana", "Don Pasquale", "Ariadne auf Naxos", "Prince Igor", "Siegfried", "The Italian Girl in Algiers", "Macbeth"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Gianni Schicchi",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963257_140810_2103_00.mp3", "https://static.memrise.com/uploads/things/audio/36963674_140810_2116_58.mp3", "https://static.memrise.com/uploads/things/audio/36974500_140812_2052_01.mp3", "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3", "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Gianni Schicchi",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Gianni Schicchi", "gianni schicchi"],
+                "choices": ["h", "S", "i", "T", "n", "a", "c", "G"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423414063619,
+        "learning_element": "Orpheus in the Underworld",
+        "definition_element": null,
+        "learning_element_tokens": ["Orpheus", "in", "the", "Underworld"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Orpheus in the Underworld",
+                    "alternatives": ["Orphée aux enfers"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Offenbach",
+                    "alternatives": ["Jacques Offenbach"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Galop infernal",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1858"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Orpheus in the Underworld",
+                    "alternatives": ["Orphée aux enfers"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Orpheus in the Underworld"],
+                "choices": ["The Cunning Little Vixen", "The Queen of Spades", "Das Rheingold", "Julius Caesar in Egypt", "La cenerentola", "Cavalleria rusticana", "La Sonnambula", "Dialogues des Carmélites ", "Manon Lescaut", "Don Giovanni"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Orpheus in the Underworld",
+                        "alternatives": ["Orphée aux enfers"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963478_140810_2108_50.mp3", "https://static.memrise.com/uploads/things/audio/36964137_140810_2129_12.mp3", "https://static.memrise.com/uploads/things/audio/36965189_140810_2134_34.mp3", "https://static.memrise.com/uploads/things/audio/36972842_140811_2210_44.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Orpheus in the Underworld",
+                    "alternatives": ["Orphée aux enfers"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Orpheus in the Underworld", "orpheus in the underworld", "Orphee aux enfers", "Orphée aux enfers", "orphée aux enfers", "orphee aux enfers"],
+                "choices": ["v", "i", "p", "h", "l", "u", "r", "U", "t", "e", "w", "o", "s", "n", "d", "O"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978364_140815_2248_09.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Orpheus in the Underworld",
+                    "alternatives": ["Orphée aux enfers"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["Orpheus", "in", "the", "Underworld"],
+                    ["orpheus", "in", "the", "underworld"],
+                    ["orphée", "aux", "enfers"],
+                    ["orphée", "aux", "enfers"]
+                ],
+                "choices": ["The", "Cunning", "Little", "Vixen", "The", "Queen", "of", "Spades", "Das", "Rheingold", "Julius", "Caesar", "in", "Egypt", "La", "cenerentola", "Cavalleria", "rusticana", "La", "Sonnambula", "Dialogues", "des", "Carmélites", "Manon", "Lescaut", "Don", "Giovanni"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423422583299,
+        "learning_element": "Cavalleria rusticana",
+        "definition_element": null,
+        "learning_element_tokens": ["Cavalleria", "rusticana"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Cavalleria rusticana",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Mascagni",
+                    "alternatives": ["Pietro Mascagni"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Intermezzo",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1890"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Cavalleria rusticana",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Cavalleria rusticana"],
+                "choices": ["Manon Lescaut", "Dialogues des Carmélites ", "The Magic Flute", "Romeo and Juliet", "Julius Caesar in Egypt", "The Queen of Spades", "Prince Igor", "The Rake's Progress", "Parsifal ", "Rigoletto"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Cavalleria rusticana",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963511_140810_2114_54.mp3", "https://static.memrise.com/uploads/things/audio/36972672_140811_2201_07.mp3", "https://static.memrise.com/uploads/things/audio/36972930_140811_2215_07.mp3", "https://static.memrise.com/uploads/things/audio/36973006_140811_2219_44.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3", "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3", "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Cavalleria rusticana",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Cavalleria rusticana", "cavalleria rusticana"],
+                "choices": ["v", "l", "u", "t", "i", "a", "e", "s", "C", "c", "T", "r", "n"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423427826179,
+        "learning_element": "The Italian Girl in Algiers",
+        "definition_element": null,
+        "learning_element_tokens": ["The", "Italian", "Girl", "in", "Algiers"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Italian Girl in Algiers",
+                    "alternatives": ["L'italiana in Algeri"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Rossini",
+                    "alternatives": ["Gioachino Rossini"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Overture (Act I)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1813"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Italian Girl in Algiers",
+                    "alternatives": ["L'italiana in Algeri"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Italian Girl in Algiers"],
+                "choices": ["Die Entführung", "Samson and Delilah", "The Rake's Progress", "Hansel and Gretel", "Orpheus in the Underworld", "Ariadne auf Naxos", "Romeo and Juliet", "Julius Caesar in Egypt", "Parsifal ", "Don Pasquale"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "The Italian Girl in Algiers",
+                        "alternatives": ["L'italiana in Algeri"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3", "https://static.memrise.com/uploads/things/audio/36962978_140810_2056_01.mp3", "https://static.memrise.com/uploads/things/audio/36963761_140810_2127_17.mp3", "https://static.memrise.com/uploads/things/audio/36972930_140811_2215_07.mp3", "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3", "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Italian Girl in Algiers",
+                    "alternatives": ["L'italiana in Algeri"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["The Italian Girl in Algiers", "L'italiana in Algeri", "the italian girl in algiers", "litaliana in algeri"],
+                "choices": ["I", "A", "t", "a", "l", "i", "G", "s", "g", "e", "S", "n", "h", "r", "T"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "The Italian Girl in Algiers",
+                    "alternatives": ["L'italiana in Algeri"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["The", "Italian", "Girl", "in", "Algiers"],
+                    ["the", "italian", "girl", "in", "algiers"],
+                    ["litaliana", "in", "algeri"],
+                    ["litaliana", "in", "algeri"]
+                ],
+                "choices": ["Die", "Entführung", "Samson", "and", "Delilah", "The", "Rake's", "Progress", "Hansel", "and", "Gretel", "Orpheus", "in", "the", "Underworld", "Ariadne", "auf", "Naxos", "Romeo", "and", "Juliet", "Julius", "Caesar", "in", "Egypt", "Parsifal", "Don", "Pasquale"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423450960387,
+        "learning_element": "Otello",
+        "definition_element": null,
+        "learning_element_tokens": ["Otello"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Otello",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978927_140816_1217_26.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Verdi",
+                    "alternatives": ["Giuseppe Verdi"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Ave maria",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1887"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978927_140816_1217_26.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Otello",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Otello"],
+                "choices": ["La bohème", "Fidelio", "Die Fledermaus", "The Pearl Fishers", "Prince Igor", "Così fan tutte", "Dialogues des Carmélites ", "The Italian Girl in Algiers", "Romeo and Juliet", "Tristan und Isolde"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Otello",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36978927_140816_1217_26.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36978927_140816_1217_26.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962978_140810_2056_01.mp3", "https://static.memrise.com/uploads/things/audio/36963257_140810_2103_00.mp3", "https://static.memrise.com/uploads/things/audio/36964148_140810_2130_02.mp3", "https://static.memrise.com/uploads/things/audio/36974107_140812_2049_35.mp3", "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3", "https://static.memrise.com/uploads/things/audio/36979426_140816_1942_58.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36978927_140816_1217_26.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Otello",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Otello", "otello"],
+                "choices": ["O", "I", "l", "J", "o", "e", "b", "t"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423460594179,
+        "learning_element": "Julius Caesar in Egypt",
+        "definition_element": null,
+        "learning_element_tokens": ["Julius", "Caesar", "in", "Egypt"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Julius Caesar in Egypt",
+                    "alternatives": ["Giulio Cesare in Egitto"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Händel",
+                    "alternatives": ["Georg Friedrich Händel"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Se pietà di me non senti",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1724"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Julius Caesar in Egypt",
+                    "alternatives": ["Giulio Cesare in Egitto"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Julius Caesar in Egypt"],
+                "choices": ["Dialogues des Carmélites ", "Cavalleria rusticana", "Prince Igor", "The Italian Girl in Algiers", "Romeo and Juliet", "Tristan und Isolde", "Hansel and Gretel", "Orpheus in the Underworld", "Dido and Aeneas ", "Madame Butterfly"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Julius Caesar in Egypt",
+                        "alternatives": ["Giulio Cesare in Egitto"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3", "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Julius Caesar in Egypt",
+                    "alternatives": ["Giulio Cesare in Egitto"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Julius Caesar in Egypt", "Julius Caesar", "giulio cesare", "julius caesar in egypt", "Giulio Cesare", "julius caesar", "giulio cesare in egitto", "Giulio Cesare in Egitto"],
+                "choices": ["r", "v", "t", "a", "u", "y", "n", "i", "l", "C", "p", "E", "e", "J", "s", "g"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Julius Caesar in Egypt",
+                    "alternatives": ["Giulio Cesare in Egitto"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["Julius", "Caesar", "in", "Egypt"],
+                    ["julius", "caesar", "in", "egypt"],
+                    ["giulio", "cesare", "in", "egitto"],
+                    ["giulio", "cesare", "in", "egitto"],
+                    ["giulio", "cesare"],
+                    ["julius", "caesar"]
+                ],
+                "choices": ["Dialogues", "des", "Carmélites", "Cavalleria", "rusticana", "Prince", "Igor", "The", "Italian", "Girl", "in", "Algiers", "Romeo", "and", "Juliet", "Tristan", "und", "Isolde", "Hansel", "and", "Gretel", "Orpheus", "in", "the", "Underworld", "Dido", "and", "Aeneas", "Madame", "Butterfly"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423471145475,
+        "learning_element": "Prince Igor",
+        "definition_element": null,
+        "learning_element_tokens": ["Prince", "Igor"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Prince Igor",
+                    "alternatives": ["Князь Игорь"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_57.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Borodin",
+                    "alternatives": ["Alexander Borodin"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "i) Polovtsian Dance No.1 ii) Polovtsian Dance No. 4",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1890"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_57.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Prince Igor",
+                    "alternatives": ["Князь Игорь"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Prince Igor"],
+                "choices": ["Gianni Schicchi", "Die Entführung", "Romeo and Juliet", "Boris Godunov", "A Masked Ball", "Lucia di Lammermoor", "Cavalleria rusticana", "Manon", "Dialogues des Carmélites ", "The Barber of Seville"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Prince Igor",
+                        "alternatives": ["Князь Игорь"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_57.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_57.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36973006_140811_2219_44.mp3", "https://static.memrise.com/uploads/things/audio/36973462_140812_1843_51.mp3", "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3", "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_57.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Prince Igor",
+                    "alternatives": ["Князь Игорь"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Prince Igor", "князь игорь", "Князь Игорь", "prince igor"],
+                "choices": ["n", "r", "P", "I", "o", "i", "g", "c", "e", "J"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423472718339,
+        "learning_element": "Siegfried",
+        "definition_element": null,
+        "learning_element_tokens": ["Siegfried"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Siegfried",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Wagner",
+                    "alternatives": ["Richard Wagner"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Waldweben (Forest Murmurs)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1876"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Siegfried",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Siegfried"],
+                "choices": ["La Sonnambula", "Manon Lescaut", "Don Giovanni", "Don Pasquale", "Prince Igor", "A Masked Ball", "Faust", "Cavalleria rusticana", "The Queen of Spades", "Dialogues des Carmélites "],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Siegfried",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36973462_140812_1843_51.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3", "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977859_140813_2107_08.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Siegfried",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Siegfried", "siegfried"],
+                "choices": ["S", "i", "r", "f", "t", "e", "d", "g"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423475143171,
+        "learning_element": "Die Entführung",
+        "definition_element": null,
+        "learning_element_tokens": ["Die", "Entführung"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Die Entführung",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Mozart",
+                    "alternatives": ["Wolfgang Amadeus Mozart"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Ha, wie will ich triumphieren",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1782"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Die Entführung",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Die Entführung"],
+                "choices": ["Gianni Schicchi", "The Pearl Fishers", "Pelléas and Mélisande", "Siegfried", "Don Pasquale", "The Tsar's Bride", "La traviata", "Romeo and Juliet", "Der Rosenkavalier", "Orpheus in the Underworld"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Die Entführung",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962961_140810_2049_07.mp3", "https://static.memrise.com/uploads/things/audio/36964137_140810_2129_12.mp3", "https://static.memrise.com/uploads/things/audio/36972672_140811_2201_07.mp3", "https://static.memrise.com/uploads/things/audio/36972808_140811_2208_40.mp3", "https://static.memrise.com/uploads/things/audio/36973054_140811_2221_34.mp3", "https://static.memrise.com/uploads/things/audio/36973231_140811_2223_16.mp3", "https://static.memrise.com/uploads/things/audio/36973462_140812_1843_51.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979296_140816_1705_31.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Die Entführung",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Die Entführung", "die entfuhrung", "Die Entfuhrung", "die entführung"],
+                "choices": ["h", "r", "D", "e", "ü", "f", "m", "E", "g", "u", "i", "n", "t"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423478026755,
+        "learning_element": "Macbeth",
+        "definition_element": null,
+        "learning_element_tokens": ["Macbeth"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Macbeth",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979340_140816_1822_13.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Verdi",
+                    "alternatives": ["Giuseppe Verdi"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Che faceste? Dite su! (Witches' Chorus)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1847"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979340_140816_1822_13.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Macbeth",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Macbeth"],
+                "choices": ["Werther", "Siegfried", "Salome", "The Bartered Bride", "Die Csárdásfürstin", "Eugene Onegin", "The Love for Three Oranges", "The Pearl Fishers", "Die Entführung", "Samson and Delilah"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Macbeth",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979340_140816_1822_13.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979340_140816_1822_13.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963674_140810_2116_58.mp3", "https://static.memrise.com/uploads/things/audio/36963761_140810_2127_17.mp3", "https://static.memrise.com/uploads/things/audio/36965223_140810_2135_08.mp3", "https://static.memrise.com/uploads/things/audio/36972842_140811_2210_44.mp3", "https://static.memrise.com/uploads/things/audio/36973054_140811_2221_34.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978494_140819_2259_10.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979340_140816_1822_13.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Macbeth",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Macbeth", "macbeth"],
+                "choices": ["M", "c", "b", "a", "h", "E", "t", "e"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423478878723,
+        "learning_element": "Don Pasquale",
+        "definition_element": null,
+        "learning_element_tokens": ["Don", "Pasquale"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Pasquale",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Donizetti",
+                    "alternatives": ["Gaetano Donizetti"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Aspetta, aspetta, cara sposina",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1843"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Pasquale",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Don Pasquale"],
+                "choices": ["Gianni Schicchi", "Romeo and Juliet", "Don Giovanni", "Rusalka", "Orpheus in the Underworld", "The Flying Dutchman", "Dialogues des Carmélites ", "Orpheus and Eurydice", "The Italian Girl in Algiers", "Aida"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Don Pasquale",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962961_140810_2049_07.mp3", "https://static.memrise.com/uploads/things/audio/36963257_140810_2103_00.mp3", "https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36965223_140810_2135_08.mp3", "https://static.memrise.com/uploads/things/audio/36972872_140811_2212_30.mp3", "https://static.memrise.com/uploads/things/audio/36973462_140812_1843_51.mp3", "https://static.memrise.com/uploads/things/audio/36973624_140812_1846_46.mp3", "https://static.memrise.com/uploads/things/audio/36974107_140812_2049_35.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3", "https://static.memrise.com/uploads/things/audio/36977225_140813_2111_36.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979353_140816_1851_44.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Don Pasquale",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Don Pasquale", "don pasquale"],
+                "choices": ["s", "l", "o", "D", "c", "u", "P", "a", "n", "q", "e"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423480451587,
+        "learning_element": "Der Rosenkavalier",
+        "definition_element": null,
+        "learning_element_tokens": ["Der", "Rosenkavalier"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Der Rosenkavalier",
+                    "alternatives": ["The Knight of the Rose"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Richard Strauss",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Marie Theres'! / Hab' mir's gelobt",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1911"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Der Rosenkavalier",
+                    "alternatives": ["The Knight of the Rose"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Der Rosenkavalier"],
+                "choices": ["Don Pasquale", "The Barber of Seville", "The Merry Widow", "Dialogues des Carmélites ", "Eugene Onegin", "Orpheus in the Underworld", "Die Entführung", "The Flying Dutchman", "Nabucco", "Tosca"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Der Rosenkavalier",
+                        "alternatives": ["The Knight of the Rose"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36974500_140812_2052_01.mp3", "https://static.memrise.com/uploads/things/audio/36977274_140813_2037_51.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36978014_140815_2244_19.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36978574_140815_2255_51.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3", "https://static.memrise.com/uploads/things/audio/36979235_140816_1642_33.mp3", "https://static.memrise.com/uploads/things/audio/36979259_140816_1658_01.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979377_140816_1910_58.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Der Rosenkavalier",
+                    "alternatives": ["The Knight of the Rose"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Der Rosenkavalier", "der rosenkavalier", "the knight of the rose", "The Knight of the Rose"],
+                "choices": ["i", "P", "a", "R", "l", "D", "e", "r", "k", "s", "v", "n", "o"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423481041411,
+        "learning_element": "Manon Lescaut",
+        "definition_element": null,
+        "learning_element_tokens": ["Manon", "Lescaut"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Manon Lescaut",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_14.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_44.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Puccini",
+                    "alternatives": ["Giacomo Puccini"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "i) In quelle trine morbide ii) Donna non vidi mai",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1893"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_14.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_44.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Manon Lescaut",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Manon Lescaut"],
+                "choices": ["La traviata", "Tristan und Isolde", "Prince Igor", "The Bartered Bride", "Pagliacci", "Don Giovanni", "Manon", "Dialogues des Carmélites ", "Julius Caesar in Egypt", "Faust"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Manon Lescaut",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_14.mp3",
+                        "slow": null
+                    }, {
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_44.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979386_140816_1926_14.mp3", "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_44.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36963421_140810_2106_50.mp3", "https://static.memrise.com/uploads/things/audio/36973462_140812_1843_51.mp3", "https://static.memrise.com/uploads/things/audio/36974500_140812_2052_01.mp3", "https://static.memrise.com/uploads/things/audio/36976677_140812_2047_57.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3", "https://static.memrise.com/uploads/things/audio/36977379_140813_2048_35.mp3", "https://static.memrise.com/uploads/things/audio/36977624_140813_2050_27.mp3", "https://static.memrise.com/uploads/things/audio/36977927_140815_2242_23.mp3", "https://static.memrise.com/uploads/things/audio/36978364_140815_2245_45.mp3", "https://static.memrise.com/uploads/things/audio/36979074_140816_1226_22.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_14.mp3",
+                            "slow": null
+                        }, {
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979386_140816_1926_44.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Manon Lescaut",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Manon Lescaut", "manon lescaut"],
+                "choices": ["u", "L", "n", "o", "a", "M", "t", "G", "s", "c", "e"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2423483662851,
+        "learning_element": "Dialogues des Carmélites ",
+        "definition_element": null,
+        "learning_element_tokens": ["Dialogues", "des", "Carmélites"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Dialogues des Carmélites ",
+                    "alternatives": ["Dialogues of the Carmelites"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [{
+                    "label": "Composer",
+                    "kind": "text",
+                    "value": "Poulenc",
+                    "alternatives": ["Francis Poulenc"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Sample audio",
+                    "kind": "text",
+                    "value": "Salve Regina",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [{
+                    "label": "First Performed",
+                    "value": "1956"
+                }],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Dialogues des Carmélites ",
+                    "alternatives": ["Dialogues of the Carmelites"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Dialogues des Carmélites "],
+                "choices": ["The Italian Girl in Algiers", "Der Freischütz", "The Rake's Progress", "Cavalleria rusticana", "Pelléas and Mélisande", "Lucia di Lammermoor", "Gianni Schicchi", "The Queen of Spades", "The Bartered Bride", "Werther"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Opera",
+                        "kind": "text",
+                        "value": "Dialogues des Carmélites ",
+                        "alternatives": ["Dialogues of the Carmelites"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3"],
+                "choices": ["https://static.memrise.com/uploads/things/audio/36962978_140810_2056_01.mp3", "https://static.memrise.com/uploads/things/audio/36963674_140810_2116_58.mp3", "https://static.memrise.com/uploads/things/audio/36963688_140810_2122_18.mp3", "https://static.memrise.com/uploads/things/audio/36964137_140810_2129_12.mp3", "https://static.memrise.com/uploads/things/audio/36964148_140810_2130_02.mp3", "https://static.memrise.com/uploads/things/audio/36965223_140810_2135_08.mp3", "https://static.memrise.com/uploads/things/audio/36973562_140812_1846_14.mp3", "https://static.memrise.com/uploads/things/audio/36974107_140812_2049_35.mp3", "https://static.memrise.com/uploads/things/audio/36976677_140812_2047_57.mp3", "https://static.memrise.com/uploads/things/audio/36976697_140812_1853_44.mp3"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Dialogues des Carmélites ",
+                    "alternatives": ["Dialogues of the Carmelites"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Dialogues des Carmélites ", "dialogues des carmelites", "Dialogues of the Carmelites", "Dialogues des Carmelites ", "Dialogues des Carmelites", "dialogues of the carmelites", "dialogues des carmélites"],
+                "choices": ["d", "e", "t", "m", "a", "D", "é", "i", "r", "g", "s", "o", "f", "C", "u", "l"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "5": {
+                "template": "tapping",
+                "prompt": {
+                    "text": null,
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/36979426_150408_1936_46.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Opera",
+                    "kind": "text",
+                    "value": "Dialogues des Carmélites ",
+                    "alternatives": ["Dialogues of the Carmelites"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": [
+                    ["Dialogues", "des", "Carmélites"],
+                    ["dialogues", "des", "carmélites"],
+                    ["dialogues", "of", "the", "carmelites"],
+                    ["dialogues", "des", "carmelites"],
+                    ["dialogues", "of", "the", "carmelites"],
+                    ["dialogues", "des", "carmelites"]
+                ],
+                "choices": ["The", "Italian", "Girl", "in", "Algiers", "Der", "Freischütz", "The", "Rake's", "Progress", "Cavalleria", "rusticana", "Pelléas", "and", "Mélisande", "Lucia", "di", "Lammermoor", "Gianni", "Schicchi", "The", "Queen", "of", "Spades", "The", "Bartered", "Bride", "Werther"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [],
+    "session_source_info": {
+        "source_id": 365747,
+        "source_type": "course_id_and_level_index",
+        "name": "80 Operas (with Audio)",
+        "translated_name": "80 Operas (with Audio)",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 41,
+        "level_id": 1819813,
+        "level_name": "Audio-Opera III",
+        "source_sub_index": 5,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

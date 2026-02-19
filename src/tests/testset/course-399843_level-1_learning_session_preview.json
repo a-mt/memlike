@@ -1,0 +1,1560 @@
+{
+    "learnables": [{
+        "id": 2612740817155,
+        "learning_element": "Frontal Lobe",
+        "definition_element": null,
+        "learning_element_tokens": ["Frontal", "Lobe"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Frontal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Frontal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Frontal Lobe"],
+                "choices": ["Parietal Lobe", "Occipital Lobe", "Temporal Lobe", "Pontine Cistern", "Cingulate Gyrus", "Corpus Callosum", "Ventral Horn", "Brainstem", "Diencephalon", "Subthalamic Region"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Frontal Lobe",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612741079299,
+        "learning_element": "Temporal Lobe",
+        "definition_element": null,
+        "learning_element_tokens": ["Temporal", "Lobe"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Temporal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_11.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_27.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_11.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_27.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Temporal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Temporal Lobe"],
+                "choices": ["Parietal Lobe", "Occipital Lobe", "Frontal Lobe", "Cerebellum", "Medulla (brainstem)", "Corpus Callosum", "Lamina Terminalis", "Dorsal Nucleus", "Intermediate Grey", "Subthalamic Region"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Temporal Lobe",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_11.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_27.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_11.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0444_27.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612743176451,
+        "learning_element": "Occipital Lobe",
+        "definition_element": null,
+        "learning_element_tokens": ["Occipital", "Lobe"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Occipital Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0444_13.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0444_13.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Occipital Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Occipital Lobe"],
+                "choices": ["Parietal Lobe", "Vestibulospinal Tract", "Frontal Lobe", "Midbrain (brainstem)", "Temporal Lobe", "Diencephalon", "Extreme Capsule", "Preoptic Area", "Cerebellum", "Medulla (brainstem)"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Occipital Lobe",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0444_13.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0444_13.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612744028419,
+        "learning_element": "Parietal Lobe",
+        "definition_element": null,
+        "learning_element_tokens": ["Parietal", "Lobe"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Parietal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0444_16.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0444_16.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Parietal Lobe",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Parietal Lobe"],
+                "choices": ["Occipital Lobe", "Temporal Lobe", "Frontal Lobe", "Medulla (brainstem)", "Brainstem", "Internal Capsule", "Lamina Terminalis", "Cerebellum", "Calcarine Fissure", "Dorsal Funiculus"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Parietal Lobe",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0444_16.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0444_16.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612481753347,
+        "learning_element": "Cerebellum",
+        "definition_element": null,
+        "learning_element_tokens": ["Cerebellum"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Cerebellum",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0730_08.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0737_50.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0730_08.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0737_50.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Cerebellum",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Cerebellum"],
+                "choices": ["Brainstem", "Corpus Callosum", "Temporal Lobe", "Occipital Lobe", "Parietal Lobe", "Fusiform Gyrus", "Frontal Lobe", "Diencephalon", "Fornix", "Insular Cortex"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Cerebellum",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0730_08.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0737_50.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0730_08.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0737_50.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39863252_140923_0725_52.jpg", "https://static.memrise.com/uploads/things/images/39863255_140923_0725_55.jpg", "https://static.memrise.com/uploads/things/images/39863315_140923_0730_13.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612533920003,
+        "learning_element": "Diencephalon",
+        "definition_element": null,
+        "learning_element_tokens": ["Diencephalon"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Diencephalon",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Diencephalon",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Diencephalon"],
+                "choices": ["Occipital Lobe", "Frontal Lobe", "Preoccipital Notch", "Parietal Lobe", "Cuneus Gyrus", "Temporal Lobe", "Postcentral Sulcus", "Entorhinal Area", "Brainstem", "Cerebellum"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Diencephalon",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39868743_140925_0425_06.jpg", "https://static.memrise.com/uploads/things/images/39868776_140925_0434_41.jpg", "https://static.memrise.com/uploads/things/images/40344831_140930_0855_28.png", "https://static.memrise.com/uploads/things/images/39868601_140924_0948_07.jpg", "https://static.memrise.com/uploads/things/images/39867416_140924_0838_58.jpg", "https://static.memrise.com/uploads/things/images/39924381_140930_0746_48.jpg", "https://static.memrise.com/uploads/things/images/39867577_140924_0840_27.jpg", "https://static.memrise.com/uploads/things/images/39924672_140930_0728_33.jpg", "https://static.memrise.com/uploads/things/images/39868764_140925_0428_15.jpg", "https://static.memrise.com/uploads/things/images/39868632_140924_0951_36.jpg", "https://static.memrise.com/uploads/things/images/39924304_140930_0724_22.jpg", "https://static.memrise.com/uploads/things/images/39924580_140930_0650_59.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612481949955,
+        "learning_element": "Brainstem",
+        "definition_element": null,
+        "learning_element_tokens": ["Brainstem"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Brainstem",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0730_10.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0730_10.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Brainstem",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Brainstem"],
+                "choices": ["Frontal Lobe", "Cerebellum", "Parietal Lobe", "Gyrus Rectus", "Temporal Lobe", "Diencephalon", "Lingual Gyrus", "Uncus", "Midbrain (brainstem)", "Medulla (brainstem)"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Brainstem",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0730_10.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0730_10.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39863255_140923_0725_55.jpg", "https://static.memrise.com/uploads/things/images/39863296_140923_0725_58.jpg", "https://static.memrise.com/uploads/things/images/39863298_140923_0726_01.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612745011459,
+        "learning_element": "Pons (brainstem)",
+        "definition_element": null,
+        "learning_element_tokens": ["Pons", "brainstem"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Pons (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_38.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_38.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Pons (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Pons (brainstem)"],
+                "choices": ["Midbrain (brainstem)", "Medulla (brainstem)", "Brainstem", "Frontal Lobe", "Parietal Lobe", "Cerebellum", "Preoccipital Notch", "Band of Gennari (in V1)", "Vertebral Artery", "Temporal Lobe"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Pons (brainstem)",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_38.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_38.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612482408707,
+        "learning_element": "Midbrain (brainstem)",
+        "definition_element": null,
+        "learning_element_tokens": ["Midbrain", "brainstem"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Midbrain (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863318_140930_0648_31.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863318_140930_0648_31.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Midbrain (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Midbrain (brainstem)"],
+                "choices": ["Pons (brainstem)", "Stria Terminalis", "Oculomotor Nerve (CN3)", "Pontine Trigeminal Nucleus", "Medial Vestibular Nucleus", "Mammillary Body", "Optical Nerve (CN2)", "Edinger-Westphal Nucleus", "Trigeminal Nerve (CN5)", "Cerebral Peduncles"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Midbrain (brainstem)",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863318_140930_0648_31.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863318_140930_0648_31.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39924146_140930_0333_18.jpg", "https://static.memrise.com/uploads/things/images/39924307_140930_0649_15.png", "https://static.memrise.com/uploads/things/images/39924312_140930_0649_24.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612482736387,
+        "learning_element": "Medulla (brainstem)",
+        "definition_element": null,
+        "learning_element_tokens": ["Medulla", "brainstem"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Medulla (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0738_02.jpg", "https://static.memrise.com/uploads/things/images/39863323_140930_0648_34.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0738_02.jpg", "https://static.memrise.com/uploads/things/images/39863323_140930_0648_34.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Medulla (brainstem)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Medulla (brainstem)"],
+                "choices": ["Midbrain (brainstem)", "Stria Medullares", "Pontine Trigeminal Nucleus", "Motor Trigeminal Nucleus", "Middle Cerebellar Peduncle", "Vesibulocochlear Nerve (CN8)", "Medial Vestibular Nucleus", "Frontal Lobe", "Stria Terminalis", "Optical Nerve (CN2)"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Medulla (brainstem)",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0738_02.jpg", "https://static.memrise.com/uploads/things/images/39863323_140930_0648_34.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0738_02.jpg", "https://static.memrise.com/uploads/things/images/39863323_140930_0648_34.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867325_140924_0448_33.jpg", "https://static.memrise.com/uploads/things/images/39924040_140930_0437_26.jpg", "https://static.memrise.com/uploads/things/images/39924045_140930_0437_30.jpg", "https://static.memrise.com/uploads/things/images/39924132_140930_0322_53.jpg", "https://static.memrise.com/uploads/things/images/39924176_140930_0350_48.png", "https://static.memrise.com/uploads/things/images/39924225_140930_0639_28.jpg", "https://static.memrise.com/uploads/things/images/39924307_140930_0649_15.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612535230723,
+        "learning_element": "Corpus Callosum",
+        "definition_element": null,
+        "learning_element_tokens": ["Corpus", "Callosum"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Corpus Callosum",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0555_10.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_11.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_20.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0228_39.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0555_10.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_11.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_20.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0228_39.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Corpus Callosum",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Corpus Callosum"],
+                "choices": ["Fusiform Gyrus", "Superior Frontal Gyrus", "Planum Temporale", "Inferior Frontal Gyrus", "Parahippocampal Gyrus", "Insular Cortex", "Occipital Lobe", "Parietal Lobe", "Precentral Sulcus", "Postcentral Gyrus (M1)"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Corpus Callosum",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0555_10.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_11.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_20.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0228_39.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0555_10.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_11.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0200_20.jpg", "https://static.memrise.com/uploads/things/images/39864124_140930_0228_39.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39863875_140924_0540_14.jpg", "https://static.memrise.com/uploads/things/images/39863893_140924_0540_30.jpg", "https://static.memrise.com/uploads/things/images/39863912_140924_0540_43.jpg", "https://static.memrise.com/uploads/things/images/39863945_140924_0541_58.jpg", "https://static.memrise.com/uploads/things/images/39864041_140924_0552_43.jpg", "https://static.memrise.com/uploads/things/images/39864190_140924_0608_16.jpg", "https://static.memrise.com/uploads/things/images/39864211_140924_0629_40.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 2612481491203,
+        "learning_element": "Insular Cortex",
+        "definition_element": null,
+        "learning_element_tokens": ["Insular", "Cortex"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Insular Cortex",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0201_38.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0226_40.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Brain",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0201_38.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0226_40.jpg"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Health Sciences",
+                    "kind": "text",
+                    "value": "Insular Cortex",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Insular Cortex"],
+                "choices": ["Corpus Callosum", "Choroid Plexus", "Midbrain (brainstem)", "Middle Frontal Gyrus", "Occipital Lobe", "Dorsal Nucleus", "Frontal Lobe", "Medulla (brainstem)", "Parietal Lobe", "Diencephalon"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Health Sciences",
+                        "kind": "text",
+                        "value": "Insular Cortex",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Brain",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0201_38.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0226_40.jpg"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/39863304_140923_0726_44.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0201_38.jpg", "https://static.memrise.com/uploads/things/images/39863304_140930_0226_40.jpg"],
+                "choices": ["https://static.memrise.com/uploads/things/images/39863308_140923_0726_10.jpg", "https://static.memrise.com/uploads/things/images/39863311_140923_0726_14.jpg", "https://static.memrise.com/uploads/things/images/39863318_140923_0737_59.jpg", "https://static.memrise.com/uploads/things/images/39863323_140923_0730_17.jpg", "https://static.memrise.com/uploads/things/images/39864104_140923_0746_57.jpg", "https://static.memrise.com/uploads/things/images/39864124_140924_0445_49.jpg", "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg", "https://static.memrise.com/uploads/things/images/39867265_140924_0443_49.jpg", "https://static.memrise.com/uploads/things/images/39867297_140924_0443_53.jpg", "https://static.memrise.com/uploads/things/images/39867310_140924_0443_57.jpg"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [{
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-08-06T19:36:24Z",
+        "created_date": "2015-06-27T19:46:01Z",
+        "next_date": "2015-08-12T19:43:50Z",
+        "interval": 6.01,
+        "growth_level": 11,
+        "current_streak": 2,
+        "starred": false,
+        "correct": 11,
+        "attempts": 12,
+        "total_streak": 2,
+        "is_difficult": true,
+        "not_difficult": false,
+        "learnable_id": "2612740817155"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-24T19:45:15Z",
+        "created_date": "2015-06-27T19:46:01Z",
+        "next_date": "2015-08-17T19:56:19Z",
+        "interval": 24.01,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612741079299"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-18T19:38:35Z",
+        "created_date": "2015-06-27T19:46:01Z",
+        "next_date": "2015-08-11T19:53:59Z",
+        "interval": 24.01,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612743176451"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-18T19:38:43Z",
+        "created_date": "2015-06-27T19:46:01Z",
+        "next_date": "2015-08-11T19:46:28Z",
+        "interval": 24.01,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612744028419"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-24T19:44:40Z",
+        "created_date": "2015-06-27T19:46:01Z",
+        "next_date": "2015-08-17T19:47:12Z",
+        "interval": 24.0,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612481753347"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-17T19:36:07Z",
+        "created_date": "2015-06-27T19:49:27Z",
+        "next_date": "2015-07-29T19:42:20Z",
+        "interval": 12.0,
+        "growth_level": 10,
+        "current_streak": 6,
+        "starred": false,
+        "correct": 12,
+        "attempts": 13,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612533920003"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-18T19:38:39Z",
+        "created_date": "2015-06-27T19:49:27Z",
+        "next_date": "2015-08-11T19:49:14Z",
+        "interval": 24.01,
+        "growth_level": 11,
+        "current_streak": 7,
+        "starred": false,
+        "correct": 11,
+        "attempts": 12,
+        "total_streak": 7,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612481949955"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-24T19:44:48Z",
+        "created_date": "2015-06-27T19:49:27Z",
+        "next_date": "2015-08-17T19:45:33Z",
+        "interval": 24.0,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612745011459"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-18T19:38:54Z",
+        "created_date": "2015-06-27T19:49:27Z",
+        "next_date": "2015-08-11T19:51:58Z",
+        "interval": 24.01,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612482408707"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-24T19:44:44Z",
+        "created_date": "2015-06-27T19:49:27Z",
+        "next_date": "2015-08-17T19:46:14Z",
+        "interval": 24.0,
+        "growth_level": 10,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 10,
+        "attempts": 10,
+        "total_streak": 10,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612482736387"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-17T19:36:42Z",
+        "created_date": "2015-06-28T05:54:12Z",
+        "next_date": "2015-07-29T19:44:34Z",
+        "interval": 12.01,
+        "growth_level": 10,
+        "current_streak": 9,
+        "starred": false,
+        "correct": 12,
+        "attempts": 12,
+        "total_streak": 12,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "2612535230723"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2015-07-24T19:44:55Z",
+        "created_date": "2015-06-28T05:54:39Z",
+        "next_date": "2015-07-30T19:46:48Z",
+        "interval": 6.0,
+        "growth_level": 11,
+        "current_streak": 2,
+        "starred": false,
+        "correct": 13,
+        "attempts": 15,
+        "total_streak": 2,
+        "is_difficult": true,
+        "not_difficult": false,
+        "learnable_id": "2612481491203"
+    }],
+    "session_source_info": {
+        "source_id": 399843,
+        "source_type": "course_id_and_level_index",
+        "name": "Human Neuroanatomy",
+        "translated_name": "Human Neuroanatomy",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 38,
+        "level_id": 1928123,
+        "level_name": "Overview",
+        "source_sub_index": 1,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

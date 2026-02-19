@@ -1,4 +1,5 @@
 from memrise import load_memrise
+from memrise.backends.dummy import DUMMY_SINGLE_LEVEL
 from inspect import isgenerator
 from .testcases import SimpleTestCase
 import settings
@@ -182,6 +183,7 @@ class MemriseDummyGetTest(SimpleTestCase):
             csrftoken=self.session["csrftoken"],
         )
 
+        self.assertIs(type(result), dict)
         self.assertEqual(result.get("id", None), COURSE_ID)
         self.assertIsNotNone(result.get("title", None))
         self.assertIsNotNone(result.get("description", None))
@@ -203,6 +205,41 @@ class MemriseDummyGetTest(SimpleTestCase):
         self.assertTrue(level.get("type", None) in (1, 2))
         self.assertIsNotNone(level.get("status", None))
         # <span class="ico ico-complete ico-correct ico-m ico-green"></span>
+
+        self.assertIsNotNone(result.get("stats", None))
+        self.assertIsNotNone(result["stats"].get("ignored", None))
+        self.assertIsNotNone(result["stats"].get("learned", None))
+        self.assertIsNotNone(result["stats"].get("percent_complete", None))
+        self.assertIsNotNone(result["stats"].get("review", None))
+        self.assertIsNotNone(result["stats"].get("num_things", None))
+
+    def test_memrise_course_single_level(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        result = self.memrise.course(
+            DUMMY_SINGLE_LEVEL,
+            "",
+            sessionid=self.session["session_id"],
+            csrftoken=self.session["csrftoken"],
+        )
+
+        self.assertIs(type(result), dict)
+        self.assertIsNotNone(result.get("id", None))
+        self.assertIsNotNone(result.get("title", None))
+        self.assertIsNotNone(result.get("description", None))
+        self.assertIsNotNone(result.get("author", None))
+        self.assertIsNotNone(result.get("photo", None))
+        self.assertIsNotNone(result.get("url", None))
+        self.assertIsNotNone(result.get("levels", None))
+        self.assertIsNotNone(result.get("breadcrumb", None))
+
+        self.assertIs(type(result["breadcrumb"]), list)
+        self.assertTrue(len(result["breadcrumb"]) > 0)
+        self.assertIsNotNone(result["breadcrumb"][0].get("name", None))
+
+        self.assertIs(type(result["levels"]), dict)
+        self.assertEqual(len(result["levels"]), 0)
+        self.assertIsNotNone(result.get("num_things", None))
 
         self.assertIsNotNone(result.get("stats", None))
         self.assertIsNotNone(result["stats"].get("ignored", None))

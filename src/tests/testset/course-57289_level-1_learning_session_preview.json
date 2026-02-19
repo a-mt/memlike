@@ -1,0 +1,3342 @@
+{
+    "learnables": [{
+        "id": 560178266374,
+        "learning_element": "Republic of Ireland",
+        "definition_element": null,
+        "learning_element_tokens": ["Republic", "of", "Ireland"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Republic of Ireland",
+                    "alternatives": ["(English)", "Éire (Irish)", "Ireland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1733_30.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Dublin",
+                    "alternatives": ["Baile Átha Cliath", "Áth Cliath", "Duibhlinn"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "4.6 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1919 (Independence from the UK declared), 1931 (Statute of Westminster), 1949 (Republic of Ireland)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU member since 1973",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1737_40.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1754_23.png", "https://static.memrise.com/uploads/things/images/8547642_130130_1530_12.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1733_30.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Republic of Ireland",
+                    "alternatives": ["(English)", "Éire (Irish)", "Ireland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Republic of Ireland"],
+                "choices": ["Republic of the Congo", "Republika Srpska", "Central African Republic", "Democratic Republic of the Congo", "Czech Republic", "Taiwan / Republic of China", "South Korea", "Dominican Republic", "Republic of South Maluku", "Guatemala", "Nicaragua", "El Salvador"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Dublin",
+                    "alternatives": ["Baile Átha Cliath", "Áth Cliath", "Duibhlinn"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Republic of Ireland",
+                        "alternatives": ["(English)", "Éire (Irish)", "Ireland"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1733_30.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547642_121115_1733_30.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8915389_121121_1921_20.png", "https://static.memrise.com/uploads/things/images/8525560_121114_2238_18.png", "https://static.memrise.com/uploads/things/images/8525538_121114_2236_14.png", "https://static.memrise.com/uploads/things/images/8525571_121114_2242_09.png", "https://static.memrise.com/uploads/things/images/8547629_121115_1732_45.png", "https://static.memrise.com/uploads/things/images/10394280_130107_2013_05.png", "https://static.memrise.com/uploads/things/images/8907633_121121_0000_21.png", "https://static.memrise.com/uploads/things/images/8907630_121121_0000_00.png", "https://static.memrise.com/uploads/things/images/8907625_121121_0000_36.png", "https://static.memrise.com/uploads/things/images/8907628_121121_0000_34.png", "https://static.memrise.com/uploads/things/images/10451850_130107_2010_35.png", "https://static.memrise.com/uploads/things/images/8914311_121121_1056_24.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Dublin",
+                    "alternatives": ["Baile Átha Cliath", "Áth Cliath", "Duibhlinn"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547642_121115_1733_30.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Republic of Ireland",
+                    "alternatives": ["(English)", "Éire (Irish)", "Ireland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Republic of Ireland", "", "English", "éire irish", "republic of ireland", "Eire Irish", "Éire (Irish)", "Ireland", "Eire ", "irish", "Éire ", "éire", "eire irish", "Eire (Irish)", "ireland", "Éire Irish", "english", "(English)", "Irish", "eire"],
+                "choices": ["I", "e", "a", "c", "p", "n", "f", "u", "r", "o", "R", "i", "l", "d", "v", "b"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Dublin",
+                    "alternatives": ["Baile Átha Cliath", "Áth Cliath", "Duibhlinn"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560179904774,
+        "learning_element": "United Kingdom",
+        "definition_element": null,
+        "learning_element_tokens": ["United", "Kingdom"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "United Kingdom",
+                    "alternatives": ["United Kingdom of Great Britain and Northern Ireland", "UK", "Britain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_52.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "London",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "64 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1707 (Kingdom of Great Britain), 1801 (UK of Great Britain and Ireland), 1922 (UK of Great Britain and Northern Ireland)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member state since 1945",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_28.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1750_46.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_52.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "United Kingdom",
+                    "alternatives": ["United Kingdom of Great Britain and Northern Ireland", "UK", "Britain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["United Kingdom"],
+                "choices": ["Great Britain", "Bhutan", "Fiji", "Trinidad and Tobago", "Ghana", "Lesotho", "Sierra Leone"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "London",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "United Kingdom",
+                        "alternatives": ["United Kingdom of Great Britain and Northern Ireland", "UK", "Britain"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_52.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_52.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8914343_121121_1054_18.png", "https://static.memrise.com/uploads/things/images/8907604_121120_2359_22.png", "https://static.memrise.com/uploads/things/images/8914328_121121_1055_28.png", "https://static.memrise.com/uploads/things/images/8525558_121114_2239_04.png", "https://static.memrise.com/uploads/things/images/8547668_121115_1748_19.png", "https://static.memrise.com/uploads/things/images/8907624_121121_0000_33.png", "https://static.memrise.com/uploads/things/images/8525552_121115_0914_21.png", "https://static.memrise.com/uploads/things/images/8914340_121121_1054_31.png", "https://static.memrise.com/uploads/things/images/8547624_121115_1732_03.png", "https://static.memrise.com/uploads/things/images/8547659_121115_1734_23.png", "https://static.memrise.com/uploads/things/images/8547657_121115_1734_38.png", "https://static.memrise.com/uploads/things/images/8525544_121114_2236_54.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "London",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547667_121115_1747_52.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "United Kingdom",
+                    "alternatives": ["United Kingdom of Great Britain and Northern Ireland", "UK", "Britain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["United Kingdom", "united kingdom of great britain and northern ireland", "uk", "UK", "Britain", "britain", "United Kingdom of Great Britain and Northern Ireland", "united kingdom"],
+                "choices": ["r", "K", "e", "m", "n", "i", "d", "U", "g", "t", "o"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "London",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560179183878,
+        "learning_element": "Portugal",
+        "definition_element": null,
+        "learning_element_tokens": ["Portugal"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Portugal",
+                    "alternatives": ["(Portuguese)", "Portuguese Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1733_36.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Lisbon",
+                    "alternatives": ["Lisboa"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "11 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1139 (Independence from the Kingdom of León)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU member since 1986",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1736_06.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1754_09.png", "https://static.memrise.com/uploads/things/images/8547656_130130_1533_40.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1733_36.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Portugal",
+                    "alternatives": ["(Portuguese)", "Portuguese Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Portugal"],
+                "choices": ["Mozambique", "Angola", "Olivenza (and Táliga)", "Guinea-Bissau", "Madeira", "Vanuatu", "Andaman and Nicobar Islands"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Lisbon",
+                    "alternatives": ["Lisboa"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Portugal",
+                        "alternatives": ["(Portuguese)", "Portuguese Republic"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1733_36.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547656_121115_1733_36.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525546_121114_2237_02.png", "https://static.memrise.com/uploads/things/images/8525563_121114_2241_27.png", "https://static.memrise.com/uploads/things/images/8525561_121114_2239_28.png", "https://static.memrise.com/uploads/things/images/8547646_121115_1733_45.png", "https://static.memrise.com/uploads/things/images/8525556_121115_0915_18.png", "https://static.memrise.com/uploads/things/images/8525549_121114_2237_20.png", "https://static.memrise.com/uploads/things/images/8525545_121114_2237_11.png", "https://static.memrise.com/uploads/things/images/8525530_121114_2234_29.png", "https://static.memrise.com/uploads/things/images/8525579_121114_2241_41.png", "https://static.memrise.com/uploads/things/images/8915388_121121_1459_35.png", "https://static.memrise.com/uploads/things/images/8547659_121115_1734_23.png", "https://static.memrise.com/uploads/things/images/8914336_121121_1054_58.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Lisbon",
+                    "alternatives": ["Lisboa"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547656_121115_1733_36.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Portugal",
+                    "alternatives": ["(Portuguese)", "Portuguese Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Portugal", "", "Portuguese Republic", "Portuguese", "portuguese", "portuguese republic", "portugal", "(Portuguese)"],
+                "choices": ["a", "u", "r", "l", "g", "z", "o", "t", "P"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Lisbon",
+                    "alternatives": ["Lisboa"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560179577094,
+        "learning_element": "Spain",
+        "definition_element": null,
+        "learning_element_tokens": ["Spain"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Spain",
+                    "alternatives": ["España (Spanish)", "Kingdom of Spain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Madrid",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "46 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1479 (Unification of the Crowns of Castile and Aragon by the Catholic Monarchs)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU member since 1986",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547662_121115_1735_16.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547662_130130_1532_46.png", "https://static.memrise.com/uploads/things/images/8547662_130130_1533_50.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Spain",
+                    "alternatives": ["España (Spanish)", "Kingdom of Spain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Spain"],
+                "choices": ["Gibraltar", "Trinidad and Tobago", "Iberian Peninsula", "Balearic Islands", "Peru", "Mexico", "Colombia"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Madrid",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Spain",
+                        "alternatives": ["España (Spanish)", "Kingdom of Spain"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525573_121114_2242_27.png", "https://static.memrise.com/uploads/things/images/8525559_121114_2238_54.png", "https://static.memrise.com/uploads/things/images/8907625_121121_0000_36.png", "https://static.memrise.com/uploads/things/images/8525548_121114_2237_23.png", "https://static.memrise.com/uploads/things/images/8907609_121120_2358_54.png", "https://static.memrise.com/uploads/things/images/8525559_121114_2238_54.png", "https://static.memrise.com/uploads/things/images/8907643_121120_2359_36.png", "https://static.memrise.com/uploads/things/images/8907620_121120_2358_49.png", "https://static.memrise.com/uploads/things/images/10451057_130107_2256_41.png", "https://static.memrise.com/uploads/things/images/8547645_121115_1732_59.png", "https://static.memrise.com/uploads/things/images/8914298_121121_1057_38.png", "https://static.memrise.com/uploads/things/images/8907608_121120_2359_31.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Madrid",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Spain",
+                    "alternatives": ["España (Spanish)", "Kingdom of Spain"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Spain", "Aranese", "espana", "basque", "España (Spanish)", "Espainia ", "espanha aranese", "Espanha (Aranese)", "espanya", "espainia", "Espana ", "España ", "kingdom of spain", "Basque", "espanha", "spain", "espana spanish", "Espanya Catalan", "Espanha Aranese", "Espainia (Basque)", "España Spanish", "Espanya (Catalan)", "Espana (Spanish)", "españa", "espanya catalan", "españa spanish", "aranese", "Espana Spanish", "spanish", "Catalan", "Espainia Basque", "Spanish", "Espanya ", "espainia basque", "Kingdom of Spain", "catalan", "Espanha ", "Espana"],
+                "choices": ["d", "S", "o", "n", "l", "p", "a", "i"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Madrid",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560177938694,
+        "learning_element": "France",
+        "definition_element": null,
+        "learning_element_tokens": ["France"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "France",
+                    "alternatives": ["(French)", "French Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Paris",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "67 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "843 (West Francia established with the Treaty of Verdun)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1945; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1738_10.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1755_18.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "France",
+                    "alternatives": ["(French)", "French Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["France"],
+                "choices": ["Djibouti", "Algeria", "Morocco", "Madagascar", "Saint Barthélemy", "Clipperton Island", "Saint Pierre and Miquelon", "New Caledonia", "Martinique", "Lebanon"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Paris",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "France",
+                        "alternatives": ["(French)", "French Republic"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8907611_121120_2359_12.png", "https://static.memrise.com/uploads/things/images/8914336_121121_1054_58.png", "https://static.memrise.com/uploads/things/images/8915287_121121_1436_33.png", "https://static.memrise.com/uploads/things/images/8547631_121115_1731_30.png", "https://static.memrise.com/uploads/things/images/8914341_121121_1053_19.png", "https://static.memrise.com/uploads/things/images/8547639_121115_1733_23.png", "https://static.memrise.com/uploads/things/images/8914332_121121_1055_06.png", "https://static.memrise.com/uploads/things/images/8914311_121121_1056_24.png", "https://static.memrise.com/uploads/things/images/8907626_121120_2359_14.png", "https://static.memrise.com/uploads/things/images/8525542_121114_2236_12.png", "https://static.memrise.com/uploads/things/images/8547621_121115_1730_45.png", "https://static.memrise.com/uploads/things/images/8914321_121121_1055_52.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Paris",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "France",
+                    "alternatives": ["(French)", "French Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["France", "", "france", "la france", "french republic", "(French)", "French Republic", "La France", "french", "French"],
+                "choices": ["n", "F", "r", "I", "a", "é", "c", "e"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Paris",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560178331910,
+        "learning_element": "Italy",
+        "definition_element": null,
+        "learning_element_tokens": ["Italy"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Italy",
+                    "alternatives": ["Italia (Italian)", "Italian Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1733_39.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Rome",
+                    "alternatives": ["Roma"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "60 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1861 (Italian unification)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1738_00.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1754_33.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1733_39.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Italy",
+                    "alternatives": ["Italia (Italian)", "Italian Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Italy"],
+                "choices": ["Friuli-Venezia Giulia", "Aosta Valley", "Trentino-South Tyrol", "Apennine Peninsula", "Sardinia", "Sicily", "Libya"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Rome",
+                    "alternatives": ["Roma"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Italy",
+                        "alternatives": ["Italia (Italian)", "Italian Republic"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1733_39.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547643_121115_1733_39.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525564_121114_2240_16.png", "https://static.memrise.com/uploads/things/images/8525556_121115_0915_18.png", "https://static.memrise.com/uploads/things/images/8907608_121120_2359_31.png", "https://static.memrise.com/uploads/things/images/8525531_121114_2235_07.png", "https://static.memrise.com/uploads/things/images/8914319_121121_1056_43.png", "https://static.memrise.com/uploads/things/images/8547661_121115_1734_56.png", "https://static.memrise.com/uploads/things/images/8907643_121120_2359_36.png", "https://static.memrise.com/uploads/things/images/8914311_121121_1056_24.png", "https://static.memrise.com/uploads/things/images/8525552_121115_0914_21.png", "https://static.memrise.com/uploads/things/images/8525550_121115_0915_31.png", "https://static.memrise.com/uploads/things/images/8547623_121115_1731_28.png", "https://static.memrise.com/uploads/things/images/8525533_121114_2235_24.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Rome",
+                    "alternatives": ["Roma"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547643_121115_1733_39.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Italy",
+                    "alternatives": ["Italia (Italian)", "Italian Republic"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Italy", "italian", "Italia Italian", "italia", "Italian Republic", "italy", "Italia ", "italia italian", "italian republic", "Italian", "Italia (Italian)"],
+                "choices": ["a", "t", "S", "I", "y", "e", "l", "p"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Rome",
+                    "alternatives": ["Roma"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560178004230,
+        "learning_element": "Germany",
+        "definition_element": null,
+        "learning_element_tokens": ["Germany"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Germany",
+                    "alternatives": ["Deutschland (German)", "Federal Republic of Germany"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1731_53.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Berlin",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "81 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1871 (German Empire founded)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1973; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1738_01.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1755_04.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1731_53.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Germany",
+                    "alternatives": ["Deutschland (German)", "Federal Republic of Germany"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Germany"],
+                "choices": ["Trentino-South Tyrol", "Ascension Island", "Cayman Islands", "Guyana", "Georgia", "Grenada", "Mongolia"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Berlin",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Germany",
+                        "alternatives": ["Deutschland (German)", "Federal Republic of Germany"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1731_53.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547638_121115_1731_53.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525539_121114_2236_06.png", "https://static.memrise.com/uploads/things/images/8914329_121121_1055_57.png", "https://static.memrise.com/uploads/things/images/8914330_121121_1054_32.png", "https://static.memrise.com/uploads/things/images/8525543_121114_2236_50.png", "https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png", "https://static.memrise.com/uploads/things/images/8525559_121114_2238_54.png", "https://static.memrise.com/uploads/things/images/8914302_121121_1057_28.png", "https://static.memrise.com/uploads/things/images/8525545_121114_2237_11.png", "https://static.memrise.com/uploads/things/images/8525534_121114_2235_08.png", "https://static.memrise.com/uploads/things/images/8914345_121121_1054_50.png", "https://static.memrise.com/uploads/things/images/8907619_121120_2359_28.png", "https://static.memrise.com/uploads/things/images/8907614_121120_2359_48.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Berlin",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547638_121115_1731_53.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Germany",
+                    "alternatives": ["Deutschland (German)", "Federal Republic of Germany"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Germany", "Deutschland German", "deutschland german", "germany", "Federal Republic of Germany", "German", "deutschland", "Deutschland ", "federal republic of germany", "german", "Deutschland (German)"],
+                "choices": ["n", "G", "r", "t", "a", "e", "m", "y"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Berlin",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560177217798,
+        "learning_element": "Austria",
+        "definition_element": null,
+        "learning_element_tokens": ["Austria"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Austria",
+                    "alternatives": ["Österreich (German)", "Republic of Austria"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Vienna",
+                    "alternatives": ["Wien"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "8.5 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1806 (Austrian Empire independent from the Holy Roman Empire)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU member since 1995",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1738_58.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1755_37.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Austria",
+                    "alternatives": ["Österreich (German)", "Republic of Austria"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Austria"],
+                "choices": ["Cocos Islands", "Coral Sea Islands (Willis Island)", "Tasmania", "Norfolk Island", "Christmas Island", "Australian Antarctic Territory", "Australia (continent)", "Papua New Guinea", "Australia"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Vienna",
+                    "alternatives": ["Wien"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Austria",
+                        "alternatives": ["Österreich (German)", "Republic of Austria"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8547625_121115_1732_45.png", "https://static.memrise.com/uploads/things/images/8914325_121121_1054_55.png", "https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png", "https://static.memrise.com/uploads/things/images/8525569_121114_2241_44.png", "https://static.memrise.com/uploads/things/images/8547641_121115_1733_43.png", "https://static.memrise.com/uploads/things/images/8547637_121115_1733_04.png", "https://static.memrise.com/uploads/things/images/8914332_121121_1055_06.png", "https://static.memrise.com/uploads/things/images/8547620_121115_1731_55.png", "https://static.memrise.com/uploads/things/images/8525529_121114_2234_17.png", "https://static.memrise.com/uploads/things/images/8914333_121121_1054_24.png", "https://static.memrise.com/uploads/things/images/8914299_121121_1056_22.png", "https://static.memrise.com/uploads/things/images/8914331_121121_1055_59.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Vienna",
+                    "alternatives": ["Wien"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547626_121115_1732_32.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Austria",
+                    "alternatives": ["Österreich (German)", "Republic of Austria"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Austria", "osterreich german", "Osterreich German", "Österreich ", "republic of austria", "German", "osterreich", "österreich german", "austria", "Osterreich (German)", "österreich", "german", "Österreich (German)", "Republic of Austria", "Osterreich ", "Österreich German"],
+                "choices": ["r", "A", "u", "s", "t", "a", "i", "o"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Vienna",
+                    "alternatives": ["Wien"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560178594054,
+        "learning_element": "Luxembourg",
+        "definition_element": null,
+        "learning_element_tokens": ["Luxembourg"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["(French)", "Lëtzebuerg (Luxembourgish)", "Luxemburg (German)", "Grand Duchy of Luxembourg"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547647_121115_1734_06.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["Lëtzebuerg", "Luxemburg "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "510000",
+                    "alternatives": [],
+                    "style": ["rtl"],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1815 (Independence from the French Empire)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1945; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547647_121115_1752_42.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547647_130130_1534_29.png", "https://static.memrise.com/uploads/things/images/8547647_130130_1534_41.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547647_121115_1734_06.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["(French)", "Lëtzebuerg (Luxembourgish)", "Luxemburg (German)", "Grand Duchy of Luxembourg"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Luxembourg"],
+                "choices": ["Angola", "Zambia", "Republika Srpska", "Saint Lucia", "Malaysia", "Luzon", "Peru", "Togo", "Libya", "Tibet", "Latvia", "England"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["Lëtzebuerg", "Luxemburg "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Luxembourg",
+                        "alternatives": ["(French)", "Lëtzebuerg (Luxembourgish)", "Luxemburg (German)", "Grand Duchy of Luxembourg"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547647_121115_1734_06.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547647_121115_1734_06.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8907631_121121_0000_43.png", "https://static.memrise.com/uploads/things/images/8914326_121121_1055_39.png", "https://static.memrise.com/uploads/things/images/8907603_121120_2357_44.png", "https://static.memrise.com/uploads/things/images/8547624_121115_1732_03.png", "https://static.memrise.com/uploads/things/images/8907610_121120_2359_47.png", "https://static.memrise.com/uploads/things/images/8525535_121114_2235_12.png", "https://static.memrise.com/uploads/things/images/8547629_121115_1732_45.png", "https://static.memrise.com/uploads/things/images/8914316_121121_1056_47.png", "https://static.memrise.com/uploads/things/images/8547623_121115_1731_28.png", "https://static.memrise.com/uploads/things/images/8914314_121121_1056_54.png", "https://static.memrise.com/uploads/things/images/8547620_121115_1731_55.png", "https://static.memrise.com/uploads/things/images/8525530_121114_2234_29.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["Lëtzebuerg", "Luxemburg "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547647_121115_1734_06.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["(French)", "Lëtzebuerg (Luxembourgish)", "Luxemburg (German)", "Grand Duchy of Luxembourg"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Luxembourg", "", "Lëtzebuerg (Luxembourgish)", "Luxembourgish", "luxemburg", "Letzebuerg (Luxembourgish)", "lëtzebuerg", "french", "French", "letzebuerg luxembourgish", "Luxemburg ", "luxembourgish", "Grand Duchy of Luxembourg", "letzebuerg", "luxembourg", "grand duchy of luxembourg", "Luxemburg German", "Lëtzebuerg ", "Letzebuerg Luxembourgish", "(French)", "Letzebuerg ", "german", "Lëtzebuerg Luxembourgish", "Luxemburg (German)", "German", "luxemburg german", "lëtzebuerg luxembourgish"],
+                "choices": ["v", "u", "b", "g", "L", "x", "m", "e", "r", "o"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Luxembourg",
+                    "alternatives": ["Lëtzebuerg", "Luxemburg "],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560177348870,
+        "learning_element": "Belgium",
+        "definition_element": null,
+        "learning_element_tokens": ["Belgium"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Belgium",
+                    "alternatives": ["België (Dutch)", "Belgique (French)", "Belgien (German)", "Kingdom of Belgium"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1732_58.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Brussels",
+                    "alternatives": ["Brussel", "Bruxelles ", "Brüssel"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "11 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1830 (Independence from the Netherlands)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1945; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1737_52.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1755_22.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1732_58.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Belgium",
+                    "alternatives": ["België (Dutch)", "Belgique (French)", "Belgien (German)", "Kingdom of Belgium"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Belgium"],
+                "choices": ["Rwanda", "Democratic Republic of the Congo", "Serbia", "Wallonia", "Belize", "Burundi", "Novaya Zemlya", "Flanders", "Switzerland", "Belarus", "Benin", "Lebanon"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Brussels",
+                    "alternatives": ["Brussel", "Bruxelles ", "Brüssel"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Belgium",
+                        "alternatives": ["België (Dutch)", "Belgique (French)", "Belgien (German)", "Kingdom of Belgium"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1732_58.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547628_121115_1732_58.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525551_121115_0914_54.png", "https://static.memrise.com/uploads/things/images/8547625_121115_1732_45.png", "https://static.memrise.com/uploads/things/images/8915301_121121_1923_22.png", "https://static.memrise.com/uploads/things/images/8914299_121121_1056_22.png", "https://static.memrise.com/uploads/things/images/8914310_121121_1057_11.png", "https://static.memrise.com/uploads/things/images/8914311_121121_1056_24.png", "https://static.memrise.com/uploads/things/images/8547645_121115_1732_59.png", "https://static.memrise.com/uploads/things/images/8547654_121115_1733_26.png", "https://static.memrise.com/uploads/things/images/8525565_121114_2241_23.png", "https://static.memrise.com/uploads/things/images/8525547_121114_2236_15.png", "https://static.memrise.com/uploads/things/images/8914308_121121_1057_17.png", "https://static.memrise.com/uploads/things/images/8907643_121120_2359_36.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Brussels",
+                    "alternatives": ["Brussel", "Bruxelles ", "Brüssel"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547628_121115_1732_58.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Belgium",
+                    "alternatives": ["België (Dutch)", "Belgique (French)", "Belgien (German)", "Kingdom of Belgium"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Belgium", "belgique", "belgië", "Belgique French", "Belgique ", "belgien german", "Belgien German", "belgique french", "french", "French", "belgie", "belgien", "belgium", "belgie dutch", "Belgie (Dutch)", "België ", "Belgien (German)", "belgië dutch", "kingdom of belgium", "german", "Kingdom of Belgium", "Belgien ", "Belgique (French)", "Dutch", "Belgie ", "German", "België (Dutch)", "dutch", "Belgie Dutch", "België Dutch"],
+                "choices": ["i", "N", "g", "m", "e", "B", "u", "l"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Brussels",
+                    "alternatives": ["Brussel", "Bruxelles ", "Brüssel"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560178987270,
+        "learning_element": "Netherlands",
+        "definition_element": null,
+        "learning_element_tokens": ["Netherlands"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Netherlands",
+                    "alternatives": ["Nederland (Dutch)", "Kingdom of the Netherlands", "The Netherlands"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1734_05.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Amsterdam",
+                    "alternatives": ["Amsterdam (constitutional)", "The Hague (executive, legislative, judicial, royal)", "Den Haag"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "17 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1581 (Independence from Spain declared)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1945; EU founding member 1958",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1736_22.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1754_14.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1734_05.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Netherlands",
+                    "alternatives": ["Nederland (Dutch)", "Kingdom of the Netherlands", "The Netherlands"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Netherlands"],
+                "choices": ["Belgium", "Suriname", "Bonaire", "Saba", "Sint Eustatius", "Aruba", "Curaçao", "Sint Maarten", "Indonesia", "Republic of South Maluku", "India"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Amsterdam",
+                    "alternatives": ["Amsterdam (constitutional)", "The Hague (executive, legislative, judicial, royal)", "Den Haag"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Netherlands",
+                        "alternatives": ["Nederland (Dutch)", "Kingdom of the Netherlands", "The Netherlands"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1734_05.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547653_121115_1734_05.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8914327_121121_1055_36.png", "https://static.memrise.com/uploads/things/images/8525561_121114_2239_28.png", "https://static.memrise.com/uploads/things/images/8547654_121115_1733_26.png", "https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png", "https://static.memrise.com/uploads/things/images/9848908_121212_2254_20.png", "https://static.memrise.com/uploads/things/images/8525552_121115_0914_21.png", "https://static.memrise.com/uploads/things/images/8547621_121115_1730_45.png", "https://static.memrise.com/uploads/things/images/8914338_121121_1055_19.png", "https://static.memrise.com/uploads/things/images/8547627_121115_1732_31.png", "https://static.memrise.com/uploads/things/images/8907604_121120_2359_22.png", "https://static.memrise.com/uploads/things/images/8547619_121115_1730_37.png", "https://static.memrise.com/uploads/things/images/8914298_121121_1057_38.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Amsterdam",
+                    "alternatives": ["Amsterdam (constitutional)", "The Hague (executive, legislative, judicial, royal)", "Den Haag"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547653_121115_1734_05.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Netherlands",
+                    "alternatives": ["Nederland (Dutch)", "Kingdom of the Netherlands", "The Netherlands"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Netherlands", "Dutch", "the netherlands", "Kingdom of the Netherlands", "kingdom of the netherlands", "Nederland (Dutch)", "dutch", "netherlands", "Nederland Dutch", "nederland", "nederland dutch", "The Netherlands", "Nederland "],
+                "choices": ["h", "r", "N", "a", "d", "e", "l", "R", "n", "t", "s"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Amsterdam",
+                    "alternatives": ["Amsterdam (constitutional)", "The Hague (executive, legislative, judicial, royal)", "Den Haag"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560177742086,
+        "learning_element": "Denmark",
+        "definition_element": null,
+        "learning_element_tokens": ["Denmark"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Denmark",
+                    "alternatives": ["Danmark (Danish)", "Kingdom of Denmark"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1732_02.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Copenhagen",
+                    "alternatives": ["København"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "5.6 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "c. 980 (Denmark unified by Harald Bluetooth)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1945; EU member since 1973",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1737_31.png", "https://static.memrise.com/uploads/things/images/8547634_130310_0836_44.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1753_43.png", "https://static.memrise.com/uploads/things/images/8547634_130130_1535_01.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1732_02.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Denmark",
+                    "alternatives": ["Danmark (Danish)", "Kingdom of Denmark"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Denmark"],
+                "choices": ["Nordic Countries", "Scandinavia", "Rockall", "Réunion", "Bali", "Luzon", "Mindanao", "African Great Lakes Region", "India"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Copenhagen",
+                    "alternatives": ["København"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Denmark",
+                        "alternatives": ["Danmark (Danish)", "Kingdom of Denmark"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1732_02.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547634_121115_1732_02.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8525575_121114_2242_38.png", "https://static.memrise.com/uploads/things/images/8525556_121115_0915_18.png", "https://static.memrise.com/uploads/things/images/8914302_121121_1057_28.png", "https://static.memrise.com/uploads/things/images/8914337_121121_1054_53.png", "https://static.memrise.com/uploads/things/images/8525554_121115_0915_19.png", "https://static.memrise.com/uploads/things/images/8525546_121114_2237_02.png", "https://static.memrise.com/uploads/things/images/8547662_121115_1734_42.png", "https://static.memrise.com/uploads/things/images/8907623_121121_0000_25.png", "https://static.memrise.com/uploads/things/images/8547658_121115_1733_27.png", "https://static.memrise.com/uploads/things/images/8547631_121115_1731_30.png", "https://static.memrise.com/uploads/things/images/8907619_121120_2359_28.png", "https://static.memrise.com/uploads/things/images/8547641_121115_1733_43.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Copenhagen",
+                    "alternatives": ["København"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547634_121115_1732_02.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Denmark",
+                    "alternatives": ["Danmark (Danish)", "Kingdom of Denmark"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Denmark", "danmark danish", "Danmark ", "kingdom of denmark", "Kingdom of Denmark", "denmark", "Danish", "Danmark Danish", "danish", "Danmark (Danish)", "danmark"],
+                "choices": ["D", "m", "n", "e", "k", "r", "a", "é"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Copenhagen",
+                    "alternatives": ["København"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560179642630,
+        "learning_element": "Sweden",
+        "definition_element": null,
+        "learning_element_tokens": ["Sweden"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Sweden",
+                    "alternatives": ["Sverige (Swedish)", "Kingdom of Sweden"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Stockholm",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "9.5 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "before 975 (unknown)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1946; EU member since 1995",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1734_54.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1753_24.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Sweden",
+                    "alternatives": ["Sverige (Swedish)", "Kingdom of Sweden"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Sweden"],
+                "choices": ["Gotland", "Nordic Countries", "Cap of the North / Nordkalotten", "Scandinavian Peninsula", "Scandinavia", "Åland", "Switzerland"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Stockholm",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Sweden",
+                        "alternatives": ["Sverige (Swedish)", "Kingdom of Sweden"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8914333_121121_1054_24.png", "https://static.memrise.com/uploads/things/images/10409919_130107_2010_19.png", "https://static.memrise.com/uploads/things/images/8547639_121115_1733_23.png", "https://static.memrise.com/uploads/things/images/8907644_121121_0001_26.png", "https://static.memrise.com/uploads/things/images/8525537_121114_2235_29.png", "https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png", "https://static.memrise.com/uploads/things/images/8914343_121121_1054_18.png", "https://static.memrise.com/uploads/things/images/8914336_121121_1054_58.png", "https://static.memrise.com/uploads/things/images/8547661_121115_1734_56.png", "https://static.memrise.com/uploads/things/images/8914335_121121_1055_36.png", "https://static.memrise.com/uploads/things/images/8914311_121121_1056_24.png", "https://static.memrise.com/uploads/things/images/8914326_121121_1055_39.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Stockholm",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547663_121115_1733_20.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Sweden",
+                    "alternatives": ["Sverige (Swedish)", "Kingdom of Sweden"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Sweden", "sweden", "Sverige (Swedish)", "sverige", "swedish", "Sverige ", "kingdom of sweden", "Swedish", "Kingdom of Sweden", "Sverige Swedish", "sverige swedish"],
+                "choices": ["e", "w", "p", "i", "S", "s", "n", "d"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Stockholm",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }, {
+        "id": 560177873158,
+        "learning_element": "Finland",
+        "definition_element": null,
+        "learning_element_tokens": ["Finland"],
+        "definition_element_tokens": null,
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Finland",
+                    "alternatives": ["Suomi (Finnish)", "Finland (Swedish)", "Republic of Finland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [{
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Helsinki",
+                    "alternatives": ["Helsingfors (Swedish)"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "hidden_info": [{
+                    "label": "Population",
+                    "kind": "text",
+                    "value": "5.4 million",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Date of Formation",
+                    "kind": "text",
+                    "value": "1917 (Independence from the Russian Empire)",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Status",
+                    "kind": "text",
+                    "value": "UN member since 1955; EU member since 1995",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Coat of Arms",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1738_23.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }, {
+                    "label": "Location",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1755_02.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                }],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Finland",
+                    "alternatives": ["Suomi (Finnish)", "Finland (Swedish)", "Republic of Finland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Finland"],
+                "choices": ["Åland", "Nordic Countries", "Scandinavian Peninsula", "Cap of the North / Nordkalotten", "Baltic States", "Fennoscandia", "Fiji", "Bulgaria", "British Antarctic Territory"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Helsinki",
+                    "alternatives": ["Helsingfors (Swedish)"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "Country",
+                        "kind": "text",
+                        "value": "Finland",
+                        "alternatives": ["Suomi (Finnish)", "Finland (Swedish)", "Republic of Finland"],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "Flag",
+                    "kind": "image",
+                    "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png"],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png"],
+                "choices": ["https://static.memrise.com/uploads/things/images/8547620_121115_1731_55.png", "https://static.memrise.com/uploads/things/images/8914325_121121_1054_55.png", "https://static.memrise.com/uploads/things/images/8525573_121114_2242_27.png", "https://static.memrise.com/uploads/things/images/8525549_121114_2237_20.png", "https://static.memrise.com/uploads/things/images/8914307_121121_1056_31.png", "https://static.memrise.com/uploads/things/images/8907610_121120_2359_47.png", "https://static.memrise.com/uploads/things/images/8914323_121121_1056_28.png", "https://static.memrise.com/uploads/things/images/8525559_121114_2238_54.png", "https://static.memrise.com/uploads/things/images/8525580_121114_2241_44.png", "https://static.memrise.com/uploads/things/images/8525542_121114_2236_12.png", "https://static.memrise.com/uploads/things/images/8914329_121121_1055_57.png", "https://static.memrise.com/uploads/things/images/8914298_121121_1057_38.png"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Helsinki",
+                    "alternatives": ["Helsingfors (Swedish)"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": null,
+                    "audio": null,
+                    "video": null,
+                    "image": {
+                        "label": "Flag",
+                        "kind": "image",
+                        "value": ["https://static.memrise.com/uploads/things/images/8547636_121115_1733_23.png"],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    }
+                },
+                "answer": {
+                    "label": "Country",
+                    "kind": "text",
+                    "value": "Finland",
+                    "alternatives": ["Suomi (Finnish)", "Finland (Swedish)", "Republic of Finland"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["Finland", "Suomi Finnish", "republic of finland", "Finland Swedish", "suomi finnish", "finland swedish", "Suomi (Finnish)", "Finland ", "swedish", "Swedish", "Finland (Swedish)", "Suomi ", "finnish", "Republic of Finland", "Finnish", "suomi", "finland"],
+                "choices": ["d", "n", "a", "F", "Å", "l", "p", "i"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": {
+                    "label": "Capital",
+                    "kind": "text",
+                    "value": "Helsinki",
+                    "alternatives": ["Helsingfors (Swedish)"],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [{
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T09:23:56Z",
+        "created_date": "2014-08-22T20:21:05Z",
+        "next_date": "2018-09-29T09:23:56Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 38,
+        "attempts": 38,
+        "total_streak": 38,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560178266374"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:25:57Z",
+        "created_date": "2014-08-22T20:21:07Z",
+        "next_date": "2018-09-29T08:25:57Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 39,
+        "attempts": 39,
+        "total_streak": 39,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560179904774"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:36:19Z",
+        "created_date": "2014-08-22T20:21:11Z",
+        "next_date": "2018-09-29T08:36:19Z",
+        "interval": 180.0,
+        "growth_level": 14,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 59,
+        "attempts": 60,
+        "total_streak": 5,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560179183878"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:32:02Z",
+        "created_date": "2014-08-22T20:21:14Z",
+        "next_date": "2018-09-29T08:32:02Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 53,
+        "attempts": 53,
+        "total_streak": 53,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560179577094"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:19:08Z",
+        "created_date": "2014-08-22T20:21:18Z",
+        "next_date": "2018-09-29T08:19:08Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 37,
+        "attempts": 37,
+        "total_streak": 37,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560177938694"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T09:31:57Z",
+        "created_date": "2014-08-22T20:21:19Z",
+        "next_date": "2018-09-29T09:31:57Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 39,
+        "attempts": 39,
+        "total_streak": 39,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560178331910"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:26:34Z",
+        "created_date": "2014-08-22T20:21:25Z",
+        "next_date": "2018-09-29T08:26:34Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 39,
+        "attempts": 39,
+        "total_streak": 39,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560178004230"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:26:29Z",
+        "created_date": "2014-08-22T20:21:25Z",
+        "next_date": "2018-05-20T08:30:24Z",
+        "interval": 48.0,
+        "growth_level": 19,
+        "current_streak": 8,
+        "starred": false,
+        "correct": 56,
+        "attempts": 60,
+        "total_streak": 6,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560177217798"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:23:59Z",
+        "created_date": "2014-08-22T20:21:33Z",
+        "next_date": "2018-09-29T08:23:59Z",
+        "interval": 180.0,
+        "growth_level": 14,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 45,
+        "attempts": 45,
+        "total_streak": 45,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560178594054"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:41:42Z",
+        "created_date": "2014-08-22T20:21:34Z",
+        "next_date": "2018-09-29T08:41:42Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 13,
+        "starred": false,
+        "correct": 39,
+        "attempts": 39,
+        "total_streak": 39,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560177348870"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:41:38Z",
+        "created_date": "2014-08-22T20:23:38Z",
+        "next_date": "2018-05-20T08:42:38Z",
+        "interval": 48.0,
+        "growth_level": 16,
+        "current_streak": 8,
+        "starred": false,
+        "correct": 45,
+        "attempts": 48,
+        "total_streak": 22,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560178987270"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:25:37Z",
+        "created_date": "2014-08-22T20:23:39Z",
+        "next_date": "2018-09-29T08:25:37Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 5,
+        "starred": false,
+        "correct": 48,
+        "attempts": 49,
+        "total_streak": 22,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560177742086"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:35:47Z",
+        "created_date": "2014-08-22T20:23:44Z",
+        "next_date": "2018-09-29T08:35:47Z",
+        "interval": 180.0,
+        "growth_level": 15,
+        "current_streak": 10,
+        "starred": false,
+        "correct": 44,
+        "attempts": 45,
+        "total_streak": 44,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560179642630"
+    }, {
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2018-04-02T08:23:51Z",
+        "created_date": "2014-08-22T20:23:45Z",
+        "next_date": "2018-09-29T08:23:51Z",
+        "interval": 180.0,
+        "growth_level": 13,
+        "current_streak": 5,
+        "starred": false,
+        "correct": 46,
+        "attempts": 47,
+        "total_streak": 46,
+        "is_difficult": false,
+        "not_difficult": false,
+        "learnable_id": "560177873158"
+    }],
+    "session_source_info": {
+        "source_id": 57289,
+        "source_type": "course_id_and_level_index",
+        "name": "Country Flags",
+        "translated_name": "Country Flags",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 427,
+        "level_id": 498526,
+        "level_name": "European Union I",
+        "source_sub_index": 1,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}
