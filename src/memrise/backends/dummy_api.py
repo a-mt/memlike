@@ -61,10 +61,10 @@ class DummyRequestor:
         if idCourse == DUMMY_SINGLE_LEVEL:
             return self.get_testset_json("course-6618687_level-1_learning_session_preview.json")
 
-        return self.get_testset_json("course-1892646_level-2_learning_session_preview.json") # attributes
-        return self.get_testset_json("course-399843_level-1_learning_session_preview.json") # image
-        return self.get_testset_json("course-365747_level-3_learning_session_preview.json") # audio
-        return self.get_testset_json("course-57289_level-1_learning_session_preview.json") # hidden_info
+        return self.get_testset_json("course-1892646_level-2_learning_session_preview.json")  # attributes
+        return self.get_testset_json("course-399843_level-1_learning_session_preview.json")  # image
+        return self.get_testset_json("course-365747_level-3_learning_session_preview.json")  # audio
+        return self.get_testset_json("course-57289_level-1_learning_session_preview.json")  # hidden_info
 
     def level_learning_session(self, idCourse, slugCourse, sessionType, **kwargs):
         return {

@@ -126,6 +126,7 @@ app.add_processor(web.loadhook(session_load))
 lang = web.config.lang
 app.add_processor(lang._processor)
 
+
 # ---
 # Flash messages processor
 def flash_load():
@@ -139,6 +140,7 @@ def flash_load():
         del web.ctx.session.flash
     else:
         web.ctx.flash = {}
+
 
 app.add_processor(web.loadhook(flash_load))
 

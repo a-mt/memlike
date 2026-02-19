@@ -2,7 +2,6 @@ from inspect import isclass
 from functools import wraps
 import web
 import logging
-import types
 import os
 
 
@@ -86,7 +85,7 @@ def get_template(name, path):
     logger_tpl.debug(f"Get template '{name}'")
 
     # Retrieve the html
-    text = ''
+    text = ""
     with open(path, encoding="utf-8") as tmpl_file:
         try:
             text = tmpl_file.read()
@@ -106,7 +105,7 @@ def check_load_templates(root):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
 
-            if not filepath.endswith('.html'):
+            if not filepath.endswith(".html"):
                 continue
 
             get_template(filename, filepath)
