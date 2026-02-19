@@ -275,7 +275,7 @@ var audioPlayer = {
        document.body.addEventListener('ended', function(e){
         if(e.target == audioPlayer.target) {
           audioPlayer.isPlaying = false;
-          audioPlayer.target.classList.remove("active");
+          audioPlayer.target.button.classList.remove("active");
           audioPlayer.target = false;
         }
       }, true);
@@ -284,7 +284,7 @@ var audioPlayer = {
     // Reset audioPlayer state
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.classList.remove("active");
+      audioPlayer.target.button.classList.remove("active");
     }
     audioPlayer.target    = false;
     audioPlayer.isPlaying = false;
@@ -298,22 +298,28 @@ var audioPlayer = {
 
   // Play the target (this) audio element
   play: function(e, force) {
+    let audioBtn = this;
+    let audioElement = this;
+    if ('id' in audioBtn.dataset) {
+      audioElement = document.getElementById(audioBtn.dataset.id);
+    }
+    audioElement.button = audioBtn;
 
     // Toggle play/pause
-    if(audioPlayer.target === this) {
+    if(audioPlayer.target === audioElement) {
       if(force) {
         if(!audioPlayer.isPlaying) {
-          this.play();
+          audioElement.play();
           audioPlayer.isPlaying = true;
         }
         return;
       }
       if(audioPlayer.isPlaying) {
-        this.pause();
-        this.classList.remove("active");
+        audioElement.pause();
+        audioElement.button.classList.remove("active");
       } else {
-        this.play();
-        this.classList.add("active");
+        audioElement.play();
+        audioElement.button.classList.add("active");
       }
       audioPlayer.isPlaying = !audioPlayer.isPlaying;
 
@@ -323,9 +329,9 @@ var audioPlayer = {
         audioPlayer.target.pause();
         audioPlayer.target.classList.remove("active");
       }
-      this.play();
-      this.classList.add("active");
-      audioPlayer.target    = this;
+      audioElement.play();
+      audioElement.button.classList.add("active");
+      audioPlayer.target    = audioElement;
       audioPlayer.isPlaying = true;
     }
   },
@@ -334,7 +340,7 @@ var audioPlayer = {
   pause: function() {
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.classList.remove("active");
+      audioPlayer.target.button.classList.remove("active");
       audioPlayer.isPlaying = false;
     }
   }
@@ -672,6 +678,8 @@ var Dashboard = {
 //+--------------------------------------------------------
 //| Text To Speech
 //+--------------------------------------------------------
+
+// https://docs.cloud.google.com/translate/docs/languages?hl=de
 var TTS = {
   host: "https://google-tts-api.herokuapp.com/",
   langs: {
@@ -784,6 +792,10 @@ var TTS = {
     if(!TTS.langs[lang] || text.length >= 200) {
       return;
     }
-    return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
+    const tk = Math.floor(Math.random() * 1000000);
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(text)}&tk=${tk}&ttsspeed=1`;
+    return 'https://cors-anywhere.99901dev.workers.dev/?q=' + encodeURIComponent(url);
+
+    // return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
   }
 };
