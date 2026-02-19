@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "Memlike"
 dynamic = ["version"]
-requires-python = ">= 3.6"
+requires-python = ">= 3.12"
 authors = [
   {name = "Anon Software Foundation", email = "foundation@anon.com"},
 ]

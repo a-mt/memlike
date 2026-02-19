@@ -95,7 +95,7 @@ class DummyRequestor:
         return {
             "csrftoken": "",
             "referer": "",
-            "html": html
+            "html": html,
         }
 
 

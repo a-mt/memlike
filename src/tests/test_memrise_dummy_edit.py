@@ -11,12 +11,11 @@ COURSE_SLUG = 'german'
 LEVEL_ID = '16266974'
 LEVEL_MULTIMEDIA_ID = '16266978'
 
-memrise = load_memrise('memrise.backends.DummyMemrise')
 
-
-class MemriseEditTest(SimpleTestCase):
+class MemriseDummyEditTest(SimpleTestCase):
     session = {}
     idThing = '478400195'
+    memrise = load_memrise('memrise.backends.DummyMemrise')
 
     def setUp(self):
         if 'session_id' in self.session:
@@ -36,7 +35,7 @@ class MemriseEditTest(SimpleTestCase):
         username = settings.MEMRISE_ANON_USERNAME or 'bob'
         password = settings.MEMRISE_ANON_PASSWORD or 'pass'
 
-        result = memrise.login(username, password)
+        result = self.memrise.login(username, password)
 
         self.assertIsNotNone(result)
         self.assertIs(type(result), dict)
@@ -48,7 +47,11 @@ class MemriseEditTest(SimpleTestCase):
         self.session['csrftoken'] = result['csrftoken']
 
     def test_memrise_course_edit_get(self):
-        result = memrise.course_edit_get(idCourse=COURSE_ID, slugCourse=COURSE_SLUG, sessionid=self.session['session_id'])
+        result = self.memrise.course_edit_get(
+            idCourse=COURSE_ID,
+            slugCourse=COURSE_SLUG,
+            sessionid=self.session['session_id'],
+        )
 
         self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('csrftoken', None))
@@ -64,7 +67,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertIsNotNone(level.get('name', None))
 
     def test_memrise_level_edit_get(self):
-        result = memrise.level_edit_get(idLevel=LEVEL_ID, sessionid=self.session['session_id'])
+        result = self.memrise.level_edit_get(idLevel=LEVEL_ID, sessionid=self.session['session_id'])
 
         self.assertIs(type(result), dict)
         self.assertTrue(result.get('success', False))
@@ -74,7 +77,7 @@ class MemriseEditTest(SimpleTestCase):
     # THINGS
     # -------------------------------------------------------------------------
     def test_memrise_course_level_thing_add(self):
-        result = memrise.level_thing_add(
+        result = self.memrise.level_thing_add(
             idLevel=LEVEL_ID,
             data='{"1":"a","2":"b"}',
             sessionid=self.session['session_id'],
@@ -105,7 +108,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertEqual(column.get('kind', None), 'text')
 
     def test_memrise_course_level_thing_get(self):
-        result = memrise.level_thing_get(
+        result = self.memrise.level_thing_get(
             idThing=self.idThing,
             sessionid=self.session['session_id'],
             csrftoken=self.session['csrftoken'],
@@ -130,7 +133,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertEqual(column.get('kind', None), 'text')
 
     def test_memrise_course_level_thing_edit(self):
-        result = memrise.level_thing_edit(
+        result = self.memrise.level_thing_edit(
             idThing=self.idThing,
             cellId='2',
             cellValue='b2',
@@ -143,7 +146,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertIsNone(result.get('success', False))
 
     def test_memrise_course_level_thing_alt_edit(self):
-        result = memrise.level_thing_alt_edit(
+        result = self.memrise.level_thing_alt_edit(
             idThing=self.idThing,
             column_key='2',
             alts='["a2","a3"]',
@@ -163,7 +166,7 @@ class MemriseEditTest(SimpleTestCase):
             'filename': 'file.mp3',
             'value': audio,
         })
-        result = memrise.level_thing_upload(
+        result = self.memrise.level_thing_upload(
             idThing=self.idThing,
             cellId='3',
             file=file,
@@ -177,7 +180,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertIs(type(result.get('rendered', None)), str)
 
     def test_memrise_course_level_thing_upload_remove(self):
-        result = memrise.level_thing_upload_remove(
+        result = self.memrise.level_thing_upload_remove(
             idThing=self.idThing,
             cellId='3',
             fileId='1',
@@ -191,7 +194,7 @@ class MemriseEditTest(SimpleTestCase):
         self.assertIs(type(result.get('rendered', None)), str)
 
     def test_memrise_course_level_thing_remove(self):
-        result = memrise.level_thing_remove(
+        result = self.memrise.level_thing_remove(
             idLevel=LEVEL_ID,
             idThing=self.idThing,
             sessionid=self.session['session_id'],
@@ -221,7 +224,7 @@ class MemriseEditTest(SimpleTestCase):
         <br /><b>"spiel **nicht** mit dem Feuer"</b>.
         " name="new_val">
         ''')
-        result = memrise.level_multimedia_edit(
+        result = self.memrise.level_multimedia_edit(
             idLevel=LEVEL_MULTIMEDIA_ID,
             txt=txt,
             sessionid=self.session['session_id'],

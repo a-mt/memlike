@@ -31,7 +31,7 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
         self.session['session_id'] = data['sessionid']
         self.session['csrftoken'] = data['csrftoken']
 
-    def disable_test_memrise_requestor_course(self):
+    def test_memrise_requestor_course(self):
         self.assertIsNotNone(self.session.get('session_id'))
 
         result = requestor.course(
@@ -51,7 +51,7 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
         )
         self.assertIs(type(result), bytes)
 
-    def disable_test_memrise_requestor_level(self):
+    def test_memrise_requestor_level(self):
         self.assertIsNotNone(self.session.get('session_id'))
 
         result = requestor.level(
@@ -63,7 +63,7 @@ class MemriseBackendApiRequestorTest(unittest.TestCase):
         self.assertIs(type(result), dict)
         self.assertIsNotNone(result.get('learnables', None))
 
-    def disable_test_memrise_requestor_leaderboard(self):
+    def test_memrise_requestor_leaderboard(self):
         self.assertIsNotNone(self.session.get('session_id'))
 
         result = requestor.course_leaderboard(

@@ -1,17 +1,22 @@
 from os import environ, getenv, path
 
 ROOTDIR = path.dirname(path.realpath(__file__))
+IS_TEST = getenv('WEBPY_ENV', '') == 'test' or getenv('PYTEST_VERSION', None) is not None
+
 AUTORELOAD = bool(getenv('AUTORELOAD', None))
 DEBUG = bool(getenv('DEBUG', False))
-IS_TEST = getenv('WEBPY_ENV', '') == 'test'
 
 MEMRISE_BACKEND = 'memrise.backends.ApiMemrise'
-if IS_TEST:
-    MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
-
-DATABASE_URL = getenv('DATABASE_URL', '')
 MEMRISE_ANON_USERNAME = "66b1d91e8e"
 MEMRISE_ANON_PASSWORD = "66b1d91e8e66b1d91e8e!"
+
+DATABASE_URL = getenv('DATABASE_URL', '')
+DEFAULT_LANG = getenv('DEFAULT_LANG', 'french')
+
+if IS_TEST:
+    MEMRISE_BACKEND = 'memrise.backends.DummyApiMemrise'
+    DEBUG = False
+    DEFAULT_LANG = 'english'
 
 # Import global web object to hold web.py config
 import web
@@ -30,8 +35,6 @@ else:
 
 # ---
 # Configure simple translation system
-DEFAULT_LANG = getenv('DEFAULT_LANG', 'french')
-
 if web.config.get('lang', None) is None:
     from lang import Lang
 

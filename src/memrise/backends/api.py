@@ -621,7 +621,7 @@ class Scraper:
         ul_list = DOM.find_all("ul",{"class":"categories-list"})
 
         def parseCategories(ul):
-            for li in ul.findChildren():
+            for li in ul.find_all(recursive=False):
                 if not "data-category-id" in li.attrs:
                     continue
 
@@ -768,7 +768,7 @@ class Scraper:
         # Ignored, learned, total
         item = div.find("div",{"class":"progress-box-title"})
         if item != None:
-            text = item.find(text=True, recursive=False)
+            text = item.find(string=True, recursive=False)
             if text:
                 res = re.search(r"^(\d+) ?/ ?(\d+)", text.strip())
                 if res:
@@ -993,7 +993,7 @@ class Scraper:
         levels = []
 
         if div != None:
-            for child in div.findChildren(attrs={"class":"level"}):
+            for child in div.find_all(attrs={"class":"level"}, recursive=False):
                 level  = {"id": child.attrs["data-level-id"]}
                 header = child.find("div", {"class": "level-header"}, recursive=False)
 

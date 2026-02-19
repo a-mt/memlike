@@ -21,7 +21,7 @@ services:
       retries: 10
 
   api:
-    image: memlike-api:3.6
+    image: memlike-api:3.12
     build:
       context: .
       dockerfile: docker-api.Dockerfile

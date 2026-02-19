@@ -1,6 +1,7 @@
 requests
 python-dotenv
-web.py
+multipart
+web.py @ git+https://github.com/webpy/webpy@webpy-0.70
 pylibmc
 html5lib
 beautifulsoup4

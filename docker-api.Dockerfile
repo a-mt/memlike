@@ -1,4 +1,4 @@
-FROM python:3.6-slim-bullseye
+FROM python:3.12-slim-trixie
 
 ENV PYTHONUNBUFFERED=1
 
@@ -14,7 +14,7 @@ RUN apt update \
 
 # ---
 # install NVM
-ARG NODE_VERSION=12.22
+ARG NODE_VERSION=12.22  # v20.19.2
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
 
 # install node
