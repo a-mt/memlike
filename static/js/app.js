@@ -355,6 +355,7 @@ var imgZoom = {
   i: 0,
 
   reset: function() {
+    // for each images that have the text-image class: add the imgZoom attribute
     imgZoom.n = $('main .text-image').each(function(i){
       $(this).attr('id', 'imgZoom-' + i)
              .data('i', i);
@@ -390,7 +391,7 @@ var imgZoom = {
     }
 
     // Img & legend
-    var legend = $(this).closest('.thing').find('.text').html(),
+    var legend = $(this).closest('.thing').find('.text').text(),
           html = `<figure>
             <img class="zoom" src="${this.getAttribute('src')}">
             ${legend ? `<figcaption>${legend}</figcaption>` : ""}

@@ -1318,8 +1318,12 @@ const Presentation = function(props){
       correct = props.correct,
       k    = Date.now(),
       i    = 0,
-      item_lang = item.item.direction == 'target' ? this.props.langTarget : this.props.langSource;
+      item_lang = '';
 
+  // Add TSS if we're learning a language
+  if (this.props.langTarget && this.props.langSource) {
+    item_lang = item.item.direction == 'target' ? this.props.langTarget : this.props.langSource;
+  }
 	return <div>
 
     {/*-- Correction --*/}
