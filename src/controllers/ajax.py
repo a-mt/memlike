@@ -5,58 +5,60 @@ from requests.exceptions import HTTPError
 from math import ceil
 
 
-
+# fmt: off
 # /ajax/level/...
 urls_level = (
   r"/(\d+)", "level_edit",
-  r"/(\d+)/alt", "level_alt",
-  r"/(\d+)/alt_edit", "level_editalt",
-  r"/(\d+)/add", "level_addrow",
-  r"/(\d+)/edit", "level_editcell",
-  r"/(\d+)/remove", "level_removerow",
-  r"/(\d+)/upload", "level_uploadfile",
-  r"/(\d+)/upload_remove", "level_removefile",
-  r"/(\d+)/edit_multimedia", "level_editmultimedia",
+    r"/(\d+)/alt", "level_alt",
+    r"/(\d+)/alt_edit", "level_editalt",
+    r"/(\d+)/add", "level_addrow",
+    r"/(\d+)/edit", "level_editcell",
+    r"/(\d+)/remove", "level_removerow",
+    r"/(\d+)/upload", "level_uploadfile",
+    r"/(\d+)/upload_remove", "level_removefile",
+    r"/(\d+)/edit_multimedia", "level_editmultimedia",
 )
 # /ajax/course/...
 urls_course = (
-  r"/(\d+)/([^/]+)/edit", "course_edit",
-  r"/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
-  r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
-  r"/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
-  r"/(\d+)/([^/]+)", "course",
+    r"/(\d+)/([^/]+)/edit", "course_edit",
+    r"/(\d+)/([^/]+)/(\d+)/media", "course_level_multimedia",
+    r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", "course_level",
+    r"/(\d+)/([^/]+)/leaderboard", "course_leaderboard",
+    r"/(\d+)/([^/]+)", "course",
 )
 subapp_course = web.application(urls_course, locals(), autoreload=False)
 
 urls = (
-  "", "api",
+    "", "api",
 
-  r"/courses", "courses",
-  r"/community/course", subapp_course,
-  r"/course", subapp_course,
-  r"/level", web.application(urls_level, locals(), autoreload=False),
+    r"/courses", "courses",
+    r"/community/course", subapp_course,
+    r"/course", subapp_course,
+    r"/level", web.application(urls_level, locals(), autoreload=False),
 
-  r"/user/([^/]+)", "user",
-  r"/user/([^/]+)/(followers)", "user_mempals",
-  r"/user/([^/]+)/(following)", "user_mempals",
-  r"/user/([^/]+)/(teaching)", "user_courses",
-  r"/user/([^/]+)/(learning)", "user_courses",
+    r"/user/([^/]+)", "user",
+    r"/user/([^/]+)/(followers)", "user_mempals",
+    r"/user/([^/]+)/(following)", "user_mempals",
+    r"/user/([^/]+)/(teaching)", "user_courses",
+    r"/user/([^/]+)/(learning)", "user_courses",
 
-  # logged-in user only
-  r"/dashboard", "user_dashboard",
-  r"/leaderboard", "user_leaderboard",
-  r"/sync", "user_sync",
-  r"/session", "debug_session",
+    # logged-in user only
+    r"/dashboard", "user_dashboard",
+    r"/leaderboard", "user_leaderboard",
+    r"/sync", "user_sync",
+    r"/session", "debug_session",
 
-  r"/(register)", "track_progress",
-  r"/(session_end)", "track_progress"
+    r"/(register)", "track_progress",
+    r"/(session_end)", "track_progress",
 )
 NBPERPAGE = 15
+# fmt: on
 
 class api:
     def GET(self):
         web.header("Content-Type", "application/json")
 
+        # fmt: off
         return json.dumps({
             "courses": "/ajax/courses?{lang, cat, q, page}",
             "course": "/ajax/course/{id}/{slug}",
@@ -74,8 +76,9 @@ class api:
             "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
             "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}",
             "user_sync": "/ajax/sync {cookies.sessionid}",
-            "debug_session": "/ajax/session"
+            "debug_session": "/ajax/session",
         })
+        # fmt: on
 
 def _error(e):
     # https://github.com/webpy/webpy/blob/master/web/webapi.py#L15

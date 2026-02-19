@@ -41,17 +41,19 @@ class switchLang():
 def notfound():
     return web.notfound(web.config.template.prender._404())
 
+# fmt: off
 urls = (
-    '/fr/courses', controllers.courses.app,
-    '/community/course', controllers.course.app,
-    '/course', controllers.course.app,
-    '/user', controllers.user.app,
-    '/ajax', controllers.ajax.app,
-    '/login', controllers.login.app,
-    '/logout', 'logout',
-    '/lang/(.*)', 'switchLang',
-    '', controllers.index.app
+    "/fr/courses", controllers.courses.app,
+    "/community/course", controllers.course.app,
+    "/course", controllers.course.app,
+    "/user", controllers.user.app,
+    "/ajax", controllers.ajax.app,
+    "/login", controllers.login.app,
+    "/logout", "logout",
+    "/lang/(.*)", "switchLang",
+    "", controllers.index.app,
 )
+# fmt: on
 
 # ---
 # Worker-wide settings

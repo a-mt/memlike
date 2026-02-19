@@ -1,4 +1,5 @@
 # ruff: noqa F401
+# fmt: off
 import re
 import json
 import settings

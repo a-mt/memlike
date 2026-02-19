@@ -2,9 +2,11 @@ import web
 from memrise import memrise
 from requests.exceptions import HTTPError
 
+# fmt: off
 urls = (
-  r".*", "login"
+    r".*", "login",
 )
+# fmt: on
 
 class login:
     def GET(self):

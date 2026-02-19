@@ -2,10 +2,12 @@ import web
 import variables
 from memrise import memrise
 
+# fmt: off
 urls = (
-  r"", "courses",
-  r"/(.*)", "courses"
+    r"", "courses",
+    r"/(.*)", "courses",
 )
+# fmt: on
 
 class courses:
     def GET(self, path=""):
@@ -34,7 +36,7 @@ class courses:
             "lang"  : lang,
             "cat"   : cat,
             "catId" : catId,
-            "q"     : _GET.q
+            "q"     : _GET.q,
         }, variables.languages, variables.categories, catHaveCourse)
 
 app = web.application(urls, locals(), autoreload=False)

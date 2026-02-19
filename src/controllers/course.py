@@ -2,22 +2,24 @@ import web
 from memrise import memrise
 from requests.exceptions import HTTPError
 
+# fmt: off
 urls = (
-  # Learn
-  r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
-  r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
-  r"/(\d+)/(.*)/(\d+)/(.*)", "level",
-  r"/(\d+)/(.*)/(\d+)", "level",
+    # Learn
+    r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
+    r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
+    r"/(\d+)/(.*)/(\d+)/(.*)", "level",
+    r"/(\d+)/(.*)/(\d+)", "level",
 
-  # View course
-  # /6687517/german-vocab/1/garden
-  r"/(\d+)/(.*)/garden", "learn_fromform",
-  r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
-  r"/(\d+)/(.*)/leaderboard", "leaderboard",
-  r"/(\d+)/([^/]*)/edit", "edit",
-  r"/(\d+)/(.*)", "course",
-  r"/(\d+)", "course"
+    # View course
+    # /6687517/german-vocab/1/garden
+    r"/(\d+)/(.*)/garden", "learn_fromform",
+    r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
+    r"/(\d+)/(.*)/leaderboard", "leaderboard",
+    r"/(\d+)/([^/]*)/edit", "edit",
+    r"/(\d+)/(.*)", "course",
+    r"/(\d+)", "course",
 )
+# fmt: on
 
 class learn_fromform:
     def GET(self, idCourse, path, lvl=False):
@@ -84,7 +86,7 @@ class level:
         return web.config.template.render.course_level(course, {
             "name": course['levels'][lvl]['name'],
             "type": course['levels'][lvl]['type'],
-            "index": int(lvl)
+            "index": int(lvl),
         }, items)
 
 class course:
@@ -105,7 +107,7 @@ class course:
             return web.config.template.render.course_level(course, {
                 "name": False,
                 "type": 1,
-                "index": -1
+                "index": -1,
             }, items)
 
         return web.config.template.render.course_summary(course)

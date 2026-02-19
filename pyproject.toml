@@ -23,9 +23,10 @@ select = ["E", "F"]
 ignore = ["E203", "E402"]
 
 # Ruleset for ruff format --check
+# formats your code according to black's style guide
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
-skip-magic-trailing-comma = true
-line-ending = "auto"
+skip-magic-trailing-comma = false
+line-ending = "lf"
 docstring-code-format = false

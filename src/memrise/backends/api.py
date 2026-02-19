@@ -11,12 +11,13 @@ from variables import categories_code, levels, languages
 from .base import Memrise
 
 
+# fmt: off
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
 USER_AGENT      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0"
 HOST            = "https://community-courses.memrise.com"
 API_VERSION     = "v1.25"
 ACCEPT_LANGUAGE = "fr;q=0.8,en-US;q=0.5,en;q=0.3"
-
+# fmt: on
 
 logger = logging.getLogger(__name__)
 
@@ -82,7 +83,7 @@ class Requestor:
             "client_id" : OAUTH_CLIENT_ID,
             "grant_type": "password",
             "username"  : username,
-            "password"  : password
+            "password"  : password,
         }
         url       = f"{HOST}/{API_VERSION}/auth/access_token/"
         response  = requests.post(url, cookies=cookies, headers=headers, data=data)
@@ -399,7 +400,7 @@ class Requestor:
                 "cell_id": cellId,
                 "cell_type": "column",
                 "new_val": cellValue,
-                "thing_id": idThing
+                "thing_id": idThing,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -407,7 +408,7 @@ class Requestor:
                 "Referer": referer or HOST,
                 "User-Agent": USER_AGENT,
                 "X-CSRFToken": csrftoken,
-                "X-Requested-With": "XMLHttpRequest"
+                "X-Requested-With": "XMLHttpRequest",
             })
         self.raise_for_status(response)
         return response.json()
@@ -435,7 +436,7 @@ class Requestor:
             data={
                 "cell_id": cellId,
                 "cell_type": "column",
-                "thing_id": idThing
+                "thing_id": idThing,
             },
             files={
                 "f": (file.filename, file.value),  # files={FILENAME: file-like-object}
@@ -464,7 +465,7 @@ class Requestor:
                 "column_key": cellId,
                 "cell_type": "column",
                 "thing_id": idThing,
-                "file_id": fileId
+                "file_id": fileId,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -533,7 +534,7 @@ class Requestor:
             data={
                 "alts": alts,
                 "column_key": column_key,
-                "thing_id": idThing
+                "thing_id": idThing,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -586,7 +587,7 @@ class Requestor:
         return {
             "csrftoken": csrftoken,
             "referer": url,
-            "html": html
+            "html": html,
         }
 
 
@@ -765,7 +766,7 @@ class Scraper:
             "learned": 0,
             "percent_complete": 0,
             "review": 0,
-            "num_things": 0
+            "num_things": 0,
         }
 
         div = DOM.find("div",{"class","progress-box-course"})
@@ -840,7 +841,7 @@ class Scraper:
             "photo"   : "",
             "points"  : 0,
             "rank"    : 0,
-            "stats"   : {}
+            "stats"   : {},
         }
 
         div = DOM.find(id="page-head")
@@ -914,7 +915,7 @@ class Scraper:
         data  = {
             "page": page,
             "lastpage": 0,
-            "users": []
+            "users": [],
         }
 
         # Get list of followers
@@ -929,7 +930,7 @@ class Scraper:
 
                 item = {
                     "name" : username.text.strip(),
-                    "photo": img.attrs["src"] if img else ""
+                    "photo": img.attrs["src"] if img else "",
                 }
                 data["users"].append(item)
 
@@ -966,7 +967,7 @@ class Scraper:
         DOM  = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         courses = {
             "nbCourse": 0,
-            "content": []
+            "content": [],
         }
 
         # Get list of courses

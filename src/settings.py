@@ -80,6 +80,7 @@ if web.config.get('template', None) is None:
     from math import ceil
 
     def debug(x):
+        # fmt: off
         return (
             '<pre class="debug">' +
                 pprint.pformat(x, indent=4)
@@ -90,6 +91,7 @@ if web.config.get('template', None) is None:
                     .replace("'", '&quot;')
             + '</pre>'
         )
+        # fmt: on
 
     # Methods accessible globally in templates
     template = web.storage({})
@@ -109,9 +111,7 @@ if web.config.get('template', None) is None:
 
     # Variables accessible globally in templates
     template['locales']       = locales
-    template['env']           = {
-        'GITHUB_REPO': environ.get('GITHUB_REPO'),
-    }
+    template['env']           = {'GITHUB_REPO': environ.get('GITHUB_REPO')}
     template['MENU']          = menu
 
     web.config.template = template

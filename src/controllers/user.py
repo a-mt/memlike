@@ -3,13 +3,15 @@ from memrise import memrise
 from variables import levels
 from requests.exceptions import HTTPError
 
+# fmt: off
 urls = (
-  r"/([^/]+)/courses/(teaching)/?", "user",
-  r"/([^/]+)/courses/(learning)/?", "user",
-  r"/([^/]+)/mempals/(followers)/?", "user",
-  r"/([^/]+)/mempals/(following)/?", "user",
-  r"/(.*)", "user"
+    r"/([^/]+)/courses/(teaching)/?", "user",
+    r"/([^/]+)/courses/(learning)/?", "user",
+    r"/([^/]+)/mempals/(followers)/?", "user",
+    r"/([^/]+)/mempals/(following)/?", "user",
+    r"/(.*)", "user",
 )
+# fmt: on
 
 class user:
     def GET(self, username, tab="stats"):

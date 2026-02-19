@@ -99,25 +99,27 @@ if environ.get('MEMCACHIER_SERVERS', ''):
     user    = environ.get('MEMCACHIER_USERNAME', '')
     passw   = environ.get('MEMCACHIER_PASSWORD', '')
 
+    # fmt: off
     mc = Client(servers, binary=True, username=user, password=passw, behaviors={
       # Faster IO
       "tcp_nodelay": True,
 
       # Keep connection alive
-      'tcp_keepalive': True,
+      "tcp_keepalive": True,
 
       # Timeout for set/get requests
-      'connect_timeout': 2000, # ms
-      'send_timeout': 750 * 1000, # us
-      'receive_timeout': 750 * 1000, # us
-      '_poll_timeout': 2000, # ms
+      "connect_timeout": 2000, # ms
+      "send_timeout": 750 * 1000, # us
+      "receive_timeout": 750 * 1000, # us
+      "_poll_timeout": 2000, # ms
 
       # Better failover
-      'ketama': True,
-      'remove_failed': 1,
-      'retry_timeout': 2,
-      'dead_timeout': 30,
+      "ketama": True,
+      "remove_failed": 1,
+      "retry_timeout": 2,
+      "dead_timeout": 30,
     })
+    # fmt: on
 
 else:
     mc = Client(['127.0.0.1'])

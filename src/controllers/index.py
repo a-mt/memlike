@@ -2,12 +2,14 @@ import web
 from requests.exceptions import HTTPError
 from memrise import memrise
 
+# fmt: off
 urls = (
-  r"/home/leaderboard", "leaderboard",
-  r"/home", "index",
-  r"/about", "about",
-  r"/", "index"
+    r"/home/leaderboard", "leaderboard",
+    r"/home", "index",
+    r"/about", "about",
+    r"/", "index",
 )
+# fmt: on
 
 class index:
     def GET(self):
