@@ -62,23 +62,23 @@ $ currentLang = page['lang']
             $ children = [x for x in item["children"] if x['id'] in catHaveCourse]
 
           <li data-category-id="$(id)">
-              $if len(children) > 0:
-                  <a href="/fr/courses/$(currentLang)/$(code)/" title="$:name">
-                      <span class="ico expand-icon ico-s"></span>
-                      $:name
+            $if len(children) > 0:
+              <a href="/fr/courses/$(currentLang)/$(code)/" title="$:(name)">
+                  <span class="ico expand-icon ico-s"></span>
+                  $:(name)
+              </a>
+              <ul>
+                <li>
+                  <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" class="$('active' if item['id'] == page['catId'] else '')">
+                    $(LANG.misc['all']) $:(name)
                   </a>
-                  <ul>
-                    <li>
-                      <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" class="$('active' if item['id'] == page['catId'] else None)">
-                        $(LANG.misc['all']) $:name
-                      </a>
-                      </li>
-                      $:tree(children)
-                  </ul>
-              $else:
-                  <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" title="$:name" class="$('active' if item['id'] == page['catId'] else None)">
-                      $:name
-                  </a>
+                  </li>
+                  $:tree(children)
+              </ul>
+            $else:
+              <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" title="$:(name)" class="$('active' if item['id'] == page['catId'] else '')">
+                $:(name)
+              </a>
           </li>
 
     <div class="slider hide filter-category">
