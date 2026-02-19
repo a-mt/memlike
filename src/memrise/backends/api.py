@@ -1,12 +1,11 @@
-import requests, re, sys
+import requests
+import re
 import time
-import json
 import logging
 import settings
 import web
 from exceptions import SessionExpired
 
-from cache import mc
 from bs4 import BeautifulSoup, Tag
 from variables import categories_code, levels, languages
 from .base import Memrise
@@ -622,7 +621,7 @@ class Scraper:
 
         def parseCategories(ul):
             for li in ul.find_all(recursive=False):
-                if not "data-category-id" in li.attrs:
+                if "data-category-id" not in li.attrs:
                     continue
 
                 id = li.attrs["data-category-id"]

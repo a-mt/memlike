@@ -1,11 +1,8 @@
-import requests, re, sys
-import time
+import re
 import json
 import settings
-import web
 
-from cache import mc
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup
 from variables import categories_code, levels
 from .base import Memrise
 

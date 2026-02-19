@@ -1,5 +1,6 @@
 import pylibmc
-import json, time
+import json
+import time
 from os import environ
 
 class Lock:

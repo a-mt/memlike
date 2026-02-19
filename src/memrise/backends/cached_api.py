@@ -1,5 +1,3 @@
-import re
-import json
 
 from cache import mc
 from .api import ApiMemrise

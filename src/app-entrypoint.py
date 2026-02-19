@@ -6,7 +6,7 @@ import signal
 
 import os
 import sys
-from subprocess import Popen, PIPE, CalledProcessError
+from subprocess import Popen, CalledProcessError
 
 # ---------------------------------------------------------
 # SIGNAL HANDLING

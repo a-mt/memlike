@@ -1,6 +1,5 @@
 from memrise.backends.api import Requestor
 import unittest
-import web
 import settings
 
 

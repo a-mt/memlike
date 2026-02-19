@@ -29,7 +29,7 @@ class Lang(object):
         if lang is None:
             lang = DEFAULT_LANG
 
-        if not lang in self.locales:
+        if lang not in self.locales:
             logger.debug(f'Loading lang={lang}')
 
             path = self.get_locale_path(lang)

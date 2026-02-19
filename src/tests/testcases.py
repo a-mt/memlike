@@ -1,4 +1,4 @@
-from app import app, web
+from app import app
 from functools import partial
 from re import compile
 from utils.datastructures import CaseInsensitiveMapping, SimpleCookie

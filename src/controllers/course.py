@@ -1,6 +1,4 @@
-import settings
 import web
-from os import getenv
 from memrise import memrise
 from requests.exceptions import HTTPError
 
@@ -74,7 +72,7 @@ class level:
                 else:
                     # Type multimedia
                     items = memrise.level_multimedia(idCourse, slugCourse, lvl)
-            except HTTPError as e:
+            except HTTPError:
                 items = {"learnables":[], "progress":[]}
 
         except HTTPError as e:

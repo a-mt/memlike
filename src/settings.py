@@ -71,7 +71,9 @@ DEFAULT_SESSION = {
 
 # Modules that need to stay in scope after reloading the settings (used in lambdas)
 import datetime
-import pprint, re, json
+import pprint
+import re
+import json
 
 if web.config.get('template', None) is None:
     from variables import menu, locales

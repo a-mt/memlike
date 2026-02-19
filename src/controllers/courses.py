@@ -1,7 +1,5 @@
-import settings
 import web
 import variables
-from os import getenv
 from memrise import memrise
 
 urls = (

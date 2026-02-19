@@ -1,6 +1,4 @@
-import settings
 import web
-from os import getenv
 from memrise import memrise
 from variables import levels
 from requests.exceptions import HTTPError
