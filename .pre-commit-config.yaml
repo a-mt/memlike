@@ -12,12 +12,12 @@ repos:
     hooks:
     -   id: python-use-type-annotations
         files: ^src/
-# -   repo: https://github.com/pre-commit/pre-commit-hooks
-#     rev: v6.0.0
-#     hooks:
-#     -   id: trailing-whitespace
-#     -   id: end-of-file-fixer
-#     -   id: check-yaml
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+    -   id: trailing-whitespace
+#   -   id: end-of-file-fixer
+    -   id: check-yaml
 # - repo: https://github.com/woodruffw/zizmor-pre-commit
 #   rev: v1.18.0
 #   hooks:
@@ -111,4 +111,8 @@ repos:
 #                xml\.
 #            )
 #        types: [python]
-exclude: "statc/img/.*"
+exclude: |
+    (?x)^(
+        statc/img/.*|
+        src/tests/testset/.*
+    )$

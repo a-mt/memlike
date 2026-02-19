@@ -157,7 +157,7 @@ function bindEvents(new_row) {
 
     // Delete row
     .on('click', '.ico-close', click_deleteRow)
-    
+
     // Import/export
     .on('click', '.export', click_export)
     .on('change', '.import input', send_import);
@@ -720,7 +720,7 @@ function bindEvents(new_row) {
 
           if(type == "text") {
             row_import[cellId] = txt;
-  
+
           // Upload its attachments once added
           } else {
             var list = txt.split(",");
@@ -895,7 +895,7 @@ function exportCsv(row) {
 /**
  * Trigger a file download of the given mimeType
  * ex: download(csvContent, 'dowload.csv', 'text/csv;encoding:utf-8');
- * 
+ *
  * @param string content
  * @param string fileName
  * @param mimeType

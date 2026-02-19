@@ -24,7 +24,7 @@ $ currentLang = page['lang']
           $(LANG.languages[currentLang])
         <span class="caret"></span>
       </button>
-  
+
       <ul class="dropdown-menu">
         $for lang, item in sorted(languages.items(), key=lambda x: LANG.languages[x[0]]):
          <li>

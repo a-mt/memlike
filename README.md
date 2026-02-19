@@ -64,7 +64,7 @@ If you need to update files in static/js6:
 
 Location: src
 
-The backend is developed with web.py  
+The backend is developed with web.py
 ([website](https://webpy.org/) / [github](https://github.com/webpy/webpy) / [readthedocs](https://webpy.readthedocs.io/en/latest/))
 
 It roughly follows the folder organization from [web2py](https://www.web2py.com/books/default/chapter/29/04/the-core#Applications)

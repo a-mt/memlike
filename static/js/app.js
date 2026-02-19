@@ -106,7 +106,7 @@ function param(href) {
         href = href.substr(0, hash);
     }
     var vars = {};
-    href.replace( 
+    href.replace(
         /[?&]+([^=&]+)=?([^&]*)?/gi, // regexp
         function( m, key, value ) { // callback
             vars[key] = value !== undefined ? value : '';
