@@ -448,7 +448,7 @@ class DummyMemrise(Memrise):
         }
 
         # Learned
-        text = "50 / 274 gelernte Wörter (50 im Langzeitgedächtnis)"
+        text = "122 / 124 gelernte Wörter (50 im Langzeitgedächtnis)"
         if text:
             res = re.search(r"^(\d+) ?/ ?(\d+)", text)
             if res:
@@ -456,7 +456,7 @@ class DummyMemrise(Memrise):
                 stats["num_things"]   = int(res.group(2))
 
         # Ignored
-        text = "0 ignoriert"
+        text = "1 ignoriert"
         if text:
             res = re.search(r"^(\d+)", text)
             if res:
@@ -473,7 +473,7 @@ class DummyMemrise(Memrise):
                 stats["percent_complete"] = int(percent * 100)
 
         # Review
-        text = "Wiederholen (274)"
+        text = "Wiederholen (72)"
         if text:
             res = re.search(r"\((\d+)\)", text)
             if res:

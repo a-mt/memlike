@@ -81,8 +81,8 @@ class Requestor:
         data = {
             "client_id": OAUTH_CLIENT_ID,
             "grant_type": "password",
-            "username": username,
-            "password": password,
+            "username": username.strip(),
+            "password": password.strip(),
         }
         url = f"{HOST}/{API_VERSION}/auth/access_token/"
         response = requests.post(url, cookies=cookies, headers=headers, data=data)
@@ -809,7 +809,7 @@ class Scraper:
                     stats["percent_complete"] = int(percent * 100)
 
         # Review
-        item = div.find("a", {"class": "blue"})
+        item = div.find("div", {"class": "actions-right"})
         if item is not None:
             res = re.search(r"\((\d+)\)", item.text)
             if res:

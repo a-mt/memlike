@@ -53,6 +53,7 @@ class DummyRequestor:
             return self.get_testset_text("course-6618687.html")
 
         return self.get_testset_text("course-1892646.html")
+        return self.get_testset_text("course-6660056.html")
 
     # +-----------------------------------------------------
     # | COURSE > LEVEL

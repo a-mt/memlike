@@ -207,11 +207,11 @@ class MemriseDummyGetTest(SimpleTestCase):
         # <span class="ico ico-complete ico-correct ico-m ico-green"></span>
 
         self.assertIsNotNone(result.get("stats", None))
-        self.assertIsNotNone(result["stats"].get("ignored", None))
-        self.assertIsNotNone(result["stats"].get("learned", None))
-        self.assertIsNotNone(result["stats"].get("percent_complete", None))
-        self.assertIsNotNone(result["stats"].get("review", None))
-        self.assertIsNotNone(result["stats"].get("num_things", None))
+        self.assertEqual(result["stats"].get("ignored", None), 1)
+        self.assertEqual(result["stats"].get("learned", None), 122)
+        self.assertEqual(result["stats"].get("review", None), 72)
+        self.assertEqual(result["stats"].get("num_things", None), 125)
+        self.assertEqual(result["stats"].get("percent_complete", None), 98)
 
     def test_memrise_course_single_level(self):
         self.assertIsNotNone(self.session["session_id"])
