@@ -2,10 +2,12 @@
 set -e
 
 # Start memcache on localhost if not using an external service
-if [ -z "$MEMCACHIER_SERVERS" ]; then
-    echo 'Launching memcache...'
-
-    { service memcached status | grep "not running" ;} && service memcached start || service memcached status
+# /usr/share/memcached/memcached.conf.default
+# /etc/memcached.conf
+# /etc/init.d/memcached start NAME -> /etc/memcached_*.conf
+if [[ -z "$MEMCACHIER_SERVERS" || "$MEMCACHIER_SERVERS" =~ "127.0.0.1" ]]; then
+    echo "Launching memcache..."
+    source /srv/memcache-start.sh
 fi
 
 # loads NVM

@@ -4,9 +4,10 @@ ENV PYTHONUNBUFFERED=1
 
 # ---
 # install system dependencies
+# (SASL is used for memcache authentication)
 RUN apt update \
   && apt install -y gettext wget curl procps \
-  && apt install -y memcached libmemcached-dev \
+  && apt install -y memcached libmemcached-dev sasl2-bin \
   && apt install -y python3-pip python3-wheel git \
   # cleanup apt cache
   && apt-get clean \
@@ -31,10 +32,11 @@ WORKDIR $APPDIR
 COPY requirements.txt ./requirements.txt
 RUN pip install -r requirements.txt
 
+# ---
 # setup server dependencies
 COPY docker-entrypoint.sh ./docker-entrypoint.sh
+COPY memcache-start.sh ./memcache-start.sh
 
-WORKDIR $APPDIR
 EXPOSE 8080
 
 ENTRYPOINT ["bash", "/srv/docker-entrypoint.sh"]
