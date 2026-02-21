@@ -151,6 +151,9 @@ conf = {
         "autoreload": {
             "level": logging.WARNING,
         },
+        "debug.template": {
+            "level": logging.WARNING,
+        },
     },
 }
 logging.config.dictConfig(conf)

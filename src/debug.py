@@ -57,6 +57,8 @@ def debug_template(template_config, key, decorate_fn="_load_template"):
     logger_render = logger_tpl.getChild(suffix=key)
 
     fn = getattr(instance, decorate_fn)
+    if getattr(fn, "proxied", False):
+        return
 
     @wraps(fn)
     def wrapper(name):
@@ -69,6 +71,7 @@ def debug_template(template_config, key, decorate_fn="_load_template"):
 
             raise web.internalerror()
 
+    setattr(wrapper, "proxied", True)
     setattr(instance, decorate_fn, wrapper)
 
 
@@ -90,7 +93,7 @@ def get_template(name, path):
         try:
             text = tmpl_file.read()
         except Exception as e:
-            logger_tpl.error(f"Could open template '{name}'", exc_info=e)
+            logger_tpl.error(f"Couldnt open template '{name}'", exc_info=e)
             return
 
     # Try parsing it
@@ -100,7 +103,42 @@ def get_template(name, path):
         logger_tpl.error(f"Could not create template '{name}'", exc_info=e)
 
 
+def decorate_parser():
+    """
+    Add a try/except around the Parser.read_suite method
+    to be able to debug
+    """
+    from web.template import Parser, SuiteNode
+    fn = Parser.__dict__['read_suite']
+
+    def new_fn(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            logger_tpl.error("Couldnt parse template: %(args)s" % {"args": args}, exc_info=e)
+            return SuiteNode([])
+
+    setattr(Parser, "read_suite", new_fn)
+
+
+def override_djangoerror_r():
+    from djangoerror import get_djangoerror_template
+    import web.debugerror
+
+    try:
+        djangoerror_r = get_djangoerror_template()
+
+        # from web.debugerror import djangoerror_r
+        web.debugerror.__globals__["djangoerror_r"] = djangoerror_r
+
+    except Exception as e:
+        logger_tpl.error(f"Could not create djangoerror", exc_info=e)
+
+
 def check_load_templates(root):
+    decorate_parser()
+    override_djangoerror_r()
+
     for dirpath, dirnames, filenames in os.walk(root):
         for filename in filenames:
             filepath = os.path.join(dirpath, filename)
