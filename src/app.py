@@ -150,6 +150,7 @@ if __name__ == "__main__" and not settings.IS_TEST:
     print(f"web2py: {web.__version__}")
     print(f"Autoreload: {settings.AUTORELOAD}")
     print(f"Debug: app={app.debug} web={web.config.debug} sql={web.config.debug_sql}")
+    print(f"Memrise backend: {settings.MEMRISE_BACKEND}")
 
     # Reload modules that have changed
     # Is checked at the beginning of each request
@@ -162,12 +163,25 @@ if __name__ == "__main__" and not settings.IS_TEST:
         app.processors.append(web.loadhook(auto_reload_extension.post_execute_hook))
         auto_reload_extension.autoreload(mode="all", log=settings.DEBUG)
 
+    print("App processors:", app.processors)
+
     # Ensure all templates can be compiled
     from debug import check_load_templates
 
     check_load_templates(web.config.template.render._loc)
 
+    # Check memcache status
+    from cache import memcache_client
+
+    try:
+        print("Checking memcache servers...")
+
+        stats = memcache_client.get_stats()
+        print("Stats:", dict(stats))
+
+    except Exception as e:
+        print("ERR:", e)
+
     # Start the runner
-    print("Processors:", app.processors)
     print("Running...")
     app.run()

@@ -109,7 +109,8 @@ def decorate_parser():
     to be able to debug
     """
     from web.template import Parser, SuiteNode
-    fn = Parser.__dict__['read_suite']
+
+    fn = Parser.__dict__["read_suite"]
 
     def new_fn(*args, **kwargs):
         try:
@@ -132,7 +133,7 @@ def override_djangoerror_r():
         web.debugerror.__globals__["djangoerror_r"] = djangoerror_r
 
     except Exception as e:
-        logger_tpl.error(f"Could not create djangoerror", exc_info=e)
+        logger_tpl.error("Could not create djangoerror", exc_info=e)
 
 
 def check_load_templates(root):

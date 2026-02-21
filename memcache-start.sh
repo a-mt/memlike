@@ -33,7 +33,7 @@ for server in ${servers[@]}; do
 
       port=${server##*:}
       echo "Launching 127.0.0.1:${port:-11211}..."
-      memcached -v -u memcache -S -l 127.0.0.1 -p ${port:-11211} -m 64 -d
+      memcached -u memcache -S -l 127.0.0.1 -p ${port:-11211} -m 64 -d
   fi
 done
 

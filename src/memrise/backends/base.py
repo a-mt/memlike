@@ -98,9 +98,6 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a courses() method")
 
-    # +-----------------------------------------------------
-    # | CATEGORIES
-    # +-----------------------------------------------------
     def categories(self, lang, **kwargs):
         """
         Retrieve the list of categories that have courses for the given language
@@ -127,9 +124,6 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a course() method")
 
-    # +-----------------------------------------------------
-    # | COURSE > LEVEL
-    # +-----------------------------------------------------
     def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
         """
         Retrieve the list of items of a level (wont work for multimedia)
@@ -155,9 +149,6 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_multimedia() method")
 
-    # +-----------------------------------------------------
-    # | COURSE > LEADERBOARD
-    # +-----------------------------------------------------
     def course_leaderboard(self, idCourse, period, **kwargs):
         """
         Retrieve the learderboard of a course (50 first)
@@ -216,9 +207,6 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a user_mempals() method")
 
-    # +-----------------------------------------------------
-    # | USER's COURSES
-    # +-----------------------------------------------------
     def user_teaching(self, username, **kwargs):
         return self.user_courses("teaching", username, **kwargs)
 
@@ -237,7 +225,7 @@ class Memrise:
         raise NotImplementedError("subclasses of Memrise must provide a user_courses() method")
 
     # +-----------------------------------------------------
-    # | EDIT
+    # | EDIT COURSE
     # +-----------------------------------------------------
     def level_edit_get(self, idLevel, **kwargs):
         """

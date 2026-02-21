@@ -8,4 +8,5 @@ def load_memrise(backend=None):
     return klass()
 
 
+# Load a backend with the default settings
 memrise = load_memrise()

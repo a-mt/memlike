@@ -6,15 +6,23 @@ IS_TEST = getenv("WEBPY_ENV", "") == "test" or getenv("PYTEST_VERSION", None) is
 AUTORELOAD = bool(getenv("AUTORELOAD", None))
 DEBUG = bool(getenv("DEBUG", False))
 
-MEMRISE_BACKEND = "memrise.backends.ApiMemrise"
+MEMRISE_BACKEND = "memrise.backends.CachedApiMemrise"
+MEMCACHE_KEY_PREFIX = ""
+MEMCACHE_SERVERS = environ.get("MEMCACHIER_SERVERS", "").split(",")
+MEMCACHE_USERNAME = environ.get("MEMCACHIER_USERNAME", "")
+MEMCACHE_PASSWORD = environ.get("MEMCACHIER_PASSWORD", "")
+
 MEMRISE_ANON_USERNAME = "66b1d91e8e"
 MEMRISE_ANON_PASSWORD = "66b1d91e8e66b1d91e8e!"
+DUMMY_SINGLE_LEVEL = "6618687"
 
 DATABASE_URL = getenv("DATABASE_URL", "")
 DEFAULT_LANG = getenv("DEFAULT_LANG", "french")
 
 if IS_TEST:
     MEMRISE_BACKEND = "memrise.backends.DummyApiMemrise"
+    MEMCACHE_KEY_PREFIX = "test_"
+
     DEBUG = False
     DEFAULT_LANG = "english"
 

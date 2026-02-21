@@ -3,8 +3,8 @@ import unittest
 import settings
 
 
-COURSE_ID = "6698294"
-COURSE_SLUG = "german-vocab"
+COURSE_ID = "1892646"
+COURSE_SLUG = "grammaire-le-groupe-nominal"
 
 requestor = Requestor()
 

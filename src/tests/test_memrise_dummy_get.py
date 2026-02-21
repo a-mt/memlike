@@ -1,5 +1,4 @@
 from memrise import load_memrise
-from memrise.backends.dummy import DUMMY_SINGLE_LEVEL
 from inspect import isgenerator
 from .testcases import SimpleTestCase
 import settings
@@ -217,7 +216,7 @@ class MemriseDummyGetTest(SimpleTestCase):
         self.assertIsNotNone(self.session["session_id"])
 
         result = self.memrise.course(
-            DUMMY_SINGLE_LEVEL,
+            settings.DUMMY_SINGLE_LEVEL,
             "",
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
