@@ -541,6 +541,7 @@ var Dashboard = {
   sort: "i",
   sortOptions: {},
   offset: 0,
+  content: "",
 
   init: function() {
     Dashboard.container   = $('#dashboard');
@@ -595,10 +596,12 @@ var Dashboard = {
 
   getCourses: function() {
     const requestOffset = Dashboard.offset;
-
-    var offsetResponse = 0;
+    if (!requestOffset) {
+      Dashboard.content = "";
+    }
 
     /* global $ */
+    var offsetStream = 0;
     var runner = $.ajax({
         url: '/ajax/dashboard?offset=' + requestOffset + '&_=' + new Date().getTime(),
         data: {},
@@ -610,8 +613,8 @@ var Dashboard = {
 
                 if(response.substr(response.length-1, 1) == '$') {
                   try {
-                    var r = response.substring(offsetResponse);
-                    offsetResponse = response.length;
+                    var r = response.substring(offsetStream);
+                    offsetStream = response.length;
 
                     var parts = r.split('}$'),
                         n     = parts.length - 1;
@@ -619,12 +622,14 @@ var Dashboard = {
 
                     for(var i=0; i<=n; i++) {
                       var data = JSON.parse(parts[i] + '}');
+
                       if (data.content) {
                         Dashboard.container.append(data.content);
+                        Dashboard.content += ".";
 
                       } else if(data.next_offset) {
                         Dashboard.offset = data.next_offset;
-                        Dashboard.loadNext.html('<button class="btn">Load more</button>');
+                        Dashboard.loadNext.html('<button class="btn">' + window.i18n.load_more +'</button>');
                       }
                     }
                   } catch(e) { }
@@ -635,26 +640,26 @@ var Dashboard = {
 
     // Ajax done running
     runner.done(function(data) {
-      if(data == '{"content": "\\n"}') {
-         Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
-      } else {
-        Dashboard.sortActions.show();
+      if(!Dashboard.content) {
+        Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+        return;
+      }
 
-        try {
-          requestOffset && setTimeout(function(){
-            console.info('Resorting...');
+      Dashboard.sortActions.show();
+      try {
+        requestOffset && setTimeout(function(){
+          console.info('Resorting...');
 
-            if(Dashboard.sort != "i" || Dashboard.sortOptions.desc) {
-              Dashboard.sortCourses(
-                Dashboard.sort,
-                Dashboard.sortOptions.numeric || false,
-                Dashboard.sortOptions.desc || false,
-              );
-            }
-          });
-        } catch(e) {
-          console.error(e);
-        }
+          if(Dashboard.sort != "i" || Dashboard.sortOptions.desc) {
+            Dashboard.sortCourses(
+              Dashboard.sort,
+              Dashboard.sortOptions.numeric || false,
+              Dashboard.sortOptions.desc || false,
+            );
+          }
+        });
+      } catch(e) {
+        console.error(e);
       }
     });
     runner.always(function(data) {

@@ -24,6 +24,11 @@ $:(prender.inc_course_banner(course))
           $(LANG.misc['levels']) ($(len(course['levels'])))
       </button>
 
+      <a href="$(course['url'])leaderboard" class="pill">
+        <i class="ico ico-trophy"></i>
+        $(LANG.misc['leaderboard'])
+      </a>
+
     <!-- Links to garden learn / preview -->
     $if level['type'] != 2:
       <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_level'])</button>

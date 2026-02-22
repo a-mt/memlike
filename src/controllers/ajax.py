@@ -370,7 +370,7 @@ class user_dashboard:
                 courses = page["courses"]
                 content = web.config.template.prender.ajax_dashboard(courses, offset)["__body__"]
 
-                yield json.dumps({"content": content}) + "$"
+                yield json.dumps({"content": content.strip()}) + "$"
                 offset += len(courses)
 
                 # Take this opportunity to sync courses in session

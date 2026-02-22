@@ -2,6 +2,9 @@
 from .dummy import (
     DummyMemrise,
 )
+from .dummy_empty import (
+    DummyEmptyMemrise,
+)
 from .api import (
     ApiMemrise,
     DummyApiMemrise,

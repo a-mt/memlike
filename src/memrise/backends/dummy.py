@@ -596,20 +596,18 @@ class DummyMemrise(Memrise):
     #| USER's COURSES
     #+-----------------------------------------------------
     def user_courses(self, tab, username, **kwargs):
+        courses = {
+            "nbCourse": 0,
+            "content": []
+        }
         # https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0
         with open(settings.ROOTDIR + "/tests/testset/user_courses_teaching_min.html") as f:
             text = f.read()
-
             html = text.encode('utf-8').strip()
             DOM  = BeautifulSoup(html, "html5lib", from_encoding='utf-8')
-            courses = {
-                "nbCourse": 0,
-                "content": []
-            }
 
             # Get list of courses
             content = DOM.find_all("div",{"class":"course-box-wrapper"})
-
             for wrapper in content:
                 courses["content"].append(str(wrapper))
                 courses["nbCourse"] += 1

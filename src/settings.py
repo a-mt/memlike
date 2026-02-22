@@ -6,7 +6,7 @@ IS_TEST = getenv("WEBPY_ENV", "") == "test" or getenv("PYTEST_VERSION", None) is
 AUTORELOAD = bool(getenv("AUTORELOAD", None))
 DEBUG = bool(getenv("DEBUG", False))
 
-MEMRISE_BACKEND = "memrise.backends.CachedApiMemrise"
+MEMRISE_BACKEND = "memrise.backends.DummyEmptyMemrise"
 MEMCACHE_KEY_PREFIX = ""
 MEMCACHE_SERVERS = environ.get("MEMCACHIER_SERVERS", "").split(",")
 MEMCACHE_USERNAME = environ.get("MEMCACHIER_USERNAME", "")
