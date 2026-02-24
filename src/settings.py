@@ -6,7 +6,7 @@ IS_TEST = getenv("WEBPY_ENV", "") == "test" or getenv("PYTEST_VERSION", None) is
 AUTORELOAD = bool(getenv("AUTORELOAD", None))
 DEBUG = bool(getenv("DEBUG", False))
 
-MEMRISE_BACKEND = "memrise.backends.DummyEmptyMemrise"
+MEMRISE_BACKEND = "memrise.backends.CachedApiMemrise"
 MEMCACHE_KEY_PREFIX = ""
 MEMCACHE_SERVERS = environ.get("MEMCACHIER_SERVERS", "").split(",")
 MEMCACHE_USERNAME = environ.get("MEMCACHIER_USERNAME", "")
@@ -128,7 +128,47 @@ if web.config.get("template", None) is None:
 
 # ---
 # Configure logging
+import logging
 import logging.config
+
+class KeepDebugLinksFilter(logging.Filter):
+    def filter(self, record):
+        """
+        Determine if the specified record is to be logged.
+
+        Is the specified record to be logged? Returns 0 for no, nonzero for
+        yes. If deemed appropriate, the record may be modified in-place.
+        """
+
+        """
+        Keep DEBUG request URL (msg == %s://%s:%s "%s %s %s" %s %s)
+        {
+            'name': 'urllib3.connectionpool',
+            'msg': '%s://%s:%s "%s %s %s" %s %s',
+            'args': ('https', 'community-courses.memrise.com', 443, 'POST', '/v1.25/learning_sessions/preview/', 'HTTP/1.1', 200, None),
+            'levelname': 'DEBUG',
+            'levelno': 10,
+            'pathname': '/usr/local/lib/python3.12/site-packages/urllib3/connectionpool.py',
+            'filename': 'connectionpool.py',
+            'module': 'connectionpool',
+            'exc_info': None,
+            'exc_text': None,
+            'stack_info': None,
+            'lineno': 544,
+            'funcName': '_make_request',
+            'created': 1771956062.8577926,
+            'msecs': 857.0,
+            'relativeCreated': 4002.8045177459717,
+            'thread': 129189639874240,
+            'threadName': 'CP Server Thread-5',
+            'processName': 'MainProcess',
+            'process': 283,
+            'taskName': None
+        }
+        """
+        if record.levelno == logging.DEBUG:
+            return record.msg[0] == '%'
+        return True
 
 # Sets the root logger level to write to stdout (default is WARNING)
 # logging.basicConfig()
@@ -148,6 +188,11 @@ conf = {
             "stream": "ext://sys.stdout",
         },
     },
+    "filters": {
+        "keepDebugLinks": {
+            "()": KeepDebugLinksFilter,
+        },
+    },
     "root": {
         "level": logging.DEBUG if DEBUG else logging.WARNING,
         "handlers": ["hand1"],
@@ -161,6 +206,9 @@ conf = {
         },
         "debug.template": {
             "level": logging.WARNING,
+        },
+        "urllib3.connectionpool": {
+            "filters": ["keepDebugLinks"],
         },
     },
 }
