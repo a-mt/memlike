@@ -1,0 +1,74 @@
+{
+    "next_session": {
+        "single_continue": {
+            "session_type": "learn",
+            "is_pro_mode": false,
+            "url": "/aprender/learn?course_id=6698294?recommendation_id=8d1afea4-f156-4474-bc90-5172439594ff",
+            "unlocked_state": "always_unlocked",
+            "badge_count": null
+        },
+        "mode_selector": {
+            "learn": {
+                "is_pro_mode": false,
+                "url": "/aprender/learn?course_id=6698294?recommendation_id=8d1afea4-f156-4474-bc90-5172439594ff",
+                "badge_count": 0,
+                "is_enabled": true,
+                "unlocked_state": "always_unlocked"
+            },
+            "classic_review": {
+                "is_pro_mode": false,
+                "url": "/aprender/review?course_id=6698294?recommendation_id=8d1afea4-f156-4474-bc90-5172439594ff",
+                "badge_count": 0,
+                "is_enabled": true,
+                "unlocked_state": "always_unlocked"
+            },
+            "speed_review": {
+                "is_pro_mode": false,
+                "url": "/aprender/speed?course_id=6698294?recommendation_id=8d1afea4-f156-4474-bc90-5172439594ff",
+                "badge_count": 0,
+                "is_enabled": true,
+                "unlocked_state": "always_unlocked"
+            },
+            "difficult_words": {
+                "is_pro_mode": true,
+                "url": "/aprender/difficult?course_id=6698294?recommendation_id=8d1afea4-f156-4474-bc90-5172439594ff",
+                "badge_count": 8,
+                "is_enabled": true,
+                "unlocked_state": "locked"
+            },
+            "listening_skills": {
+                "is_pro_mode": true,
+                "url": null,
+                "badge_count": 0,
+                "is_enabled": false,
+                "unlocked_state": "locked"
+            },
+            "video": {
+                "is_pro_mode": true,
+                "url": null,
+                "badge_count": 0,
+                "is_enabled": false,
+                "unlocked_state": "locked"
+            }
+        }
+    },
+    "summary_stats": {
+        "course": {
+            "id": 6698294,
+            "name": "German vocab",
+            "size": 304,
+            "due_review": 0,
+            "learned": 189,
+            "difficult": 8,
+            "ignored": 0,
+            "percent_complete": 62,
+            "completed_this_session": false
+        },
+        "level": null,
+        "goal": null,
+        "rank": {
+            "unlocked_new_rank": false,
+            "level_number": 15
+        }
+    }
+}

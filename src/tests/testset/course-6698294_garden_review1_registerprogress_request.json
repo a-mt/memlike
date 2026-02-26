@@ -1,0 +1,31 @@
+{
+    "events": [{
+        "box_template": "typing",
+        "bonus_points": 0,
+        "course_id": 6698294,
+        "time_spent": 248493,
+        "given_answer": "der Nachwuchs",
+        "learning_element": "der Nachwuchs",
+        "definition_element": "la progéniture",
+        "test_id": "000a99cd-1838-4a5e-a00d-d74889ac0c7f",
+        "mem_id": null,
+        "created_date": 1771400821,
+        "current_streak": 3,
+        "growth_level": 15,
+        "learnable_id": 30729426895106,
+        "next_date": 1772442910,
+        "last_date": 1771924289,
+        "not_difficult": false,
+        "total_streak": 3,
+        "when": 1771924289,
+        "correct": 15,
+        "attempts": 17,
+        "interval": 6,
+        "points": 97,
+        "score": 1,
+        "starred": false,
+        "ignored": false
+    }],
+    "sync_token": 0,
+    "limit": 0
+}

@@ -1,6 +1,7 @@
 import requests
 import time
 import logging
+import settings
 from exceptions import SessionExpired
 
 
@@ -30,6 +31,19 @@ class ApiRequestor:
         if response.status_code == 302:
             if response.headers["Location"].startswith("/signin"):
                 raise SessionExpired()
+
+        if response.status_code >= 300 and settings.DEBUG:
+            filesuffix = get_time() + ".log"
+            filename = "response." + filesuffix
+
+            with open(filename, "w+") as f:
+                f.write(response.text)
+
+                logger.warn(f"Response with status {response.status_code} written to {filename}")
+
+            filename = "request." + filesuffix
+            with open(filename, "w+") as f:
+                f.write(str(vars(response.request)))
 
         # might redirect to canonical URL
         # which isn't supposed to happen if we have the correct slug
@@ -156,32 +170,50 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def track_progress(self, path, data, sessionid=None, csrftoken=None, referer=None):
-        """
-        TODO
-        Post play progress
-
-        @throws requests.exceptions.HTTPError
-        @param string path - register | session_end
-        @param dict data
-        @param string sessionid
-        @param string csrftoken
-        @param string referer
-        @return dict - Retrieved JSON
-        """
+    # +-----------------------------------------------------
+    # | LEARNING SESSION
+    # +-----------------------------------------------------
+    def learning_session_register_end(self, data, sessionid=None, csrftoken=None, referer=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Track progress [path={path}] ({log_session})")
+        logger.debug(f"Requestor:Learning session register end ({log_session})")
 
-        if path == "session_end":
-            url = "https://app.memrise.com/ajax/session_end/"
-        else:
-            url = "https://app.memrise.com/api/garden/register/"
-
+        url = f"{HOST}/{API_VERSION}/learning_sessions/end/"
         response = requests.post(
             url,
-            data=data,
+            json=data,
             cookies=self.buildCookies(sessionid, csrftoken),
-            headers={"Origin": HOST, "Referer": referer or HOST, "User-Agent": USER_AGENT, "X-CSRFToken": csrftoken},
+            headers={
+                "Origin": HOST,
+                "Referer": referer or HOST,
+                "User-Agent": USER_AGENT,
+                "X-CSRFToken": csrftoken,
+                "Content-Type": "application/json",
+            },
+        )
+        self.raise_for_status(response)
+        return response.json()
+
+    def learning_session_register_progress(self, data, sessionid=None, csrftoken=None, referer=None):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Learning session register progress ({log_session})")
+
+        data["events"] = data.get("events", [])
+        data["sync_token"] = 0
+        data["limit"] = 0
+
+        # referer = "https://community-courses.memrise.com/aprender/review?course_id=6698294"
+        url = f"{HOST}/{API_VERSION}/progress/register/"
+        response = requests.post(
+            url,
+            json=data,
+            cookies=self.buildCookies(sessionid, csrftoken),
+            headers={
+                "Origin": HOST,
+                "Referer": referer or HOST,
+                "User-Agent": USER_AGENT,
+                "X-CSRFToken": csrftoken,
+                "Content-Type": "application/json",
+            },
         )
         self.raise_for_status(response)
         return response.json()
@@ -237,11 +269,11 @@ class ApiRequestor:
 
         return response.text.encode("utf-8").strip()
 
-    def level(self, idCourse, lvl, sessionid=None, csrftoken=None):
+    def level(self, idCourse, lvl, session_type="preview", sessionid=None, csrftoken=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level [id_course={idCourse},level={lvl}] ({log_session})")
 
-        url = f"{HOST}/{API_VERSION}/learning_sessions/preview/"
+        url = f"{HOST}/{API_VERSION}/learning_sessions/{session_type}/"
 
         referer = f"{HOST}/aprender/preview?course_id=${idCourse}&level_index=${lvl}"
         response = requests.post(
@@ -263,20 +295,6 @@ class ApiRequestor:
         )
         self.raise_for_status(response)
         return response.json()
-
-    def level_learning_session(self, idCourse, slugCourse, sessionType, sessionid=None):
-        log_session = self.buildCookiesLog(sessionid)
-        log_params = f"id_course={idCourse},slug={slugCourse}],session_type={sessionType}"
-        logger.debug(f"Requestor:Level learning session [{log_params}] ({log_session})")
-
-        url = f"{HOST}/course/{idCourse}/{slugCourse}/garden/{sessionType}/"
-
-        response = requests.head(url, cookies=self.buildCookies(sessionid))
-        self.raise_for_status(response)
-        return {
-            "referer": url,
-            "csrftoken": response.cookies.get("csrftoken"),
-        }
 
     def level_multimedia(self, idCourse, slugCourse, lvl, sessionid=None):
         log_session = self.buildCookiesLog(sessionid)

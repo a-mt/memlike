@@ -83,6 +83,10 @@ misc = {
     "import_err_ext": "You should send a .csv file (comma separated)",
     "import_err_empty": "The headers of your file don't match. Make sure your file is comma-separated.",
     "play_audio": "Play audio",
+    "learn_err_empty_preview": "There's no item to preview",
+    "learn_err_empty_review": "There's no item to review",
+    "learn_err_empty_learn": "There's no item to learn",
+    "learn_err_empty": "There's no item",
 }
 
 menu = {

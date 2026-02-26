@@ -68,19 +68,35 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a my_leaderboard() method")
 
-    def track_progress(self, path, data, **kwargs):
-        """
-        Post play progress
+    # +-----------------------------------------------------
+    # | LEARNING SESSION
+    # +-----------------------------------------------------
 
-        Testset: learning_register_progress_{request,response}.json
-        @param string path - register | session_end
-        @param dict data
+    def learning_session_register_progress(self, data, referer=None, **kwargs):
+        """
+        Register progress
+
+        Testset: course-6698294_garden_learn_registerprogress_{request,response}.json
+        @param dict data - {events: [{learnable_id, box_template...}]}
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @return dict
+        @return dict - Retrieved JSON
         """
-        raise NotImplementedError("subclasses of Memrise must provide a track_progress() method")
+        raise NotImplementedError("subclasses of Memrise must provide a learning_session_register_progress() method")
+
+    def learning_session_register_end(self, data, referer=None, **kwargs):
+        """
+        Register end
+
+        Testset: course-6698294_garden_learn_sessionend_{request,response}.json
+        @param dict data - {session_points,session_type...}
+        @param string sessionid
+        @param string csrftoken
+        @param string referer
+        @return dict - Retrieved JSON
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a learning_session_register_end() method")
 
     # +-----------------------------------------------------
     # | COURSES

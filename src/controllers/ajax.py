@@ -8,7 +8,7 @@ from math import ceil
 # fmt: off
 # /ajax/level/...
 urls_level = (
-  r"/(\d+)", "level_edit",
+    r"/(\d+)", "level_edit",
     r"/(\d+)/alt", "level_alt",
     r"/(\d+)/alt_edit", "level_editalt",
     r"/(\d+)/add", "level_addrow",
@@ -29,8 +29,6 @@ urls_course = (
 subapp_course = web.application(urls_course, locals(), autoreload=False)
 
 urls = (
-    "", "api",
-
     r"/courses", "courses",
     r"/community/course", subapp_course,
     r"/course", subapp_course,
@@ -48,8 +46,10 @@ urls = (
     r"/sync", "user_sync",
     r"/session", "debug_session",
 
-    r"/(register)", "track_progress",
-    r"/(session_end)", "track_progress",
+    r"/register_progress", "learning_session_register_progress",
+    r"/register_end", "learning_session_register_end",
+
+    "", "api",
 )
 NBPERPAGE = 15
 # fmt: on
@@ -425,17 +425,23 @@ class debug_session:
         return json.dumps(session)
 
 
-class track_progress:
-    def POST(self, path):
+class learning_session_register_progress:
+    def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        progress = memrise.track_progress(
-            path,
-            web.input(),
-            csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN"),
-            referer=web.ctx.env.get("HTTP_X_REFERER"),
-        )
+        data = web.jsoninput()
+        progress = memrise.learning_session_register_progress(data)
+        return _response(lambda: progress)
+
+
+class learning_session_register_end:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        data = web.jsoninput()
+        progress = memrise.learning_session_register_end(data)
         return _response(lambda: progress)
 
 

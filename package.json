@@ -4,13 +4,14 @@
   "description": "Build JS",
   "main": "index.js",
   "scripts": {
-    "build": "babel static/js6 -d static/js -s",
+    "build": "BUILD_DATE=$(date -Is) VAR=ok babel --plugins transform-inline-environment-variables static/js6 -d static/js -s",
     "build-dev": "babel static/js6 -d static/js -w -s"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1"
   },

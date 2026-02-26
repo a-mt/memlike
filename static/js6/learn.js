@@ -2,6 +2,16 @@
 'use strict';
 const {h, Component, render} = window.preact;
 
+// Incorrectly configured build doesn't replace in-place process.env:
+// ensure the js still works
+var process = process || {};
+process.env = process.env || {};
+
+const build = {
+  status: process.env.VAR,
+  date: process.env.BUILD_DATE,
+};
+
 /* global $ */
 $(document).ready(function(){
   if(window.$_URL.lvl == "") {
@@ -31,11 +41,18 @@ Array.prototype.random = function(){
   return this[randomIndex];
 };
 
+/**
+* Returns an integer random number between min (included) and max (included)
+*/
+function randrange(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function randomize(arr){
  var c = arr.length, rnd;
 
  while(c){
-  rnd = Math.random() * c-- | 0;
+  rnd = (Math.random() * c--) | 0;
   [arr[c], arr[rnd]] = [arr[rnd], arr[c]];
  }
  return arr;
@@ -51,27 +68,39 @@ function fromKeyCode(key) {
 
 var Timer = {
   maxTime: 6e3,
-  remainingTime: 0,
+  remainingTime: null,
   lastUpdate: null,
   target: null,
   interval: null,
   callback: null,
+  isRunning: false,
 
   stop: function(){
-    var time = Date.now();
+    if(!Timer.isRunning) {
+      return;
+    }
 
-    Timer.interval && clearInterval(Timer.interval);
+    // The user submitter an answer: tick a last time
+    var time = Date.now();
     Timer.remainingTime -= (time - Timer.lastUpdate);
     Timer.lastUpdate     = time;
+
+    // Stop the timer
+    Timer.interval && clearInterval(Timer.interval);
+    Timer.isRunning      = false;
   },
   start: function(callback){
     Timer.callback      = callback;
     Timer.remainingTime = Timer.maxTime;
     Timer.lastUpdate    = Date.now();
     Timer.interval      = setInterval(Timer.tick.bind(this), 150);
+    Timer.isRunning     = true;
   },
   get_time: function(){
-    return Timer.maxTime - Timer.remainingTime;
+    if (Timer.remainingTime === null) {
+      return 0;
+    }
+    return Timer.maxTime - Math.max(Timer.remainingTime, 0);
   },
   tick: function(){
     var time = Date.now();
@@ -81,6 +110,8 @@ var Timer = {
 
     if(Timer.remainingTime <= 0) {
       clearInterval(Timer.interval);
+      Timer.isRunning = false;
+
       $('#speed_review-timer').css("height", '100%');
 
       Timer.callback && Timer.callback();
@@ -95,6 +126,43 @@ var Timer = {
 //| Render game
 //+--------------------------------------------------------
 
+const LEARN_UNTIL_GROWTH_LEVEL = 6;
+const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
+
+const TEST_DIFFICULTY = {
+  "Unknown": 0,
+  "Easy": 1,
+  "Moderate": 2,
+  "Hard": 3,
+};
+
+const REVIEW_INTERVAL_LADDER = [
+  {interval: .1666, tolerance: .1},
+  {interval: .5, tolerance: .3},
+  {interval: 1, tolerance: .5},
+  {interval: 6, tolerance: 1},
+  {interval: 12, tolerance: 0},
+  {interval: 24, tolerance: 0},
+  {interval: 48, tolerance: 0},
+  {interval: 96, tolerance: 0},
+  {interval: 180, tolerance: 0},
+];
+
+const EMPTY_PROGRESS = {
+  learnable_id: null,
+  attempts: 0,
+  correct: 0,
+  current_streak: 0,
+  total_streak: 0,
+  created_date: null,
+  next_date: null,
+  last_date: null,
+  starred: false,
+  ignored: false,
+  not_difficult: false,
+  growth_level: 0,
+};
+
 class Learn extends Component {
   state = {
     i: 0, n: 0,
@@ -104,7 +172,8 @@ class Learn extends Component {
     recap: {}, num_scheduled_correct: 0, num_scheduled: 0,
     points: 0, hearts: 3, speed_bonus: 0,
     level_idx: 1, maxlevel: 1, level_type: 1,
-    get_all: false
+    get_all: false,
+    events: [],
   };
 
   //+--------------------------------------------------------
@@ -125,7 +194,6 @@ class Learn extends Component {
       this.state.level_idx = parseInt(this.props.level_idx);
       this.state.maxlevel  = parseInt(this.props.level_idx);
     }
-    console.log(this.state);
 
     this.setChoices = this.setChoices.bind(this);
   }
@@ -264,7 +332,7 @@ class Learn extends Component {
     }
     try {
       const lastDate = new Date(progress.last_date);
-      const thresholdDate = new Date(Date.now() - PRESENTATION_PROGRESS_THRESHOLD_SECONDS * 1000);
+      const thresholdDate = new Date(Date.now() - LEARN_LASTDATE_TIMEOUT_SECONDS * 1000);
       return lastDate < thresholdDate;
     } catch(e) {
       console.error(e);
@@ -272,21 +340,15 @@ class Learn extends Component {
     }
   }
 
-  /**
-   * Returns an integer random number between min (included) and max (included)
-   */
-  randrange(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  //+--------------------------------------------------------
+  //| BUILD LEVEL LEARN SESSION DATA
+  //+--------------------------------------------------------
 
   buildBoxes(session_type, learnables, progress_map) {
-    const boxes = [];
+    var boxes = [];
 
     switch(session_type) {
       case 'learn':
-        const REPEAT_UNTIL_GROWTH_LEVEL = 6;
-        const PRESENTATION_PROGRESS_THRESHOLD_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
-
         let add_tests = [];
         for (let learnable of learnables) {
           const learnable_id = learnable.id;
@@ -303,8 +365,8 @@ class Learn extends Component {
           const progress = progress_map[learnable_id];
           const target_level = progress ? progress.growth_level : 0;
 
-          const from_target_level = target_level + 1 | 0;
-          const to_target_level = Math.min(target_level + 3 | 0, REPEAT_UNTIL_GROWTH_LEVEL);
+          const from_target_level = (target_level | 0) + 1;
+          const to_target_level = Math.min((target_level | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL);
 
           if (to_target_level <= from_target_level) {
             console.warning('The following learnable has already been learned:', learnable);
@@ -332,9 +394,9 @@ class Learn extends Component {
 
             if (idx) {
               min = idx;
-              is_presentation = boxes[idx].template == 'presentation';
+              is_presentation = idx in boxes && boxes[idx].template == 'presentation';
             }
-            let insertAtIndex = is_presentation ? Math.min(min + 2, max) : this.randrange(min, max);
+            let insertAtIndex = is_presentation ? Math.min(min + 2, max) : randrange(min, max);
 
             // Insert the test at the chosen random index
             boxes.splice(insertAtIndex, 0, {
@@ -362,6 +424,7 @@ class Learn extends Component {
             learn_session_level: 0,
           });
         }
+        boxes = randomize(boxes);
         break;
 
       case 'preview':
@@ -378,12 +441,43 @@ class Learn extends Component {
     return boxes;
   }
 
+  /**
+   * Create a Date object from a valid ISO 8601 string
+   * @param string value
+   * @return Date
+   */
+  decodeDateString(value) {
+    if (!value) {
+      return null;
+    }
+    if (value instanceof Date) {
+      return value;
+    }
+    var d = new Date(value);
+
+    // invalid value: use now
+    if (isNaN(d.getTime())) {
+      return new Date();
+    }
+    return d;d
+  }
+
+  /**
+   * Build the "data" to store in the current state
+   * from the data retrieved from the backend
+   * 
+   * @param string session_type
+   * @param dict data
+   * @return dict
+   */
   buildGameData(session_type, data) {
 
     // Build screen_template_map (data.screen_template_map[learnable_id][tpl][0])
     const screen_template_map = {};
+    const learnables_map = {};
+
     for (let learnable of data.learnables) {
-      const screens = {}
+      const screens = {};
 
       // A screen = {correct, is_strict, ...} (cf learning_session_preview.json)
       for (let screen_id in learnable.screens) {
@@ -391,27 +485,35 @@ class Learn extends Component {
         screens[screen.template] = [screen];
       }
       screen_template_map[learnable.id] = screens;
+      learnables_map[learnable.id] = learnable;
     }
 
     // Build progress_map {learnable_id: {growth_level, current_streak, correct, attempts, is_difficult}}
     const progress_map = {};
     for (let progress of data.progress) {
-      progress_map[progress.learnable_id] = progress;
+      progress_map[progress.learnable_id] = Object.assign(progress, {
+        created_date: this.decodeDateString(progress.created_date),
+        next_date: this.decodeDateString(progress.next_date),
+        last_date: this.decodeDateString(progress.last_date),
+      });
     }
 
     const boxes = this.buildBoxes(session_type, data.learnables, progress_map);
-    console.log('Screens to display:', boxes);
+    console.log('Boxes:', boxes);
 
     return {
-      boxes,
+      boxes: boxes,
       screen_template_map,
-      progress_map: data.progress,
+      progress_map,
+      learnables_map,
       csrftoken: '',
       referer: '',
     }
   }
 
-  // Retrieve the current level datas
+  /**
+   * Retrieve the current level data
+   */
   getData(level_idx, callback) {
     const session_type = this.props.session_type;
 
@@ -423,9 +525,9 @@ class Learn extends Component {
     if (level_idx == 1 && !window.course.levels.length) {
       // pass
     } else if (!(level_idx in window.course.levels)) {
-      return this.setState({
-        error: 'Level data cannot be retrieved',
-      });
+      console.error('Level data cannot be retrieved');
+      return this.setState({error: 1});
+    } else {
       level_type = window.course.levels[level_idx].type;
     }
 
@@ -444,26 +546,48 @@ class Learn extends Component {
       success: function(data){
         callback && callback(data);
 
-        const gameData = this.buildGameData(session_type, data);
+        let gameData = this.buildGameData(session_type, data);
+        let error = false;
+
+        if (!gameData.boxes.length) {
+          switch (session_type) {
+            case "learn":
+              error = window.i18n.learn_err_empty_learn;
+              break;
+
+            case "preview":
+              error = window.i18n.learn_err_empty_preview;
+              break;
+
+            case "review":
+              error = window.i18n.learn_err_empty_review;
+              break;
+
+            default:
+              error = window.i18n.learn_err_empty;
+              break;
+          }
+        }
+
         this.setState({
-          recap: {},
-          screen: false,
-          error: false,
+          recap  : {},
+          screen : false,
+          error,
           level_idx,
           level_type,
-
-          data : gameData,
-          i    : 0,
-          n    : (gameData.boxes ? gameData.boxes.length : 1)
+          data   : gameData,
+          events : [],
+          i      : 0,
+          n      : (gameData.boxes ? gameData.boxes.length : 1)
         });
       }.bind(this),
 
       error: function(xhr) {
         if(xhr.status == 403) {
-          this.setState({error: 403 });
+          this.setState({error: 403});
         } else {
           console.error(xhr.status + " " + xhr.statusText);
-          this.setState({error: 500 });
+          this.setState({error: 500});
         }
       }.bind(this)
     });
@@ -551,10 +675,10 @@ class Learn extends Component {
 
     // getNormalPoints, getSpeedPoints
     this.choice_feedback({
-      value: choice.value,
-      score: choice.isValid ? 1 : 0,
-      kind : choice.answerType,
-      i    : idx
+      value : choice.value,
+      score : choice.isValid ? 1 : 0,
+      kind  : choice.answerType,
+      i     : idx
     });
   }
 
@@ -565,18 +689,19 @@ class Learn extends Component {
 
   time_over() {
     this.choice_feedback({
-      value: "",
-      score: 0,
-      kind : ""
+      value : "",
+      score : 0,
+      kind  : ""
     });
   }
 
   // Text entry: User submit its answer
   choice(text) {
+    text = text.trim();
 
-    var score      = 0,
-        testText   = sanitizeTyping(text.trim(), this.is_strict).toLowerCase(),
-        refText    = "";
+    var score    = 0,
+        testText = sanitizeTyping(text, this.is_strict).toLowerCase(),
+        refText  = "";
 
     // Text input
     for(let i=0; i<this.choices.length; i++) {
@@ -590,10 +715,11 @@ class Learn extends Component {
     }
 
     this.choice_feedback({
-      value: testText,
-      ref  : refText,
-      score: score,
-      kind : "text"
+      value    : text,
+      testValue: testText,
+      refValue : refText,
+      score    : score,
+      kind     : "text"
     });
   }
 
@@ -610,68 +736,112 @@ class Learn extends Component {
     }
 
     this.choice_feedback({
-      value: entry,
-      score: isValid ? 1 : 0,
-      kind : "text"
+      value : entry,
+      score : isValid ? 1 : 0,
+      kind  : "text"
     });
   }
 
-  // Answer has been submitted and checked: give feedback
-  choice_feedback(input) {
-    var points_earned = 0,
-        speed_bonus = 0,
-        time_spent  = 0,
-        id          = this.state.data.boxes[this.state.i].learnable_id;
+  getPointsV1(time_spent, score, current_streak) {
+    var points      = 0,
+        speed_bonus = 0;
 
     // Score
     switch(this.props.session_type){
       case "learn":
-        points_earned = calculate_points_learn(input.score);
+        points = calculate_points_learn_v1(score);
         break;
 
       case "classic_review":
-        if (id in this.state.data.progress_map) {
-          var progress = this.state.data.progress_map[id],
-              streak = 0;
-
-          if(progress) {
-            streak = progress.current_streak;
-
-            if(data.score == 1) {
-              progress.current_streak++;
-            }
-          }
+        points = calculate_points_learn_v1(score);
+        if(current_streak) {
+          points = calculate_points_review_v1(points, current_streak);
         }
-        points_earned = calculate_points_learn(input.score);
-        if(streak) {
-          points_earned = calculate_points_review(points_earned, streak);
-        }
-        if(input.score == 1 && time_spent) {
-          speed_bonus = calculate_speed_bonus(time_spent, this.template);
+        if(score == 1 && time_spent) {
+          speed_bonus = calculate_speed_bonus_v1(time_spent, this.template);
         }
         break;
 
       case "speed_review":
-        time_spent = Timer.get_time();
-
-        if(input.score == 1) {
-          points_earned = calculate_points_speed(time_spent);
-
-        } else if(this.state.hearts) {
-          this.state.hearts -= 1;
+        if(data.score == 1) {
+          points = calculate_points_speed_v1(time_spent);
         }
         break;
     }
-    this.props.sendresults && this.register(input, id, points_earned, input.score, time_spent);
+    return points + speed_bonus;
+  }
+
+  // Answer has been submitted and checked: compute progress, points & give feedback
+  // input: {value,score,kind,...rest}
+  choice_feedback(input) {
+    Timer.stop();
+
+    var box           = this.state.data.boxes[this.state.i],
+        learnable_id  = box.learnable_id,
+        is_correct    = input.score == 1,
+        savedProgress = this.state.data.progress_map[learnable_id] || {};
+
+    // Create a "blank" progress from the saved one (to trigger reviews)
+    var progress = {
+        learnable_id,
+        starred       : savedProgress.starred || false,
+        ignored       : savedProgress.ignored || false,
+        not_difficult : savedProgress.not_difficult || false,
+
+        attempts      : savedProgress.attempts || 0,
+        correct       : savedProgress.correct || 0,
+        current_streak: savedProgress.current_streak || 0,
+        total_streak  : savedProgress.total_streak || 0,
+
+        created_date  : savedProgress.created_date || new Date(),
+        last_date     : new Date(),
+        next_date     : savedProgress.next_date || null,
+        interval      : savedProgress.interval || null,
+        growth_level  : savedProgress.growth_level || 0,
+    };
+
+    // Update the progress
+    // progress.is_difficult = this.isDifficult(progress);
+    progress.growth_level = is_correct ? this.getNextGrowthLevel(progress) : progress.growth_level;
+
+    Object.assign(progress, this.getNextIntervalDate(progress, progress.last_date, input.score));
+    Object.assign(progress, this.getNextStreak(progress, input.score));
+    
+    this.state.data.progress_map[learnable_id] = progress;
+
+    // Create an event (for stats)
+    var event = {
+        learnable_id,
+        box_template : this.template,
+        given_answer : input.value,
+        score        : input.score,
+        time_spent   : 0,
+        points       : 0,
+        bonus_points : 0,
+    };
+    if (this.props.session_type == "speed_review") {
+      event.time_spent = Timer.get_time();
+
+      if (!is_correct) {
+        this.state.hearts -= 1;
+      }
+    }
+    event.points = this.getPointsV1(
+      event.time_spent,
+      input.score,
+      progress.current_streak,
+    );
+
+    this.props.sendresults && this.registerEvent(progress, event);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
-    if(!recap[id]) {
-      recap[id] = {count: 0, right: 0, pos: Object.keys(recap).length};
+    if(!recap[learnable_id]) {
+      recap[learnable_id] = {count: 0, right: 0, pos: Object.keys(recap).length};
     }
-    recap[id].count++;
-    if(input.score == 1) {
-      recap[id].right++;
+    recap[learnable_id].count++;
+    if(is_correct) {
+      recap[learnable_id].right++;
     }
 
     // Display correction
@@ -696,13 +866,13 @@ class Learn extends Component {
 
       this.expectChoice = false;
       this.choices      = false;
-      this.state.recap  = recap;
-      this.state.points += points_earned;
-      this.state.num_scheduled += 1;
-      if(input.score == 1) {
-        this.state.num_scheduled_correct += 1;
-      }
 
+      this.setState({
+        recap,
+        points: this.state.points + event.points,
+        num_scheduled: this.state.num_scheduled + 1,
+        num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0),
+      });
       setTimeout(function(){
         $(".choice-box").removeClass("correct").removeClass("incorrect");
         this.getNext();
@@ -714,8 +884,9 @@ class Learn extends Component {
         screen: "correction",
         correct: input,
         debug_screen: false,
-        points: this.state.points + points_earned,
-        speed_bonus: this.state.speed_bonus + speed_bonus,
+        points: this.state.points + event.points,
+        speed_bonus: this.state.speed_bonus + event.bonus_points,
+        session_streak: is_correct ? this.state.session_streak + 1 : 0,
         num_scheduled: this.state.num_scheduled + 1,
         num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0)
       });
@@ -736,45 +907,6 @@ class Learn extends Component {
         }
       }
     }
-  }
-
-  // Send progress to memrise
-  register(input, learnable_id, points, score, time_spent) {
-    $.ajax({
-      url: "/ajax/register",
-      method: "POST",
-      headers: {
-        "X-CSRFToken": this.state.data.csrftoken,
-        "X-Referer"  : this.state.data.referer
-      },
-      data: {
-        box_template: this.template,
-        course_id   : window.course.id,
-        fully_grow  : false,
-        given_answer: input.value,
-        learnable_id: learnable_id,
-        points      : points,
-        score       : score,
-        time_spent  : time_spent
-      }
-    });
-  }
-  session_end() {
-    $.ajax({
-      url: "/ajax/session_end",
-      method: "POST",
-      headers: {
-        "X-CSRFToken": this.state.data.csrftoken,
-        "X-Referer"  : this.state.data.referer
-      },
-      data: {
-        bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
-        course_id    : window.course.id,
-        learnable_ids: '["' + Object.keys(this.state.recap).join('","') + '"]',
-        session_type : (this.props.session_type == "classic_review" ? "review" : this.props.session_type),
-        total_points : this.state.points
-      }
-    });
   }
 
   // Display next screen
@@ -815,6 +947,276 @@ class Learn extends Component {
   }
 
   //+--------------------------------------------------------
+  //| COMPUTE POINTS / GROWTH LEVEL / REVIEW DATE
+  //+--------------------------------------------------------
+
+  /**
+   * Compute the next growh level for the given progress,
+   * assuming the user gave the right answer
+   * 
+   * @param dict progress
+   * @param int growthLevel
+   */
+  getNextGrowthLevel(progress, difficulty=TEST_DIFFICULTY.Easy) {
+
+    // FirstOnboardingSessionGrowthLevelStrategy
+    if (this.props.session_type == "first_session") {
+      return 2 === progress.growth_level ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
+    }
+
+    // StandardGrowthLevelStrategy
+    if (true) {
+      return progress.growth_level + 1;
+    }
+
+    // SuperchargeGrowthLevelStrategy
+    return (
+      progress.attempts === progress.correct && progress.growth_level < LEARN_UNTIL_GROWTH_LEVEL && (
+          difficulty == TEST_DIFFICULTY.Easy && progress.growth_level >= 2 
+       || difficulty == TEST_DIFFICULTY.Moderate && progress.growth_level >= 3
+      )
+    ) ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
+  }
+
+  /**
+   * Create a new date, with [interval] days added to date
+   * 
+   * @param Date date
+   * @param float interval (in days) - see REVIEW_INTERVAL_LADDER
+   * @return Date
+   */
+  incrementDateWithInterval(date, interval) {
+      const delta_from = 0,
+            delta_to = .007;
+
+      if (!interval) {
+        interval = delta_to;
+      }
+      if (!date) {
+        date = new Date();
+      }
+      interval += randrange(delta_from, delta_to);
+
+      return new Date(date.getTime() + 24 * interval * 3600 * 1000);
+  }
+
+  /**
+   * Retrieve the index corresponding
+   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
+   * 
+   * @param float interval
+   * @return int index
+   */
+  getRungIndex(interval) {
+
+    // Get the last rung greater than the given interval
+    for (var i = REVIEW_INTERVAL_LADDER.length; i > 0 && REVIEW_INTERVAL_LADDER[--i | 0].interval > interval;) {
+        // pass
+    }
+    // Return the rung no greather than the given interval
+    return Math.max(i - 1 | 0, 0);
+  }
+
+  /**
+   * Compute the interval and next_date for the given progress
+   * 
+   * @param dict progress
+   * @param Date date_answer
+   * @param float score
+   * @return dict
+   */
+  getNextIntervalDate(progress, date_answer, score) {
+
+    // No review data until we learned the item
+    if (progress.growth_level < LEARN_UNTIL_GROWTH_LEVEL) {
+      return {
+        interval : null,
+        next_date: null,
+      };
+    }
+
+    // We just learned the item: set the next review with the first interval
+    if(!progress.interval || !progress.next_date || progress.interval < REVIEW_INTERVAL_LADDER[0].interval) {
+      var interval = REVIEW_INTERVAL_LADDER[0].interval;
+      return {
+        interval,
+        next_date: this.incrementDateWithInterval(date_answer, interval),
+      }
+    }
+
+    var rungIndex = this.getRungIndex(progress.interval | 0),
+        tolerance = REVIEW_INTERVAL_LADDER[rungIndex].tolerance,
+        reviewDate = new Date(progress.next_date.getTime() - 24 * tolerance * 3600 * 1000),
+        isReviewDatePast = (new Date()).getTime() >= reviewDate.getTime();
+
+    // We got the answer right but the item isn't due to review: keep the nextDate as-is
+    var is_correct = score == 1,
+        is_incorrect = score == 0;
+
+    if (is_correct && !isReviewDatePast) {
+      return {
+        interval : progress.interval,
+        next_date: progress.next_date,
+      };
+    }
+
+    if (is_incorrect) {
+      rungIndex = 2;
+    } else if(is_correct) {
+      if(rungIndex === 1 && progress.current_streak === progress.attempts && progress.current_streak > 0) {
+        rungIndex += 2;
+      } else {
+        rungIndex += 1;
+      }
+    } else { // nearly correct
+      rungIndex = progress.current_streak > 0 ? rungIndex : Math.max(rungIndex - 1, 0);
+    }
+
+    var interval = REVIEW_INTERVAL_LADDER[rungIndex].interval;
+    return {
+      interval,
+      when     : date_answer, 
+      next_date: this.getNextDate(interval, date_answer),
+    }
+  }
+
+  /**
+   * Compute whether the progress of the current learnable
+   * is now considered to be difficult
+   * 
+   * @param dict progress
+   * @return bool
+   */
+  isDifficult(progress) {
+    if (progress.ignored || progress.not_difficult) {
+      return false;
+    }
+    if (progress.starred) {
+      return true;
+    }
+    if (progress.attempts === 1 || progress.total_streak >= 3) {
+      return false;
+    }
+    var ratio = progress.attempts > 0 ? progress.correct / progress.attempts : 1;
+
+    return progress.attempts < 6 && ratio < .75 || progress.attempts >= 6 && ratio < .92
+  }
+
+  /**
+   * Compute the attempts and streak for the given progress
+   * 
+   * @param dict progress
+   * @param float score
+   * @return dict
+   */
+  getNextStreak(progress, score) {
+    /*
+      "when": 1771925218,
+      "interval": 0.5,
+      "total_streak": -1,
+      "current_streak": 0,
+      "correct": 11,
+      "attempts": 12,
+      "points": 0,
+      "score": 0,
+    */
+    var is_correct = score == 1;
+    return {
+      attempts      : progress.attempts + 1,
+      correct       : progress.correct + (is_correct ? 1 : 0),
+      current_streak: is_correct ? progress.current_streak + 1 : 0,
+      total_streak  : Math.max(progress.total_streak + (is_correct ? 1 : -1), 0),
+    }
+  }
+
+  // Send progress to memrise
+  registerEvent(progress, event) {
+    var learnable = this.state.data.learnables_map[progress.learnable_id] || {};
+
+    if (learnable.id !== progress.learnable_id) {
+      console.error('Couldnt find learnable related to event', progress, event);
+      return;
+    }
+
+    var item = {
+      course_id          : parseInt(window.course.id),
+      learning_element   : learnable.learning_element,
+      definition_element : learnable.definition_element,
+    };
+    Object.assign(item, progress, event);
+
+    if(item.created_date) {
+      item.created_date = (item.created_date.getTime() / 1000) | 0;
+    }
+    if(item.next_date) {
+      item.next_date = (item.next_date.getTime() / 1000) | 0;
+    }
+    if(item.last_date) {
+      item.last_date = (item.last_date.getTime() / 1000) | 0;
+    }
+    item.when = item.last_date;
+
+    console.log('event', item);
+    this.state.events.push(item);
+  }
+
+  session_end() {
+    var events = [...this.state.events];
+    var requests = [];
+
+    // Send events in batches of 50
+    while(events.length) {
+      var batch = events.splice(0, 50);
+
+      requests.push({
+        url: "/ajax/register_progress",
+        method: "POST",
+        headers: {
+          "X-CSRFToken": this.state.data.csrftoken,
+          "X-Referer"  : this.state.data.referer,
+        },
+        data: JSON.stringify({
+          events: batch,
+        }),
+        contentType: "application/json",
+      });
+    }
+
+    // Send session end
+    var data = {
+      session_points: this.state.points,
+      //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
+      session_type: this.props.session_type == "classic_review" ? "review" : this.props.session_type,
+      session_source_type: "course",
+      session_source_id: window.course.id,
+    };
+    if (!this.state.get_all) {
+      data.session_source_sub_index = this.state.level_idx;
+    }
+    requests.push({
+      url: "/ajax/register_end",
+      method: "POST",
+      headers: {
+        "X-CSRFToken": this.state.data.csrftoken,
+        "X-Referer"  : this.state.data.referer,
+      },
+      data: JSON.stringify(data),
+      contentType: "application/json",
+    });
+
+    // Send each request one after the other
+    function execute_requests_queue() {
+      if(!requests.length) {
+        return;
+      }
+      var request = requests.shift();
+      request.success = execute_requests_queue;
+      $.ajax(request);
+    }
+    execute_requests_queue();
+  }
+
+  //+--------------------------------------------------------
   //| RENDERING
   //+--------------------------------------------------------
 
@@ -830,6 +1232,8 @@ class Learn extends Component {
     if(this.state.error) {
       if(this.state.error == 403) {
         return <p>{window.i18n._403} <a href="/login" class="link">{window.i18n.login}</a></p>;
+      } else if (typeof this.state.error == "string") {
+        return <p>{this.state.error}</p>;
       } else {
         return <p>{window.i18n.error}</p>;
       }
@@ -965,31 +1369,41 @@ class Learn extends Component {
       return this.render_presentation(this.state.correct || true);
     }
 
-    var item   = this.state.data.boxes[this.state.i],
-        screen = this.state.data.screen_template_map[item.learnable_id];
+    // No defined screen: display next learnable
+    const item = this.state.data.boxes[this.state.i];
+    if(!item) {
+      console.log("No item to display", this.state.data.boxes, this.state.i);
+      return null;
+    }
+    const screens = this.state.data.screen_template_map[item.learnable_id];
+    if(!screens) {
+      console.log("No screen to display", this.state.data.screen_template_map, item);
+      return null;
+    }
+    console.log('Box', item, screens);
 
     if(item.learn_session_level) {
       switch(item.learn_session_level) {
         case 1:
             return this.render_tpl({
               template: "multiple_choice",
-              num_choices: 4
+              nChoices: 4
             });
 
         case 2:
-          if(screen.multiple_choice.video) {
+          if(screens.multiple_choice.video) {
             return this.render_tpl({
               template: "reversed_multiple_choice",
-              num_choices: 4,
+              nChoices: 4,
               promptWith: "video"
             });
           }
-          if(screen.audio_multiple_choice && Math.random() > .5) {
+          if(screens.audio_multiple_choice && Math.random() > .5) {
             return this.render_tpl({
               template: "audio_multiple_choice"
             });
           }
-          if(screen.tapping) {
+          if(screens.tapping) {
             return this.render_tpl({
               template: "tapping",
               difficulty: 0
@@ -997,46 +1411,46 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: "reversed_multiple_choice",
-            num_choices: 4
+            nChoices: 4
           });
 
         case 3:
-          if(screen.tapping) {
+          if(screens.tapping) {
             return this.render_tpl({
               template: "tapping",
               difficulty: .5
             });
           }
-          if(screen.typing) {
+          if(screens.typing) {
             return this.render_tpl({
               template: "typing"
             });
           }
           return this.render_tpl({
             template: "multiple_choice",
-            num_choices: 8
+            nChoices: 8
           });
 
         case 4:
-          if(screen.multiple_choice.video) {
+          if(screens.multiple_choice.video) {
             return this.render_tpl({
               template: "reversed_multiple_choice",
-              num_choices: 4,
+              nChoices: 4,
               promptWith: "video"
             });
           }
           if(Math.random() > .5) {
             var s = [];
-            if(screen.typing.audio) {
+            if(screens.typing.audio) {
               s.push({
                 template: "typing",
                 promptWith: "audio"
               });
             }
-            if(screen.reversed_multiple_choice.audio) {
+            if(screens.reversed_multiple_choice.audio) {
               s.push({
                 template: "reversed_multiple_choice",
-                num_choices: 4,
+                nChoices: 4,
                 promptWith: "audio"
               });
             }
@@ -1046,11 +1460,11 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: "reversed_multiple_choice",
-            num_choices: [4, 6].random()
+            nChoices: [4, 6].random()
           });
 
         case 5:
-          if(screen.taping) {
+          if(screens.taping) {
             return this.render_tpl({
               template: "tapping",
               difficulty: .5
@@ -1058,18 +1472,18 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: "multiple_choice",
-            num_choices: [6, 8].random()
+            nChoices: [6, 8].random()
           });
 
         default:
-          if(screen.typing) {
+          if(screens.typing) {
             return this.render_tpl({
               template: "typing"
             });
           }
           return {
             template: "multiple_choice",
-            num_choices: 8
+            nChoices: 8
           };
       }
     }
@@ -1077,24 +1491,24 @@ class Learn extends Component {
     if(this.props.session_type == "speed_review") {
       return this.render_tpl({
         template: "multiple_choice",
-        num_choices: 4
+        nChoices: 4
       });
     }
 
     if(item.template == "sentinel") {
-      if(screen.typing) {
+      if(screens.typing) {
         return this.render_tpl({
           template: "typing"
         });
       }
-      if(screen.audio_multiple_choice && Math.random() > .5) {
+      if(screens.audio_multiple_choice && Math.random() > .5) {
         return this.render_tpl({
           template: "audio_multiple_choice"
         });
       }
       return this.render_tpl({
           template: "multiple_choice",
-          num_choices: 8
+          nChoices: 8
       });
     }
 
@@ -1185,21 +1599,21 @@ class Learn extends Component {
   render_audio_multiple_choice(setting) {
     return <MultipleChoice
               item={this.get_screen("audio_multiple_choice")}
-              nChoice={setting.nChoice || 4}
+              nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
   render_reversed_multiple_choice(setting) {
     return <MultipleChoice
               item={this.get_screen("reversed_multiple_choice")}
-              nChoice={setting.nChoice || 4}
+              nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
   render_multiple_choice(setting) {
     return <MultipleChoice
               item={this.get_screen("multiple_choice")}
-              nChoice={setting.nChoice || (this.props.session_type == "speed_review" ? 4 : 9)}
+              nChoices={setting.nChoices || (this.props.session_type == "speed_review" ? 4 : 9)}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
@@ -1318,7 +1732,7 @@ const Correction = function(props) {
       {window.i18n.near_answer}!&nbsp;
       <span>{window.i18n.your_answer_was}: <strong>
         {data.kind == "text"
-          ? <span>{data.value} <small class="correction" dangerouslySetInnerHTML={{__html: "(" + diff(data.value, data.ref) + ")"}} /></span>
+          ? <span>{data.testValue} <small class="correction" dangerouslySetInnerHTML={{__html: "(" + diff(data.testValue, data.refValue) + ")"}} /></span>
           : <Value content={data.value} type={data.kind} single="1" />}
       </strong></span>
     </div>;
@@ -1420,13 +1834,13 @@ const MultipleChoice = function(props) {
       choicesRnd = randomize([...item.choices]);
 
   // Display 9 choices max
-  if(n > props.nChoice) {
-    n = props.nChoice;
+  if(n > props.nChoices) {
+    n = props.nChoices;
     choicesRnd = choicesRnd.slice(0, n);
   }
 
   // Place the right answer somewhere in it
-  var rnd    = Math.random() * n - 1 | 0,
+  var rnd    = (Math.random() * n - 1) | 0,
      isArr   = $.isArray(item.answer.value);
 
   if(isArr) {
@@ -1463,7 +1877,7 @@ const MultipleChoice = function(props) {
     </div>
 
     {/*-- Choices --*/}
-    <div class={"medium choices n" + props.nChoice}>{choices}</div>
+    <div class={"medium choices n" + props.nChoices}>{choices}</div>
   </div>;
 };
 
@@ -1578,6 +1992,14 @@ const Recap = function(props) {
 //| SCORING SYSTEM
 //+--------------------------------------------------------
 
+/**
+ * Score the similarity between the given response
+ * and the expected answer
+ * 
+ * 1 = equal
+ * 0 = non equal
+ * 0<x<1 = similar
+ */
 function get_score(response, answer) {
  var FIRST_LETTER_WEIGHT = .1,
      DISTANCE_WEIGHT = .9;
@@ -1663,27 +2085,31 @@ function sanitizeTyping(text, strict) {
   return text;
 }
 
-function calculate_points_learn(score) {
+//+--------------------------------------------------------
+//| COUNTING POINTS V1
+//+--------------------------------------------------------
+
+function calculate_points_learn_v1(score) {
   return 1 === score ? 45 : 0 === score ? 0 : Math.max(10, Math.round(45 * score) - 20);
 }
-function calculate_points_speed(time_spent) {
+function calculate_points_speed_v1(time_spent) {
   var t = Math.floor(time_spent / 1e3);
   return t >= 6 ? Math.min(15, 25) : Math.min(15 + 7 * (6 - t), 25);
 }
-function calculate_points_review(points, current_streak) {
+function calculate_points_review_v1(points, current_streak) {
   points *= Math.pow(1.2, current_streak);
   points  = Math.min(points, 150);
   return Math.ceil(points);
 }
 
-function calculate_speed_bonus(time_spent, tpl) {
+function calculate_speed_bonus_v1(time_spent, tpl) {
   if(tpl == "typing") {
     return time_spent < 4e3 ? 5 : 0;
   } else {
     return time_spent < 2e3 ? 3 : 0;
   }
 }
-function calculate_accuracy_bonus(percent_correct, num_scheduled_correct) {
+function calculate_accuracy_bonus_v1(percent_correct, num_scheduled_correct) {
   if(percent_correct == 100) {
     return 20 * num_scheduled_correct;
 

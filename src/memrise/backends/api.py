@@ -99,11 +99,23 @@ class ApiMemrise(Memrise):
             sessionid=kwargs["sessionid"],
         )
 
-    def track_progress(self, path, data, referer=None, **kwargs):
+    # +-----------------------------------------------------
+    # | LEARNING SESSION
+    # +-----------------------------------------------------
+    def learning_session_register_progress(self, data, referer=None, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.track_progress(
-            path,
+        return self.requestor.learning_session_register_progress(
+            data,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+            referer=referer,
+        )
+
+    def learning_session_register_end(self, data, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.learning_session_register_end(
             data,
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
@@ -159,39 +171,50 @@ class ApiMemrise(Memrise):
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
         if slug == "speed_review":
-            slug = "classic_review"
+            slug = "review"
+        elif slug == "classic_review":
+            slug = "review"
 
         # Retrieve level info
-        retry_login = True
+        retry_request = True
         level = {}
+        should_empty = False
 
-        while retry_login:
+        if slug not in ("preview", "classic_review", "learn"):
+            slug = "preview"
+
+        while retry_request:
             is_anonymous_session = kwargs.get("is_anon", False)
             try:
                 level = self.requestor.level(
                     idCourse,
                     lvl,
+                    session_type=slug,
                     sessionid=kwargs["sessionid"],
                     csrftoken=kwargs["csrftoken"],
                 )
-            except requests.exceptions.HTTPError as e:
-                # Try reauthenticate
-                if e.response.status_code == 403 and is_anonymous_session and retry_login:
-                    self.set_kwargs_session(kwargs, session=self.login_as_anonymous(reset=True))
-                else:
-                    raise e
-            finally:
-                retry_login = False
+                retry_request = False
 
-        # Start learning session (to be able to send results to memrise)
-        if not is_anonymous_session and slug != "preview":
-            csrftoken = self.requestor.level_learning_session(
-                idCourse,
-                slugCourse,
-                sessionType=slug,
-                sessionid=kwargs["sessionid"],
-            )
-            level.update(csrftoken)
+            except requests.exceptions.HTTPError as e:
+
+                # Try reauthenticate
+                if e.response.status_code == 403:
+                    if is_anonymous_session and retry_request:
+                        self.set_kwargs_session(kwargs, session=self.login_as_anonymous(reset=True))
+                        continue
+
+                # Trying to learn but there's nothing more to learn:
+                # retrieve the "session_source_info" but empty out the list of things to learn
+                elif e.response.status_code == 400 and slug == "learn":
+                    slug = "preview"
+                    should_empty = True
+                    continue
+
+                raise e
+
+        if should_empty:
+            level["learnables"] = []
+            level["progress"] = []
 
         return level
 

@@ -1,0 +1,266 @@
+{
+    "learnables": [{
+        "id": 30729426895106,
+        "learning_element": "der Nachwuchs",
+        "definition_element": "la progéniture",
+        "learning_element_tokens": ["der", "Nachwuchs"],
+        "definition_element_tokens": ["la", "progéniture"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "der Nachwuchs",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "English",
+                    "kind": "text",
+                    "value": "la progéniture",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English",
+                        "kind": "text",
+                        "value": "la progéniture",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "der Nachwuchs",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["der Nachwuchs"],
+                "choices": ["der Dampf", "der Kalb", "der Dünger", "der Blech", "der Köter", "der Schoß", "der Abzug", "der Ärmel", "der Sumpf", "der  Eimer", "der Umriss", "der Erwerb"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "German",
+                        "kind": "text",
+                        "value": "der Nachwuchs",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English",
+                    "kind": "text",
+                    "value": "la progéniture",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["la progéniture"],
+                "choices": ["la propulsion", "la prairie", "la paille", "la permutation", "la ligne", "la tôle", "la boue", "la tour", "la jante", "la gorge", "l'objectif principal", "la mouche"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "English",
+                        "kind": "text",
+                        "value": "la progéniture",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": {
+                        "label": "Audio",
+                        "kind": "audio",
+                        "value": [{
+                            "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                            "slow": null
+                        }],
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "der Nachwuchs",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["der Nachwuchs", "der nachwuchs"],
+                "choices": ["A", "w", "N", "e", "c", "d", "r", "h", "a", "u", "s"],
+                "audio": {
+                    "label": "Audio",
+                    "kind": "audio",
+                    "value": [{
+                        "normal": "https://static.memrise.com/uploads/things/audio/468893843_251103_0250_49.mp3",
+                        "slow": null
+                    }],
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [{
+        "user_id": 5892033,
+        "ignored": false,
+        "last_date": "2026-02-23T08:03:44Z",
+        "created_date": "2026-02-18T07:47:01Z",
+        "next_date": "2026-02-24T08:04:49Z",
+        "interval": 1.0,
+        "growth_level": 14,
+        "current_streak": 2,
+        "starred": false,
+        "correct": 14,
+        "attempts": 16,
+        "total_streak": 2,
+        "is_difficult": true,
+        "not_difficult": false,
+        "learnable_id": "30729426895106"
+    }],
+    "session_source_info": {
+        "source_id": 6698294,
+        "source_type": "course_id_and_level_index",
+        "name": "German vocab",
+        "translated_name": "German vocab",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 1,
+        "level_id": 16258052,
+        "level_name": "New level",
+        "source_sub_index": 5,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

@@ -59,12 +59,6 @@ class DummyApiRequestor:
         return self.get_testset_json("course-365747_level-3_learning_session_preview.json")  # audio
         return self.get_testset_json("course-57289_level-1_learning_session_preview.json")  # hidden_info
 
-    def level_learning_session(self, idCourse, slugCourse, sessionType, **kwargs):
-        return {
-            "referer": "",
-            "csrftoken": "",
-        }
-
     def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
         return self.get_testset_text("course-1892646_level-1_multimedia.html")
 

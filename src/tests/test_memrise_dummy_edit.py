@@ -74,7 +74,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIs(type(result.get("rendered", None)), str)
 
     # -------------------------------------------------------------------------
-    # THINGS
+    # COURSE EDIT > THINGS
     # -------------------------------------------------------------------------
     def test_memrise_course_level_thing_add(self):
         result = self.memrise.level_thing_add(
@@ -207,7 +207,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertTrue(result.get("success", False))
 
     # -------------------------------------------------------------------------
-    # MULTIMEDIA
+    # COURSE EDIT > MULTIMEDIA
     # -------------------------------------------------------------------------
 
     def test_memrise_course_level_multimedia_edit(self):

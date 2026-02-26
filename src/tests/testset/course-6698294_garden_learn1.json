@@ -1,0 +1,173 @@
+{
+    "learnables": [{
+        "id": 31380484194562,
+        "learning_element": "richtig",
+        "definition_element": "correct",
+        "learning_element_tokens": ["richtig"],
+        "definition_element_tokens": ["correct"],
+        "difficulty": "unknown",
+        "item_type": "word",
+        "screens": {
+            "1": {
+                "item": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "richtig",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "definition": {
+                    "label": "English",
+                    "kind": "text",
+                    "value": "correct",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "visible_info": [],
+                "hidden_info": [],
+                "attributes": [],
+                "audio": null,
+                "markdown": false,
+                "video": null,
+                "template": "presentation",
+                "nugget": null
+            },
+            "2": {
+                "template": "multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "English",
+                        "kind": "text",
+                        "value": "correct",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "richtig",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["richtig"],
+                "choices": ["gewagt", "die Rinde", "rodeln", "verweisen", "verschobene", "drosseln", "ablehnen", "verdrängt", "die Gasse", "tröstlich", "besinnen", "bugsieren"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "3": {
+                "template": "reversed_multiple_choice",
+                "prompt": {
+                    "text": {
+                        "label": "German",
+                        "kind": "text",
+                        "value": "richtig",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "target",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "English",
+                    "kind": "text",
+                    "value": "correct",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "source",
+                    "markdown": false
+                },
+                "correct": ["correct"],
+                "choices": ["coller", "cogiter", "commencer", "considérer", "controversé", "constituer", "confirmer", "collaborer", "le contour", "le couvercle", "la colonisation", "en ce qui concerne"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            },
+            "4": {
+                "template": "typing",
+                "prompt": {
+                    "text": {
+                        "label": "English",
+                        "kind": "text",
+                        "value": "correct",
+                        "alternatives": [],
+                        "style": [],
+                        "direction": "source",
+                        "markdown": false
+                    },
+                    "audio": null,
+                    "video": null,
+                    "image": null
+                },
+                "answer": {
+                    "label": "German",
+                    "kind": "text",
+                    "value": "richtig",
+                    "alternatives": [],
+                    "style": [],
+                    "direction": "target",
+                    "markdown": false
+                },
+                "correct": ["richtig"],
+                "choices": ["c", "g", "n", "b", "i", "r", "t", "h"],
+                "audio": null,
+                "markdown": false,
+                "attributes": [],
+                "post_answer_info": null,
+                "placeholder": null,
+                "feedback_screen": null,
+                "is_strict": false,
+                "translation_prompt": null,
+                "gap_prompt": null
+            }
+        }
+    }],
+    "progress": [],
+    "session_source_info": {
+        "source_id": 6698294,
+        "source_type": "course_id_and_level_index",
+        "name": "German vocab",
+        "translated_name": "German vocab",
+        "learnable_ids_to_course_ids": {},
+        "num_due_for_review": 0,
+        "level_id": 16271004,
+        "level_name": "Test",
+        "source_sub_index": 8,
+        "template_id": null,
+        "parent_source_id": null,
+        "parent_template_id": null
+    },
+    "settings": {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "prioritize_typing": false,
+        "disable_typing": false
+    }
+}

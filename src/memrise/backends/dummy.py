@@ -150,8 +150,65 @@ class DummyMemrise(Memrise):
             }]
         }
 
-    def track_progress(self, path, data, **kwargs):
-        return {}
+    # +-----------------------------------------------------
+    # | LEARNING SESSION
+    # +-----------------------------------------------------
+    def learning_session_register_end(self, data, **kwargs):
+        return {
+            "next_session": {
+                "single_continue": {
+                    "session_type": "learn",
+                    "is_pro_mode": False,
+                    "url": "/aprender/learn?course_id=6698294",
+                    "unlocked_state": "always_unlocked",
+                    "badge_count": None
+                },
+                "mode_selector": {
+                    "classic_review": {
+                        "is_pro_mode": False,
+                        "url": "/aprender/review?course_id=6698294",
+                        "badge_count": 0,
+                        "is_enabled": True,
+                        "unlocked_state": "always_unlocked"
+                    },
+                }
+            },
+            "summary_stats": {
+                "course": {
+                    "id": 6698294,
+                    "name": "German vocab",
+                    "size": 305,
+                    "due_review": 0,
+                    "learned": 189,
+                    "difficult": 8,
+                    "ignored": 0,
+                    "percent_complete": 61,
+                    "completed_this_session": False
+                },
+                "level": {
+                    "id": 16271004,
+                    "name": "Test",
+                    "size": 1,
+                    "due_review": 0,
+                    "learned": 0,
+                    "difficult": 0,
+                    "ignored": 0,
+                    "percent_complete": 0,
+                    "completed_this_session": False
+                },
+                "goal": None,
+                "rank": {
+                    "unlocked_new_rank": False,
+                    "level_number": 15
+                }
+            }
+        }
+
+    def learning_session_register_progress(self, data, **kwargs):
+        return {
+            "sync_token":0,
+            "thingusers":[],
+        }
 
     #+-----------------------------------------------------
     #| COURSES

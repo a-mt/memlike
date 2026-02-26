@@ -67,6 +67,13 @@ class view:
 
 
 class level:
+    def gotoCourse(self, idCourse, slugCourse, lvl):
+        web.add_flash_message(
+            f"Could not retrieve the requested level ({lvl})",
+            level=web.config.FLASH_MESSAGES_TAGS.ERROR,
+        )
+        raise web.seeother(f"/course/{idCourse}/{slugCourse}/", absolute=True)
+
     def GET(self, idCourse, slugCourse, lvl, path2=""):
         try:
             course = memrise.course(idCourse, slugCourse)
@@ -81,7 +88,7 @@ class level:
                 }
             else:
                 if lvl not in course["levels"]:
-                    return web.config.template.prender._404()
+                    return self.gotoCourse(idCourse, slugCourse, lvl)
 
                 level = course["levels"][lvl]
 
@@ -101,6 +108,10 @@ class level:
             if e.response.status_code == 403:
                 return web.config.template.prender._403()
             else:
+                # The level doesn't exist: go to the course's page
+                if course:
+                    return self.gotoCourse(idCourse, slugCourse, lvl)
+
                 return web.config.template.prender._404()
 
         # Render the level content

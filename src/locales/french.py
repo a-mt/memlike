@@ -82,6 +82,10 @@ misc = {
     "import_err_ext": "Seul les fichiers .csv sont acceptés (séparé par des virgules)",
     "import_err_empty": "Les entêtes du fichier ne correspondent pas. Assurez-vous que votre fichier est séparé par des virgules.",
     "play_audio": "Écouter l'audio",
+    "learn_err_empty_preview": "Il n'y a pas d'éléments à visualiser",
+    "learn_err_empty_review": "Il n'y a pas d'éléments à réviser",
+    "learn_err_empty_learn": "Il n'y a pas d'éléments à apprendre",
+    "learn_err_empty": "Il n'y a pas d'éléments",
 }
 
 menu = {

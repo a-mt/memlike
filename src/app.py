@@ -59,6 +59,7 @@ urls = (
 )
 # fmt: on
 
+
 # ---
 # Worker-wide settings
 app = web.application(
@@ -130,6 +131,7 @@ app.add_processor(lang._processor)
 # ---
 # Flash messages processor
 def flash_load():
+
     # Redirect HTTP ot HTTPS
     if web.ctx.environ.get("HTTP_X_FORWARDED_PROTO") == "http":
         raise web.seeother(web.ctx.home.replace("http://", "https://").replace(":80", "") + web.ctx.fullpath)
@@ -141,8 +143,10 @@ def flash_load():
     else:
         web.ctx.flash = {}
 
+    web.config.template["flash"] = web.storage(web.ctx.flash)
 
 app.add_processor(web.loadhook(flash_load))
+
 
 # ---
 # Run app

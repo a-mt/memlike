@@ -211,7 +211,7 @@ def update_function(old, new):
     for name in func_attrs:
         try:
             setattr(old, name, getattr(new, name))
-        except (AttributeError, TypeError):
+        except (AttributeError, TypeError, ValueError):
             pass
 
 

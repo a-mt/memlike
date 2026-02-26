@@ -108,6 +108,7 @@ if web.config.get("template", None) is None:
     template["render"] = web.template.render(ROOTDIR + "/templates/", base="_layout", globals=template)
     template["prender"] = web.template.render(ROOTDIR + "/templates/", globals=template)
     template["debug"] = debug
+    template["flash"] = web.storage({})
 
     template["sorted"] = sorted
     template["str"] = str
@@ -125,6 +126,38 @@ if web.config.get("template", None) is None:
     template["MENU"] = menu
 
     web.config.template = template
+
+    # Helper for controllers: read JSON body
+    def jsoninput():
+        if web.ctx.env.get("CONTENT_TYPE", "").lower() != "application/json":
+            return
+
+        text = web.data()
+        return json.loads(text)
+
+    setattr(web, "jsoninput", jsoninput)
+
+    # Add a flash message in session
+    web.config.FLASH_MESSAGES_TAGS = web.storage({
+        "DEBUG": "debug",
+        "INFO": "info",
+        "SUCCESS": "success",
+        "WARNING": "warning",
+        "ERROR": "danger",
+    })
+    def add_flash_message(message, level=web.config.FLASH_MESSAGES_TAGS.INFO):
+        web.ctx.session = web.ctx.get('session', None) or web.storage({})
+
+        web.ctx.session.flash = web.ctx.session.get('flash', None) or web.storage({})
+
+        web.ctx.session.flash.messages = web.ctx.session.flash.get('messages', None) or []
+
+        web.ctx.session.flash.messages.append({
+            "message": message,
+            "level": level,
+        })
+
+    setattr(web, "add_flash_message", add_flash_message)
 
 # ---
 # Configure logging
