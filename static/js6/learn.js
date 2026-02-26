@@ -12,10 +12,11 @@ const build = {
   date: process.env.BUILD_DATE,
 };
 
-/* global $ */
+/* global $, window, document, console */
+/* global setTimeout, setInterval, clearInterval */
 $(document).ready(function(){
-  if(window.$_URL.lvl == "") {
-    window.course.levels[1] = {"name": "", "type": 1};
+  if(window.$_URL.lvl == '') {
+    window.course.levels[1] = {'name': '', 'type': 1};
   }
   Object.freeze(window.course);
   render(<Learn
@@ -112,12 +113,12 @@ var Timer = {
       clearInterval(Timer.interval);
       Timer.isRunning = false;
 
-      $('#speed_review-timer').css("height", '100%');
+      $('#speed_review-timer').css('height', '100%');
 
       Timer.callback && Timer.callback();
     } else {
       var percent = 1 - (Timer.remainingTime / Timer.maxTime);
-      $('#speed_review-timer').css("height", (percent * 100) + '%');
+      $('#speed_review-timer').css('height', (percent * 100) + '%');
     }
   }
 };
@@ -130,10 +131,10 @@ const LEARN_UNTIL_GROWTH_LEVEL = 6;
 const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
 
 const TEST_DIFFICULTY = {
-  "Unknown": 0,
-  "Easy": 1,
-  "Moderate": 2,
-  "Hard": 3,
+  'Unknown': 0,
+  'Easy': 1,
+  'Moderate': 2,
+  'Hard': 3,
 };
 
 const REVIEW_INTERVAL_LADDER = [
@@ -184,12 +185,12 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    if(typeof this.props.level_idx == "string") { // all
+    if(typeof this.props.level_idx == 'string') { // all
       this.levels          = this.props.level_idx.split(',').map((i) => parseInt(i));
 
       this.state.level_idx = this.levels[0] || 1;
       this.state.maxlevel  = this.levels[this.levels.length-1] || 1;
-      this.state.get_all   = (this.props.session_type != "preview");
+      this.state.get_all   = (this.props.session_type != 'preview');
     } else {
       this.state.level_idx = parseInt(this.props.level_idx);
       this.state.maxlevel  = parseInt(this.props.level_idx);
@@ -223,7 +224,7 @@ class Learn extends Component {
     $('main').on('click', '.tapping .button', function(){
       var parent = this.parentNode;
 
-      if(parent.className == "keyboard") {
+      if(parent.className == 'keyboard') {
         parent.previousElementSibling.innerHTML += '<button class="button" data-id="' + this.getAttribute('id') + '">' + this.innerHTML + '</button>';
         this.classList.add('disabled');
 
@@ -300,7 +301,7 @@ class Learn extends Component {
     // Update level title
     if(!this.state.get_all) {
       if(!prevState.data || prevState.level_idx != this.state.level_idx) {
-        var name = "";
+        var name = '';
         var idx = this.state.level_idx;
 
         if (idx < 1) {
@@ -309,19 +310,19 @@ class Learn extends Component {
         if (idx in window.course.levels) {
           name = window.course.levels[idx].name;
         }
-        var title = idx + (name ? " - " + name : "");
+        var title = idx + (name ? ' - ' + name : '');
         document.getElementById('level-title').innerHTML = title;
       }
-    } else if(this.props.session_type == "speed_review"){
+    } else if(this.props.session_type == 'speed_review'){
       Timer.start(this.time_over.bind(this));
     }
 
     // Debug screen
     $('#debug-screen').on('click', 'li', function(e){
-      if(e.target.classList.contains("disabled")) return;
+      if(e.target.classList.contains('disabled')) return;
 
       this.setState({
-        debug_screen: e.target.innerHTML == "default" ? false : e.target.innerHTML
+        debug_screen: e.target.innerHTML == 'default' ? false : e.target.innerHTML
       });
     }.bind(this));
   }
@@ -459,13 +460,13 @@ class Learn extends Component {
     if (isNaN(d.getTime())) {
       return new Date();
     }
-    return d;d
+    return d;
   }
 
   /**
    * Build the "data" to store in the current state
    * from the data retrieved from the backend
-   * 
+   *
    * @param string session_type
    * @param dict data
    * @return dict
@@ -551,15 +552,15 @@ class Learn extends Component {
 
         if (!gameData.boxes.length) {
           switch (session_type) {
-            case "learn":
+            case 'learn':
               error = window.i18n.learn_err_empty_learn;
               break;
 
-            case "preview":
+            case 'preview':
               error = window.i18n.learn_err_empty_preview;
               break;
 
-            case "review":
+            case 'review':
               error = window.i18n.learn_err_empty_review;
               break;
 
@@ -586,7 +587,7 @@ class Learn extends Component {
         if(xhr.status == 403) {
           this.setState({error: 403});
         } else {
-          console.error(xhr.status + " " + xhr.statusText);
+          console.error(xhr.status + ' ' + xhr.statusText);
           this.setState({error: 500});
         }
       }.bind(this)
@@ -599,7 +600,7 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if(this.state.screen == "recap" || this.state.error) return;
+    if(this.state.screen == 'recap' || this.state.error) return;
     var msg = 'Your changes will be lost.';
 
     e = e || window.event;
@@ -615,8 +616,8 @@ class Learn extends Component {
 
     // Press enter
     if(key == 13) {
-      if(e.target.classList.contains("button") || e.target.classList.contains("choice-box")) {
-        if(!e.target.classList.contains("disabled")) {
+      if(e.target.classList.contains('button') || e.target.classList.contains('choice-box')) {
+        if(!e.target.classList.contains('disabled')) {
           e.target.click();
         }
         return;
@@ -624,7 +625,7 @@ class Learn extends Component {
       this.handle_submit(e);
 
     // Multiplice choice: press a number
-    } else if(this.expectChoice == "numeric" && key > 96 && key <= 105) {
+    } else if(this.expectChoice == 'numeric' && key > 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
       if(char <= this.choices.length) {
@@ -640,11 +641,11 @@ class Learn extends Component {
       this.getNext();
 
     // Typing
-    } else if(this.expectChoice == "text") {
-      this.choice($('.typing input').val() || "");
+    } else if(this.expectChoice == 'text') {
+      this.choice($('.typing input').val() || '');
 
     // Tapping
-    } else if(this.expectChoice == "tapping") {
+    } else if(this.expectChoice == 'tapping') {
       var chosen = [];
       $('.tapping .input button').each(function(){
         chosen.push(this.innerHTML);
@@ -664,7 +665,7 @@ class Learn extends Component {
 
   // Multiple choice: User chooses a answer
   multiple_choice(i) {
-    if(this.state.screen == "lost") {
+    if(this.state.screen == 'lost') {
       return;
     }
     Timer.stop();
@@ -689,9 +690,9 @@ class Learn extends Component {
 
   time_over() {
     this.choice_feedback({
-      value : "",
+      value : '',
       score : 0,
-      kind  : ""
+      kind  : ''
     });
   }
 
@@ -701,7 +702,7 @@ class Learn extends Component {
 
     var score    = 0,
         testText = sanitizeTyping(text, this.is_strict).toLowerCase(),
-        refText  = "";
+        refText  = '';
 
     // Text input
     for(let i=0; i<this.choices.length; i++) {
@@ -719,17 +720,17 @@ class Learn extends Component {
       testValue: testText,
       refValue : refText,
       score    : score,
-      kind     : "text"
+      kind     : 'text'
     });
   }
 
   // Tapping: User order words
   tapping_choice(entry) {
     var isValid = 0;
-    entry = entry.join(" ").trim();
+    entry = entry.join(' ').trim();
 
     for(var i=0; i<this.choices.length; i++) {
-      if(entry == this.choices[i].join(" ").trim()) {
+      if(entry == this.choices[i].join(' ').trim()) {
         isValid = 1;
         break;
       }
@@ -738,7 +739,7 @@ class Learn extends Component {
     this.choice_feedback({
       value : entry,
       score : isValid ? 1 : 0,
-      kind  : "text"
+      kind  : 'text'
     });
   }
 
@@ -748,11 +749,11 @@ class Learn extends Component {
 
     // Score
     switch(this.props.session_type){
-      case "learn":
+      case 'learn':
         points = calculate_points_learn_v1(score);
         break;
 
-      case "classic_review":
+      case 'classic_review':
         points = calculate_points_learn_v1(score);
         if(current_streak) {
           points = calculate_points_review_v1(points, current_streak);
@@ -762,8 +763,8 @@ class Learn extends Component {
         }
         break;
 
-      case "speed_review":
-        if(data.score == 1) {
+      case 'speed_review':
+        if(score == 1) {
           points = calculate_points_speed_v1(time_spent);
         }
         break;
@@ -806,7 +807,7 @@ class Learn extends Component {
 
     Object.assign(progress, this.getNextIntervalDate(progress, progress.last_date, input.score));
     Object.assign(progress, this.getNextStreak(progress, input.score));
-    
+
     this.state.data.progress_map[learnable_id] = progress;
 
     // Create an event (for stats)
@@ -819,7 +820,7 @@ class Learn extends Component {
         points       : 0,
         bonus_points : 0,
     };
-    if (this.props.session_type == "speed_review") {
+    if (this.props.session_type == 'speed_review') {
       event.time_spent = Timer.get_time();
 
       if (!is_correct) {
@@ -845,11 +846,11 @@ class Learn extends Component {
     }
 
     // Display correction
-    if(this.props.session_type == "speed_review") {
+    if(this.props.session_type == 'speed_review') {
       this.show_correct(input);
 
       if(this.state.hearts == 0) {
-        this.state.screen = "lost";
+        this.state.screen = 'lost';
         this.state.error  = 1;
 
         $(document.body).append(`<div class="overlay">
@@ -874,14 +875,14 @@ class Learn extends Component {
         num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0),
       });
       setTimeout(function(){
-        $(".choice-box").removeClass("correct").removeClass("incorrect");
+        $('.choice-box').removeClass('correct').removeClass('incorrect');
         this.getNext();
       }.bind(this), 500);
 
     } else {
       this.setState({
         recap: recap,
-        screen: "correction",
+        screen: 'correction',
         correct: input,
         debug_screen: false,
         points: this.state.points + event.points,
@@ -896,13 +897,13 @@ class Learn extends Component {
   }
 
   show_correct(input) {
-    if("i" in input) {
-      $("#choice-" + (input.i+1)).addClass(input.score == 1 ? "correct" : "incorrect");
+    if('i' in input) {
+      $('#choice-' + (input.i+1)).addClass(input.score == 1 ? 'correct' : 'incorrect');
     }
     if(input.score != 1) {
       for(var j=0; j<this.choices.length; j++) {
         if(this.choices[j].attributes.isValid) {
-          $("#choice-" + (j+1)).addClass("correct");
+          $('#choice-' + (j+1)).addClass('correct');
           break;
         }
       }
@@ -920,7 +921,7 @@ class Learn extends Component {
       });
 
     // Next level or go back to course's page
-    } else if(this.state.screen == "recap" || this.state.level_type == 2){
+    } else if(this.state.screen == 'recap' || this.state.level_type == 2){
       if(!this.state.get_all && this.state.level_idx < this.state.maxlevel) {
         if(this.state.data) {
           this.setState({
@@ -939,7 +940,7 @@ class Learn extends Component {
 
       this.setState({
         i: this.state.n,
-        screen: "recap"
+        screen: 'recap'
       }, function(){
         window.imgZoom && window.imgZoom.reset();
       });
@@ -953,14 +954,14 @@ class Learn extends Component {
   /**
    * Compute the next growh level for the given progress,
    * assuming the user gave the right answer
-   * 
+   *
    * @param dict progress
    * @param int growthLevel
    */
   getNextGrowthLevel(progress, difficulty=TEST_DIFFICULTY.Easy) {
 
     // FirstOnboardingSessionGrowthLevelStrategy
-    if (this.props.session_type == "first_session") {
+    if (this.props.session_type == 'first_session') {
       return 2 === progress.growth_level ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
     }
 
@@ -972,7 +973,7 @@ class Learn extends Component {
     // SuperchargeGrowthLevelStrategy
     return (
       progress.attempts === progress.correct && progress.growth_level < LEARN_UNTIL_GROWTH_LEVEL && (
-          difficulty == TEST_DIFFICULTY.Easy && progress.growth_level >= 2 
+          difficulty == TEST_DIFFICULTY.Easy && progress.growth_level >= 2
        || difficulty == TEST_DIFFICULTY.Moderate && progress.growth_level >= 3
       )
     ) ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
@@ -980,7 +981,7 @@ class Learn extends Component {
 
   /**
    * Create a new date, with [interval] days added to date
-   * 
+   *
    * @param Date date
    * @param float interval (in days) - see REVIEW_INTERVAL_LADDER
    * @return Date
@@ -1003,7 +1004,7 @@ class Learn extends Component {
   /**
    * Retrieve the index corresponding
    * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
-   * 
+   *
    * @param float interval
    * @return int index
    */
@@ -1019,7 +1020,7 @@ class Learn extends Component {
 
   /**
    * Compute the interval and next_date for the given progress
-   * 
+   *
    * @param dict progress
    * @param Date date_answer
    * @param float score
@@ -1075,7 +1076,7 @@ class Learn extends Component {
     var interval = REVIEW_INTERVAL_LADDER[rungIndex].interval;
     return {
       interval,
-      when     : date_answer, 
+      when     : date_answer,
       next_date: this.getNextDate(interval, date_answer),
     }
   }
@@ -1083,7 +1084,7 @@ class Learn extends Component {
   /**
    * Compute whether the progress of the current learnable
    * is now considered to be difficult
-   * 
+   *
    * @param dict progress
    * @return bool
    */
@@ -1104,7 +1105,7 @@ class Learn extends Component {
 
   /**
    * Compute the attempts and streak for the given progress
-   * 
+   *
    * @param dict progress
    * @param float score
    * @return dict
@@ -1169,16 +1170,16 @@ class Learn extends Component {
       var batch = events.splice(0, 50);
 
       requests.push({
-        url: "/ajax/register_progress",
-        method: "POST",
+        url: '/ajax/register_progress',
+        method: 'POST',
         headers: {
-          "X-CSRFToken": this.state.data.csrftoken,
-          "X-Referer"  : this.state.data.referer,
+          'X-CSRFToken': this.state.data.csrftoken,
+          'X-Referer'  : this.state.data.referer,
         },
         data: JSON.stringify({
           events: batch,
         }),
-        contentType: "application/json",
+        contentType: 'application/json',
       });
     }
 
@@ -1186,22 +1187,22 @@ class Learn extends Component {
     var data = {
       session_points: this.state.points,
       //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
-      session_type: this.props.session_type == "classic_review" ? "review" : this.props.session_type,
-      session_source_type: "course",
+      session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
+      session_source_type: 'course',
       session_source_id: window.course.id,
     };
     if (!this.state.get_all) {
       data.session_source_sub_index = this.state.level_idx;
     }
     requests.push({
-      url: "/ajax/register_end",
-      method: "POST",
+      url: '/ajax/register_end',
+      method: 'POST',
       headers: {
-        "X-CSRFToken": this.state.data.csrftoken,
-        "X-Referer"  : this.state.data.referer,
+        'X-CSRFToken': this.state.data.csrftoken,
+        'X-Referer'  : this.state.data.referer,
       },
       data: JSON.stringify(data),
-      contentType: "application/json",
+      contentType: 'application/json',
     });
 
     // Send each request one after the other
@@ -1231,8 +1232,8 @@ class Learn extends Component {
     // Something went wrong
     if(this.state.error) {
       if(this.state.error == 403) {
-        return <p>{window.i18n._403} <a href="/login" class="link">{window.i18n.login}</a></p>;
-      } else if (typeof this.state.error == "string") {
+        return <p>{window.i18n._403} <a href="/login" className="link">{window.i18n.login}</a></p>;
+      } else if (typeof this.state.error == 'string') {
         return <p>{this.state.error}</p>;
       } else {
         return <p>{window.i18n.error}</p>;
@@ -1241,7 +1242,7 @@ class Learn extends Component {
 
     // Loading data
     if(!this.state.data) {
-      return <div class="loading-spinner"></div>;
+      return <div className="loading-spinner"></div>;
     }
 
     // Preview thing
@@ -1259,7 +1260,7 @@ class Learn extends Component {
     }
 
     // Recap
-    if(this.state.screen == "recap") {
+    if(this.state.screen == 'recap') {
       return <div>{this.addStats()}{this.screen()}</div>;
     }
 
@@ -1271,26 +1272,26 @@ class Learn extends Component {
       {this.addStats()}
 
       {/* SCREEN */}
-      {this.props.session_type == "speed_review"
-        ? <div class="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
+      {this.props.session_type == 'speed_review'
+        ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
         : this.screen()}
 
-      <span class="btn submit" tabindex="0">{window.i18n.next}</span>
+      <span className="btn submit" tabIndex="0">{window.i18n.next}</span>
     </div>;
   }
 
   addStats() {
     var percent = (this.state.n ? Math.ceil(this.state.i / this.state.n * 100) : 100);
 
-    return <div class="progress-stats">
-      {this.props.session_type == "speed_review" &&
-        <div class="hearts-wrapper">{[1,2,3].map((i) => <span class={"heart " + (i <= this.state.hearts ? "full" : "empty")}></span>)}</div>}
-      <div class="points-num">{this.state.points}</div>
+    return <div className="progress-stats">
+      {this.props.session_type == 'speed_review' &&
+        <div className="hearts-wrapper">{[1,2,3].map((i) => <span key={i} className={'heart ' + (i <= this.state.hearts ? 'full' : 'empty')}></span>)}</div>}
+      <div className="points-num">{this.state.points}</div>
 
-      <div class="progress-bar" role="progressbar" aria-valuenow={this.state.i} aria-valuemin="0" aria-valuemax={this.state.i}>
-        <div class="counter">{this.state.i} / {this.state.n}</div>
-        <div class="progress-bar-active" style={{'clip-path': 'polygon(0 0, '+percent+'% 0, '+percent+'% 100%, 0 100%)'}}>
-          <div class="counter">{this.state.i} / {this.state.n}</div>
+      <div className="progress-bar" role="progressbar" aria-valuenow={this.state.i} aria-valuemin="0" aria-valuemax={this.state.i}>
+        <div className="counter">{this.state.i} / {this.state.n}</div>
+        <div className="progress-bar-active" style={{'clip-path': 'polygon(0 0, '+percent+'% 0, '+percent+'% 100%, 0 100%)'}}>
+          <div className="counter">{this.state.i} / {this.state.n}</div>
         </div>
       </div>
     </div>;
@@ -1302,45 +1303,45 @@ class Learn extends Component {
         current = this.state.debug_screen;
 
     return <ul id="debug-screen">
-      <li class={current ? "" : "active"}>default</li>
-      <li class={("multiple_choice" in screen && screen.multiple_choice ? "" : "disabled")
-              + (current == "multiple_choice" ? " active" : "")}>
+      <li className={current ? '' : 'active'}>default</li>
+      <li className={('multiple_choice' in screen && screen.multiple_choice ? '' : 'disabled')
+              + (current == 'multiple_choice' ? ' active' : '')}>
         multiple_choice
       </li>
-      <li class={("typing" in screen && screen.typing ? "" : "disabled")
-              + (current == "typing" ? " active" : "")}>
+      <li className={('typing' in screen && screen.typing ? '' : 'disabled')
+              + (current == 'typing' ? ' active' : '')}>
         typing
       </li>
-      <li class={("reversed_multiple_choice" in screen && screen.reversed_multiple_choice ? "" : "disabled")
-              + (current == "reversed_multiple_choice" ? " active" : "")}>
+      <li className={('reversed_multiple_choice' in screen && screen.reversed_multiple_choice ? '' : 'disabled')
+              + (current == 'reversed_multiple_choice' ? ' active' : '')}>
         reversed_multiple_choice
       </li>
-      <li class={("audio_multiple_choice" in screen && screen.audio_multiple_choice ? "" : "disabled")
-              + (current == "audio_multiple_choice" ? " active" : "")}>
+      <li className={('audio_multiple_choice' in screen && screen.audio_multiple_choice ? '' : 'disabled')
+              + (current == 'audio_multiple_choice' ? ' active' : '')}>
         audio_multiple_choice
       </li>
-      <li class={("tapping" in screen && screen.tapping ? "" : "disabled")
-              + (current == "tapping" ? " active" : "")}>
+      <li className={('tapping' in screen && screen.tapping ? '' : 'disabled')
+              + (current == 'tapping' ? ' active' : '')}>
         tapping
       </li>
-      <li class={("typing" in screen && screen.typing ? "" : "disabled")
-              + (current == "copytyping" ? " active" : "")}>
+      <li className={('typing' in screen && screen.typing ? '' : 'disabled')
+              + (current == 'copytyping' ? ' active' : '')}>
         copytyping
       </li>
-      <li class={("typing" in screen && screen.typing.audio ? "" : "disabled")
-              + (current == "audio_typing" ? " active" : "")}>
+      <li className={('typing' in screen && screen.typing.audio ? '' : 'disabled')
+              + (current == 'audio_typing' ? ' active' : '')}>
         audio_typing
       </li>
-      <li class={("reversed_multiple_choice" in screen && screen.reversed_multiple_choice.prompt.video ? "" : "disabled")
-              + (current == "reversed_multiple_choice_prompt_video" ? " active" : "")}>
+      <li className={('reversed_multiple_choice' in screen && screen.reversed_multiple_choice.prompt.video ? '' : 'disabled')
+              + (current == 'reversed_multiple_choice_prompt_video' ? ' active' : '')}>
         reversed_multiple_choice_prompt_video
       </li>
-      <li class={("multiple_choice" in screen && screen.multiple_choice.prompt.video ? "" : "disabled")
-              + (current == "video-pre-presentation" ? " active" : "")}>
+      <li className={('multiple_choice' in screen && screen.multiple_choice.prompt.video ? '' : 'disabled')
+              + (current == 'video-pre-presentation' ? ' active' : '')}>
         video-pre-presentation
       </li>
-      <li class={(screen.presentation ? "" : "disabled")
-              + (current == "presentation" ? " active" : "")}>
+      <li className={(screen.presentation ? '' : 'disabled')
+              + (current == 'presentation' ? ' active' : '')}>
         presentation
       </li>
     </ul>;
@@ -1349,35 +1350,35 @@ class Learn extends Component {
   screen() {
     if(this.state.debug_screen) {
       switch(this.state.debug_screen) {
-        case "multiple_choice"         : return this.render_tpl({ template: "multiple_choice" });
-        case "typing"                  : return this.render_tpl({ template: "typing" });
-        case "reversed_multiple_choice": return this.render_tpl({ template: "reversed_multiple_choice" });
-        case "audio_multiple_choice"   : return this.render_tpl({ template: "audio_multiple_choice" });
-        case "tapping"                 : return this.render_tpl({ template: "tapping" });
-        case "copytyping"              : return this.render_tpl({ template: "copytyping" });
-        case "audio_typing"            : return this.render_tpl({ template: "typing", promptWith: "audio" });
-        case "reversed_multiple_choice_prompt_video": return this.render_tpl({ template: "reversed_multiple_choice", promptWith: "video" });
-        case "video-pre-presentation"  : return this.render_tpl({ template: "multiple_choice", promptWith: "video" });
-        case "presentation"            : return this.render_tpl({ template: "presentation" });
+        case 'multiple_choice'         : return this.render_tpl({ template: 'multiple_choice' });
+        case 'typing'                  : return this.render_tpl({ template: 'typing' });
+        case 'reversed_multiple_choice': return this.render_tpl({ template: 'reversed_multiple_choice' });
+        case 'audio_multiple_choice'   : return this.render_tpl({ template: 'audio_multiple_choice' });
+        case 'tapping'                 : return this.render_tpl({ template: 'tapping' });
+        case 'copytyping'              : return this.render_tpl({ template: 'copytyping' });
+        case 'audio_typing'            : return this.render_tpl({ template: 'typing', promptWith: 'audio' });
+        case 'reversed_multiple_choice_prompt_video': return this.render_tpl({ template: 'reversed_multiple_choice', promptWith: 'video' });
+        case 'video-pre-presentation'  : return this.render_tpl({ template: 'multiple_choice', promptWith: 'video' });
+        case 'presentation'            : return this.render_tpl({ template: 'presentation' });
       }
     }
 
-    if(this.state.screen == "recap") {
+    if(this.state.screen == 'recap') {
       return this.recap();
     }
-    if(this.state.screen == "correction") {
+    if(this.state.screen == 'correction') {
       return this.render_presentation(this.state.correct || true);
     }
 
     // No defined screen: display next learnable
     const item = this.state.data.boxes[this.state.i];
     if(!item) {
-      console.log("No item to display", this.state.data.boxes, this.state.i);
+      console.log('No item to display', this.state.data.boxes, this.state.i);
       return null;
     }
     const screens = this.state.data.screen_template_map[item.learnable_id];
     if(!screens) {
-      console.log("No screen to display", this.state.data.screen_template_map, item);
+      console.log('No screen to display', this.state.data.screen_template_map, item);
       return null;
     }
     console.log('Box', item, screens);
@@ -1386,72 +1387,72 @@ class Learn extends Component {
       switch(item.learn_session_level) {
         case 1:
             return this.render_tpl({
-              template: "multiple_choice",
+              template: 'multiple_choice',
               nChoices: 4
             });
 
         case 2:
           if(screens.multiple_choice.video) {
             return this.render_tpl({
-              template: "reversed_multiple_choice",
+              template: 'reversed_multiple_choice',
               nChoices: 4,
-              promptWith: "video"
+              promptWith: 'video'
             });
           }
           if(screens.audio_multiple_choice && Math.random() > .5) {
             return this.render_tpl({
-              template: "audio_multiple_choice"
+              template: 'audio_multiple_choice'
             });
           }
           if(screens.tapping) {
             return this.render_tpl({
-              template: "tapping",
+              template: 'tapping',
               difficulty: 0
             });
           }
           return this.render_tpl({
-            template: "reversed_multiple_choice",
+            template: 'reversed_multiple_choice',
             nChoices: 4
           });
 
         case 3:
           if(screens.tapping) {
             return this.render_tpl({
-              template: "tapping",
+              template: 'tapping',
               difficulty: .5
             });
           }
           if(screens.typing) {
             return this.render_tpl({
-              template: "typing"
+              template: 'typing'
             });
           }
           return this.render_tpl({
-            template: "multiple_choice",
+            template: 'multiple_choice',
             nChoices: 8
           });
 
         case 4:
           if(screens.multiple_choice.video) {
             return this.render_tpl({
-              template: "reversed_multiple_choice",
+              template: 'reversed_multiple_choice',
               nChoices: 4,
-              promptWith: "video"
+              promptWith: 'video'
             });
           }
           if(Math.random() > .5) {
             var s = [];
             if(screens.typing.audio) {
               s.push({
-                template: "typing",
-                promptWith: "audio"
+                template: 'typing',
+                promptWith: 'audio'
               });
             }
             if(screens.reversed_multiple_choice.audio) {
               s.push({
-                template: "reversed_multiple_choice",
+                template: 'reversed_multiple_choice',
                 nChoices: 4,
-                promptWith: "audio"
+                promptWith: 'audio'
               });
             }
             if(s.length > 0) {
@@ -1459,55 +1460,55 @@ class Learn extends Component {
             }
           }
           return this.render_tpl({
-            template: "reversed_multiple_choice",
+            template: 'reversed_multiple_choice',
             nChoices: [4, 6].random()
           });
 
         case 5:
           if(screens.taping) {
             return this.render_tpl({
-              template: "tapping",
+              template: 'tapping',
               difficulty: .5
             });
           }
           return this.render_tpl({
-            template: "multiple_choice",
+            template: 'multiple_choice',
             nChoices: [6, 8].random()
           });
 
         default:
           if(screens.typing) {
             return this.render_tpl({
-              template: "typing"
+              template: 'typing'
             });
           }
           return {
-            template: "multiple_choice",
+            template: 'multiple_choice',
             nChoices: 8
           };
       }
     }
 
-    if(this.props.session_type == "speed_review") {
+    if(this.props.session_type == 'speed_review') {
       return this.render_tpl({
-        template: "multiple_choice",
+        template: 'multiple_choice',
         nChoices: 4
       });
     }
 
-    if(item.template == "sentinel") {
+    if(item.template == 'sentinel') {
       if(screens.typing) {
         return this.render_tpl({
-          template: "typing"
+          template: 'typing'
         });
       }
       if(screens.audio_multiple_choice && Math.random() > .5) {
         return this.render_tpl({
-          template: "audio_multiple_choice"
+          template: 'audio_multiple_choice'
         });
       }
       return this.render_tpl({
-          template: "multiple_choice",
+          template: 'multiple_choice',
           nChoices: 8
       });
     }
@@ -1518,13 +1519,13 @@ class Learn extends Component {
     this.template = setting.template;
 
     switch(setting.template) {
-      case "multiple_choice": return this.render_multiple_choice(setting);
-      case "typing": return this.render_typing(setting);
-      case "reversed_multiple_choice": return this.render_reversed_multiple_choice(setting);
-      case "audio_multiple_choice": return this.render_audio_multiple_choice(setting);
-      case "tapping": return this.render_tapping(setting);
-      case "copytyping": return this.render_copytyping(setting);
-      case "presentation":
+      case 'multiple_choice': return this.render_multiple_choice(setting);
+      case 'typing': return this.render_typing(setting);
+      case 'reversed_multiple_choice': return this.render_reversed_multiple_choice(setting);
+      case 'audio_multiple_choice': return this.render_audio_multiple_choice(setting);
+      case 'tapping': return this.render_tapping(setting);
+      case 'copytyping': return this.render_copytyping(setting);
+      case 'presentation':
         return this.render_presentation();
       default:
         console.error(setting.template + " doesn't exist");
@@ -1598,41 +1599,41 @@ class Learn extends Component {
 
   render_audio_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen("audio_multiple_choice")}
+              item={this.get_screen('audio_multiple_choice')}
               nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
   render_reversed_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen("reversed_multiple_choice")}
+              item={this.get_screen('reversed_multiple_choice')}
               nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
   render_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen("multiple_choice")}
-              nChoices={setting.nChoices || (this.props.session_type == "speed_review" ? 4 : 9)}
+              item={this.get_screen('multiple_choice')}
+              nChoices={setting.nChoices || (this.props.session_type == 'speed_review' ? 4 : 9)}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
   render_typing(setting) {
-    return <Typing item={this.get_screen("typing")} setChoices={this.setChoices} promptWith={setting.promptWith} />;
+    return <Typing item={this.get_screen('typing')} setChoices={this.setChoices} promptWith={setting.promptWith} />;
   }
   render_tapping(setting) {
-    return <Tapping item={this.get_screen("tapping")} difficulty={setting.difficulty || 1} setChoices={this.setChoices} />;
+    return <Tapping item={this.get_screen('tapping')} difficulty={setting.difficulty || 1} setChoices={this.setChoices} />;
   }
   render_copytyping(){
-    var prompt = this.get_screen("typing");
-    this.setChoices(prompt.correct, "text", prompt.is_strict);
+    var prompt = this.get_screen('typing');
+    this.setChoices(prompt.correct, 'text', prompt.is_strict);
 
-    return <Presentation item={this.get_screen("presentation")} prompt={prompt} />;
+    return <Presentation item={this.get_screen('presentation')} prompt={prompt} />;
   }
   render_presentation(correct) {
     return (
       <Presentation
-        item={this.get_screen("presentation")}
+        item={this.get_screen('presentation')}
         correct={correct}
         langTarget={this.props.course.target ? this.props.course.target.language_code : null}
         langSource={this.props.course.source ? this.props.course.source.language_code : null}
@@ -1642,7 +1643,7 @@ class Learn extends Component {
   recap() {
     var items = [];
 
-    if(this.props.session_type == "preview") {
+    if(this.props.session_type == 'preview') {
       for(var i=0; i<this.state.data.boxes.length; i++) {
         var id = this.state.data.boxes[i].learnable_id;
 
@@ -1659,7 +1660,7 @@ class Learn extends Component {
   }
   markdown() {
     var data = window.markdown.decode(eval(this.state.data));
-    return <div class="nicebox" dangerouslySetInnerHTML={{__html: data}} />;
+    return <div className="nicebox" dangerouslySetInnerHTML={{__html: data}} />;
   }
 }
 
@@ -1674,38 +1675,38 @@ const Value = function(props) {
 
   if(props.single) {
     switch(props.type) {
-      case "text" : return <span>{content}</span>;
-      case "image": return <img key={k} src={content} class="text-image" />;
-      case "audio": return (
-        <span>
-          <audio key={k} id={"audio-" + k} src={content}></audio>
-          <button type="button" data-id={"audio-" + k} class="audio-player" aria-label={window.i18n.play_audio}>
-            <i class="ico ico-l ico-audio"></i>
+      case 'text' : return <span>{content}</span>;
+      case 'image': return <img key={k} src={content} className="text-image" />;
+      case 'audio': return (
+        <span key={k}>
+          <audio id={'audio-' + k} src={content}></audio>
+          <button type="button" data-id={'audio-' + k} className="audio-player" aria-label={window.i18n.play_audio}>
+            <i className="ico ico-l ico-audio"></i>
           </button>
         </span>
       );
-      case "video": return (
-        <video key={k} src={content} class="video-player" controls autoplay>Your browser does not support the video tag.</video>
+      case 'video': return (
+        <video key={k} src={content} className="video-player" controls autoPlay>Your browser does not support the video tag.</video>
       );
     }
   } else {
     switch(props.type) {
-      case "text" : return <div class="text" {...attrs}>{content}</div>;
-      case "image": return <div class="image"><div class="media-list">{content.map(media => (
-        <img key={k + i++} src={media} class="text-image loading" />
+      case 'text' : return <div className="text" {...attrs}>{content}</div>;
+      case 'image': return <div className="image"><div className="media-list">{content.map(media => (
+        <img key={k + i++} src={media} className="text-image loading" />
       ))}</div></div>;
-      case "audio": return <div class="audio"><div class="media-list">{content.map(media => (
-        <span>
-          <audio key={k + i++} id={"audio-" + (k + i)} src={media.normal}></audio>
-          <button type="button" data-id={"audio-" + (k + i)} class="audio-player" aria-label={window.i18n.play_audio}>
-            <i class="ico ico-l ico-audio"></i>
+      case 'audio': return <div className="audio"><div className="media-list">{content.map(media => (
+        <span key={k + i++}>
+          <audio id={'audio-' + (k + i)} src={media.normal}></audio>
+          <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.i18n.play_audio}>
+            <i className="ico ico-l ico-audio"></i>
           </button>
         </span>
       ))}</div></div>;
-      case "video": return (
-        <div class="video">
-          <div class="media-list">
-            <video key={k + i++} src={content.random()} class="video-player" controls autoplay>Your browser does not support the video tag.</video>
+      case 'video': return (
+        <div className="video">
+          <div className="media-list">
+            <video key={k + i++} src={content.random()} className="video-player" controls autoPlay>Your browser does not support the video tag.</video>
           </div>
         </div>
       );
@@ -1717,10 +1718,10 @@ const Correction = function(props) {
   var data = props.data;
 
   if(data.score == 1) {
-    return <div class="alert alert-success">{window.i18n.correct_answer}!</div>;
+    return <div className="alert alert-success">{window.i18n.correct_answer}!</div>;
 
   } else if(data.score == 0) {
-    return <div class="alert alert-danger">
+    return <div className="alert alert-danger">
       {window.i18n.wrong_answer}!&nbsp;
       {data.value
         ? <span>{window.i18n.your_answer_was}: <strong><Value content={data.value} type={data.kind} single="1" /></strong></span>
@@ -1728,11 +1729,11 @@ const Correction = function(props) {
     </div>;
 
   } else {
-    return <div class="alert alert-warning">
+    return <div className="alert alert-warning">
       {window.i18n.near_answer}!&nbsp;
       <span>{window.i18n.your_answer_was}: <strong>
-        {data.kind == "text"
-          ? <span>{data.testValue} <small class="correction" dangerouslySetInnerHTML={{__html: "(" + diff(data.testValue, data.refValue) + ")"}} /></span>
+        {data.kind == 'text'
+          ? <span>{data.testValue} <small className="correction" dangerouslySetInnerHTML={{__html: '(' + diff(data.testValue, data.refValue) + ')'}} /></span>
           : <Value content={data.value} type={data.kind} single="1" />}
       </strong></span>
     </div>;
@@ -1756,61 +1757,61 @@ const Presentation = function(props){
     {correct && <Correction data={correct} />}
 
     {/*-- Content --*/}
-    <table class={"learn nicebox big thing" + (correct ? "": " autoplay")}>
+    <table className={'learn nicebox big thing' + (correct ? '': ' autoplay')}>
 
         {/*-- Item --*/}
         <tr>
-          <td class="label">{item.item.label}</td>
-          <td class="item">
+          <td className="label">{item.item.label}</td>
+          <td className="item">
             <Value content={item.item.value} type={item.item.kind} lang={item_lang} />
             {item.item.alternatives.map(txt =>
-              <div class="alt">{txt}</div>
+              <div key={k + i++} className="alt">{txt}</div>
             )}
           </td>
         </tr>
 
         {/*-- Definition --*/}
         <tr>
-          <td class="label">{item.definition.label}</td>
-          <td class="definition">
+          <td className="label">{item.definition.label}</td>
+          <td className="definition">
             <Value content={item.definition.value} type={item.definition.kind} />
             {item.definition.alternatives.map(txt =>
-              <div class="alt">{txt}</div>
+              <div key={k + i++} className="alt">{txt}</div>
             )}
           </td>
         </tr>
-        <tr class="sep"><td colspan="2"></td></tr>
+        <tr className="sep"><td colSpan="2"></td></tr>
 
         {/*-- Audio --*/}
         {item.audio && <tr key={k + i++}>
-          <td class="label">{item.audio.label}</td>
-          <td class="audio"><Value content={item.audio.value} type="audio" /></td>
+          <td className="label">{item.audio.label}</td>
+          <td className="audio"><Value content={item.audio.value} type="audio" /></td>
         </tr>}
 
         {/*-- Additional content --*/}
         {item.visible_info.map(it => <tr key={k + i++}>
-          <td class="label">{it.label}</td>
-          <td class="more"><Value content={it.value} type={it.kind} /></td>
+          <td className="label">{it.label}</td>
+          <td className="more"><Value content={it.value} type={it.kind} /></td>
         </tr>)}
 
         {item.hidden_info.map(it => <tr key={k + i++}>
-          <td class="label">{it.label}</td>
-          <td class="more"><Value content={it.value} type={it.kind} /></td>
+          <td className="label">{it.label}</td>
+          <td className="more"><Value content={it.value} type={it.kind} /></td>
         </tr>)}
 
         {/*-- Attributs --*/}
         {item.attributes.map(it => <tr key={k + i++}>
-          <td class="label">{it.label}</td>
-          <td class="more"><span class="badge"><Value content={it.value} type="text" single="1" /></span></td>
+          <td className="label">{it.label}</td>
+          <td className="more"><span className="badge"><Value content={it.value} type="text" single="1" /></span></td>
         </tr>)}
       </table>
 
       {/*-- Copytyping --*/}
-      {props.prompt && <div class="typing-container" key={k + i++}>
-          <div class="typing">
-            <input type="text" autocomplete="off" spellcheck="false" value="" placeholder={props.prompt.answer.value} tabindex="1" autoFocus="autofocus" />
-            <ul class="keyboard">{props.prompt.choices.map((letter, i) =>
-              <li class="button" tabindex={i+2}>{letter}</li>
+      {props.prompt && <div className="typing-container" key={k + i++}>
+          <div className="typing">
+            <input type="text" autoComplete="off" spellCheck="false" value="" placeholder={props.prompt.answer.value} tabIndex="1" autoFocus="autofocus" />
+            <ul className="keyboard">{props.prompt.choices.map((letter, i) =>
+              <li key={i} className="button" tabIndex={i+2}>{letter}</li>
             )}</ul>
           </div>
         </div>}
@@ -1818,10 +1819,10 @@ const Presentation = function(props){
 };
 
 function get_prompt_type(item) {
-  if(item.prompt.text) return "text";
-  if(item.prompt.image) return "image";
-  if(item.prompt.audio) return "audio";
-  if(item.prompt.video) return "video";
+  if(item.prompt.text) return 'text';
+  if(item.prompt.image) return 'image';
+  if(item.prompt.audio) return 'audio';
+  if(item.prompt.video) return 'video';
 }
 
 const MultipleChoice = function(props) {
@@ -1867,24 +1868,24 @@ const MultipleChoice = function(props) {
   var choices = choicesRnd.map((value, i) => {
     return <ChoiceBox key={i} i={i+1} value={value} answerType={answerType} isValid={rightAnswers.includes(value)} />;
   });
-  props.setChoices(choices, "numeric");
+  props.setChoices(choices, 'numeric');
 
-  return <div class="nicebox">
+  return <div className="nicebox">
 
     {/*-- Item --*/}
-    <div class="big choice autoplay">
+    <div className="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
     </div>
 
     {/*-- Choices --*/}
-    <div class={"medium choices n" + props.nChoices}>{choices}</div>
+    <div className={'medium choices n' + props.nChoices}>{choices}</div>
   </div>;
 };
 
 class ChoiceBox extends Component {
   render(props) {
-    return <div accesskey={props.i} class={"choice-box nicebox " + props.answerType} id={"choice-" + props.i} tabindex={props.i}>
-      <span class="choice-index">{props.i}.</span>
+    return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex={props.i}>
+      <span className="choice-index">{props.i}.</span>
       <Value content={props.value} type={props.answerType} single="1" />
     </div>;
   }
@@ -1892,24 +1893,25 @@ class ChoiceBox extends Component {
 
 const Typing = function(props) {
   var item     = props.item,
-      itemType = props.promptWith || get_prompt_type(item);
+      itemType = props.promptWith || get_prompt_type(item),
+      i = 0;
 
-  props.setChoices(item.correct, "text", item.is_strict);
+  props.setChoices(item.correct, 'text', item.is_strict);
 
-  return <div class="nicebox">
-    <div class="big choice autoplay">
+  return <div className="nicebox">
+    <div className="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
 
       {/*-- Attributs --*/}
-      {item.attributes && <div class="clues">
-        {item.attributes.map(it => <span class="badge"><Value content={it.value} type="text" single="1" /></span>)}
+      {item.attributes && <div className="clues">
+        {item.attributes.map(it => <span key={i++} className="badge"><Value content={it.value} type="text" single="1" /></span>)}
       </div>}
     </div>
-    <div class="typing-container">
-      <div class="typing" key={Date.now()}>
-        <input type="text" autocomplete="off" spellcheck="false" value="" tabindex="1" autoFocus="autofocus" />
-        <ul class="keyboard">{item.choices.map((letter, i) =>
-          <li class="button" tabindex={i+2}>{letter}</li>
+    <div className="typing-container">
+      <div className="typing" key={Date.now()}>
+        <input type="text" autoComplete="off" spellCheck="false" value="" tabIndex="1" autoFocus="autofocus" />
+        <ul className="keyboard">{item.choices.map((letter, i) =>
+          <li key={letter} className="button" tabIndex={i+2}>{letter}</li>
         )}</ul>
       </div>
     </div>
@@ -1920,7 +1922,7 @@ const Tapping = function(props) {
   var item     = props.item,
       itemType = get_prompt_type(item);
 
-  props.setChoices(item.correct, "tapping", item.is_strict);
+  props.setChoices(item.correct, 'tapping', item.is_strict);
 
   var n       = item.correct.length,
       choices = item.correct[0].slice(),
@@ -1943,21 +1945,22 @@ const Tapping = function(props) {
         it  = remains.splice(rnd,1);
     choices.push(...it);
   }
+  i = 0;
 
-  return <div class="nicebox">
-    <div class="big choice autoplay">
+  return <div className="nicebox">
+    <div className="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
 
       {/*-- Attributs --*/}
-      {item.attributes && <div class="clues">
-        {item.attributes.map(it => <span class="badge"><Value content={it.value} type="text" single="1" /></span>)}
+      {item.attributes && <div className="clues">
+        {item.attributes.map(it => <span key={i++} className="badge"><Value content={it.value} type="text" single="1" /></span>)}
       </div>}
     </div>
-    <div class="tapping-container">
-      <div class="tapping" key={Date.now()}>
-        <div class="input"></div>
-        <ul class="keyboard">{randomize(choices).map((word, i) =>
-          <li class="button" tabindex={i+1} id={"btn-" + i}>{word}</li>
+    <div className="tapping-container">
+      <div className="tapping" key={Date.now()}>
+        <div className="input"></div>
+        <ul className="keyboard">{randomize(choices).map((word, i) =>
+          <li key={i} className="button" tabIndex={i+1} id={'btn-' + i}>{word}</li>
         )}</ul>
       </div>
     </div>
@@ -1966,21 +1969,22 @@ const Tapping = function(props) {
 
 const Recap = function(props) {
   var items = props.items,
-      session_type = props.session_type;
+      session_type = props.session_type,
+      i = 0;
 
-  return <table class="learn nicebox recap">
+  return <table className="learn nicebox recap">
   {items.map((item) => {
-    var rate = "";
+    var rate = '';
 
     // Compute success rate
-    if(session_type != "preview") {
+    if(session_type != 'preview') {
       var successRate = item.right / item.count * 100,
-          className   = (successRate == 100 ? "neverMissed" : (successRate < 20 ? "oftenMissed" : (successRate > 80 ? "rarelyMissed" : "sometimesMissed"))),
-          rate        = <span class={className}>{item.right}/{item.count}</span>;
+          className   = (successRate == 100 ? 'neverMissed' : (successRate < 20 ? 'oftenMissed' : (successRate > 80 ? 'rarelyMissed' : 'sometimesMissed'))),
+          rate        = <span className={className}>{item.right}/{item.count}</span>;
     }
 
     // Render item
-    return <tr class="thing">
+    return <tr key={i++} className="thing">
       <td><Value content={item.item.value} type={item.item.kind} /></td>
       <td><Value content={item.definition.value} type={item.definition.kind} /></td>
       {rate && <td>{rate}</td>}
@@ -1995,7 +1999,7 @@ const Recap = function(props) {
 /**
  * Score the similarity between the given response
  * and the expected answer
- * 
+ *
  * 1 = equal
  * 0 = non equal
  * 0<x<1 = similar
@@ -2072,15 +2076,15 @@ var RegexUnicode = {
 
 function sanitizeTyping(text, strict) {
   text = text.trim()
-             .replace(/\s+/g, " ")
-             .replace(new RegExp(RegexUnicode.C, "g"), ""); // control chars
+             .replace(/\s+/g, ' ')
+             .replace(new RegExp(RegexUnicode.C, 'g'), ''); // control chars
 
   // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
   if(!strict) {
-    text = text.replace(/\(.*?\)/g, "")
-               .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', "g"), "") // punctuation, symbol
-               .replace(/[-Ù‹Ù›]+/g, "")
-               .replace(/\s+/g, " ");
+    text = text.replace(/\(.*?\)/g, '')
+               .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), '') // punctuation, symbol
+               .replace(/[-Ù‹Ù›]+/g, '')
+               .replace(/\s+/g, ' ');
   }
   return text;
 }
@@ -2103,7 +2107,7 @@ function calculate_points_review_v1(points, current_streak) {
 }
 
 function calculate_speed_bonus_v1(time_spent, tpl) {
-  if(tpl == "typing") {
+  if(tpl == 'typing') {
     return time_spent < 4e3 ? 5 : 0;
   } else {
     return time_spent < 2e3 ? 3 : 0;
@@ -2148,14 +2152,14 @@ var diff = (function(){
       res[i] = arr[(i + (len + n % len)) % len];
     }
     return res;
-  };
+  }
 
   // returns the first matching substring in-between the two strings
   function getMatchingSubstring(s,l,m){
     var i     = -1,
         n     = s.length,
         match = false,
-        cd     = {fis:n, mtc:m, sbs:""}; // temporary object used to construct the cd (change data) object
+        cd     = {fis:n, mtc:m, sbs:''}; // temporary object used to construct the cd (change data) object
 
     while (++i < n) {
       if(l[i] === s[i]) {
@@ -2195,17 +2199,17 @@ var diff = (function(){
 
     // convert longer to array to be able to rotate it
     // shorter and longer now starts from the first mismatching character
-    longer  = longer.split("").slice(base_index);
+    longer  = longer.split('').slice(base_index);
     shorter = shorter.slice(base_index);
 
     var len = longer.length,                   // length of the longer string
         cd = {fis: shorter.length,             // the index of matching string in the shorter string
               fil: len,                        // the index of matching string in the longer string
-              sbs: "",                         // the matching substring itself
+              sbs: '',                         // the matching substring itself
               mtc: m + s.slice(0,base_index)}, // if exists mtc holds the matching string at the front
-        sub = {sbs:""};                       // returned substring per 1 character rotation of the longer string
+        sub = {sbs:''};                       // returned substring per 1 character rotation of the longer string
 
-    if(shorter !== "") {
+    if(shorter !== '') {
       for(var rc = 0; rc < len && sub.sbs.length < p; rc++){             // rc -> rotate count, p -> precision factor
         sub = getMatchingSubstring(shorter, rotate(longer, rc), cd.mtc); // rotate longer string 1 char and get substring
         sub.fil = rc < len - sub.fis ? sub.fis + rc                      // mismatch is longer than the mismatch in short
@@ -2216,35 +2220,35 @@ var diff = (function(){
 
     // insert the mismatching delete subsrt and insert substr to the cd object and attach the previous substring
     if(isThisLonger) {
-      cd.del = longer.slice(0,cd.fil).join("");
+      cd.del = longer.slice(0,cd.fil).join('');
       cd.ins = shorter.slice(0,cd.fis);
     } else {
       cd.del = shorter.slice(0,cd.fis);
-      cd.ins = longer.slice(0,cd.fil).join("");
+      cd.ins = longer.slice(0,cd.fil).join('');
     }
 
-    if(cd.del.indexOf(" ") == -1 || cd.ins.indexOf(" ") == -1) return cd;
-    if(cd.del === "" || cd.ins === "" || cd.sbs === "") return cd;
+    if(cd.del.indexOf(' ') == -1 || cd.ins.indexOf(' ') == -1) return cd;
+    if(cd.del === '' || cd.ins === '' || cd.sbs === '') return cd;
     return getChanges(cd.del, cd.ins, cd.mtc, p);
   }
 
   function diff(txt1, txt2, p){
     p = p || 2; // p -> precision factor
 
-    var cd       = getChanges(txt1,txt2,"",p),
+    var cd       = getChanges(txt1,txt2,'',p),
         nextTxt2 = txt2.slice(cd.mtc.length + cd.ins.length + cd.sbs.length), // remaining part of "txt2"
         nextTxt1 = txt1.slice(cd.mtc.length + cd.del.length + cd.sbs.length), // remaining part of "txt1"
-        result   = "";                                                        // the glorious result
+        result   = '';                                                        // the glorious result
 
     cd.del.length > 0 && (cd.del = '<span class = "deleted">'  + cd.del + '</span>');
     cd.ins.length > 0 && (cd.ins = '<span class = "inserted">' + cd.ins + '</span>');
     result = cd.mtc + cd.del + cd.ins + cd.sbs;
 
-    if(nextTxt1 !== "" || nextTxt2 !== "") {
+    if(nextTxt1 !== '' || nextTxt2 !== '') {
       result += diff(nextTxt1,nextTxt2,p);
     }
     return result;
-  };
+  }
 
   return diff;
 })();

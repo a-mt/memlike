@@ -2,8 +2,9 @@
 'use strict';
 const {h, Component, render} = window.preact;
 
-/* global $ */
-/* global navigator, Blob, URL, File, fetch */
+/* global $, window, document, console */
+/* global setTimeout, confirm, alert, fetch */
+/* global navigator, Blob, URL, File, FormData, FileReader */
 
 $(document).ready(function(){
   Object.freeze(window.course);
@@ -33,7 +34,7 @@ class Edit extends Component {
       {window.course.levels.map((level, i) => {
         var show = false;
         if(opentab) {
-          if(opentab[1] == "i") {
+          if(opentab[1] == 'i') {
             show = (i+1 == opentab[2]);
           } else {
             show = (level.id == opentab[2]);
@@ -49,7 +50,7 @@ class EditLevel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {"show": false};
+    this.state = {'show': false};
     this.toggle = this.toggle.bind(this);
   }
 
@@ -72,7 +73,7 @@ class EditLevel extends Component {
 
   getData() {
     $.ajax({
-      url: "/ajax/level/" + this.props.level.id,
+      url: '/ajax/level/' + this.props.level.id,
       success: function(data){
         if(this.props.level.pool) {
           var div = $('.table-container', data.rendered);
@@ -93,21 +94,21 @@ class EditLevel extends Component {
   render() {
     var level = this.props.level;
 
-    return <div class={"edit-level nicebox" + (this.state.show ? "" : " collapsed")} data-level-id={level.id} data-pool-id={level.pool || ""}>
-      <div class="edit-level-actions">
+    return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool || ''}>
+      <div className="edit-level-actions">
         {this.state.show
-          && <label class="export action" title={window.i18n._export}>
+          && <label className="export action" title={window.i18n._export}>
               <i dangerouslySetInnerHTML={{__html: '&darr;'}} />
             </label>}
         {this.state.show
-          && <label class="import action" title={window.i18n._import} for={"import_" + level.id}>
-              <input type="file" id={"import_" + level.id} />
+          && <label className="import action" title={window.i18n._import} htmlFor={'import_' + level.id}>
+              <input type="file" id={'import_' + level.id} />
               <i dangerouslySetInnerHTML={{__html: '&uarr;'}} />
             </label>}
-        <label class="toggle action" onClick={this.toggle} dangerouslySetInnerHTML={{__html: '&updownarrow;'}} />
+        <label className="toggle action" onClick={this.toggle} dangerouslySetInnerHTML={{__html: '&updownarrow;'}} />
       </div>
 
-      <div class="edit-level-label">
+      <div className="edit-level-label">
         <label>{level.name}</label>
         {!level.pool && <span>&nbsp;(multimedia)</span>}
       </div>
@@ -206,8 +207,8 @@ function bindEvents(new_row) {
         idLevel = $level.data('level-id');
 
     $.ajax({
-      url: "/ajax/level/" + idLevel + "/add",
-      method: "POST",
+      url: '/ajax/level/' + idLevel + '/add',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer,
@@ -269,8 +270,8 @@ function bindEvents(new_row) {
     }
     var input       = document.createElement('input');
     input.value     = this.innerHTML;
-    input.type      = "text";
-    input.className = "wide";
+    input.type      = 'text';
+    input.className = 'wide';
     this.appendChild(input);
     input.focus();
   }
@@ -302,8 +303,8 @@ function bindEvents(new_row) {
         cellId  = $btn.closest('.column').data('key');
 
     $.ajax({
-      url: "/ajax/level/" + thingId + "/alt",
-      method: "POST",
+      url: '/ajax/level/' + thingId + '/alt',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer
@@ -373,15 +374,15 @@ function bindEvents(new_row) {
     });
 
     $.ajax({
-      url: "/ajax/level/" + thingId + "/alt_edit",
-      method: "POST",
+      url: '/ajax/level/' + thingId + '/alt_edit',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer,
         alts: JSON.stringify(alts),
         cellId: cellId
       },
-      success: function(data) {
+      success: function() {
         window.modal.close();
       }
     });
@@ -402,14 +403,14 @@ function bindEvents(new_row) {
         levelid = $level.data('level-id');
 
     $.ajax({
-      url: "/ajax/level/" + levelid + "/remove",
-      method: "POST",
+      url: '/ajax/level/' + levelid + '/remove',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer,
         id_thing: thingid
       },
-      success: function(json){
+      success: function(){
         $tr.remove();
       },
       error: function(xhr){
@@ -440,8 +441,8 @@ function bindEvents(new_row) {
   // POST new cell value
   function updateCell(thingId, cellId, cellValue) {
     $.ajax({
-      url: "/ajax/level/" + thingId + "/edit",
-      method: "POST",
+      url: '/ajax/level/' + thingId + '/edit',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer,
@@ -456,7 +457,7 @@ function bindEvents(new_row) {
 
   //+---------------------------------------------------------------------------
   // On send file: upload file
-  function send_file(e){
+  function send_file(){
     var $column = $(this).closest('.column'),
         cellId  = $column.data('key'),
         thingId = $(this).closest('.thing').data('thing-id'),
@@ -510,10 +511,10 @@ function bindEvents(new_row) {
     $.ajax({
       url: '/ajax/level/' + thingId + '/upload_remove',
       data: {
-        "csrftoken": window.course.csrftoken,
-        "referer": window.course.referer,
-        "cellId": cellId,
-        "fileId": fileId
+        'csrftoken': window.course.csrftoken,
+        'referer': window.course.referer,
+        'cellId': cellId,
+        'fileId': fileId
       },
       type: 'POST',
       success: function(data){
@@ -533,8 +534,8 @@ function bindEvents(new_row) {
 
     var idLevel = $btn.closest('.edit-level').data('level-id');
     $.ajax({
-      url: "/ajax/level/" + idLevel + "/edit_multimedia",
-      method: "POST",
+      url: '/ajax/level/' + idLevel + '/edit_multimedia',
+      method: 'POST',
       data: {
         csrftoken: window.course.csrftoken,
         referer: window.course.referer,
@@ -552,7 +553,7 @@ function bindEvents(new_row) {
         idLevel    = $level.data('level-id'),
         $table     = $level.find('table'),
         row        = [],
-        csvContent = "";
+        csvContent = '';
 
     // Get headers
     $table.children('.columns').find('.column,.attribute').each(function(){
@@ -569,7 +570,7 @@ function bindEvents(new_row) {
       // Get columns
       $(this).children('.column,.attribute').each(function(){
         var $col = $(this),
-            txt  = "";
+            txt  = '';
 
         // Text
         if($col.hasClass('text')) {
@@ -587,7 +588,7 @@ function bindEvents(new_row) {
             if(!url) {
               url = $item.attr('src');
             }
-            if(url && url != "#") {
+            if(url && url != '#') {
               var filename = url.substring(url.lastIndexOf('/')+1);
               list.push(filename + ' (' + url + ')');
             }
@@ -605,7 +606,7 @@ function bindEvents(new_row) {
             if(!url) {
               url = $item.attr('src');
             }
-            if(url && url != "#") {
+            if(url && url != '#') {
               var filename = url.substring(url.lastIndexOf('/')+1);
               list.push(filename + ' (' + url + ')');
             }
@@ -633,7 +634,7 @@ function bindEvents(new_row) {
       return;
     }
     var file = e.target.files[0];
-    if(file.type != "text/csv") {
+    if(file.type != 'text/csv') {
       alert(window.i18n.import_err_ext);
       return;
     }
@@ -664,12 +665,12 @@ function bindEvents(new_row) {
     // Get table headers
     $table.children('.columns').find('.column,.attribute').each(function(){
       var $col = $(this),
-          type = "text";
+          type = 'text';
 
-      if($col.hasClass("image")) {
-        type = "image";
-      } else if($col.hasClass("audio")) {
-        type = "audio";
+      if($col.hasClass('image')) {
+        type = 'image';
+      } else if($col.hasClass('audio')) {
+        type = 'audio';
       }
       types.push(type);
 
@@ -718,12 +719,12 @@ function bindEvents(new_row) {
           var cellId = headers[j].key,
               type   = headers[j].type;
 
-          if(type == "text") {
+          if(type == 'text') {
             row_import[cellId] = txt;
 
           // Upload its attachments once added
           } else {
-            var list = txt.split(",");
+            var list = txt.split(',');
 
             for(var l=0; l<list.length; l++) {
               var item  = list[l],
@@ -733,17 +734,17 @@ function bindEvents(new_row) {
                 continue;
               }
               var filename = match[1].trim(),
-                  mime     = "",
+                  mime     = '',
                   ext      = filename.substring(filename.lastIndexOf('.')+1);
 
               switch(ext) {
-                case "png":  mime = "image/png"; break;
-                case "jpg":  mime = "image/jpeg"; break;
-                case "jpeg": mime = "image/jpeg"; break;
-                case "gif":  mime = "image/gif"; break;
-                case "mp3":  mime = "audio/mpeg"; break;
-                case "mp4":  mime = "video/mp4"; break;
-                case "aac":  mime = "audio/aac"; break;
+                case 'png':  mime = 'image/png'; break;
+                case 'jpg':  mime = 'image/jpeg'; break;
+                case 'jpeg': mime = 'image/jpeg'; break;
+                case 'gif':  mime = 'image/gif'; break;
+                case 'mp3':  mime = 'audio/mpeg'; break;
+                case 'mp4':  mime = 'video/mp4'; break;
+                case 'aac':  mime = 'audio/aac'; break;
               }
               if(!mime) {
                 continue;
@@ -795,7 +796,7 @@ function bindEvents(new_row) {
             cellId  = upload[0],
             url     = upload[2];
 
-        if(typeof data[cellId] != "undefined") {
+        if(typeof data[cellId] != 'undefined') {
           data[cellId].push(url);
         } else {
           data[cellId] = [url];
@@ -809,17 +810,17 @@ function bindEvents(new_row) {
         }
         var k       = headers[j].key,
             type    = headers[j].type,
-            content = data[k] || "";
+            content = data[k] || '';
 
-        if(type == "image") {
+        if(type == 'image') {
           content = content.map(function(txt){
             return '<img src="' + txt + '">';
-          }).join("");
+          }).join('');
 
-        } else if(type == "audio") {
+        } else if(type == 'audio') {
           content = content.map(function(txt){
             return '<audio src="' + txt + '">';
-          }).join("");
+          }).join('');
         }
         html += '<td>' + content + '</td>';
       }
@@ -877,19 +878,19 @@ function bindEvents(new_row) {
  * @return string
  */
 function exportCsv(row) {
-  var txt = "";
+  var txt = '';
 
   for(var i=0; i<row.length; i++) {
     if(i > 0) {
-      txt += ",";
+      txt += ',';
     }
     if(row[i].indexOf(',') == -1) {
       txt += row[i];
     } else {
-      txt += '"' + row[i].replace(/\\/g, "\\\\").replace(/"/g, '\"') + '"';
+      txt += '"' + row[i].replace(/\\/g, '\\\\').replace(/"/g, '"') + '"';
     }
   }
-  return txt + "\n";
+  return txt + '\n';
 }
 
 /**
