@@ -196,7 +196,6 @@ class ApiMemrise(Memrise):
                 retry_request = False
 
             except requests.exceptions.HTTPError as e:
-
                 # Try reauthenticate
                 if e.response.status_code == 403:
                     if is_anonymous_session and retry_request:

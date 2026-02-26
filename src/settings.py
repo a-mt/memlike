@@ -138,24 +138,29 @@ if web.config.get("template", None) is None:
     setattr(web, "jsoninput", jsoninput)
 
     # Add a flash message in session
-    web.config.FLASH_MESSAGES_TAGS = web.storage({
-        "DEBUG": "debug",
-        "INFO": "info",
-        "SUCCESS": "success",
-        "WARNING": "warning",
-        "ERROR": "danger",
-    })
+    web.config.FLASH_MESSAGES_TAGS = web.storage(
+        {
+            "DEBUG": "debug",
+            "INFO": "info",
+            "SUCCESS": "success",
+            "WARNING": "warning",
+            "ERROR": "danger",
+        }
+    )
+
     def add_flash_message(message, level=web.config.FLASH_MESSAGES_TAGS.INFO):
-        web.ctx.session = web.ctx.get('session', None) or web.storage({})
+        web.ctx.session = web.ctx.get("session", None) or web.storage({})
 
-        web.ctx.session.flash = web.ctx.session.get('flash', None) or web.storage({})
+        web.ctx.session.flash = web.ctx.session.get("flash", None) or web.storage({})
 
-        web.ctx.session.flash.messages = web.ctx.session.flash.get('messages', None) or []
+        web.ctx.session.flash.messages = web.ctx.session.flash.get("messages", None) or []
 
-        web.ctx.session.flash.messages.append({
-            "message": message,
-            "level": level,
-        })
+        web.ctx.session.flash.messages.append(
+            {
+                "message": message,
+                "level": level,
+            }
+        )
 
     setattr(web, "add_flash_message", add_flash_message)
 
@@ -163,6 +168,7 @@ if web.config.get("template", None) is None:
 # Configure logging
 import logging
 import logging.config
+
 
 class KeepDebugLinksFilter(logging.Filter):
     def filter(self, record):
@@ -200,8 +206,9 @@ class KeepDebugLinksFilter(logging.Filter):
         }
         """
         if record.levelno == logging.DEBUG:
-            return record.msg[0] == '%'
+            return record.msg[0] == "%"
         return True
+
 
 # Sets the root logger level to write to stdout (default is WARNING)
 # logging.basicConfig()

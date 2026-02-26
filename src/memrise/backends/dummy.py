@@ -702,11 +702,11 @@ class DummyMemrise(Memrise):
                             "tapping": [],
                             "multiple_choice": [],
                             "audio": [],
-                            "default": []
+                            "default": [],
                         },
                         "kind": "text",
                         "accepted": ["a"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     },
                     "2": {
                         "alts": [],
@@ -717,11 +717,11 @@ class DummyMemrise(Memrise):
                             "tapping": [],
                             "multiple_choice": [],
                             "audio": [],
-                            "default": []
+                            "default": [],
                         },
                         "kind": "text",
                         "accepted": ["b"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     },
                     "4": {
                         "alts": [],
@@ -736,10 +736,10 @@ class DummyMemrise(Memrise):
                         },
                         "kind": "text",
                         "accepted": ["plural"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     }
                 },
-                "attributes": {}
+                "attributes": {},
             },
             "rendered_thing": "\n\n<tr class=\"thing\" data-thing-id=\"477757811\">\n    <td>\n        <div class=\"thing__actions\">\n            <i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i>\n            <i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i>\n        </div>\n    </td>\n    \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">a</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">b</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">plural</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n    \n    \n        \n            \n                \n\n<td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n\n            \n            <div class=\"text\"></div>\n        </div>\n    \n</td>\n\n            \n        \n    \n</tr>\n"
         }
@@ -776,10 +776,10 @@ class DummyMemrise(Memrise):
                     "1": {
                         "alts": [{
                             "id": 1,
-                            "val": "a1"
+                            "val": "a1",
                         }, {
                             "id": 2,
-                            "val": "a2"
+                            "val": "a2",
                         }],
                         "val": "a",
                         "choices": [],
@@ -788,11 +788,11 @@ class DummyMemrise(Memrise):
                             "tapping": [],
                             "multiple_choice": [],
                             "audio": [],
-                            "default": []
+                            "default": [],
                         },
                         "kind": "text",
                         "accepted": ["a"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     },
                     "2": {
                         "alts": [],
@@ -803,11 +803,11 @@ class DummyMemrise(Memrise):
                             "tapping": [],
                             "multiple_choice": [],
                             "audio": [],
-                            "default": []
+                            "default": [],
                         },
                         "kind": "text",
                         "accepted": ["b"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     },
                     "4": {
                         "alts": [],
@@ -822,10 +822,10 @@ class DummyMemrise(Memrise):
                         },
                         "kind": "text",
                         "accepted": ["plural"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     }
                 },
-                "attributes": {}
+                "attributes": {},
             }
         }
         return {
@@ -840,7 +840,7 @@ class DummyMemrise(Memrise):
                         "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": ["a1", "eifrig", "trumpfen", "das Gest\u00e4ndnis", "gesaugt", "abbaut", "arglos", "erworben", "abseits", "anlegen", "anders ausgedr\u00fcckt", "zug\u00e4nglich"]},
                         "kind": "text",
                         "accepted": ["a"],
-                        "typing_corrects": {}
+                        "typing_corrects": {},
                     },
                     "2": {
                         "alts": [],
@@ -849,10 +849,11 @@ class DummyMemrise(Memrise):
                         "distractors": {"typing": [], "tapping": [], "multiple_choice": [], "audio": [], "default": ["b2", "la boue", "braver", "attentivement", "la t\u00f4le", "insignifiant", "remorquer", "consid\u00e9rer", "confirmer", "charg\u00e9", "r\u00e9flechir", "soigneusement"]},
                         "kind": "text",
                         "accepted": ["b"],
-                        "typing_corrects": {}}
-                    },
-                    "attributes": {}
-                }
+                        "typing_corrects": {},
+                    }
+                },
+                "attributes": {},
+            },
         }
 
     def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
