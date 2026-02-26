@@ -92,7 +92,6 @@ $#  </div>
     <!-- Error messages -->
     $if "messages" in flash:
       <div>
-        $:debug(flash.messages)
         $for item in flash.messages:
           <div class="alert alert-$(item['level'])">$(item['message'])</div>
       </div>
