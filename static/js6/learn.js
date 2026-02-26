@@ -77,18 +77,17 @@ var Timer = {
   isRunning: false,
 
   stop: function(){
+    Timer.interval && clearInterval(Timer.interval);
+
     if(!Timer.isRunning) {
       return;
     }
+    var time = Date.now();
 
     // The user submitter an answer: tick a last time
-    var time = Date.now();
+    Timer.isRunning     = false;
     Timer.remainingTime -= (time - Timer.lastUpdate);
     Timer.lastUpdate     = time;
-
-    // Stop the timer
-    Timer.interval && clearInterval(Timer.interval);
-    Timer.isRunning      = false;
   },
   start: function(callback){
     Timer.callback      = callback;
@@ -104,8 +103,10 @@ var Timer = {
     return Timer.maxTime - Math.max(Timer.remainingTime, 0);
   },
   tick: function(){
+    if(!Timer.isRunning) {
+      return;
+    }
     var time = Date.now();
-
     Timer.remainingTime -= (time - Timer.lastUpdate);
     Timer.lastUpdate     = time;
 
@@ -115,7 +116,7 @@ var Timer = {
 
       $('#speed_review-timer').css('height', '100%');
 
-      Timer.callback && Timer.callback();
+      Timer.callback && setTimeout(Timer.callback, 300);
     } else {
       var percent = 1 - (Timer.remainingTime / Timer.maxTime);
       $('#speed_review-timer').css('height', (percent * 100) + '%');
@@ -270,7 +271,7 @@ class Learn extends Component {
     window.imgZoom     && window.imgZoom.reset();
     window.audioPlayer && window.audioPlayer.reset();
 
-    // Automatically play first audio
+    // Automatically play an audio track
     $('.autoplay .audio .audio-player').random().focus().trigger('click');
 
     // Add text To Speech
@@ -313,8 +314,11 @@ class Learn extends Component {
         var title = idx + (name ? ' - ' + name : '');
         document.getElementById('level-title').innerHTML = title;
       }
-    } else if(this.props.session_type == 'speed_review'){
-      Timer.start(this.time_over.bind(this));
+    }
+    if(this.state.screen != 'correction') {
+      if(this.props.session_type == 'speed_review'){
+        Timer.start(this.time_over.bind(this));
+      }
     }
 
     // Debug screen
@@ -838,7 +842,11 @@ class Learn extends Component {
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
     if(!recap[learnable_id]) {
-      recap[learnable_id] = {count: 0, right: 0, pos: Object.keys(recap).length};
+      recap[learnable_id] = {
+        count: 0,
+        right: 0,
+        pos: Object.keys(recap).length,
+      };
     }
     recap[learnable_id].count++;
     if(is_correct) {
@@ -864,20 +872,19 @@ class Learn extends Component {
 
         return;
       }
-
       this.expectChoice = false;
       this.choices      = false;
 
-      this.setState({
-        recap,
-        points: this.state.points + event.points,
-        num_scheduled: this.state.num_scheduled + 1,
-        num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0),
-      });
+      // We intentionally don't update the state, so that componentDidUpdate isn't updated
+      this.state.recap = recap;
+      this.state.points = this.state.points + event.points;
+      this.state.num_scheduled = this.state.num_scheduled + 1;
+      this.state.num_scheduled_correct = this.state.num_scheduled_correct + (is_correct ? 1 : 0);
+
       setTimeout(function(){
         $('.choice-box').removeClass('correct').removeClass('incorrect');
         this.getNext();
-      }.bind(this), 500);
+      }.bind(this), is_correct ? 500 : 3000);
 
     } else {
       this.setState({
@@ -889,7 +896,7 @@ class Learn extends Component {
         speed_bonus: this.state.speed_bonus + event.bonus_points,
         session_streak: is_correct ? this.state.session_streak + 1 : 0,
         num_scheduled: this.state.num_scheduled + 1,
-        num_scheduled_correct: this.state.num_scheduled_correct + (input.score == 1 ? 1 : 0)
+        num_scheduled_correct: this.state.num_scheduled_correct + (is_correct ? 1 : 0)
       });
       this.expectChoice  = false;
       this.choices       = false;
@@ -1076,8 +1083,7 @@ class Learn extends Component {
     var interval = REVIEW_INTERVAL_LADDER[rungIndex].interval;
     return {
       interval,
-      when     : date_answer,
-      next_date: this.getNextDate(interval, date_answer),
+      next_date: this.incrementDateWithInterval(date_answer, interval),
     }
   }
 

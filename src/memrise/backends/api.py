@@ -180,7 +180,7 @@ class ApiMemrise(Memrise):
         level = {}
         should_empty = False
 
-        if slug not in ("preview", "classic_review", "learn"):
+        if slug not in ("preview", "review", "learn"):
             slug = "preview"
 
         while retry_request:
