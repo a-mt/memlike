@@ -4,10 +4,11 @@ $var title: $(LANG.menu["courses"])
 
 $ currentLang = page['lang']
 <script>
-  var ${"$"}_URL = {
+  window.MEMLIKE = window.MEMLIKE || {};
+  window.MEMLIKE.page = {
     currentLang  : "$(page['lang'])",
     currentCat   : "$(page['cat'])",
-    currentCatId : "$(page['catId'])"
+    currentCatId : "$(page['catId'])",
   };
 </script>
 

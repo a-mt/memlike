@@ -17,8 +17,9 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
 </header>
 
 <script>
-  var course = $:(json(course));
-
+  window.MEMLIKE = window.MEMLIKE || {};
+  window.MEMLIKE.course = $:(json(course));
+  /*
   ${"$"}_URL = {
     lvl        : $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
     type       : "$(type)",
@@ -26,6 +27,14 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
     thing      : $(thing if thing else 0),
     sendresults : $(sendresults if session["loggedin"] else 0),
     session     : $(1 if session["loggedin"] else 0)
+  */
+  window.MEMLIKE.garden = {
+    levelsIndexes: $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
+    sessionType: "$(type)",
+    sessionOriginURL: "$(url)",
+    previewThing: $(thing if thing else 0),
+    saveProgress: $(sendresults if session["loggedin"] else 0),
+    sessionIsAnonymous: $(1 if session["loggedin"] else 0),
   };
 </script>
 

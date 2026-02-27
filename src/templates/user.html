@@ -2,7 +2,8 @@ $def with (user, currentTab, levels)
 $var title: $(user['username'])
 
 <script>
-  var ${"$"}_URL = {
+  window.MEMLIKE = window.MEMLIKE || {};
+  window.MEMLIKE.page = {
     username  : "$(user['username'])"
   };
 </script>

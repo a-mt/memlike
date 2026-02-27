@@ -17,9 +17,9 @@ const build = {
 /* global navigator, Blob, URL, File, FormData, FileReader */
 
 $(document).ready(function(){
-  Object.freeze(window.course);
+  Object.freeze(window.MEMLIKE.course);
 
-  render(<Edit course={window.course} />, document.getElementById('edit-levels'));
+  render(<Edit course={window.MEMLIKE.course} />, document.getElementById('edit-levels'));
 });
 
 //+--------------------------------------------------------
@@ -41,7 +41,7 @@ class Edit extends Component {
     var opentab = window.location.hash.match(/#(i|l)_(\d+)/);
 
     return <div>
-      {window.course.levels.map((level, i) => {
+      {this.props.course.levels.map((level, i) => {
         var show = false;
         if(opentab) {
           if(opentab[1] == 'i') {
@@ -240,8 +240,8 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + idLevel + '/add',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer,
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer,
         data: JSON.stringify(data)
       },
       success: function(json){
@@ -335,8 +335,8 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + thingId + '/alt',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer
       },
       success: function(data) {
         var alts = data.thing.columns[cellId].alts,
@@ -406,8 +406,8 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + thingId + '/alt_edit',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer,
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer,
         alts: JSON.stringify(alts),
         cellId: cellId
       },
@@ -435,8 +435,8 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + levelid + '/remove',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer,
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer,
         id_thing: thingid
       },
       success: function(){
@@ -473,10 +473,10 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + thingId + '/edit',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer,
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer,
         cellId: cellId,
-        cellValue: cellValue
+        cellValue: cellValue,
       },
       error: function(){
         alert('Something went wrong when trying to update cell');
@@ -498,8 +498,8 @@ function bindEvents(new_row) {
   function uploadFile($column, cellId, thingId, file) {
     var fd = new FormData();
     fd.append('file', file);
-    fd.append('csrftoken', window.course.csrftoken);
-    fd.append('referer', window.course.referer);
+    fd.append('csrftoken', window.MEMLIKE.course.csrftoken);
+    fd.append('referer', window.MEMLIKE.course.referer);
     fd.append('cellId', cellId);
 
     $.ajax({
@@ -554,10 +554,10 @@ function bindEvents(new_row) {
     $.ajax({
       url: '/ajax/level/' + thingId + '/upload_remove',
       data: {
-        'csrftoken': window.course.csrftoken,
-        'referer': window.course.referer,
+        'csrftoken': window.MEMLIKE.course.csrftoken,
+        'referer': window.MEMLIKE.course.referer,
         'cellId': cellId,
-        'fileId': fileId
+        'fileId': fileId,
       },
       type: 'POST',
       success: function(data){
@@ -580,8 +580,8 @@ function bindEvents(new_row) {
       url: '/ajax/level/' + idLevel + '/edit_multimedia',
       method: 'POST',
       data: {
-        csrftoken: window.course.csrftoken,
-        referer: window.course.referer,
+        csrftoken: window.MEMLIKE.course.csrftoken,
+        referer: window.MEMLIKE.course.referer,
         txt: $btn.prev().val()
       },
       success: function(){
@@ -669,7 +669,7 @@ function bindEvents(new_row) {
         csvContent += exportCsv(row);
       }
     });
-    download(csvContent, window.course.title + '_' + idLevel + '.csv', 'text/csv;encoding:utf-8');
+    download(csvContent, window.MEMLIKE.course.title + '_' + idLevel + '.csv', 'text/csv;encoding:utf-8');
   }
 
   function send_import(e) {

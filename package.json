@@ -4,8 +4,8 @@
   "description": "Build JS",
   "main": "index.js",
   "scripts": {
-    "build": "BUILD_DATE=$(date -Is) VAR=ok babel --plugins transform-inline-environment-variables static/js6 -d static/js -s",
-    "build-dev": "babel static/js6 -d static/js -w -s"
+    "build": "BUILD_DATE=$(date -Is) VAR=ok babel --plugins transform-inline-environment-variables static/js6 -d static/js --minified -s",
+    "build-dev": "babel static/js6 -d static/js -w"
   },
   "author": "",
   "license": "ISC",

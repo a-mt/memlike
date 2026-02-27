@@ -13,6 +13,7 @@ $var js: /static/js/preact.min.js, /static/js/jquery.csv.min.js, /static/js/edit
 <main>
   <div id="edit-levels"></div>
   <script>
-    var course = $:json(course);
+    window.MEMLIKE = window.MEMLIKE || {};
+    window.MEMLIKE.course = $:json(course);
   </script>
 </main>

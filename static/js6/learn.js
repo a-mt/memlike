@@ -15,17 +15,19 @@ const build = {
 /* global $, window, document, console */
 /* global setTimeout, setInterval, clearInterval */
 $(document).ready(function(){
-  if(window.$_URL.lvl == '') {
-    window.course.levels[1] = {'name': '', 'type': 1};
+  if(window.MEMLIKE.garden.levelsIndexes == '') {
+    window.MEMLIKE.course.levels[1] = {'name': '', 'type': 1};
   }
-  Object.freeze(window.course);
+  Object.freeze(window.MEMLIKE.course);
+  Object.freeze(window.MEMLIKE.garden);
+
   render(<Learn
-            level_idx={window.$_URL.lvl}
-            session_type={window.$_URL.type}
-            preview_thing_id={window.$_URL.thing}
-            sendresults={window.$_URL.sendresults}
-            session_id={window.$_URL.session}
-            course={Object.freeze(window.course)}
+            level_idx={window.MEMLIKE.garden.levelsIndexes}
+            session_type={window.MEMLIKE.garden.sessionType}
+            preview_thing_id={window.MEMLIKE.garden.previewThing}
+            sendresults={window.MEMLIKE.garden.saveProgress}
+            session_id={window.MEMLIKE.garden.sessionIsAnonymous}
+            course={window.MEMLIKE.course}
         />, document.getElementById('learn-container'));
 });
 
@@ -308,8 +310,8 @@ class Learn extends Component {
         if (idx < 1) {
           idx += 1;
         }
-        if (idx in window.course.levels) {
-          name = window.course.levels[idx].name;
+        if (idx in this.props.course.levels) {
+          name = this.props.course.levels[idx].name;
         }
         var title = idx + (name ? ' - ' + name : '');
         document.getElementById('level-title').innerHTML = title;
@@ -527,16 +529,16 @@ class Learn extends Component {
     if (level_idx == 0) {
       level_idx = 1;
     }
-    if (level_idx == 1 && !window.course.levels.length) {
+    if (level_idx == 1 && !this.props.course.levels.length) {
       // pass
-    } else if (!(level_idx in window.course.levels)) {
+    } else if (!(level_idx in this.props.course.levels)) {
       console.error('Level data cannot be retrieved');
       return this.setState({error: 1});
     } else {
-      level_type = window.course.levels[level_idx].type;
+      level_type = this.props.course.levels[level_idx].type;
     }
 
-    var url = '/ajax' + window.course.url;
+    var url = '/ajax' + this.props.course.url;
     if(this.state.get_all) {
       url += 'all/' + session_type;
     } else if(level_type == 2) {
@@ -865,7 +867,7 @@ class Learn extends Component {
           <div class="no-heart"></div>
           <p class="overlay-text">${window.i18n.no_more_hearts} !</p>
           <div class="btn-group">
-            <a href="${window.$_URL.urlFrom}">${window.i18n.return}</a>
+            <a href="${window.MEMLIKE.garden.sessionOriginURL}">${window.i18n.return}</a>
             <a href="${window.location.href}">${window.i18n.replay}</a>
           </div>
         </div>`);
@@ -938,7 +940,7 @@ class Learn extends Component {
         }
       } else {
         this.state.error = 1; // prevent warning
-        window.location.href = window.$_URL.urlFrom;
+        window.location.href = window.MEMLIKE.garden.sessionOriginURL;
       }
 
     // Recap
@@ -1146,7 +1148,7 @@ class Learn extends Component {
     }
 
     var item = {
-      course_id          : parseInt(window.course.id),
+      course_id          : parseInt(this.props.course.id),
       learning_element   : learnable.learning_element,
       definition_element : learnable.definition_element,
     };
@@ -1195,7 +1197,7 @@ class Learn extends Component {
       //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
       session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
       session_source_type: 'course',
-      session_source_id: window.course.id,
+      session_source_id: this.props.course.id,
     };
     if (!this.state.get_all) {
       data.session_source_sub_index = this.state.level_idx;
