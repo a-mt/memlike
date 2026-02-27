@@ -274,8 +274,17 @@ class ApiRequestor:
         logger.debug(f"Requestor:Level [id_course={idCourse},level={lvl}] ({log_session})")
 
         url = f"{HOST}/{API_VERSION}/learning_sessions/{session_type}/"
+        referer = f"{HOST}/aprender/preview?course_id=${idCourse}"
+        data = {
+            "session_source_id": idCourse,
+        }
+        if lvl and lvl != "all":
+            referer += f"&level_index=${lvl}"
+            data["session_source_sub_index"] = lvl
+            data["session_source_type"] = "course_id_and_level_index"
+        else:
+            data["session_source_type"] = "course"
 
-        referer = f"{HOST}/aprender/preview?course_id=${idCourse}&level_index=${lvl}"
         response = requests.post(
             url,
             cookies=self.buildCookies(sessionid, csrftoken),
@@ -287,11 +296,7 @@ class ApiRequestor:
                 "X-Requested-With": "XMLHttpRequest",
                 "Content-Type": "application/json",
             },
-            json={
-                "session_source_id": idCourse,
-                "session_source_sub_index": lvl,
-                "session_source_type": "course_id_and_level_index",
-            },
+            json=data,
         )
         self.raise_for_status(response)
         return response.json()
