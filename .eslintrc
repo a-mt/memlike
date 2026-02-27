@@ -16,7 +16,11 @@
     "quotes": [2, "single", { "avoidEscape": true }]
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended"
-  ]
+    "eslint:recommended"
+  ],
+  "settings": {
+    "preact": {
+      "version": "8"
+    }
+  }
 }

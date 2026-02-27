@@ -184,7 +184,16 @@ class KeepDebugLinksFilter(logging.Filter):
         {
             'name': 'urllib3.connectionpool',
             'msg': '%s://%s:%s "%s %s %s" %s %s',
-            'args': ('https', 'community-courses.memrise.com', 443, 'POST', '/v1.25/learning_sessions/preview/', 'HTTP/1.1', 200, None),
+            'args': (
+                'https',
+                'community-courses.memrise.com',
+                443,
+                'POST',
+                '/v1.25/learning_sessions/preview/',
+                'HTTP/1.1',
+                200,
+                None,
+            ),
             'levelname': 'DEBUG',
             'levelno': 10,
             'pathname': '/usr/local/lib/python3.12/site-packages/urllib3/connectionpool.py',

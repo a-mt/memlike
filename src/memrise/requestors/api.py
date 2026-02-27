@@ -458,7 +458,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_upload_remove(
+        self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         log_params = f"thing_id={idThing},cell_id={cellId},file_id={fileId}"
         logger.debug(f"Requestor:Level edition: delete file from thing [{log_params}] ({log_session})")

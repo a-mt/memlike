@@ -1,4 +1,4 @@
-/* global $ */
+/* global $, window, document, console, setTimeout */
 $(document).ready(function(){
   window.$_GET = param();
   Object.freeze(window.i18n);
@@ -13,13 +13,13 @@ $(document).ready(function(){
       var STATIC_URL   = 'https://static.memrise.com/',
           allowed_tags = 'p,strong,em,pre,code';
 
-      value = value.replace(/img:http:\/\/www.memrise.com\/static\//g, "img:" + STATIC_URL)
-                   .replace(/img:http:\/\/memrise.com\/static\//g, "img:" + STATIC_URL)
-                   .replace(/img:\/static\//g, "img:" + STATIC_URL)
-                   .replace(/img:([^\s<]+)/g, "`img:$1`");
+      value = value.replace(/img:http:\/\/www.memrise.com\/static\//g, 'img:' + STATIC_URL)
+                   .replace(/img:http:\/\/memrise.com\/static\//g, 'img:' + STATIC_URL)
+                   .replace(/img:\/static\//g, 'img:' + STATIC_URL)
+                   .replace(/img:([^\s<]+)/g, '`img:$1`');
       value = window.markdown.toHTML(value);
 
-      var res = $("<div>").html(value);
+      var res = $('<div>').html(value);
       res.find('*').each(function(){
         $(this).is(allowed_tags) || $(this).remove();
       });
@@ -119,15 +119,15 @@ function param(href) {
 //| Browse courses using AJAX
 //+--------------------------------------------------------
 function courses() {
-  var content  = $("#courses-container"),
-      paging   = $("#content-loader").children();
+  var content  = $('#courses-container'),
+      paging   = $('#content-loader').children();
 
   _paginate('/ajax/courses', {
       lang: window.MEMLIKE.page.currentLang,
       cat : window.MEMLIKE.page.currentCat,
       q   : window.$_GET.q
-  }, (window.$_GET.q ? "?q=" + encodeURIComponent(window.$_GET.q) : ""), content, paging, function(data, current_page) {
-    if(data.content.trim() == "" && current_page == 1) {
+  }, (window.$_GET.q ? '?q=' + encodeURIComponent(window.$_GET.q) : ''), content, paging, function(data, current_page) {
+    if(data.content.trim() == '' && current_page == 1) {
       return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
     } else {
       return data.content;
@@ -149,9 +149,9 @@ function _paginate(ajax_url, data, q, content, paging, tpl) {
   has_next     = true;
 
   if(q) {
-    q += "&";
+    q += '&';
   } else {
-    q = "?";
+    q = '?';
   }
   function query(page, pushState) {
     content.html('');
@@ -197,11 +197,11 @@ function _paginate(ajax_url, data, q, content, paging, tpl) {
         }
 
         if(pushState) {
-          window.history.pushState({ page: current_page, has_next: has_next }, "", url + q + "page=" + current_page);
+          window.history.pushState({ page: current_page, has_next: has_next }, '', url + q + 'page=' + current_page);
         }
       },
       error: function(xhr) {
-        console.error(xhr.status + " " + xhr.statusText);
+        console.error(xhr.status + ' ' + xhr.statusText);
 
         content.html(window.i18n.error);
         paging.hide();
@@ -275,7 +275,7 @@ var audioPlayer = {
        document.body.addEventListener('ended', function(e){
         if(e.target == audioPlayer.target) {
           audioPlayer.isPlaying = false;
-          audioPlayer.target.button.classList.remove("active");
+          audioPlayer.target.button.classList.remove('active');
           audioPlayer.target = false;
         }
       }, true);
@@ -284,7 +284,7 @@ var audioPlayer = {
     // Reset audioPlayer state
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.button.classList.remove("active");
+      audioPlayer.target.button.classList.remove('active');
     }
     audioPlayer.target    = false;
     audioPlayer.isPlaying = false;
@@ -325,10 +325,10 @@ var audioPlayer = {
       }
       if(audioPlayer.isPlaying) {
         audioElement.pause();
-        audioElement.button.classList.remove("active");
+        audioElement.button.classList.remove('active');
       } else {
         audioElement.play();
-        audioElement.button.classList.add("active");
+        audioElement.button.classList.add('active');
       }
       audioPlayer.isPlaying = !audioPlayer.isPlaying;
 
@@ -336,10 +336,10 @@ var audioPlayer = {
     } else {
       if(audioPlayer.isPlaying) {
         audioPlayer.target.pause();
-        audioPlayer.target.classList.remove("active");
+        audioPlayer.target.classList.remove('active');
       }
       audioElement.play();
-      audioElement.button.classList.add("active");
+      audioElement.button.classList.add('active');
       audioPlayer.target    = audioElement;
       audioPlayer.isPlaying = true;
     }
@@ -349,7 +349,7 @@ var audioPlayer = {
   pause: function() {
     if(audioPlayer.isPlaying) {
       audioPlayer.target.pause();
-      audioPlayer.target.button.classList.remove("active");
+      audioPlayer.target.button.classList.remove('active');
       audioPlayer.isPlaying = false;
     }
   }
@@ -403,7 +403,7 @@ var imgZoom = {
     var legend = $(this).closest('.thing').find('.text').text(),
           html = `<figure>
             <img class="zoom" src="${this.getAttribute('src')}">
-            ${legend ? `<figcaption>${legend}</figcaption>` : ""}
+            ${legend ? `<figcaption>${legend}</figcaption>` : ''}
           </figure>`;
 
     // Prev & next
@@ -456,7 +456,7 @@ var modal = {
     if(!callback) {
       delete modal.close_callback[k];
 
-    } else if(typeof callback == "function") {
+    } else if(typeof callback == 'function') {
       modal.close_callback[k] = callback;
     }
   },
@@ -476,7 +476,7 @@ var modal = {
 var multimedia = {
   init: function() {
     $('.multimedia-wrapper').each(function(){
-      var varname = this.getAttribute("data-var");
+      var varname = this.getAttribute('data-var');
 
       if(window[varname]) {
         $(this).html(window.markdown.decode(window[varname]));
@@ -490,15 +490,15 @@ var multimedia = {
 //| Browse followers/following users using AJAX
 //+--------------------------------------------------------
 function user_mempals() {
-  var content  = $("#mempals-container");
+  var content  = $('#mempals-container');
   if(!content.length) {
     return;
   }
-  var paging = $("#content-loader").children(),
+  var paging = $('#content-loader').children(),
       tab    = content.data('tab'),
       url    = '/ajax/user/' + window.MEMLIKE.page.username + '/' + tab;
 
-  _paginate(url, {}, "", content, paging, function(data){
+  _paginate(url, {}, '', content, paging, function(data){
     if(!data.users.length) {
       var msg = window.i18n[tab + '_none'].replace('%', '<span class="grey">' + window.MEMLIKE.page.username + '</span>');
       return '<div class="empty-box"><p>' + msg + '</p></div>';
@@ -507,7 +507,7 @@ function user_mempals() {
     var html = '';
     for(var i=0; i<data.users.length; i++) {
       html += '<a class="user-box" href="/user/' + data.users[i].name + '">' +
-                (data.users[i].photo ? `<div class="small-photo"><img src="${data.users[i].photo}" alt></div>` : "") +
+                (data.users[i].photo ? `<div class="small-photo"><img src="${data.users[i].photo}" alt></div>` : '') +
                 '<span title="' + data.users[i].name + '">' + data.users[i].name + '</span>'
               + '</a>';
     }
@@ -522,15 +522,15 @@ function user_mempals() {
 //| Browse user's courses using AJAX
 //+--------------------------------------------------------
 function user_courses() {
-  var content  = $("#usercourses-container");
+  var content  = $('#usercourses-container');
   if(!content.length) {
     return;
   }
-  var paging = $("#content-loader").children(),
+  var paging = $('#content-loader').children(),
       tab    = content.data('tab'),
       url    = '/ajax/user/' + window.MEMLIKE.page.username + '/' + tab;
 
-  _paginate(url, {}, "", content, paging, function(data){
+  _paginate(url, {}, '', content, paging, function(data){
     if(data.content.length == 0) {
       return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
     }
@@ -547,10 +547,10 @@ function user_courses() {
 
 var Dashboard = {
   container: false,
-  sort: "i",
+  sort: 'i',
   sortOptions: {},
   offset: 0,
-  content: "",
+  content: '',
 
   init: function() {
     Dashboard.container   = $('#dashboard');
@@ -566,7 +566,7 @@ var Dashboard = {
       var sort = this.value;
 
       if(sort != Dashboard.sort) {
-        var option = $("option:selected", this);
+        var option = $('option:selected', this);
         var sortOptions = {numeric: option.attr('data-numeric'), desc: option.attr('data-desc')};
 
         Dashboard.sort = sort;
@@ -606,7 +606,7 @@ var Dashboard = {
   getCourses: function() {
     const requestOffset = Dashboard.offset;
     if (!requestOffset) {
-      Dashboard.content = "";
+      Dashboard.content = '';
     }
 
     /* global $ */
@@ -634,14 +634,16 @@ var Dashboard = {
 
                       if (data.content) {
                         Dashboard.container.append(data.content);
-                        Dashboard.content += ".";
+                        Dashboard.content += '.';
 
                       } else if(data.next_offset) {
                         Dashboard.offset = data.next_offset;
                         Dashboard.loadNext.html('<button class="btn">' + window.i18n.load_more +'</button>');
                       }
                     }
-                  } catch(e) { }
+                  } catch(e) {
+                    console.error(e);
+                  }
                 }
             }
         }
@@ -659,7 +661,7 @@ var Dashboard = {
         requestOffset && setTimeout(function(){
           console.info('Resorting...');
 
-          if(Dashboard.sort != "i" || Dashboard.sortOptions.desc) {
+          if(Dashboard.sort != 'i' || Dashboard.sortOptions.desc) {
             Dashboard.sortCourses(
               Dashboard.sort,
               Dashboard.sortOptions.numeric || false,
@@ -696,112 +698,112 @@ var Dashboard = {
 
 // https://docs.cloud.google.com/translate/docs/languages?hl=de
 var TTS = {
-  host: "https://google-tts-api.herokuapp.com/",
+  host: 'https://google-tts-api.herokuapp.com/',
   langs: {
-    "af": "Afrikaans",
-    "sq": "Albanian",
-    "am": "Amharic",
-    "ar": "Arabic",
-    "hy": "Armenian",
-    "az": "Azeerbaijani",
-    "eu": "Basque",
-    "be": "Belarusian",
-    "bn": "Bengali",
-    "bs": "Bosnian",
-    "bg": "Bulgarian",
-    "ca": "Catalan",
-    "ceb": "Cebuano",
-    "zh-CN": "Chinese (Simplified)",
-    "zh-TW": "Chinese (Traditional)",
-    "co": "Corsican",
-    "hr": "Croatian",
-    "cs": "Czech",
-    "da": "Danish",
-    "nl": "Dutch",
-    "en": "English",
-    "eo": "Esperanto",
-    "et": "Estonian",
-    "fi": "Finnish",
-    "fr": "French",
-    "fy": "Frisian",
-    "gl": "Galician",
-    "ka": "Georgian",
-    "de": "German",
-    "el": "Greek",
-    "gu": "Gujarati",
-    "ht": "Haitian Creole",
-    "ha": "Hausa",
-    "haw": "Hawaiian",
-    "iw": "Hebrew",
-    "hi": "Hindi",
-    "hmn": "Hmong",
-    "hu": "Hungarian",
-    "is": "Icelandic",
-    "ig": "Igbo",
-    "id": "Indonesian",
-    "ga": "Irish",
-    "it": "Italian",
-    "ja": "Japanese",
-    "jw": "Javanese",
-    "kn": "Kannada",
-    "kk": "Kazakh",
-    "km": "Khmer",
-    "ko": "Korean",
-    "ku": "Kurdish",
-    "ky": "Kyrgyz",
-    "lo": "Lao",
-    "la": "Latin",
-    "lv": "Latvian",
-    "lt": "Lithuanian",
-    "lb": "Luxembourgish",
-    "mk": "Macedonian",
-    "mg": "Malagasy",
-    "ms": "Malay",
-    "ml": "Malayalam",
-    "mt": "Maltese",
-    "mi": "Maori",
-    "mr": "Marathi",
-    "mn": "Mongolian",
-    "my": "Myanmar (Burmese)",
-    "ne": "Nepali",
-    "no": "Norwegian",
-    "ny": "Nyanja (Chichewa)",
-    "ps": "Pashto",
-    "fa": "Persian",
-    "pl": "Polish",
-    "pt": "Portuguese (Portugal, Brazil)",
-    "pa": "Punjabi",
-    "ro": "Romanian",
-    "ru": "Russian",
-    "sm": "Samoan",
-    "gd": "Scots Gaelic",
-    "sr": "Serbian",
-    "st": "Sesotho",
-    "sn": "Shona",
-    "sd": "Sindhi",
-    "si": "Sinhala (Sinhalese)",
-    "sk": "Slovak",
-    "sl": "Slovenian",
-    "so": "Somali",
-    "es": "Spanish",
-    "su": "Sundanese",
-    "sw": "Swahili",
-    "sv": "Swedish",
-    "tl": "Tagalog (Filipino)",
-    "tg": "Tajik",
-    "ta": "Tamil",
-    "te": "Telugu",
-    "th": "Thai",
-    "tr": "Turkish",
-    "uk": "Ukrainian",
-    "ur": "Urdu",
-    "uz": "Uzbek",
-    "vi": "Vietnamese",
-    "cy": "Welsh",
-    "xh": "Xhosa",
-    "yi": "Yiddish",
-    "yo": "Yoruba",
-    "zu": "Zulu"
+    'af': 'Afrikaans',
+    'sq': 'Albanian',
+    'am': 'Amharic',
+    'ar': 'Arabic',
+    'hy': 'Armenian',
+    'az': 'Azeerbaijani',
+    'eu': 'Basque',
+    'be': 'Belarusian',
+    'bn': 'Bengali',
+    'bs': 'Bosnian',
+    'bg': 'Bulgarian',
+    'ca': 'Catalan',
+    'ceb': 'Cebuano',
+    'zh-CN': 'Chinese (Simplified)',
+    'zh-TW': 'Chinese (Traditional)',
+    'co': 'Corsican',
+    'hr': 'Croatian',
+    'cs': 'Czech',
+    'da': 'Danish',
+    'nl': 'Dutch',
+    'en': 'English',
+    'eo': 'Esperanto',
+    'et': 'Estonian',
+    'fi': 'Finnish',
+    'fr': 'French',
+    'fy': 'Frisian',
+    'gl': 'Galician',
+    'ka': 'Georgian',
+    'de': 'German',
+    'el': 'Greek',
+    'gu': 'Gujarati',
+    'ht': 'Haitian Creole',
+    'ha': 'Hausa',
+    'haw': 'Hawaiian',
+    'iw': 'Hebrew',
+    'hi': 'Hindi',
+    'hmn': 'Hmong',
+    'hu': 'Hungarian',
+    'is': 'Icelandic',
+    'ig': 'Igbo',
+    'id': 'Indonesian',
+    'ga': 'Irish',
+    'it': 'Italian',
+    'ja': 'Japanese',
+    'jw': 'Javanese',
+    'kn': 'Kannada',
+    'kk': 'Kazakh',
+    'km': 'Khmer',
+    'ko': 'Korean',
+    'ku': 'Kurdish',
+    'ky': 'Kyrgyz',
+    'lo': 'Lao',
+    'la': 'Latin',
+    'lv': 'Latvian',
+    'lt': 'Lithuanian',
+    'lb': 'Luxembourgish',
+    'mk': 'Macedonian',
+    'mg': 'Malagasy',
+    'ms': 'Malay',
+    'ml': 'Malayalam',
+    'mt': 'Maltese',
+    'mi': 'Maori',
+    'mr': 'Marathi',
+    'mn': 'Mongolian',
+    'my': 'Myanmar (Burmese)',
+    'ne': 'Nepali',
+    'no': 'Norwegian',
+    'ny': 'Nyanja (Chichewa)',
+    'ps': 'Pashto',
+    'fa': 'Persian',
+    'pl': 'Polish',
+    'pt': 'Portuguese (Portugal, Brazil)',
+    'pa': 'Punjabi',
+    'ro': 'Romanian',
+    'ru': 'Russian',
+    'sm': 'Samoan',
+    'gd': 'Scots Gaelic',
+    'sr': 'Serbian',
+    'st': 'Sesotho',
+    'sn': 'Shona',
+    'sd': 'Sindhi',
+    'si': 'Sinhala (Sinhalese)',
+    'sk': 'Slovak',
+    'sl': 'Slovenian',
+    'so': 'Somali',
+    'es': 'Spanish',
+    'su': 'Sundanese',
+    'sw': 'Swahili',
+    'sv': 'Swedish',
+    'tl': 'Tagalog (Filipino)',
+    'tg': 'Tajik',
+    'ta': 'Tamil',
+    'te': 'Telugu',
+    'th': 'Thai',
+    'tr': 'Turkish',
+    'uk': 'Ukrainian',
+    'ur': 'Urdu',
+    'uz': 'Uzbek',
+    'vi': 'Vietnamese',
+    'cy': 'Welsh',
+    'xh': 'Xhosa',
+    'yi': 'Yiddish',
+    'yo': 'Yoruba',
+    'zu': 'Zulu'
   },
   get_audio(text, lang) {
     if(!TTS.langs[lang] || text.length >= 200) {

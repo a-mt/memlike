@@ -22,8 +22,10 @@ repos:
     hooks:
     -   id: eslint
         name: eslint
-        entry: npx eslint static/js6
+        entry: npx eslint
         language: system
+        pass_filenames: true
+        files: ^static/js6/
 # - repo: https://github.com/woodruffw/zizmor-pre-commit
 #   rev: v1.18.0
 #   hooks:
