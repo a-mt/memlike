@@ -2234,7 +2234,7 @@ form .error {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 0;
+  right: 5px;
   cursor: pointer;
 }
 .edit-level .audio-player-hover { /* .ico-audio */

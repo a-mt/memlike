@@ -235,7 +235,7 @@ function bindEvents(new_row) {
   }
 
   // POST new row
-  function addRow($tr, data, uploads) {
+  function addRow($tr, data, callback) {
     var $level = $tr.closest('.edit-level'),
         idLevel = $level.data('level-id');
 
@@ -251,14 +251,13 @@ function bindEvents(new_row) {
         var html = json.rendered_thing,
             $newTr = $(html).appendTo($('.things', $level));
 
-        if (uploads && window.File) {
-          downloadFromUrls($newTr, idLevel, uploads);
-        }
         $tr.remove();
+        callback && callback('success', idLevel, $newTr);
       },
       error: function (xhr) {
         console.error(xhr);
         $tr.remove('disabled');
+        callback && callback('error', idLevel, $tr);
       }
     });
   }
@@ -767,12 +766,28 @@ function bindEvents(new_row) {
             // Upload its attachments once added
           } else {
             var list = txt.split(',');
-
             for (var l = 0; l < list.length; l++) {
-              var item = list[l],
-                  match = item.match(/^([^(]+)\(([^)]+)\)$/);
+              var item = list[l];
 
-              if (!match) {
+              // 184839286_180428_1821_37.jpg (https://static.memrise.com/uploads/things/images/184839286_180428_1821_37.jpg)
+              var match = item.match(/^([^(]+)\(([^)]+)\)$/),
+                  filename = null,
+                  url = null;
+
+              if (match) {
+                filename = match[1].trim();
+                url = match[2].trim();
+              } else {
+
+                // https://static.memrise.com/uploads/things/images/184839286_180428_1821_37.jpg
+                match = item.match(/^https?:\/\/[^)]+\/[^.]+(\/[_a-zA-Z0.9]+\.[a-zA-Z0.9]+)$/);
+                if (match) {
+                  url = item;
+                  filename = match[1].trim();
+                }
+              }
+
+              if (!url || !filename) {
                 continue;
               }
               var filename = match[1].trim(),
@@ -898,15 +913,57 @@ function bindEvents(new_row) {
 
       window.modal.onclose('import', null);
       window.modal.close();
-      import_rows(rows, $adding);
 
+      while (rows.length) {
+        let batch = rows.splice(0, 10);
+
+        setTimeout(function () {
+          import_rows(batch, $adding);
+        }, 0);
+      }
       rows = null;
       headers = null;
-      $adding = null;
     });
   }
 
+  /**
+   * List of rows that have been imported,
+   * that do have an upload to handle
+   */
+  function imported_rows(rows) {
+    console.log('batch complete', rows);
+
+    if (!window.File) {
+      return;
+    }
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i],
+          uploads = row.upload;
+
+      // TODO callback
+      downloadFromUrls(row.$tr, row.idLevel, row.upload);
+    }
+  }
+
   function import_rows(rows, $adding) {
+    var pending = 0;
+    var callbackRows = [];
+
+    var addCallback = function (data, upload) {
+      pending++;
+
+      return function (status, idLevel, $newTr) {
+        pending--;
+        if (status == 'success') {
+          callbackRows.push({ data, upload, idLevel, $tr: $newTr });
+        }
+        if (pending == 0) {
+          setTimeout(function () {
+            imported_rows(callbackRows);
+          }, 0);
+        }
+      };
+    };
 
     for (var i = 0; i < rows.length; i++) {
       var data = rows[i].data,
@@ -916,7 +973,8 @@ function bindEvents(new_row) {
       for (var k in data) {
         $tr.children('[data-key="' + k + '"]').find('input').val(data[k]);
       }
-      addRow($tr, data, upload);
+      var callback = upload ? addCallback(data, upload) : false;
+      addRow($tr, data, callback);
     }
   }
 }

@@ -439,7 +439,7 @@ class ApiRequestor:
                 "thing_id": idThing,
             },
             files={
-                "f": (file.filename, file.value),  # files={FILENAME: file-like-object}
+                "f": (file.filename, file.raw),  # files={FILENAME: file-like-object}
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
