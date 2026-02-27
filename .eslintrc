@@ -13,10 +13,12 @@
     "no-redeclare": "off",
     "no-case-declarations": "off",
     "no-constant-condition": "off",
+    "react/no-direct-mutation-state": "off",
     "quotes": [2, "single", { "avoidEscape": true }]
   },
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:react/recommended"
   ],
   "settings": {
     "preact": {

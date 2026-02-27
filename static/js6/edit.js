@@ -123,7 +123,7 @@ class EditLevel extends Component {
     return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool || ''}>
       <div className="edit-level-actions">
         {this.state.isLoading
-          && <span class="loading-spinner left"></span>
+          && <span className="loading-spinner left"></span>
         }
         {this.state.show
           && <label className="export action" title={window.i18n._export}>
