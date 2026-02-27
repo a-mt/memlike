@@ -10,20 +10,20 @@ $:(prender.inc_course_banner(course))
     <!-- Levels name -->
     <button type="button" class="pill active">
       <i class="ico ico-list ico-white"></i>
-      $(LANG.misc['levels']) ($(len(course['levels'])))
+      $(i18n.misc['levels']) ($(len(course['levels'])))
     </button>
 
     <!-- Link to leaderboard -->
     <a href="$(course['url'])leaderboard" class="pill">
       <i class="ico ico-trophy"></i>
-      $(LANG.misc['leaderboard'])
+      $(i18n.misc['leaderboard'])
     </a>
 
     <!-- Links to garden learn / preview -->
-    <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_course'])</button>
+    <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(i18n.misc['learn_course'])</button>
 
     $if session.loggedin and session.loggedin['username'] == course['author']:
-      <a href="$(course['url'])edit" class="pill edit">$:(LANG.misc['edit_course'])</a>
+      <a href="$(course['url'])edit" class="pill edit">$:(i18n.misc['edit_course'])</a>
   </div>
 </div>
 
@@ -41,7 +41,7 @@ $#    $elif it['kind'] == "audio":
 $#      <div class="media-list">
 $#        $for song in it['value']:
 $#          <audio id="audio-$(item[attr]['id'])" src="$(song['normal'])"></audio>
-$#          <button type="button" data-id="audio-$(item[attr]['id'])" class="audio-player" aria-label="$(LANG.misc['play_audio'])">
+$#          <button type="button" data-id="audio-$(item[attr]['id'])" class="audio-player" aria-label="$(i18n.misc['play_audio'])">
 $#            <i class="ico ico-l ico-audio"></i>
 $#          </button>
 $#      </div>
@@ -57,11 +57,11 @@ $#  </div>
 
         <!-- Text -->
         <ul class="numbers-summary">
-          <li>$:(LANG.misc['number_words'].replace('%', "<strong>" + str(stats['num_things'] - stats['ignored']) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_ignored'].replace('%', "<strong>" + str(stats['ignored']) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_learned'].replace('%', "<strong>" + str(stats['learned']) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_review'].replace('%', "<strong>" + str(stats['review']) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_complete'].replace('%', "<strong>" + str(stats['percent_complete']) + "</strong>%"))</li>
+          <li>$:(i18n.misc['number_words'].replace('%', "<strong>" + str(stats['num_things'] - stats['ignored']) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_ignored'].replace('%', "<strong>" + str(stats['ignored']) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_learned'].replace('%', "<strong>" + str(stats['learned']) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_review'].replace('%', "<strong>" + str(stats['review']) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_complete'].replace('%', "<strong>" + str(stats['percent_complete']) + "</strong>%"))</li>
         </ul>
 
         <!-- Progress bar -->
@@ -138,28 +138,28 @@ $#  </div>
           $if tolearn:
             <div class="mode-counter">$(tolearn)</div>
         </div>
-        <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
+        <div class="mode-icon-label">$:(i18n.misc['new_words'])</div>
       </button>
       <button name="session" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon classic_review">
           $if toreview:
             <div class="mode-counter">$(toreview)</div>
         </div>
-        <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
+        <div class="mode-icon-label">$:(i18n.misc['classic_review'])</div>
       </button>
       <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
         <div class="mode-icon speed_review">&nbsp;</div>
-        <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
+        <div class="mode-icon-label">$:(i18n.misc['speed_review'])</div>
       </button>
       <button name="session" value="preview" class="mode-icon-wrapper">
         <div class="mode-icon preview">&nbsp;</div>
-        <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
+        <div class="mode-icon-label">$:(i18n.misc['preview'])</div>
       </button>
     </div>
     $if session["loggedin"]:
       <div class="mode-options">
         <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
-        <label for="sendresults">$:(LANG.misc['send_results'])</label>
+        <label for="sendresults">$:(i18n.misc['send_results'])</label>
       </div>
   </div>
 </form>

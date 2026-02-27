@@ -1,21 +1,21 @@
 $def with (redirect, err, data)
 $var currentPage: login
-$var title: $:(LANG.menu["login"])
+$var title: $:(i18n.menu["login"])
 
 <main>
   <br>
   <form method="POST" class="login nicebox">
     <div>
-      <label for="username">$(LANG.misc['username'])</label>
+      <label for="username">$(i18n.misc['username'])</label>
       <input name="username" type="text" id="username" value="$(data['username'] if 'username' in data else None)" required>
-      <span class="error">$(LANG.err[err['username']] if 'username' in err else None)</span>
+      <span class="error">$(i18n.err[err['username']] if 'username' in err else None)</span>
     </div>
     <div>
-      <label for="password">$(LANG.misc['password'])</label>
+      <label for="password">$(i18n.misc['password'])</label>
       <input name="password" type="password" id="password" required>
-      <span class="error">$(LANG.err[err['password']] if 'password' in err else None)</span>
+      <span class="error">$(i18n.err[err['password']] if 'password' in err else None)</span>
     </div>
     <input type="hidden" name="redirect" value="$(data['redirect'] if 'redirect' in data else redirect)">
-    <input class="btn green" type="submit" value=$:(LANG.misc['login'])>
+    <input class="btn green" type="submit" value=$:(i18n.misc['login'])>
   </form>
 </main>

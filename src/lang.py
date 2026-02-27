@@ -64,4 +64,4 @@ class Lang(object):
         web.ctx.lang = mod
 
         # Make it accessible in templates
-        web.config.template["LANG"] = mod
+        web.config.template["i18n"] = mod

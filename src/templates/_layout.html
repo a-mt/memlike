@@ -38,7 +38,7 @@ $ t = time()
               $else:
                 <li class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
                   <a href="$(item['url'])" class="nav-item-btn">
-                    <span class="nav-item-btn-text">$(LANG.menu["dashboard"] if item["slug"] == "index" and session.get('loggedin', None) else LANG.menu[item['slug']])</span>
+                    <span class="nav-item-btn-text">$(i18n.menu["dashboard"] if item["slug"] == "index" and session.get('loggedin', None) else i18n.menu[item['slug']])</span>
                   </a>
                 </li>
           </ul>
@@ -60,7 +60,7 @@ $ t = time()
           </a>
 
         <!-- About -->
-        <a href="/about" title="$(LANG.menu['about'])"><span class="ico ico-l ico-question"></span></a>
+        <a href="/about" title="$(i18n.menu['about'])"><span class="ico ico-l ico-question"></span></a>
 
         <!-- Choose lang -->
         <ul class="header-nav">
@@ -80,36 +80,36 @@ $ t = time()
     <script src="/static/js/bootstrap.bundle.min.js"></script>
     <script>
       window.i18n = {
-        error: "$:(LANG.misc['error'])",
-        page: "$:(LANG.misc['page'])",
-        courses_none: "$:(LANG.misc['courses_none'])",
-        following_none: "$:(LANG.misc['following_none'])",
-        followers_none: "$:(LANG.misc['followers_none'])",
-        wrong_answer: "$:(LANG.misc['wrong_answer'])",
-        correct_answer: "$:(LANG.misc['correct_answer'])",
-        near_answer: "$:(LANG.misc['near_answer'])",
-        your_answer_was: "$:(LANG.misc['your_answer_was'])",
-        your_answer_was_empty: "$:(LANG.misc['your_answer_was_empty'])",
-        empty_dashboard: "$:(LANG.misc['empty_dashboard'])",
-        load_more: "$:(LANG.misc['load_more'])",
-        browse_courses: "$:(LANG.misc['browse_courses'])",
-        _403: "$:(LANG.misc['403'])",
-        login: "$:(LANG.menu['login'])",
-        next: "$:(LANG.misc['next'])",
-        "return": "$:(LANG.misc['return'])",
-        replay: "$:(LANG.misc['replay'])",
-        no_more_hearts: "$:(LANG.misc['no_more_hearts'])",
-        _import: "$:(LANG.misc['import'])",
-        _export: "$:(LANG.misc['export'])",
-        import_err_ext: "$:(LANG.misc['import_err_ext'])",
-        import_err_empty: "$:(LANG.misc['import_err_empty'])",
-        play_audio: "$:(LANG.misc['play_audio'])",
-        learn_err_empty_preview: "$:(LANG.misc['learn_err_empty_preview'])",
-        learn_err_empty_review: "$:(LANG.misc['learn_err_empty_review'])",
-        learn_err_empty_learn: "$:(LANG.misc['learn_err_empty_learn'])",
-        learn_err_empty: "$:(LANG.misc['learn_err_empty'])",
-        confirm_del_file: "$:(LANG.misc['confirm_del_file'])",
-        confirm_del_row: "$:(LANG.misc['confirm_del_row'])",
+        error: "$:(i18n.misc['error'])",
+        page: "$:(i18n.misc['page'])",
+        courses_none: "$:(i18n.misc['courses_none'])",
+        following_none: "$:(i18n.misc['following_none'])",
+        followers_none: "$:(i18n.misc['followers_none'])",
+        wrong_answer: "$:(i18n.misc['wrong_answer'])",
+        correct_answer: "$:(i18n.misc['correct_answer'])",
+        near_answer: "$:(i18n.misc['near_answer'])",
+        your_answer_was: "$:(i18n.misc['your_answer_was'])",
+        your_answer_was_empty: "$:(i18n.misc['your_answer_was_empty'])",
+        empty_dashboard: "$:(i18n.misc['empty_dashboard'])",
+        load_more: "$:(i18n.misc['load_more'])",
+        browse_courses: "$:(i18n.misc['browse_courses'])",
+        _403: "$:(i18n.misc['403'])",
+        login: "$:(i18n.menu['login'])",
+        next: "$:(i18n.misc['next'])",
+        "return": "$:(i18n.misc['return'])",
+        replay: "$:(i18n.misc['replay'])",
+        no_more_hearts: "$:(i18n.misc['no_more_hearts'])",
+        _import: "$:(i18n.misc['import'])",
+        _export: "$:(i18n.misc['export'])",
+        import_err_ext: "$:(i18n.misc['import_err_ext'])",
+        import_err_empty: "$:(i18n.misc['import_err_empty'])",
+        play_audio: "$:(i18n.misc['play_audio'])",
+        learn_err_empty_preview: "$:(i18n.misc['learn_err_empty_preview'])",
+        learn_err_empty_review: "$:(i18n.misc['learn_err_empty_review'])",
+        learn_err_empty_learn: "$:(i18n.misc['learn_err_empty_learn'])",
+        learn_err_empty: "$:(i18n.misc['learn_err_empty'])",
+        confirm_del_file: "$:(i18n.misc['confirm_del_file'])",
+        confirm_del_row: "$:(i18n.misc['confirm_del_row'])",
      };
      window.MEMLIKE = window.MEMLIKE || {};
     </script>

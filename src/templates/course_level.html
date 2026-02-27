@@ -12,7 +12,7 @@ $:(prender.inc_course_banner(course))
     $if len(course['levels']):
       <a href="$(course['url'])" class="pill">
         <i class="ico ico-list"></i>
-        $(LANG.misc['levels']) ($(len(course['levels'])))
+        $(i18n.misc['levels']) ($(len(course['levels'])))
       </a>
 
       <!-- Level name -->
@@ -21,20 +21,20 @@ $:(prender.inc_course_banner(course))
       </button>
     $else:
       <button type="button" class="pill active">
-          $(LANG.misc['levels']) ($(len(course['levels'])))
+          $(i18n.misc['levels']) ($(len(course['levels'])))
       </button>
 
       <a href="$(course['url'])leaderboard" class="pill">
         <i class="ico ico-trophy"></i>
-        $(LANG.misc['leaderboard'])
+        $(i18n.misc['leaderboard'])
       </a>
 
     <!-- Links to garden learn / preview -->
     $if level['type'] != 2:
-      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(LANG.misc['learn_level'])</button>
+      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(i18n.misc['learn_level'])</button>
 
     $if session.loggedin and session.loggedin['username'] == course['author']:
-      <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(LANG.misc['edit_level'])</a>
+      <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(i18n.misc['edit_level'])</a>
   </div>
 </div>
 
@@ -58,11 +58,11 @@ $:(prender.inc_course_banner(course))
 
         <!-- Text -->
         <ul class="numbers-summary">
-          <li>$:(LANG.misc['number_words'].replace('%', "<strong>" + str(maxPoints) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_ignored'].replace('%', "<strong>" + str(ignored) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_learned'].replace('%', "<strong>" + str(points) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_review'].replace('%', "<strong>" + str(toreview) + "</strong>"))</li>
-          <li>$:(LANG.misc['number_complete'].replace('%', "<strong>" + str(percent) + "</strong>%"))</li>
+          <li>$:(i18n.misc['number_words'].replace('%', "<strong>" + str(maxPoints) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_ignored'].replace('%', "<strong>" + str(ignored) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_learned'].replace('%', "<strong>" + str(points) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_review'].replace('%', "<strong>" + str(toreview) + "</strong>"))</li>
+          <li>$:(i18n.misc['number_complete'].replace('%', "<strong>" + str(percent) + "</strong>%"))</li>
         </ul>
 
         <!-- Progress bar -->
@@ -136,28 +136,28 @@ $if level['type'] != 2:
             $if tolearn:
               <div class="mode-counter">$(tolearn)</div>
           </div>
-          <div class="mode-icon-label">$:(LANG.misc['new_words'])</div>
+          <div class="mode-icon-label">$:(i18n.misc['new_words'])</div>
         </button>
         <button name="session" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon classic_review">
             $if toreview:
               <div class="mode-counter">$(toreview)</div>
           </div>
-          <div class="mode-icon-label">$:(LANG.misc['classic_review'])</div>
+          <div class="mode-icon-label">$:(i18n.misc['classic_review'])</div>
         </button>
         <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon speed_review">&nbsp;</div>
-          <div class="mode-icon-label">$:(LANG.misc['speed_review'])</div>
+          <div class="mode-icon-label">$:(i18n.misc['speed_review'])</div>
         </button>
         <button name="session" value="preview" class="mode-icon-wrapper $('disabled' if num_things == 0 else None)">
           <div class="mode-icon preview">&nbsp;</div>
-          <div class="mode-icon-label">$:(LANG.misc['preview'])</div>
+          <div class="mode-icon-label">$:(i18n.misc['preview'])</div>
         </button>
       </div>
       $if session["loggedin"]:
         <div class="mode-options">
           <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
-          <label for="sendresults">$:(LANG.misc['send_results'])</label>
+          <label for="sendresults">$:(i18n.misc['send_results'])</label>
         </div>
     </div>
   </form>

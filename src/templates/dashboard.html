@@ -1,7 +1,7 @@
 $def with (currentTab, currentPeriod, items)
 
 $var currentPage: index
-$var title: $(LANG.menu["index"])
+$var title: $(i18n.menu["index"])
 
 <main>
   <div class="page-head">
@@ -17,20 +17,20 @@ $var title: $(LANG.menu["index"])
           $ icon = None
 
         $if currentTab == name:
-          <button type="button" class="pill active">$:icon $(LANG.misc[name])</button>
+          <button type="button" class="pill active">$:icon $(i18n.misc[name])</button>
         $else:
-          <a href="$(url)" class="pill">$:icon $(LANG.misc[name])</a>
+          <a href="$(url)" class="pill">$:icon $(i18n.misc[name])</a>
 
       <!-- Sort by -->
       $if currentTab == "courses":
         <div id="dashboard-sort" class="filter-source" style="display: none">
-          $:(LANG.misc['order_by'])
+          $:(i18n.misc['order_by'])
           <select autocomplete="off">
-            <option value="i" data-numeric="1">$:(LANG.misc['order_recent'])</option>
-            <option value="title">$:(LANG.misc['order_title'])</option>
-            <option value="category">$:(LANG.misc['order_category'])</option>
-            <option value="progress" data-numeric="1" data-desc="1">$:(LANG.misc['order_progress'])</option>
-            <option value="review" data-numeric="1" data-desc="1">$:(LANG.misc['order_review'])</option>
+            <option value="i" data-numeric="1">$:(i18n.misc['order_recent'])</option>
+            <option value="title">$:(i18n.misc['order_title'])</option>
+            <option value="category">$:(i18n.misc['order_category'])</option>
+            <option value="progress" data-numeric="1" data-desc="1">$:(i18n.misc['order_progress'])</option>
+            <option value="review" data-numeric="1" data-desc="1">$:(i18n.misc['order_review'])</option>
           </select>
         </div>
         <div class="loading-spinner right"></div>
@@ -51,7 +51,7 @@ $var title: $(LANG.menu["index"])
           <div class="btn-group">
             $for period in ['week', 'month', 'alltime']:
               <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$(period)">
-                $:(LANG.misc[period])
+                $:(i18n.misc[period])
               </a>
           </div>
         </div>
@@ -76,7 +76,7 @@ $var title: $(LANG.menu["index"])
               </li>
           </ul>
         $else:
-          <div class="empty-box"><p>$:(LANG.misc['leaderboard_none'])</p></div>
+          <div class="empty-box"><p>$:(i18n.misc['leaderboard_none'])</p></div>
       </div>
     </div>
 

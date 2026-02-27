@@ -1,6 +1,6 @@
 $def with (course, currentPeriod, items)
 $var currentPage: courses
-$var title: $(course['title']) - $(LANG.misc['leaderboard'])
+$var title: $(course['title']) - $(i18n.misc['leaderboard'])
 
 $:(prender.inc_course_banner(course))
 
@@ -10,13 +10,13 @@ $:(prender.inc_course_banner(course))
     <!-- Levels name -->
     <a href="$(course['url'])" class="pill">
       <i class="ico ico-list"></i>
-      $(LANG.misc['levels']) ($(len(course['levels'])))
+      $(i18n.misc['levels']) ($(len(course['levels'])))
     </a>
 
     <!-- Link to leaderboard -->
     <button type="button" class="pill active">
       <i class="ico ico-trophy ico-white"></i>
-      $(LANG.misc['leaderboard'])
+      $(i18n.misc['leaderboard'])
     </button>
 
   </div>
@@ -30,7 +30,7 @@ $:(prender.inc_course_banner(course))
         <div class="btn-group">
           $for period in ['week', 'month', 'alltime']:
             <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$(period)">
-              $:(LANG.misc[period])
+              $:(i18n.misc[period])
             </a>
         </div>
       </div>
@@ -55,7 +55,7 @@ $:(prender.inc_course_banner(course))
             </li>
         </ul>
       $else:
-        <div class="empty-box"><p>$:(LANG.misc['leaderboard_none'])</p></div>
+        <div class="empty-box"><p>$:(i18n.misc['leaderboard_none'])</p></div>
     </div>
 
   </div>
