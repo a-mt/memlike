@@ -31,7 +31,7 @@ class DummyEmptyMemrise(DummyMemrise):
             "id": idCourse,
             "title": "Example",
             "url": f"/community/course/{idCourse}/{slugCourse}/",
-            "author": "4v15721",
+            "author": "",
             "description": "",
             "photo": "",
             "levels": {},

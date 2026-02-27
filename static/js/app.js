@@ -298,9 +298,18 @@ var audioPlayer = {
 
   // Play the target (this) audio element
   play: function(e, force) {
-    let audioBtn = this;
-    let audioElement = this;
-    if ('id' in audioBtn.dataset) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let audioBtn = this; // the .audio-player element (button/a)
+    let audioElement = this; // the audio element (if it exists)
+
+    if (audioBtn.nodeName == 'A' && audioBtn.classList.contains('url')) {
+      window.open(audioElement.getAttribute('src'), '_blank');
+      return;
+    }
+
+    if (audioBtn.dataset && 'id' in audioBtn.dataset) {
       audioElement = document.getElementById(audioBtn.dataset.id);
     }
     audioElement.button = audioBtn;

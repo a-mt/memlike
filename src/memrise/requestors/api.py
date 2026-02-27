@@ -353,17 +353,17 @@ class ApiRequestor:
     # +-----------------------------------------------------
     # | COURSE EDIT
     # +-----------------------------------------------------
-    def level_edit_get(self, idLevel, sessionid=None):
-        log_session = self.buildCookiesLog(sessionid)
+    def level_edit_get(self, idLevel, sessionid=None, csrftoken=None, **kwargs):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={idLevel}] ({log_session})")
 
         url = f"{HOST}/ajax/level/editing_html/?level_id={idLevel}&_=" + get_time()
 
-        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
+        response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: add thing [level_id={idLevel}] ({log_session})")
 
@@ -387,7 +387,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: edit thing [thing_id={idThing},cell_id={cellId}] ({log_session})")
 
@@ -413,7 +413,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         log_params = f"thing_id={idThing},cell_id={cellId}"
         logger.debug(f"Requestor:Level edition: upload file to thing [{log_params}] ({log_session})")
@@ -453,7 +453,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_upload_remove(self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         log_params = f"thing_id={idThing},cell_id={cellId},file_id={fileId}"
         logger.debug(f"Requestor:Level edition: delete file from thing [{log_params}] ({log_session})")
@@ -480,7 +480,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: delete thing [level_id={idLevel},thing_id={idThing}] ({log_session})")
 
@@ -504,7 +504,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: get thing [thing_id={idThing}] ({log_session})")
 
@@ -524,7 +524,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None):
+    def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         log_params = f"thing_id={idThing},column={column_key}"
         logger.debug(f"Requestor:Level edition: edit thing alternative values [{log_params}] ({log_session})")
@@ -550,7 +550,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None):
+    def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: update multimedia [level_id={idLevel}] ({log_session})")
 
@@ -574,7 +574,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def course_edit_get(self, idCourse, slugCourse, sessionid=None):
+    def course_edit_get(self, idCourse, slugCourse, sessionid=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid)
         logger.debug(f"Requestor:Course edition: get levels [course_id={idCourse}] ({log_session})")
 

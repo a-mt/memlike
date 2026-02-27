@@ -184,11 +184,11 @@ class MemriseDummyGetTest(SimpleTestCase):
 
         self.assertIs(type(result), dict)
         self.assertEqual(result.get("id", None), COURSE_ID)
-        self.assertIsNotNone(result.get("title", None))
-        self.assertIsNotNone(result.get("description", None))
-        self.assertIsNotNone(result.get("author", None))
-        self.assertIsNotNone(result.get("photo", None))
-        self.assertIsNotNone(result.get("url", None))
+        self.assertNotEqual(result.get("title", ""), "")
+        self.assertNotEqual(result.get("description", ""), "")
+        self.assertNotEqual(result.get("author", ""), "")
+        self.assertNotEqual(result.get("photo", ""), "")
+        self.assertNotEqual(result.get("url", ""), "")
         self.assertIsNotNone(result.get("levels", None))
         self.assertIsNotNone(result.get("breadcrumb", None))
 

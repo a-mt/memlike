@@ -88,6 +88,9 @@ class Scraper:
 
             # Author (only when logged in :/)
             item = div.find(itemprop="author")
+            if item is None:
+                item = div.find(rel="author")
+
             if item is not None:
                 course["author"] = item.find(itemprop="additionalName").text
 

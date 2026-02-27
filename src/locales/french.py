@@ -86,6 +86,8 @@ misc = {
     "learn_err_empty_review": "Il n'y a pas d'éléments à réviser",
     "learn_err_empty_learn": "Il n'y a pas d'éléments à apprendre",
     "learn_err_empty": "Il n'y a pas d'éléments",
+    "confirm_del_file": "Supprimer ce fichier?",
+    "confirm_del_row": "Supprimer cette ligne?",
 }
 
 menu = {

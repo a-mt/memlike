@@ -2,6 +2,16 @@
 'use strict';
 const {h, Component, render} = window.preact;
 
+// Incorrectly configured build doesn't replace in-place process.env:
+// ensure the js still works
+var process = process || {};
+process.env = process.env || {};
+
+const build = {
+  status: process.env.VAR,
+  date: process.env.BUILD_DATE,
+};
+
 /* global $, window, document, console */
 /* global setTimeout, confirm, alert, fetch */
 /* global navigator, Blob, URL, File, FormData, FileReader */
@@ -50,7 +60,10 @@ class EditLevel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {'show': false};
+    this.state = {
+      show: false,
+      isLoading: false,
+    };
     this.toggle = this.toggle.bind(this);
   }
 
@@ -66,28 +79,41 @@ class EditLevel extends Component {
 
     } else {
       this.setState({
-        show: !this.state.show
+        show: !this.state.show,
       });
     }
   }
 
+  onGetDataSuccess(data) {
+    if(this.props.level.pool) {
+      var div = $('.table-container', data.rendered);
+
+      this.data    = div.get(0).outerHTML;
+      this.props.setNewRow(div.find('tr').last().get(0).outerHTML);
+
+    } else {
+      this.data = $('.level-multimedia', data.rendered).get(0).outerHTML;
+    }
+    this.setState({
+      show: true,
+    });
+  }
+
+  onGetDataDone() {
+    this.setState({
+      isLoading: false,
+    });
+  }
+
   getData() {
+    this.setState({
+      isLoading: true,
+    });
+
     $.ajax({
       url: '/ajax/level/' + this.props.level.id,
-      success: function(data){
-        if(this.props.level.pool) {
-          var div = $('.table-container', data.rendered);
-
-          this.data    = div.get(0).outerHTML;
-          this.props.setNewRow(div.find('tr').last().get(0).outerHTML);
-
-        } else {
-          this.data = $('.level-multimedia', data.rendered).get(0).outerHTML;
-        }
-        this.setState({
-          show: true
-        });
-      }.bind(this)
+      success: this.onGetDataSuccess.bind(this),
+      complete: this.onGetDataDone.bind(this),
     });
   }
 
@@ -96,6 +122,9 @@ class EditLevel extends Component {
 
     return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool || ''}>
       <div className="edit-level-actions">
+        {this.state.isLoading
+          && <span class="loading-spinner left"></span>
+        }
         {this.state.show
           && <label className="export action" title={window.i18n._export}>
               <i dangerouslySetInnerHTML={{__html: '&darr;'}} />
@@ -155,6 +184,7 @@ function bindEvents(new_row) {
     .on('change', '.things input[type="file"]', send_file)
     .on('click', '.dropdown-toggle', click_displayFiles)
     .on('click', '.dropdown-row .ico-trash', click_removeFile)
+    .on('click', '.audio-player', click_audio)
 
     // Delete row
     .on('click', '.ico-close', click_deleteRow)
@@ -392,7 +422,7 @@ function bindEvents(new_row) {
   // On click "delete": delete row
   function click_deleteRow(e){
     e.preventDefault();
-    if(confirm('Delete this row ?')) {
+    if(confirm(window.i18n.confirm_del_row)) {
       removeRow($(e.target).closest('tr'));
     }
   }
@@ -496,9 +526,23 @@ function bindEvents(new_row) {
                                  .replace(/ data-url="/g, ' src="');
   }
 
+  // On click dropdown content
+  function click_audio(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    window.audioPlayer && window.audioPlayer.play.call(e.target, e);
+  }
+
   //+---------------------------------------------------------------------------
   // On click remove file: remove attachment
   function click_removeFile(e){
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(!confirm(window.i18n.confirm_del_file)) {
+      return;
+    }
     removeFile($(e.target));
   }
 

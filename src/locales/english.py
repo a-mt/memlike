@@ -87,6 +87,8 @@ misc = {
     "learn_err_empty_review": "There's no item to review",
     "learn_err_empty_learn": "There's no item to learn",
     "learn_err_empty": "There's no item",
+    "confirm_del_file": "Delete this file?",
+    "confirm_del_row": "Delete this row?",
 }
 
 menu = {
