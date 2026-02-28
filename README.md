@@ -8,15 +8,11 @@ Custom interface for Memrise
 
 * Build the image
 
-      ```
       docker-compose build
-      ```
 
 * Run the container
 
-      ```
       docker-compose up -d
-      ```
 
 ### From scratch with Heroku
 
@@ -37,12 +33,10 @@ Custom interface for Memrise
 
 * Create environment file or environment variables
 
-      ```
       DATABASE_URL="postgres://..."
       MEMCACHIER_PASSWORD=""
       MEMCACHIER_SERVERS=""
       MEMCACHIER_USERNAME=""
-      ```
 
 * Create a database
 
@@ -67,40 +61,39 @@ Location: src
 The backend is developed with web.py
 ([website](https://webpy.org/) / [github](https://github.com/webpy/webpy) / [readthedocs](https://webpy.readthedocs.io/en/latest/))
 
-It roughly follows the folder organization from [web2py](https://www.web2py.com/books/default/chapter/29/04/the-core#Applications)
+It roughly follows the folder [web2py](https://www.web2py.com/books/default/chapter/29/04/the-core#Applications)'s organization
 
 ### Front
 
 Location: static
 
-```
-js6: origin react files
-js: transpiled/served js files
-img: served images
-css: served css files
-```
+- js6: origin react files
+- js: transpiled/served js files
+- img: images
+- css: css files
 
-## Deploy
+## Deployment
 
 See [docs](https://webpy.readthedocs.io/en/latest/deploying.html#nginx-gunicorn)
 
 ## Tests
 
-### Backend
-
 ```
 pip install tox
 tox
-tox -e flake8
+tox -e linting
 tox -e test
 
-# python -m tox --recreate -e test
-# python -m pytest
+# To get rid of tox's cache:
+python -m tox --recreate -e test
 
-# pip install pytest; cd src; export WEBPY_ENV=test DEFAULT_LANG=english
-# python -m pytest tests/test_lang.py
-# python -m pytest src/tests/test_memrise_get.py -k 'test_memrise_categories' -s -x
+# To launch specific pytest (python) tests:
+pip install pytest
+python -m pytest
+python -m pytest tests/test_lang.py
+python -m pytest src/tests/test_memrise_get.py -k 'test_memrise_categories' -s -x
 
-npm install eslint@4.x babel-eslint@8 --save-dev
-eslint js6
+# To launch eslint (js files linting):
+npm install eslint@4.x babel-eslint@8
+eslint src/static/js6
 ```
