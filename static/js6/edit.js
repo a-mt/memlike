@@ -338,7 +338,7 @@ function bindEvents(new_row) {
   }
 
   // Import rows: handle file upload from URL
-  function downloadFromUrls($tr, idLevel, uploads) {
+  async function downloadFromUrls($tr, idLevel, uploads) {
     var thingId = $tr.data('thing-id');
 
     for(var i=0; i<uploads.length; i++) {
@@ -346,7 +346,7 @@ function bindEvents(new_row) {
           cellId  = upload[0],
           $column = $tr.children('[data-key="' + cellId + '"]');
 
-      downloadFromUrl($column, thingId, cellId, upload);
+      await downloadFromUrl($column, thingId, cellId, upload);
     }
   }
   function downloadFromUrl($column, thingId, cellId, upload) {
@@ -354,12 +354,12 @@ function bindEvents(new_row) {
         url     = upload[2],
         mime    = upload[3];
 
-    fetch(url)
-      .then(res => res.blob())
-      .then(blob => {
-          var file = new File([blob], name, {type: mime});
+    return fetch(url).then(res => res.blob()).then(blob => {
+      var file = new File([blob], name, {type: mime});
 
-          uploadFile($column, cellId, thingId, file);
+      return new Promise((resolve, reject) => {
+        uploadFile($column, cellId, thingId, file, resolve, reject);
+      });
     });
   }
 
@@ -573,7 +573,7 @@ function bindEvents(new_row) {
     uploadFile($column, cellId, thingId, file);
   }
 
-  function uploadFile($column, cellId, thingId, file) {
+  function uploadFile($column, cellId, thingId, file, resolve=null, reject=null) {
     var fd = new FormData();
     fd.append('file', file);
     fd.append('csrftoken', window.MEMLIKE.course.csrftoken);
@@ -591,7 +591,11 @@ function bindEvents(new_row) {
           alert(data.message);
         }
         $column.replaceWith(data.rendered);
-      }
+        resolve && resolve($column);
+      },
+      error: function(){
+        reject && reject($column);
+      },
     });
   }
 
