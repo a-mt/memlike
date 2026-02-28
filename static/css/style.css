@@ -661,6 +661,13 @@ a > .expand-icon { /* ico-s icon-arr-right */
   align-self: stretch;
   width: 100%;
   text-align: center;
+  background: white;
+}
+.paging:first-child {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.paging:last-child {
   margin-top: 20px;
   margin-bottom: 30px;
 }
@@ -1353,9 +1360,12 @@ code.header {
   border-radius: 4px;
   color: #DFDDE8;
   font-size: 56px;
-  line-height: 35px;
+  line-height: 56px;
+  vertical-align: middle;
   font-weight: 500;
   cursor: pointer;
+  border: 0;
+  padding: 0;
 }
 .mode-selector-close:hover {
   background: rgba(255,255,255,0.4);

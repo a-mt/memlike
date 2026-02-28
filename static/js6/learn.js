@@ -132,6 +132,7 @@ var Timer = {
 
 const LEARN_UNTIL_GROWTH_LEVEL = 6;
 const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
+const LEARN_WITH_AUTOPLAY_AUDIO = 1;
 
 const TEST_DIFFICULTY = {
   'Unknown': 0,
@@ -273,12 +274,9 @@ class Learn extends Component {
     window.imgZoom     && window.imgZoom.reset();
     window.audioPlayer && window.audioPlayer.reset();
 
-    // Automatically play an audio track
-    $('.autoplay .audio .audio-player').random().focus().trigger('click');
-
     // Add text To Speech
     if(window.TTS) {
-      $('.text[lang]').each(function(){
+      $('.text[lang].tts').each(function(){
         var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
 
         if(src) {
@@ -300,6 +298,9 @@ class Learn extends Component {
         }
       });
     }
+
+    // Automatically play an audio track
+    $('.autoplay .audio .audio-player').random().focus().trigger('click');
 
     // Update level title
     if(!this.state.get_all) {
@@ -375,8 +376,8 @@ class Learn extends Component {
           const from_target_level = (target_level | 0) + 1;
           const to_target_level = Math.min((target_level | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL);
 
-          if (to_target_level <= from_target_level) {
-            console.warning('The following learnable has already been learned:', learnable);
+          if (from_target_level > to_target_level) {
+            console.warn('The following learnable has already been learned:', learnable);
           } else {
             add_tests.push({learnable_id, from_target_level, to_target_level});
           }
@@ -1071,7 +1072,7 @@ class Learn extends Component {
     }
 
     if (is_incorrect) {
-      rungIndex = 2;
+      rungIndex = rungIndex > 2 ? 2 : rungIndex;
     } else if(is_correct) {
       if(rungIndex === 1 && progress.current_streak === progress.attempts && progress.current_streak > 0) {
         rungIndex += 2;
@@ -1674,7 +1675,9 @@ class Learn extends Component {
 
 const Value = function(props) {
   var content = props.content,
-      attrs   = {};
+      attrs   = {
+        className: props.className || '',
+      };
   if(props.lang) {
     attrs.lang = props.lang;
   }
@@ -1753,7 +1756,8 @@ const Presentation = function(props){
       correct = props.correct,
       k    = Date.now(),
       i    = 0,
-      item_lang = '';
+      item_lang = '',
+      autoplay = LEARN_WITH_AUTOPLAY_AUDIO || !correct;
 
   // Add TSS if we're learning a language
   if (this.props.langTarget && this.props.langSource) {
@@ -1765,13 +1769,13 @@ const Presentation = function(props){
     {correct && <Correction data={correct} />}
 
     {/*-- Content --*/}
-    <table className={'learn nicebox big thing' + (correct ? '': ' autoplay')}>
+    <table className={'learn nicebox big thing' + (autoplay ? ' autoplay' : '')}>
 
         {/*-- Item --*/}
         <tr>
           <td className="label">{item.item.label}</td>
           <td className="item">
-            <Value content={item.item.value} type={item.item.kind} lang={item_lang} />
+            <Value content={item.item.value} type={item.item.kind} lang={item_lang} className={item.audio ? '' : 'tts'} />
             {item.item.alternatives.map(txt =>
               <div key={k + i++} className="alt">{txt}</div>
             )}

@@ -45,10 +45,22 @@ $(document).ready(function(){
     $($(this).attr('data-toggle')).toggleClass('hide');
   });
   $('button[data-toggle]').on('click', function(e){
-    $($(this).attr('data-toggle')).fadeIn();
+    var $target = $($(this).attr('data-toggle')).fadeIn();
+
+    // Give focus to the target
+    if ($target.prop('nodeName') == 'FORM') {
+      $target.get(0).originToggle = this;
+
+      $('button', $target).first().focus();
+    }
   });
   $('#mode-selector').on('click', '.mode-selector-close', function(e){
-    $(e.delegateTarget).fadeOut();
+    var $target = $(e.delegateTarget).fadeOut();
+
+    var originToggle = $target.get(0).originToggle;
+    if (originToggle) {
+      $(originToggle).focus();
+    }
   });
 
   // Page /courses events
