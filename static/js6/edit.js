@@ -89,9 +89,10 @@ class Edit extends Component {
     }
   }
 
-  setNewRow(new_row) {
-    this.new_row = new_row;
-    bindEvents(new_row);
+  setNewRow(thingsRowTemplate) {
+    this.thingsRowTemplate = thingsRowTemplate;
+
+    bindEditEvents(thingsRowTemplate);
   }
 
   onLevelAdded(data) {
@@ -141,6 +142,7 @@ class EditLevel extends Component {
     this.state = {
       show: false,
       isLoading: false,
+      content: '',
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -163,17 +165,33 @@ class EditLevel extends Component {
   }
 
   onGetDataSuccess(data) {
+    var content = '';
     if(this.props.level.pool_id) {
       var div = $('.table-container', data.rendered);
+      content = div.get(0).outerHTML;
 
-      this.data = div.get(0).outerHTML;
-      this.props.setNewRow(div.find('tr').last().get(0).outerHTML);
+      var newRowTemplate = div.find('tr').last().get(0).outerHTML;
+      this.props.setNewRow(newRowTemplate);
 
     } else {
-      this.data = $('.level-multimedia', data.rendered).get(0).outerHTML;
+      var div = $('.multimedia-edit', data.rendered);
+
+      content = `<div class="multimedia-edit">
+        <nav>
+          <ul class="multimedia-preview__tabs">
+            <li class="multimedia-preview__tab multimedia-preview__tab--edit active">Edit</li>
+            <li class="multimedia-preview__tab multimedia-preview__tab--preview">Preview</li>
+          </ul>
+        </nav>
+        <div class="multimedia-preview__content hide">
+          <div class="multimedia-wrapper"></div>
+        </div>` + div.get(0).innerHTML + '</div>';
+
+      this.props.setNewRow();
     }
     this.setState({
       show: true,
+      content,
     });
   }
 
@@ -220,7 +238,7 @@ class EditLevel extends Component {
         {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 
-      {this.state.show && <div dangerouslySetInnerHTML={{__html: this.data}}></div>}
+      {this.state.show && <div className="edit-level-content" dangerouslySetInnerHTML={{__html: this.state.content}}></div>}
     </div>;
   }
 }
@@ -231,9 +249,13 @@ class EditLevel extends Component {
 
 var isInit  = false,
     focused = false,
-    altInit = false;
+    altInit = false,
+    thingsRowTemplate = '';
 
-function bindEvents(new_row) {
+function bindEditEvents(tpl) {
+  if (tpl) {
+    thingsRowTemplate = tpl;
+  }
   if(isInit) {
     return;
   }
@@ -269,7 +291,10 @@ function bindEvents(new_row) {
 
     // Import/export
     .on('click', '.export', click_export)
-    .on('change', '.import input', send_import);
+    .on('change', '.import input', send_import)
+
+    // Preview multimedia
+    .on('click', 'li.multimedia-preview__tab', click_multimediaPreviewToggle);
   }
 
   //+---------------------------------------------------------------------------
@@ -366,7 +391,7 @@ function bindEvents(new_row) {
   //+---------------------------------------------------------------------------
   // Focus last row: add a new row
   function focus_lastRow(){
-    $(this).closest('.adding').append(new_row);
+    $(this).closest('.adding').append(thingsRowTemplate);
   }
 
   //+---------------------------------------------------------------------------
@@ -670,6 +695,33 @@ function bindEvents(new_row) {
         $btn.removeAttr('disabled');
       }
     });
+  }
+
+  function click_multimediaPreviewToggle(e) {
+
+    // Toggle current tab
+    var $btn       = $(e.target),
+        isPreview  = $btn.hasClass('multimedia-preview__tab--preview');
+    console.log('toggle', $btn);
+    $btn.addClass('active')
+        .siblings()
+        .removeClass('active');
+
+    // Show/hide preview
+    var $container = $btn.closest('.multimedia-edit'),
+        $textarea  = $('textarea', $container),
+        $preview   = $('.multimedia-preview__content', $container);
+
+    if(isPreview) {
+      var html = window.markdown.decode($textarea.val());
+
+      $preview.children(":first").html(html);
+      $preview.removeClass('hide');
+      $textarea.addClass('hide');
+    } else {
+      $preview.addClass('hide');
+      $textarea.removeClass('hide');
+    }
   }
 
   //+---------------------------------------------------------------------------
@@ -1043,7 +1095,7 @@ function bindEvents(new_row) {
     for(var i=0; i<rows.length; i++) {
       var data   = rows[i].data,
           upload = rows[i].upload,
-          $tr    = $(new_row).appendTo($adding).prev().addClass('disabled');
+          $tr    = $(thingsRowTemplate).appendTo($adding).prev().addClass('disabled');
 
       for(var k in data) {
         $tr.children('[data-key="' + k + '"]').find('input').val(data[k]);
