@@ -122,6 +122,15 @@ class ApiMemrise(Memrise):
             referer=referer,
         )
 
+    def reset_progress_level(self, data, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.reset_progress_level(
+            data,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------

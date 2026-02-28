@@ -29,6 +29,7 @@ misc = {
     "preview": "View",
     "memorize": "Memorize",
     "review": "Review",
+    "reset_progress": "Reset the progress",
     "wrong_answer": "Incorrect",
     "correct_answer": "Correct",
     "near_answer": "Almost",

@@ -25,8 +25,17 @@ class DummyApiRequestor:
     def my_leaderboard(self, period, **kwargs):
         return self.get_testset_json("profile_leaderboard.json")
 
-    def track_progress(self, path, data, **kwargs):
-        pass
+    # +-----------------------------------------------------
+    # | LEARNING SESSION
+    # +-----------------------------------------------------
+    def learning_session_register_end(self, data, sessionid=None, csrftoken=None, referer=None):
+        return self.get_testset_json("course-6698294_garden_learn1_sessionend_response.json")
+
+    def reset_progress_level(self, data, sessionid=None, csrftoken=None, referer=None):
+        return None
+
+    def learning_session_register_progress(self, data, sessionid=None, csrftoken=None, referer=None):
+        return self.get_testset_json("course-6698294_garden_review_registerprogress_response.json")
 
     # +-----------------------------------------------------
     # | COURSES

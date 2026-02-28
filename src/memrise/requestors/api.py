@@ -193,6 +193,26 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def reset_progress_level(self, data, sessionid=None, csrftoken=None, referer=None):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level progress reset ({log_session})")
+
+        url = f"{HOST}/ajax/level/restart/"
+        response = requests.post(
+            url,
+            json=data,
+            cookies=self.buildCookies(sessionid, csrftoken),
+            headers={
+                "Origin": HOST,
+                "Referer": referer or HOST,
+                "User-Agent": USER_AGENT,
+                "X-CSRFToken": csrftoken,
+                "Content-Type": "application/json",
+            },
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def learning_session_register_progress(self, data, sessionid=None, csrftoken=None, referer=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Learning session register progress ({log_session})")

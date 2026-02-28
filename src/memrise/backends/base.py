@@ -98,6 +98,16 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a learning_session_register_end() method")
 
+    def reset_progress_level(self, data, **kwargs):
+        """
+        Reset progress
+
+        @param dict data - {level_id: 1}
+        @param string sessionid
+        @param string csrftoken
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a reset_progress_level() method")
+
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------

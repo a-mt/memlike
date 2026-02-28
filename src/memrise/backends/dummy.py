@@ -210,6 +210,9 @@ class DummyMemrise(Memrise):
             "thingusers":[],
         }
 
+    def reset_progress_level(self, data, **kwargs):
+        return None
+
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------

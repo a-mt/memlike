@@ -118,7 +118,8 @@ $:(prender.inc_course_banner(course))
         <script>var multimedia0 = $:(items);</script>
       </div>
 
-    $:(pagination)
+    $if level["type"] != 1 or num_things > 5:
+      $:(pagination)
   </div>
 </main>
 
@@ -163,8 +164,19 @@ $if level['type'] != 2:
       </div>
       $if session["loggedin"]:
         <div class="mode-options">
-          <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
-          <label for="sendresults">$:(i18n.misc['send_results'])</label>
+          <div>
+            <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
+            <label for="sendresults">$:(i18n.misc['send_results'])</label>
+          </div>
+          $if learned > 0:
+            $ level_id = items.get('session_source_info', {}).get('level_id', None)
+
+            $if level_id:
+              <div class="danger-zone">
+                <button type="button" class="ajax" data-href="$(course['url'])$(level['index'])/reset?level_id=$(level_id)" data-confirm="1">
+                  $:(i18n.misc['reset_progress'])
+                </button>
+              </div>
         </div>
     </div>
   </form>

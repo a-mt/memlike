@@ -8,6 +8,7 @@ urls = (
     # /6687517/german-vocab/1/garden
     # /6618687/tables-de-multiplication/0/28918327345410
     r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
+    r"/(\d+)/(.*)/(\d+)/reset", "reset_progress_level",
     r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
     r"/(\d+)/(.*)/(\d+)/(.*)", "level",
     r"/(\d+)/(.*)/(\d+)", "level",
@@ -28,6 +29,9 @@ class learn_fromform:
         slugCourse = path.split("/", 2)[0]
 
         _GET = web.input(session="", sendresults=0)
+        if not _GET.session:
+            raise web.seeother(f"/course/{idCourse}/{slugCourse}/", absolute=True)
+
         try:
             course = memrise.course(idCourse, slugCourse=slugCourse)
         except HTTPError as e:
@@ -183,6 +187,21 @@ class edit:
             return web.config.template.prender._404()
 
         return web.config.template.render.course_edit(course)
+
+
+class reset_progress_level:
+    def GET(self, idCourse, path, lvl):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        _GET = web.input(level_id="")
+        if _GET.level_id:
+            try:
+                memrise.reset_progress_level({"level_id": _GET.level_id})
+            except HTTPError as e:
+                print(e)
+
+        raise web.seeother(f"/course/{idCourse}/{path}/{lvl}", absolute=True)
 
 
 app = web.application(urls, locals(), autoreload=False)

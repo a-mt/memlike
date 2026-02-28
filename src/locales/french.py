@@ -28,6 +28,7 @@ misc = {
     "preview": "Visualiser",
     "memorize": "Mémoriser",
     "review": "Réviser",
+    "reset_progress": "Réinitialiser les progrès",
     "wrong_answer": "Incorrect",
     "correct_answer": "Correct",
     "near_answer": "Presque",

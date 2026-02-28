@@ -48,6 +48,7 @@ urls = (
 
     r"/register_progress", "learning_session_register_progress",
     r"/register_end", "learning_session_register_end",
+    r"/reset_progress_level", "reset_progress_level",
 
     "", "api",
 )
@@ -443,6 +444,16 @@ class learning_session_register_end:
         data = web.jsoninput()
         progress = memrise.learning_session_register_end(data)
         return _response(lambda: progress)
+
+
+class reset_progress_level:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        data = web.jsoninput()
+        response = memrise.reset_progress_level(data)
+        return _response(lambda: response)
 
 
 app = web.application(urls, locals(), autoreload=False)
