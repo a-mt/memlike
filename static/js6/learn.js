@@ -200,6 +200,11 @@ class Learn extends Component {
       this.state.maxlevel  = parseInt(this.props.level_idx);
     }
 
+    this.state.settings = {
+        "disable_multimedia": false,
+        "disable_tapping": false,
+        "disable_typing": false,
+    };
     this.setChoices = this.setChoices.bind(this);
   }
 
@@ -510,7 +515,7 @@ class Learn extends Component {
     console.log('Boxes:', boxes);
 
     return {
-      boxes: boxes,
+      boxes,
       screen_template_map,
       progress_map,
       learnables_map,
@@ -784,6 +789,9 @@ class Learn extends Component {
   choice_feedback(input) {
     Timer.stop();
 
+    if(!this.state.data) {
+      return;
+    }
     var box           = this.state.data.boxes[this.state.i],
         learnable_id  = box.learnable_id,
         is_correct    = input.score == 1,
@@ -1357,6 +1365,9 @@ class Learn extends Component {
   }
 
   screen() {
+    if(!this.state.data) {
+      return null;
+    }
     if(this.state.debug_screen) {
       switch(this.state.debug_screen) {
         case 'multiple_choice'         : return this.render_tpl({ template: 'multiple_choice' });
@@ -1371,7 +1382,6 @@ class Learn extends Component {
         case 'presentation'            : return this.render_tpl({ template: 'presentation' });
       }
     }
-
     if(this.state.screen == 'recap') {
       return this.recap();
     }
@@ -1401,19 +1411,19 @@ class Learn extends Component {
             });
 
         case 2:
-          if(screens.multiple_choice.video) {
+          if(screens.multiple_choice.video && !this.state.settings.disable_multimedia) {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video'
             });
           }
-          if(screens.audio_multiple_choice && Math.random() > .5) {
+          if(screens.audio_multiple_choice && Math.random() > .5 && !this.state.settings.disable_multimedia) {
             return this.render_tpl({
               template: 'audio_multiple_choice'
             });
           }
-          if(screens.tapping) {
+          if(screens.tapping && !this.state.settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: 0
@@ -1425,13 +1435,13 @@ class Learn extends Component {
           });
 
         case 3:
-          if(screens.tapping) {
+          if(screens.tapping && !this.state.settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: .5
             });
           }
-          if(screens.typing) {
+          if(screens.typing && !this.state.settings.disable_typing) {
             return this.render_tpl({
               template: 'typing'
             });
@@ -1442,16 +1452,16 @@ class Learn extends Component {
           });
 
         case 4:
-          if(screens.multiple_choice.video) {
+          if(screens.multiple_choice.video && !this.state.settings.disable_multimedia) {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video'
             });
           }
-          if(Math.random() > .5) {
+          if(Math.random() > .5 && !this.state.settings.disable_multimedia) {
             var s = [];
-            if(screens.typing.audio) {
+            if(screens.typing.audio && !this.state.settings.disable_typing) {
               s.push({
                 template: 'typing',
                 promptWith: 'audio'
@@ -1474,7 +1484,7 @@ class Learn extends Component {
           });
 
         case 5:
-          if(screens.taping) {
+          if(screens.taping && !this.state.settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: .5
@@ -1486,7 +1496,7 @@ class Learn extends Component {
           });
 
         default:
-          if(screens.typing) {
+          if(screens.typing && !this.state.settings.disable_typing) {
             return this.render_tpl({
               template: 'typing'
             });
@@ -1506,12 +1516,12 @@ class Learn extends Component {
     }
 
     if(item.template == 'sentinel') {
-      if(screens.typing) {
+      if(screens.typing && !this.state.settings.disable_typing) {
         return this.render_tpl({
           template: 'typing'
         });
       }
-      if(screens.audio_multiple_choice && Math.random() > .5) {
+      if(screens.audio_multiple_choice && Math.random() > .5 && !this.state.settings.disable_multimedia) {
         return this.render_tpl({
           template: 'audio_multiple_choice'
         });
@@ -1653,10 +1663,12 @@ class Learn extends Component {
     var items = [];
 
     if(this.props.session_type == 'preview') {
-      for(var i=0; i<this.state.data.boxes.length; i++) {
-        var id = this.state.data.boxes[i].learnable_id;
+      if(this.state.data) {
+        for(var i=0; i<this.state.data.boxes.length; i++) {
+          var id = this.state.data.boxes[i].learnable_id;
 
-        items.push(this.state.data.screen_template_map[id].presentation[0]);
+          items.push(this.state.data.screen_template_map[id].presentation[0]);
+        }
       }
     } else {
       for(var id in this.state.recap) {

@@ -1167,7 +1167,8 @@ h1 small {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
 }
-.row:hover .view-detail {
+.row:hover .view-detail,
+.view-detail:focus {
   opacity: 1;
 }
 @media (max-width: 400px) {
