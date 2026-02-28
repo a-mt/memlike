@@ -26,10 +26,67 @@ $(document).ready(function(){
 //| Render Levels
 //+--------------------------------------------------------
 
+class EditCourseActions extends Component {
+  constructor(props) {
+    super(props);
+    this.addLevel = this.addLevel.bind(this);
+
+    this.state = {
+      isLoading: false,
+    };
+  }
+
+  addLevel(kind) {
+    this.setState({isLoading: true});
+
+    var pool_id = null;
+    if (kind == 'things') {
+      pool_id = this.props.course.last_pool_id;
+    }
+    var data = {
+      course_id: this.props.course.id,
+      pool_id: pool_id,
+      kind: kind,
+    };
+    $.ajax({
+      url: '/ajax/level/add',
+      method: 'POST',
+      data,
+      headers: {
+        'X-CSRFToken': window.MEMLIKE.course.csrftoken,
+        'X-Referer': window.MEMLIKE.course.referer,
+      },
+      success: (data) => {
+        this.props.onLevelAdded && this.props.onLevelAdded(data);
+      },
+      complete: () => {
+        this.setState({isLoading: false});
+      },
+    });
+  }
+
+  render() {
+    return (
+      <div className="edit-course-actions clearfix">
+        <div className="actions actions-right">
+          {this.state.isLoading && <span className="loading-spinner left"></span>}
+
+          <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>Add multimedia</button>
+          <button type="button" className="btn green" onClick={() => this.addLevel('things')}>Add level</button>
+        </div>
+      </div>
+    );
+  }
+}
+
 class Edit extends Component {
   constructor(props) {
     super(props);
     this.setNewRow = this.setNewRow.bind(this);
+    this.onLevelAdded = this.onLevelAdded.bind(this);
+    this.state = {
+      addedLevels: [],
+    }
   }
 
   setNewRow(new_row) {
@@ -37,10 +94,27 @@ class Edit extends Component {
     bindEvents(new_row);
   }
 
+  onLevelAdded(data) {
+    console.log('level added', data);
+    if (!data.id) {
+      return;
+    }
+    this.setState({
+      addedLevels: [...this.state.addedLevels, {
+        id: data.id,
+        pool_id: data.pool_id,
+        name: '',
+      }],
+    });
+  }
+
   render() {
     var opentab = window.location.hash.match(/#(i|l)_(\d+)/);
 
     return <div>
+      {this.props.course.last_pool_id && (
+        <EditCourseActions course={this.props.course} onLevelAdded={this.onLevelAdded} />
+      )}
       {this.props.course.levels.map((level, i) => {
         var show = false;
         if(opentab) {
@@ -51,6 +125,10 @@ class Edit extends Component {
           }
         }
         return <EditLevel show={show} key={i} level={level} setNewRow={this.setNewRow} />;
+      })}
+
+      {this.state.addedLevels.map((level, i) => {
+        return <EditLevel show={true} key={'a_' + i} level={level} setNewRow={this.setNewRow} />;
       })}
     </div>;
   }
@@ -85,10 +163,10 @@ class EditLevel extends Component {
   }
 
   onGetDataSuccess(data) {
-    if(this.props.level.pool) {
+    if(this.props.level.pool_id) {
       var div = $('.table-container', data.rendered);
 
-      this.data    = div.get(0).outerHTML;
+      this.data = div.get(0).outerHTML;
       this.props.setNewRow(div.find('tr').last().get(0).outerHTML);
 
     } else {
@@ -120,7 +198,7 @@ class EditLevel extends Component {
   render() {
     var level = this.props.level;
 
-    return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool || ''}>
+    return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool_id || ''}>
       <div className="edit-level-actions">
         {this.state.isLoading
           && <span className="loading-spinner left"></span>
@@ -139,7 +217,7 @@ class EditLevel extends Component {
 
       <div className="edit-level-label">
         <label>{level.name}</label>
-        {!level.pool && <span>&nbsp;(multimedia)</span>}
+        {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 
       {this.state.show && <div dangerouslySetInnerHTML={{__html: this.data}}></div>}

@@ -157,13 +157,12 @@ class DummyEmptyMemrise(DummyMemrise):
         }
 
     def course_edit_get(self, idCourse, slugCourse, **kwargs):
-        """
-        Testset: tests/testset/course_edit.html
-        """
         return {
+            "id": idCourse,
             "csrftoken": "",
             "referer": "",
             "url": f"/community/course/{idCourse}/{slugCourse}/",
             "title": "Example",
             "levels": [],
+            "last_pool_id": None,
         }

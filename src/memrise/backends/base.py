@@ -253,6 +253,17 @@ class Memrise:
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
+    def level_add(self, idCourse, idPool=None, *args, **kwargs):
+        """
+        Add a new level in the given course
+        Either for a list of things (idPool!=None) or multimedial level
+
+        @param string idCourse
+        @param string idPool
+        @return dict - {success, redirect_url}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a level_add() method")
+
     def level_edit_get(self, idLevel, **kwargs):
         """
         Retrieve the content of a level for the edit page

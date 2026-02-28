@@ -1,13 +1,14 @@
 import json
 import web
+from math import ceil
 from memrise import memrise
 from requests.exceptions import HTTPError
-from math import ceil
 
 
 # fmt: off
 # /ajax/level/...
 urls_level = (
+    r"/add", "level_add",
     r"/(\d+)", "level_edit",
     r"/(\d+)/alt", "level_alt",
     r"/(\d+)/alt_edit", "level_editalt",
@@ -50,37 +51,44 @@ urls = (
     r"/register_end", "learning_session_register_end",
     r"/reset_progress_level", "reset_progress_level",
 
-    "", "api",
+    "", "index",
 )
 NBPERPAGE = 15
 # fmt: on
 
 
-class api:
+class index:
     def GET(self):
         web.header("Content-Type", "application/json")
 
         # fmt: off
-        return json.dumps({
-            "courses": "/ajax/courses?{lang, cat, q, page}",
-            "course": "/ajax/course/{id}/{slug}",
-            "course_leaderboard": "/ajax/course/{id}/{slug}/leaderboard?{period}",
-            "course_level_preview": "/ajax/course/{id}/{slug}/{level}/preview",
-            "course_level_multimedia": "/ajax/course/{id}/{slug}/{level}/media",
-            "course_level_learn": "/ajax/course/{id}/{slug}/{level}/learn {cookies.sessionid}",
+        patterns = {
+            "courses": r"GET /ajax/courses?{lang, cat, q, page}",
+            "course": r"GET /ajax/course/{idCourse}/{slug}",
+            "course_leaderboard": r"GET /ajax/course/{idCourse}/{slug}/leaderboard?{period}",
+            "course_level_preview": r"GET /ajax/course/{idCourse}/{slug}/{levelIndex}/preview",
+            "course_level_multimedia": r"GET /ajax/course/{idCourse}/{slug}/{levelIndex}/media",
+            "course_level_learn": r"GET /ajax/course/{idCourse}/{slug}/{levelIndex}/learn {cookies.sessionid}",
 
-            "user": "/ajax/user/{username}",
-            "user_followers": "/ajax/user/{username}/followers?{page}",
-            "user_following": "/ajax/user/{username}/following?{page}",
-            "user_teaching": "/ajax/user/{username}/teaching?{page}",
-            "user_learning": "/ajax/user/{username}/learning?{page}",
+            "user": r"GET /ajax/user/{username}",
+            "user_followers": r"GET /ajax/user/{username}/followers?{page}",
+            "user_following": r"GET /ajax/user/{username}/following?{page}",
+            "user_teaching": r"GET /ajax/user/{username}/teaching?{page}",
+            "user_learning": r"GET /ajax/user/{username}/learning?{page}",
 
-            "user_dashboard": "/ajax/dashboard {cookies.sessionid}",
-            "user_leaderboard": "/ajax/leaderboard {cookies.sessionid}",
-            "user_sync": "/ajax/sync {cookies.sessionid}",
-            "debug_session": "/ajax/session",
-        })
+            "user_dashboard": r"GET /ajax/dashboard {cookies.sessionid}",
+            "user_leaderboard": r"GET /ajax/leaderboard {cookies.sessionid}",
+            "user_sync": r"GET /ajax/sync {cookies.sessionid}",
+            "debug_session": r"GET /ajax/session",
+        }
         # fmt: on
+
+        # Add URLs we did not bother to add in patterns
+        from utils.debug import autodetect_urls
+
+        autodetect_urls(app, prefix="/ajax", res=patterns)
+
+        return json.dumps(patterns)
 
 
 def _error(e):
@@ -165,6 +173,22 @@ class course_edit:
         return _response(lambda: memrise.course_edit_get(idCourse, slug))
 
 
+class level_add:
+    def POST(self, *args, **kwargs):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        data = web.input()
+        return _response(
+            lambda: memrise.level_add(
+                idCourse=data["course_id"],
+                idPool=data.get("pool_id", None),
+                csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN", None),
+                referer=web.ctx.env.get("HTTP_X_REFERER", None),
+            )
+        )
+
+
 class level_edit:
     def GET(self, idLevel):
         if not web.ctx.session.get("loggedin", False):
@@ -173,6 +197,7 @@ class level_edit:
         return _response(lambda: memrise.level_edit_get(idLevel))
 
 
+"""
 class level_getcell:
     def GET(self, idThing):
         if not web.ctx.session.get("loggedin", False):
@@ -185,6 +210,7 @@ class level_getcell:
                 referer=_GET.referer,
             )
         )
+"""
 
 
 class level_addrow:

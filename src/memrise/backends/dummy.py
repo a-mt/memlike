@@ -677,6 +677,14 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
+    def level_add(self, idCourse, idPool=None, **kwargs):
+        return {
+            "success": True,
+            "redirect_url": "/course/6719284/test/edit/#l_16273536",
+            "id": 16180581,
+            "pool_id": idPool,
+        }
+
     def level_edit_get(self, idLevel, **kwargs):
         # Type things
         return {
@@ -872,21 +880,23 @@ class DummyMemrise(Memrise):
 
     def course_edit_get(self, idCourse, slugCourse, **kwargs):
         """
-        Testset: tests/testset/course_edit.html
+        Testset: tests/testset/course_get_edit.html
         """
         return {
+            "id": idCourse,
             "csrftoken": "",
             "referer": "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/",
             "url": "/community/course/6698294/german-vocab/",
             "title": "German vocab",
             "levels": [
-                {"id": "16180581", "pool": "7758772", "name": "New level"},
-                {"id": "16186911", "pool": "7758772", "name": "New level"},
-                {"id": "16186914", "pool": "7758772", "name": "New level"},
-                {"id": "16193231", "pool": "7758772", "name": "New level"},
-                {"id": "16258052", "pool": "7758772", "name": "New level"},
-                {"id": "16258912", "pool": "7758772", "name": "New level"},
-            ]
+                {"id": "16180581", "pool_id": "7758772", "name": "New level"},
+                {"id": "16186911", "pool_id": "7758772", "name": "New level"},
+                {"id": "16186914", "pool_id": "7758772", "name": "New level"},
+                {"id": "16193231", "pool_id": "7758772", "name": "New level"},
+                {"id": "16258052", "pool_id": "7758772", "name": "New level"},
+                {"id": "16258912", "pool_id": "7758772", "name": "New level"},
+            ],
+            "last_pool_id": "7758772",
         }
 
 

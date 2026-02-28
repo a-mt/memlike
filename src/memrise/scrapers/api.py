@@ -420,6 +420,7 @@ class Scraper:
                 data["title"] = item.text.strip()
 
         # Levels
+        last_pool_id = None
         div = DOM.find(id="levels")
         levels = []
 
@@ -429,7 +430,7 @@ class Scraper:
                 header = child.find("div", {"class": "level-header"}, recursive=False)
 
                 if "data-pool-id" in child.attrs:
-                    level["pool"] = child.attrs["data-pool-id"]
+                    last_pool_id = level["pool_id"] = child.attrs["data-pool-id"]
 
                 if header is not None:
                     level["name"] = header.h3.text.strip()
@@ -437,4 +438,13 @@ class Scraper:
                 levels.append(level)
         data["levels"] = levels
 
+        # Pool-id
+        if last_pool_id is None:
+            actions = div.find_previous_sibling("div", {"class": "row-fluid"})
+            if actions is not None:
+                item = actions.find_all("a", {"data-pool-id": True})
+
+                last_pool_id = item.attrs["data-pool-id"]
+
+        data["last_pool_id"] = last_pool_id
         return data

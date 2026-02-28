@@ -54,6 +54,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         )
 
         self.assertIs(type(result), dict)
+        self.assertEqual(result.get("id", None), COURSE_ID)
         self.assertIsNotNone(result.get("csrftoken", None))
         self.assertIsNotNone(result.get("referer", None))
         self.assertIsNotNone(result.get("url", None))
@@ -63,7 +64,7 @@ class MemriseDummyEditTest(SimpleTestCase):
 
         level = result["levels"][0]
         self.assertIsNotNone(level.get("id", None))
-        self.assertIsNotNone(level.get("pool", None))
+        self.assertIsNotNone(level.get("pool_id", None))
         self.assertIsNotNone(level.get("name", None))
 
     def test_memrise_level_edit_get(self):

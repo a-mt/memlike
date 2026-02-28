@@ -378,6 +378,38 @@ class ApiRequestor:
     # +-----------------------------------------------------
     # | COURSE EDIT
     # +-----------------------------------------------------
+    def level_add(self, idCourse, idPool=None, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level add [level_id={idCourse}] ({log_session})")
+
+        url = f"{HOST}/ajax/level/add/"
+        if idPool:
+            data = {
+                "course_id": idCourse,
+                "pool_id": idPool,
+                "kind": "things",
+            }
+        else:
+            data = {
+                "course_id": idCourse,
+                "kind": "multimedia",
+            }
+
+        response = requests.post(
+            url,
+            data=data,
+            cookies=self.buildCookies(sessionid, csrftoken),
+            headers={
+                "Origin": HOST,
+                "Referer": referer or HOST,
+                "User-Agent": USER_AGENT,
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def level_edit_get(self, idLevel, sessionid=None, csrftoken=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={idLevel}] ({log_session})")
@@ -614,6 +646,7 @@ class ApiRequestor:
         csrftoken = response.cookies.get("csrftoken")
 
         return {
+            "id": idCourse,
             "csrftoken": csrftoken,
             "referer": url,
             "html": html,

@@ -2192,6 +2192,9 @@ form .error {
 /*-------------------------------------------------------
  * EDIT
  *-------------------------------------------------------*/
+.edit-course-actions {
+  margin-top: 5px;
+}
 .edit-level {
   margin: 5px;
   counter-increment: levels;

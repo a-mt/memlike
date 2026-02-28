@@ -308,6 +308,27 @@ class ApiMemrise(Memrise):
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
+    def level_add(self, idCourse, idPool=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        # Add the level
+        result = self.requestor.level_add(
+            idCourse,
+            idPool,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+        result["id"] = None
+        result["pool_id"] = idPool
+
+        if result["success"]:
+            url = result.get("redirect_url", None)
+            if url:
+                m = url.split("#l_", 2)
+                result["id"] = m[1] if len(m) == 2 else None
+
+        return result
+
     def level_edit_get(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 

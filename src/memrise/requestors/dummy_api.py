@@ -92,6 +92,7 @@ class DummyApiRequestor:
     def course_edit_get(self, idCourse, slugCourse, **kwargs):
         html = self.get_testset_text("course_get_edit.html")
         return {
+            "id": idCourse,
             "csrftoken": "",
             "referer": "",
             "html": html,
