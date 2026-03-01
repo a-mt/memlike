@@ -50,6 +50,7 @@ urls = (
     "/fr/courses", controllers.courses.app,
     "/community/course", controllers.course.app,
     "/course", controllers.course.app,
+    "/aprender", controllers.learn.app,
     "/user", controllers.user.app,
     "/ajax", controllers.ajax.app,
     "/login", controllers.login.app,

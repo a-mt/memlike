@@ -284,7 +284,26 @@ class ApiRequestor:
         if slugCourse:
             url += slugCourse + "/"
 
-        response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
+        response = requests.get(
+            url,
+            cookies=self.buildCookies(sessionid, csrftoken),
+            allow_redirects=False,
+        )
+
+        # Follow redirect to canonical URL
+        if not slugCourse and response.status_code == 301:
+            new_url = response.headers["Location"]
+
+            if new_url[0] == "/":
+                new_url = HOST + new_url
+
+            if new_url.startswith(url):
+                response = requests.get(
+                    new_url,
+                    cookies=self.buildCookies(sessionid, csrftoken),
+                    allow_redirects=False,
+                )
+
         self.raise_for_status(response)
 
         return response.text.encode("utf-8").strip()
