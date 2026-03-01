@@ -224,7 +224,7 @@ class Learn extends Component {
     }.bind(this));
 
     // Typing
-    $('main').on('click', '.typing .button', function(){
+    $('main').on('click', '.typing .button', function(e){
       this.parentNode.previousElementSibling.value += this.innerHTML;
       this.parentNode.previousElementSibling.focus();
     });
@@ -363,7 +363,7 @@ class Learn extends Component {
     switch(session_type) {
       case 'learn':
         let add_tests = [];
-        for (let learnable of learnables) {
+        for (let learnable of learnables.slice(0,10)) {
           const learnable_id = learnable.id;
 
           if (this.shouldDisplayPresentation(progress_map[learnable_id])) {
@@ -1835,7 +1835,7 @@ const Presentation = function(props){
           <div className="typing">
             <input type="text" autoComplete="off" spellCheck="false" value="" placeholder={props.prompt.answer.value} tabIndex="1" autoFocus="autofocus" />
             <ul className="keyboard">{props.prompt.choices.map((letter, i) =>
-              <li key={i} className="button" tabIndex={i+2}>{letter}</li>
+              <li key={i} className="button" tabIndex="0">{letter}</li>
             )}</ul>
           </div>
         </div>}
@@ -1908,7 +1908,7 @@ const MultipleChoice = function(props) {
 
 class ChoiceBox extends Component {
   render(props) {
-    return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex={props.i}>
+    return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex="0">
       <span className="choice-index">{props.i}.</span>
       <Value content={props.value} type={props.answerType} single="1" />
     </div>;
@@ -1935,7 +1935,7 @@ const Typing = function(props) {
       <div className="typing" key={Date.now()}>
         <input type="text" autoComplete="off" spellCheck="false" value="" tabIndex="1" autoFocus="autofocus" />
         <ul className="keyboard">{item.choices.map((letter, i) =>
-          <li key={letter} className="button" tabIndex={i+2}>{letter}</li>
+          <li key={letter} className="button" tabIndex="0">{letter}</li>
         )}</ul>
       </div>
     </div>
@@ -1984,7 +1984,7 @@ const Tapping = function(props) {
       <div className="tapping" key={Date.now()}>
         <div className="input"></div>
         <ul className="keyboard">{randomize(choices).map((word, i) =>
-          <li key={i} className="button" tabIndex={i+1} id={'btn-' + i}>{word}</li>
+          <li key={i} className="button" tabIndex="0" id={'btn-' + i}>{word}</li>
         )}</ul>
       </div>
     </div>

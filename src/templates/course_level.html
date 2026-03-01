@@ -118,7 +118,7 @@ $:(prender.inc_course_banner(course))
         <script>var multimedia0 = $:(items);</script>
       </div>
 
-    $if level["type"] != 1 or num_things > 5:
+    $if level["type"] == 1 and num_things > 5:
       $:(pagination)
   </div>
 </main>
