@@ -12,7 +12,7 @@ $:(prender.inc_course_banner(course))
     $if len(course['levels']):
       <a href="$(course['url'])" class="pill">
         <i class="ico ico-list"></i>
-        $(i18n.misc['levels']) ($(len(course['levels'])))
+        $(I18N.misc['levels']) ($(len(course['levels'])))
       </a>
 
       <!-- Level name -->
@@ -21,20 +21,20 @@ $:(prender.inc_course_banner(course))
       </button>
     $else:
       <button type="button" class="pill active">
-          $(i18n.misc['levels']) ($(len(course['levels'])))
+          $(I18N.misc['levels']) ($(len(course['levels'])))
       </button>
 
       <a href="$(course['url'])leaderboard" class="pill">
         <i class="ico ico-trophy"></i>
-        $(i18n.misc['leaderboard'])
+        $(I18N.misc['leaderboard'])
       </a>
 
     <!-- Links to garden learn / preview -->
     $if level['type'] != 2:
-      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(i18n.misc['learn_level'])</button>
+      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(I18N.misc['learn_level'])</button>
 
     $if session.loggedin and session.loggedin['username'] == course['author']:
-      <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(i18n.misc['edit_level'])</a>
+      <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(I18N.misc['edit_level'])</a>
   </div>
 </div>
 
@@ -72,7 +72,7 @@ $:(prender.inc_course_banner(course))
     $if level["type"] == 1:
       $ inc = prender.inc_course_items(course, level, items)
 
-      $ num_things = inc.num_things
+      $ nb_things = inc.nb_things
       $ learned  = inc.learned
       $ ignored  = inc.ignored
       $ tolearn  = inc.tolearn
@@ -81,17 +81,17 @@ $:(prender.inc_course_banner(course))
       <!-- Stats -->
       <div class="nicebox overall-summary">
         $ points    = learned
-        $ maxPoints = num_things - ignored
+        $ maxPoints = nb_things - ignored
         $ counter   = str(points) + "/" + str(maxPoints)
         $ percent   = int(float(points) / maxPoints * 100) if maxPoints > 0 else 100
 
         <!-- Text -->
         <ul class="numbers-summary">
-          <li>$:(i18n.misc['number_words'].replace('%', "<strong>" + str(maxPoints) + "</strong>"))</li>
-          <li>$:(i18n.misc['number_ignored'].replace('%', "<strong>" + str(ignored) + "</strong>"))</li>
-          <li>$:(i18n.misc['number_learned'].replace('%', "<strong>" + str(points) + "</strong>"))</li>
-          <li>$:(i18n.misc['number_review'].replace('%', "<strong>" + str(toreview) + "</strong>"))</li>
-          <li>$:(i18n.misc['number_complete'].replace('%', "<strong>" + str(percent) + "</strong>%"))</li>
+          <li>$:(I18N.misc['number_words'].replace('%', "<strong>" + str(maxPoints) + "</strong>"))</li>
+          <li>$:(I18N.misc['number_ignored'].replace('%', "<strong>" + str(ignored) + "</strong>"))</li>
+          <li>$:(I18N.misc['number_learned'].replace('%', "<strong>" + str(points) + "</strong>"))</li>
+          <li>$:(I18N.misc['number_review'].replace('%', "<strong>" + str(toreview) + "</strong>"))</li>
+          <li>$:(I18N.misc['number_complete'].replace('%', "<strong>" + str(percent) + "</strong>%"))</li>
         </ul>
 
         <!-- Progress bar -->
@@ -118,7 +118,7 @@ $:(prender.inc_course_banner(course))
         <script>var multimedia0 = $:(items);</script>
       </div>
 
-    $if level["type"] == 1 and num_things > 5:
+    $if level["type"] == 1 and nb_things > 5:
       $:(pagination)
   </div>
 </main>
@@ -144,29 +144,29 @@ $if level['type'] != 2:
             $if tolearn:
               <div class="mode-counter">$(tolearn)</div>
           </div>
-          <div class="mode-icon-label">$:(i18n.misc['new_words'])</div>
+          <div class="mode-icon-label">$:(I18N.misc['new_words'])</div>
         </button>
         <button name="session" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon classic_review">
             $if toreview:
               <div class="mode-counter">$(toreview)</div>
           </div>
-          <div class="mode-icon-label">$:(i18n.misc['classic_review'])</div>
+          <div class="mode-icon-label">$:(I18N.misc['classic_review'])</div>
         </button>
         <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon speed_review">&nbsp;</div>
-          <div class="mode-icon-label">$:(i18n.misc['speed_review'])</div>
+          <div class="mode-icon-label">$:(I18N.misc['speed_review'])</div>
         </button>
-        <button name="session" value="preview" class="mode-icon-wrapper $('disabled' if num_things == 0 else None)">
+        <button name="session" value="preview" class="mode-icon-wrapper $('disabled' if nb_things == 0 else None)">
           <div class="mode-icon preview">&nbsp;</div>
-          <div class="mode-icon-label">$:(i18n.misc['preview'])</div>
+          <div class="mode-icon-label">$:(I18N.misc['preview'])</div>
         </button>
       </div>
       $if session["loggedin"]:
         <div class="mode-options">
           <div>
             <input type="checkbox" name="sendresults" value="1" id="sendresults" checked>
-            <label for="sendresults">$:(i18n.misc['send_results'])</label>
+            <label for="sendresults">$:(I18N.misc['send_results'])</label>
           </div>
           $if learned > 0:
             $ level_id = items.get('session_source_info', {}).get('level_id', None)
@@ -174,7 +174,7 @@ $if level['type'] != 2:
             $if level_id:
               <div class="danger-zone">
                 <button type="button" class="ajax" data-href="$(course['url'])$(level['index'])/reset?level_id=$(level_id)" data-confirm="1">
-                  $:(i18n.misc['reset_progress'])
+                  $:(I18N.misc['reset_progress'])
                 </button>
               </div>
         </div>

@@ -134,7 +134,7 @@ class ApiMemrise(Memrise):
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------
-    def courses(self, lang, page=1, cat="", query="", **kwargs):
+    def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         self.set_default_kwargs(kwargs)
 
         if not isinstance(page, int) and not page.isdigit():
@@ -143,14 +143,14 @@ class ApiMemrise(Memrise):
         if not kwargs["sessionid"]:
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
-        return self.requestor.courses(lang=lang, page=page, cat=cat, query=query)
+        return self.requestor.courses(lang_slug=lang_slug, page=page, cat=cat, query=query)
 
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         self.set_default_kwargs(kwargs)
         self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
         html = self.requestor.categories(
-            lang,
+            lang_slug,
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
         )
@@ -159,46 +159,46 @@ class ApiMemrise(Memrise):
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", **kwargs):
+    def course(self, course_id, course_slug="", **kwargs):
         self.set_default_kwargs(kwargs)
 
         if not kwargs["sessionid"]:
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
         html = self.requestor.course(
-            idCourse,
-            slugCourse,
+            course_id,
+            course_slug,
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
         )
-        return self.scraper.course(idCourse, html, isLoggedIn=kwargs["sessionid"])
+        return self.scraper.course(course_id, html, is_logged_in=kwargs["sessionid"])
 
-    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         self.set_default_kwargs(kwargs)
 
         if not kwargs["sessionid"]:
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
-        if slug == "speed_review":
-            slug = "review"
-        elif slug == "classic_review":
-            slug = "review"
+        if session_type == "speed_review":
+            session_type = "review"
+        elif session_type == "classic_review":
+            session_type = "review"
 
         # Retrieve level info
         retry_request = True
         level = {}
         should_empty = False
 
-        if slug not in ("preview", "review", "learn"):
-            slug = "preview"
+        if session_type not in ("preview", "review", "learn"):
+            session_type = "preview"
 
         while retry_request:
             is_anonymous_session = kwargs.get("is_anon", False)
             try:
                 level = self.requestor.level(
-                    idCourse,
-                    lvl,
-                    session_type=slug,
+                    course_id,
+                    level_index,
+                    session_type=session_type,
                     sessionid=kwargs["sessionid"],
                     csrftoken=kwargs["csrftoken"],
                 )
@@ -213,8 +213,8 @@ class ApiMemrise(Memrise):
 
                 # Trying to learn but there's nothing more to learn:
                 # retrieve the "session_source_info" but empty out the list of things to learn
-                elif e.response.status_code == 400 and slug == "learn":
-                    slug = "preview"
+                elif e.response.status_code == 400 and session_type == "learn":
+                    session_type = "preview"
                     should_empty = True
                     continue
 
@@ -226,21 +226,21 @@ class ApiMemrise(Memrise):
 
         return level
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         self.set_default_kwargs(kwargs)
 
         if not kwargs["sessionid"]:
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
         html = self.requestor.level_multimedia(
-            idCourse,
-            slugCourse,
-            lvl,
+            course_id,
+            course_slug,
+            level_index,
             sessionid=kwargs["sessionid"],
         )
         return self.scraper.level_multimedia(html)
 
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         self.set_default_kwargs(kwargs)
 
         if not kwargs["sessionid"]:
@@ -251,7 +251,7 @@ class ApiMemrise(Memrise):
         while retry_login:
             try:
                 ldboard = self.requestor.course_leaderboard(
-                    idCourse,
+                    course_id,
                     period,
                     sessionid=kwargs["sessionid"],
                 )
@@ -308,18 +308,18 @@ class ApiMemrise(Memrise):
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
-    def level_add(self, idCourse, idPool=None, **kwargs):
+    def level_add(self, course_id, pool_id=None, **kwargs):
         self.set_default_kwargs(kwargs)
 
         # Add the level
         result = self.requestor.level_add(
-            idCourse,
-            idPool,
+            course_id,
+            pool_id,
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
         )
         result["id"] = None
-        result["pool_id"] = idPool
+        result["pool_id"] = pool_id
 
         if result["success"]:
             url = result.get("redirect_url", None)
@@ -374,10 +374,10 @@ class ApiMemrise(Memrise):
 
         return self.requestor.level_multimedia_edit(*args, **kwargs)
 
-    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+    def course_edit_get(self, course_id, course_slug, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        data = self.requestor.course_edit_get(idCourse, slugCourse, sessionid=kwargs["sessionid"])
+        data = self.requestor.course_edit_get(course_id, course_slug, sessionid=kwargs["sessionid"])
         html = data.pop("html")
         self.scraper.course_edit_get(data, html)
 

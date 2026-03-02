@@ -19,7 +19,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         payload = response.json()
         self.assertIsNotNone(payload.get("session_id", None))
-        self.assertIsNotNone(payload.get("lang", None))
+        self.assertIsNotNone(payload.get("lang_slug", None))
         self.assertFalse(payload.get("loggedin", False))
         self.assertEqual(payload.get("learning", None), {})
 
@@ -88,7 +88,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         payload = response.json()
         self.assertIsNotNone(payload.get("session_id", None))  # session_id in database (correspond to cookie value)
-        self.assertIsNotNone(payload.get("lang", None))
+        self.assertIsNotNone(payload.get("lang_slug", None))
         self.assertTrue(payload.get("loggedin", False))
         self.assertEqual(payload.get("learning", None), {})
 
@@ -116,7 +116,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         # The session has been initialized with the default values
         payload = response.json()
-        self.assertIsNotNone(payload.get("lang", None))
+        self.assertIsNotNone(payload.get("lang_slug", None))
 
         # ---
         # Authenticated Request = same session
@@ -130,7 +130,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         # The session still holds the same values
         payload = response.json()
-        self.assertIsNotNone(payload.get("lang", None))
+        self.assertIsNotNone(payload.get("lang_slug", None))
 
         # Clear out the sessions (config.template holds the session from the last request)
         session_store = self.session_store
@@ -149,7 +149,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         # The session has been initialized with the default values
         payload = response.json()
-        self.assertIsNotNone(payload.get("lang", None))
+        self.assertIsNotNone(payload.get("lang_slug", None))
 
     def test_session_deleted2(self):
         # Unauthenticated request = cannot access dashboard

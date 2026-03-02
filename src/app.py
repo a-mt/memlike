@@ -24,11 +24,11 @@ class logout:
 
 
 class switchLang:
-    def GET(self, name):
+    def GET(self, slug):
         # Check that languages exists
-        for locale in web.config.template.locales:
-            if locale["slug"] == name:
-                web.ctx.session["lang"] = name
+        for locale in web.config.template.LOCALES:
+            if locale["slug"] == slug:
+                web.ctx.session["lang_slug"] = slug
                 break
 
         # Redirect to referer
@@ -45,7 +45,7 @@ def notfound():
     return web.notfound(web.config.template.prender._404())
 
 
-class designSystem():
+class designSystem:
     def GET(self):
         return web.config.template.render.design_system()
 

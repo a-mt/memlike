@@ -3,11 +3,11 @@ $def with (courses, offset)
 $for i, course in enumerate(courses):
   $ idCat = str(course['target']['id']) if 'target' in course else None
   $ progress = course['progress']
-  $if idCat in i18n.categories:
-    $ category = i18n.categories[idCat]
+  $if idCat in I18N.categories:
+    $ category = I18N.categories[idCat]
   $else:
     $ category = ''
-  $ num_learners = ''
+  $ nb_learners = ''
 
   <div class="course-box"
         data-i="$(offset + i)"
@@ -22,7 +22,7 @@ $for i, course in enumerate(courses):
     </div>
 
     $if progress['percent_complete'] == 100:
-      <div class="course-complete">$:(i18n.misc['course_complete'])</div>
+      <div class="course-complete">$:(I18N.misc['course_complete'])</div>
 
     $if progress['due_review']:
       <div class="need-watering $('small' if progress['due_review'] >= 1000 else None)">
@@ -59,11 +59,11 @@ $for i, course in enumerate(courses):
         </h3>
 
         <!-- Stats -->
-        $if 'num_learners' in course:
-          $if course['num_learners'] >= 1000:
-            $ num_learners = "{0:.2f}".format(float(course['num_learners']) / 1000) + "k"
+        $if 'nb_learners' in course:
+          $if course['nb_learners'] >= 1000:
+            $ nb_learners = "{0:.2f}".format(float(course['nb_learners']) / 1000) + "k"
           $else:
-            $ num_learners = str(course['num_learners'])
+            $ nb_learners = str(course['nb_learners'])
 
         $if progress['size'] < 60:
           $ duration = str(progress['size']) + "m"
@@ -72,11 +72,11 @@ $for i, course in enumerate(courses):
 
         <div class="details">
           <div class="stats">
-            $if num_learners:
-              <span class="stat" title="$:(i18n.misc['course_learners'].replace('%', str(course['num_learners'])))">
-                <span class="ico ico-user"></span> $(num_learners)
+            $if nb_learners:
+              <span class="stat" title="$:(I18N.misc['course_learners'].replace('%', str(course['nb_learners'])))">
+                <span class="ico ico-user"></span> $(nb_learners)
               </span>
-            <span class="stat" title="$:(i18n.misc['course_duration'].replace('%', duration))">
+            <span class="stat" title="$:(I18N.misc['course_duration'].replace('%', duration))">
               <span class="ico ico-clock"></span> $(duration)
             </span>
           </div>

@@ -111,12 +111,12 @@ class Memrise:
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------
-    def courses(self, lang, page=1, cat="", query="", **kwargs):
+    def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         """
         Retrieve the list of courses for the given language, category, query string and page
 
         Testset: browse_cat-languages_scat-french_page-1.json
-        @param string lang
+        @param string lang_slug - english
         @param integer[optional] page - [1]
         @param string[optional] cat   - [""]
         @param string[optional] query - [""]
@@ -124,7 +124,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a courses() method")
 
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         """
         Retrieve the list of categories that have courses for the given language
         That is: for users that speak [LANG],
@@ -132,7 +132,7 @@ class Memrise:
         (starting from the root)
 
         Testset: courses.html
-        @param string lang
+        @param string lang_slug - english
         @return dict - {ID_COURSE: True}
         """
         raise NotImplementedError("subclasses of Memrise must provide a categories() method")
@@ -140,47 +140,47 @@ class Memrise:
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", **kwargs):
+    def course(self, course_id, course_slug="", **kwargs):
         """
         Retrieve the info about a course
 
         Testset: course-1892646.html
-        @param integer idCourse
+        @param integer course_id
         @return dict - {id, title, url, author, description, photo, levels, breadcrumb}
         """
         raise NotImplementedError("subclasses of Memrise must provide a course() method")
 
-    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         """
         Retrieve the list of items of a level (wont work for multimedia)
 
         Testset: learning_session_learn.json
-        @param integer idCourse
-        @param integer|string lvl - index | "all"
-        @param string slug
+        @param integer course_id
+        @param integer|string level_index - index | "all"
+        @param string session_type - preview|learn|classic_review|speed_review
         @param string session
         @return dict - {learnables, progress, session_source_info, settings}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level() method")
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         """
         Retrieve the content of a multimedia level
 
         Testset: course-1892646_level-1_multimedia.html
-        @param string idCourse - "43238"
-        @param string slugCourse - "durham-university-medicine-year-one"
-        @param integer lvl
+        @param string course_id - "43238"
+        @param string course_slug - "durham-university-medicine-year-one"
+        @param integer level_index
         @return string
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_multimedia() method")
 
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         """
         Retrieve the learderboard of a course (50 first)
 
         Testset: course_leaderboard.json
-        @param integer idCourse
+        @param integer course_id
         @param string period - month, week, alltime
         @return dict - {rows: [{position, points, uid, photo, username, is_premium}]}
         """
@@ -246,77 +246,77 @@ class Memrise:
         Testset: user_courses_teaching.html
         @param string tab - teaching | learning
         @param string username
-        @return dict - {content, nbCourse}
+        @return dict - {content, nb_courses}
         """
         raise NotImplementedError("subclasses of Memrise must provide a user_courses() method")
 
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
-    def level_add(self, idCourse, idPool=None, *args, **kwargs):
+    def level_add(self, course_id, pool_id=None, *args, **kwargs):
         """
         Add a new level in the given course
-        Either for a list of things (idPool!=None) or multimedial level
+        Either for a list of things (pool_id!=None) or multimedial level
 
-        @param string idCourse
-        @param string idPool
+        @param string course_id
+        @param string pool_id
         @return dict - {success, redirect_url}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_add() method")
 
-    def level_edit_get(self, idLevel, **kwargs):
+    def level_edit_get(self, level_id, **kwargs):
         """
         Retrieve the content of a level for the edit page
         May be multimedia or list of things
 
         @param string sessionid
-        @param string idLevel
+        @param string level_id
         @return dict - {success, rendered}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_edit_get() method")
 
-    def level_thing_add(self, idLevel, data, **kwargs):
+    def level_thing_add(self, level_id, data, **kwargs):
         """
         Add a thing is the given level
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idLevel
+        @param string level_id
         @param dict data - {columns: {"1":"a","2":"b","4":"plural"}, level_id: "16258912"}
         @return dict - {success, thing: {id, pool_id, columns, attributes}, rendered_thing}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_add() method")
 
-    def level_thing_edit(self, idThing, cellId, cellValue, **kwargs):
+    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
         """
         Edit the value of a thing
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idThing - "477757811"
-        @param string cellId - "2"
-        @param string cellValue - "b2"
+        @param string thing_id - "477757811"
+        @param string cell_id - "2"
+        @param string cell_value - "b2"
         @return dict - {success}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_edit() method")
 
-    def level_thing_upload(self, idThing, cellId, file, **kwargs):
+    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
         """
         Upload a file in the given thing
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idThing - "477757811"
-        @param string CellId - "3"
+        @param string thing_id - "477757811"
+        @param string cell_id - "3"
         @param file file - <filename value>
         @return dict - {success, rendered}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload() method")
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, **kwargs):
+    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
         """
         Removes an uploaded file from the given thing
 
@@ -324,71 +324,71 @@ class Memrise:
         @param string csrftoken
         @param string referer
         @param string referer
-        @param string idThing - "477757811"
-        @param string cellId - "3"
-        @param string fileId - "1"
+        @param string thing_id - "477757811"
+        @param string cell_id - "3"
+        @param string file_id - "1"
         @return dict - {success, rendered}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload_remove() method")
 
-    def level_thing_remove(self, idLevel, idThing, **kwargs):
+    def level_thing_remove(self, level_id, thing_id, **kwargs):
         """
         Removes the given thing
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idLevel - "16258912"
-        @param string idThing - "477757811"
+        @param string level_id - "16258912"
+        @param string thing_id - "477757811"
         @return dict - {success}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_remove() method")
 
-    def level_thing_get(self, idThing, **kwargs):
+    def level_thing_get(self, thing_id, **kwargs):
         """
         Retrieves the data of the given thing
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idThing - "477757811"
+        @param string thing_id - "477757811"
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_get() method")
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
+    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
         """
         Edit the alternative answers of the given column for the given thing
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idThing - "477757876"
+        @param string thing_id - "477757876"
         @param string alts - '["a2","a3"]'
         @param string column_key - "2"
         @return dict - {success}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_alt_edit() method")
 
-    def level_multimedia_edit(self, idLevel, txt, **kwargs):
+    def level_multimedia_edit(self, level_id, txt, **kwargs):
         """
         Edit the content of the given multimedia level
 
         @param string sessionid
         @param string csrftoken
         @param string referer
-        @param string idLevel - "7030263"
+        @param string level_id - "7030263"
         @param string txt - "img:http://cdni.wired.co.uk/620x413..."
         @return dict - {success, multimedia}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_multimedia_edit() method")
 
-    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+    def course_edit_get(self, course_id, course_slug, **kwargs):
         """
         Retrieve the content of a course for the edit page
 
         Testset: course_get_edit.html
         @param string sessionid
-        @param string idCourse - "1892646"
-        @param string slugCourse - "grammaire-le-groupe-nominal"
+        @param string course_id - "1892646"
+        @param string course_slug - "grammaire-le-groupe-nominal"
         """
         raise NotImplementedError("subclasses of Memrise must provide a course_edit_get() method")

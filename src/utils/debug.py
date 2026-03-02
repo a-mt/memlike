@@ -4,7 +4,7 @@ import web
 
 
 def beautify_pattern(pattern, fn):
-    # Retrieve the list of arguments (ie "(self, idCourse, slug, lvl)")
+    # Retrieve the list of arguments (ie "(self, course_id, course_slug, level_index)")
     args = str(inspect.signature(fn))[1:-1].split(", ")
 
     i = 0

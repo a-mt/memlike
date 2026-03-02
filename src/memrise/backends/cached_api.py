@@ -80,7 +80,7 @@ class CachedApiMemrise(ApiMemrise):
 
             return session
 
-    def courses(self, lang, page=1, cat="", query="", **kwargs):
+    def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         """
         Retrieve courses
         Is cached via memcached for 1day unless we're using a query
@@ -88,7 +88,7 @@ class CachedApiMemrise(ApiMemrise):
         if not isinstance(page, int) and not page.isdigit():
             page = 1
 
-        cache_key = f"{lang}_courses_{page}_{cat}"
+        cache_key = f"{lang_slug}_courses_{page}_{cat}"
         use_cache = query == ""
 
         with CachedData(cache_key=cache_key, read_cache=use_cache) as helper:
@@ -97,7 +97,7 @@ class CachedApiMemrise(ApiMemrise):
             if courses is None:
                 courses = helper.update(
                     data=super().courses(
-                        lang=lang,
+                        lang_slug=lang_slug,
                         page=page,
                         cat=cat,
                         query=query,
@@ -108,22 +108,22 @@ class CachedApiMemrise(ApiMemrise):
 
             return courses
 
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         """
         Retrieve categories
         Is cached via memcached for 1day
         """
-        with CachedData(cache_key=f"{lang}_categories") as helper:
+        with CachedData(cache_key=f"{lang_slug}_categories") as helper:
             categories = helper.data
 
             if categories is None:
                 categories = helper.update(
-                    data=super().categories(lang, **kwargs),
+                    data=super().categories(lang_slug, **kwargs),
                 )
 
             return categories
 
-    def course(self, idCourse, slugCourse="", **kwargs):
+    def course(self, course_id, course_slug="", **kwargs):
         """
         Retrieve the course data
         Is cached via memcached for 1day unless we're logged in to (retrieve the progress / reviews)
@@ -131,18 +131,18 @@ class CachedApiMemrise(ApiMemrise):
         self.set_default_kwargs(kwargs)
 
         if kwargs["sessionid"] and not kwargs.get("is_anon", False):
-            return super().course(idCourse, slugCourse, **kwargs)
+            return super().course(course_id, course_slug, **kwargs)
 
-        with CachedData(cache_key=f"course_{idCourse}") as helper:
+        with CachedData(cache_key=f"course_{course_id}") as helper:
             course = helper.data
 
             if course is None:
-                course = super().course(idCourse, slugCourse, **kwargs)
+                course = super().course(course_id, course_slug, **kwargs)
                 helper.update(course)
 
             return course
 
-    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         """
         Retrieve the level things
         Is cached via memcached for 1day unless we're logged in (retrieve the progress / reviews)
@@ -151,11 +151,11 @@ class CachedApiMemrise(ApiMemrise):
         is_anonymous_session = not kwargs["sessionid"] or kwargs.get("is_anon", False)
 
         if is_anonymous_session:
-            slug = "preview"
-        elif slug == "speed_review":
-            slug = "classic_review"
+            session_type = "preview"
+        elif session_type == "speed_review":
+            session_type = "classic_review"
 
-        cache_key = f"course_{idCourse}_{lvl}_{slug}"
+        cache_key = f"course_{course_id}_{level_index}_{session_type}"
         use_cache = is_anonymous_session
 
         with CachedData(cache_key=cache_key, read_cache=use_cache) as helper:
@@ -163,54 +163,54 @@ class CachedApiMemrise(ApiMemrise):
 
             if level is None:
                 level = helper.update(
-                    data=super().level(idCourse, slugCourse, lvl, slug, **kwargs),
+                    data=super().level(course_id, course_slug, level_index, session_type, **kwargs),
                     need_save=use_cache,
                 )
 
             return level
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         """
         Retrieve the level multimedia content
         Is cached via memcached for 1day
         """
-        cache_key = f"course_{idCourse}_{lvl}_multimedia"
+        cache_key = f"course_{course_id}_{level_index}_multimedia"
 
         with CachedData(cache_key=cache_key) as helper:
             data = helper.data
 
             if data is None:
                 data = helper.update(
-                    data=super().level_multimedia(idCourse, slugCourse, lvl, **kwargs),
+                    data=super().level_multimedia(course_id, course_slug, level_index, **kwargs),
                 )
 
             return data
 
-    def level_multimedia_edit(self, idLevel, txt, **kwargs):
-        result = super().level_multimedia_edit(idLevel, txt, **kwargs)
+    def level_multimedia_edit(self, level_id, txt, **kwargs):
+        result = super().level_multimedia_edit(level_id, txt, **kwargs)
 
-        if kwargs.get("idCourse", None) and kwargs.get("idxLevel", None):
-            cache_key = "course_{idCourse:s}_{idxLevel:s}_multimedia".format(
-                idCourse=kwargs["idCourse"],
-                idxLevel=kwargs["idxLevel"],
+        if kwargs.get("course_id", None) and kwargs.get("level_index", None):
+            cache_key = "course_{course_id:s}_{level_index:s}_multimedia".format(
+                course_id=kwargs["course_id"],
+                level_index=kwargs["level_index"],
             )
             memcache_client.delete(cache_key)
 
         return result
 
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         """
         Retrieve the course leaderboard
         Is cached via memcached for 1day
         """
-        cache_key = f"course_{idCourse}_learderboard_{period}"
+        cache_key = f"course_{course_id}_learderboard_{period}"
 
         with CachedData(cache_key=cache_key) as helper:
             ldboard = helper.data
 
             if ldboard is None:
                 ldboard = helper.update(
-                    data=super().course_leaderboard(idCourse, period, **kwargs),
+                    data=super().course_leaderboard(course_id, period, **kwargs),
                 )
 
             return ldboard

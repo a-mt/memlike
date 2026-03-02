@@ -241,10 +241,10 @@ class ApiRequestor:
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------
-    def courses(self, lang, page, cat, query):
-        logger.debug(f"Requestor:Courses [lang={lang},cat={cat},query={query},page={page}]")
+    def courses(self, lang_slug, page, cat, query):
+        logger.debug(f"Requestor:Courses [lang_slug={lang_slug},cat={cat},query={query},page={page}]")
 
-        url = f"{HOST}/ajax/browse/?s_cat={lang}"
+        url = f"{HOST}/ajax/browse/?s_cat={lang_slug}"
         if cat != "":
             url += "&cat=" + cat
         if query != "":
@@ -254,11 +254,11 @@ class ApiRequestor:
         response = requests.get(url, headers={"Accept-Language": ACCEPT_LANGUAGE})
         return response.json()
 
-    def categories(self, lang, sessionid=None, csrftoken=None):
+    def categories(self, lang_slug, sessionid=None, csrftoken=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Categories [lang={lang}] ({log_session})")
+        logger.debug(f"Requestor:Categories [lang_slug={lang_slug}] ({log_session})")
 
-        locale = lang[:2]
+        locale = lang_slug[:2]
         if locale not in ("fr", "en"):
             locale = "fr"
 
@@ -267,7 +267,7 @@ class ApiRequestor:
         if locale != "en":
             host += "/" + locale
 
-        url = f"{host}/community/courses/{lang}/"
+        url = f"{host}/community/courses/{lang_slug}/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
         self.raise_for_status(response)
@@ -276,13 +276,13 @@ class ApiRequestor:
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", sessionid=None, csrftoken=None):
+    def course(self, course_id, course_slug="", sessionid=None, csrftoken=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Course [id={idCourse},slug={slugCourse}] ({log_session})")
+        logger.debug(f"Requestor:Course [id={course_id},slug={course_slug}] ({log_session})")
 
-        url = f"{HOST}/community/course/{idCourse}/"
-        if slugCourse:
-            url += slugCourse + "/"
+        url = f"{HOST}/community/course/{course_id}/"
+        if course_slug:
+            url += course_slug + "/"
 
         response = requests.get(
             url,
@@ -291,7 +291,7 @@ class ApiRequestor:
         )
 
         # Follow redirect to canonical URL
-        if not slugCourse and response.status_code == 301:
+        if not course_slug and response.status_code == 301:
             new_url = response.headers["Location"]
 
             if new_url[0] == "/":
@@ -308,18 +308,18 @@ class ApiRequestor:
 
         return response.text.encode("utf-8").strip()
 
-    def level(self, idCourse, lvl, session_type="preview", sessionid=None, csrftoken=None):
+    def level(self, course_id, level_index, session_type="preview", sessionid=None, csrftoken=None):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level [id_course={idCourse},level={lvl}] ({log_session})")
+        logger.debug(f"Requestor:Level [id_course={course_id},level={level_index}] ({log_session})")
 
         url = f"{HOST}/{API_VERSION}/learning_sessions/{session_type}/"
-        referer = f"{HOST}/aprender/preview?course_id=${idCourse}"
+        referer = f"{HOST}/aprender/preview?course_id=${course_id}"
         data = {
-            "session_source_id": idCourse,
+            "session_source_id": course_id,
         }
-        if lvl and lvl != "all":
-            referer += f"&level_index=${lvl}"
-            data["session_source_sub_index"] = lvl
+        if level_index and level_index != "all":
+            referer += f"&level_index=${level_index}"
+            data["session_source_sub_index"] = level_index
             data["session_source_type"] = "course_id_and_level_index"
         else:
             data["session_source_type"] = "course"
@@ -340,23 +340,23 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, sessionid=None):
+    def level_multimedia(self, course_id, course_slug, level_index, sessionid=None):
         log_session = self.buildCookiesLog(sessionid)
-        log_params = f"id_course={idCourse},slug={slugCourse},level={lvl}"
+        log_params = f"id_course={course_id},slug={course_slug},level={level_index}"
         logger.debug(f"Requestor:Level multimedia [{log_params}] ({log_session})")
 
         # https://community-courses.memrise.com/community/course/1892646/grammaire-le-groupe-nominal/3/
-        url = f"{HOST}/community/course/{idCourse}/{slugCourse}/{lvl}/"
+        url = f"{HOST}/community/course/{course_id}/{course_slug}/{level_index}/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
-    def course_leaderboard(self, idCourse, period, sessionid=None):
+    def course_leaderboard(self, course_id, period, sessionid=None):
         log_session = self.buildCookiesLog(sessionid)
-        logger.debug(f"Requestor:Course leaderboard [id_course={idCourse},period={period}] ({log_session})")
+        logger.debug(f"Requestor:Course leaderboard [id_course={course_id},period={period}] ({log_session})")
 
-        url = f"{HOST}/ajax/leaderboard/course/{idCourse}/?period={period}&how_many=50"
+        url = f"{HOST}/ajax/leaderboard/course/{course_id}/?period={period}&how_many=50"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
@@ -397,20 +397,20 @@ class ApiRequestor:
     # +-----------------------------------------------------
     # | COURSE EDIT
     # +-----------------------------------------------------
-    def level_add(self, idCourse, idPool=None, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_add(self, course_id, pool_id=None, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level add [level_id={idCourse}] ({log_session})")
+        logger.debug(f"Requestor:Level add [level_id={course_id}] ({log_session})")
 
         url = f"{HOST}/ajax/level/add/"
-        if idPool:
+        if pool_id:
             data = {
-                "course_id": idCourse,
-                "pool_id": idPool,
+                "course_id": course_id,
+                "pool_id": pool_id,
                 "kind": "things",
             }
         else:
             data = {
-                "course_id": idCourse,
+                "course_id": course_id,
                 "kind": "multimedia",
             }
 
@@ -429,19 +429,19 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_edit_get(self, idLevel, sessionid=None, csrftoken=None, **kwargs):
+    def level_edit_get(self, level_id, sessionid=None, csrftoken=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={idLevel}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={level_id}] ({log_session})")
 
-        url = f"{HOST}/ajax/level/editing_html/?level_id={idLevel}&_=" + get_time()
+        url = f"{HOST}/ajax/level/editing_html/?level_id={level_id}&_=" + get_time()
 
         response = requests.get(url, cookies=self.buildCookies(sessionid, csrftoken), allow_redirects=False)
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_add(self, idLevel, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_add(self, level_id, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: add thing [level_id={idLevel}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: add thing [level_id={level_id}] ({log_session})")
 
         url = f"{HOST}/ajax/level/thing/add/"
 
@@ -449,7 +449,7 @@ class ApiRequestor:
             url,
             data={
                 "columns": data,
-                "level_id": idLevel,
+                "level_id": level_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -463,19 +463,19 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_edit(self, idThing, cellId, cellValue, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_edit(self, thing_id, cell_id, cell_value, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: edit thing [thing_id={idThing},cell_id={cellId}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: edit thing [thing_id={thing_id},cell_id={cell_id}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/cell/update/"
 
         response = requests.post(
             url,
             data={
-                "cell_id": cellId,
+                "cell_id": cell_id,
                 "cell_type": "column",
-                "new_val": cellValue,
-                "thing_id": idThing,
+                "new_val": cell_value,
+                "thing_id": thing_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -489,9 +489,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload(self, idThing, cellId, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_upload(self, thing_id, cell_id, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        log_params = f"thing_id={idThing},cell_id={cellId}"
+        log_params = f"thing_id={thing_id},cell_id={cell_id}"
         logger.debug(f"Requestor:Level edition: upload file to thing [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/cell/upload_file/"
@@ -510,9 +510,9 @@ class ApiRequestor:
         response = requests.post(
             url,
             data={
-                "cell_id": cellId,
+                "cell_id": cell_id,
                 "cell_type": "column",
-                "thing_id": idThing,
+                "thing_id": thing_id,
             },
             files={
                 "f": (file.filename, file.raw),  # files={FILENAME: file-like-object}
@@ -530,10 +530,10 @@ class ApiRequestor:
         return response.json()
 
     def level_thing_upload_remove(
-        self, idThing, cellId, fileId, sessionid=None, csrftoken=None, referer=None, **kwargs
+        self, thing_id, cell_id, file_id, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        log_params = f"thing_id={idThing},cell_id={cellId},file_id={fileId}"
+        log_params = f"thing_id={thing_id},cell_id={cell_id},file_id={file_id}"
         logger.debug(f"Requestor:Level edition: delete file from thing [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/delete_from/"
@@ -541,10 +541,10 @@ class ApiRequestor:
         response = requests.post(
             url,
             data={
-                "column_key": cellId,
+                "column_key": cell_id,
                 "cell_type": "column",
-                "thing_id": idThing,
-                "file_id": fileId,
+                "thing_id": thing_id,
+                "file_id": file_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -558,17 +558,17 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_remove(self, idLevel, idThing, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_remove(self, level_id, thing_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: delete thing [level_id={idLevel},thing_id={idThing}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: delete thing [level_id={level_id},thing_id={thing_id}] ({log_session})")
 
         url = f"{HOST}/ajax/level/thing_remove/"
 
         response = requests.post(
             url,
             data={
-                "thing_id": idThing,
-                "level_id": idLevel,
+                "thing_id": thing_id,
+                "level_id": level_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -582,11 +582,11 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_get(self, idThing, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_get(self, thing_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: get thing [thing_id={idThing}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: get thing [thing_id={thing_id}] ({log_session})")
 
-        url = f"{HOST}/ajax/thing/get/?thing_id={idThing}&_=" + get_time()
+        url = f"{HOST}/ajax/thing/get/?thing_id={thing_id}&_=" + get_time()
 
         response = requests.get(
             url,
@@ -602,9 +602,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_alt_edit(self, thing_id, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        log_params = f"thing_id={idThing},column={column_key}"
+        log_params = f"thing_id={thing_id},column={column_key}"
         logger.debug(f"Requestor:Level edition: edit thing alternative values [{log_params}] ({log_session})")
 
         url = f"{HOST}/ajax/thing/column/update_alts/"
@@ -614,7 +614,7 @@ class ApiRequestor:
             data={
                 "alts": alts,
                 "column_key": column_key,
-                "thing_id": idThing,
+                "thing_id": thing_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -628,9 +628,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_multimedia_edit(self, idLevel, txt, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_multimedia_edit(self, level_id, txt, sessionid=None, csrftoken=None, referer=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
-        logger.debug(f"Requestor:Level edition: update multimedia [level_id={idLevel}] ({log_session})")
+        logger.debug(f"Requestor:Level edition: update multimedia [level_id={level_id}] ({log_session})")
 
         url = f"{HOST}/ajax/level/set_multimedia/"
 
@@ -638,7 +638,7 @@ class ApiRequestor:
             url,
             data={
                 "multimedia": txt,
-                "level_id": idLevel,
+                "level_id": level_id,
             },
             cookies=self.buildCookies(sessionid, csrftoken),
             headers={
@@ -652,11 +652,11 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def course_edit_get(self, idCourse, slugCourse, sessionid=None, **kwargs):
+    def course_edit_get(self, course_id, course_slug, sessionid=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid)
-        logger.debug(f"Requestor:Course edition: get levels [course_id={idCourse}] ({log_session})")
+        logger.debug(f"Requestor:Course edition: get levels [course_id={course_id}] ({log_session})")
 
-        url = f"{HOST}/course/{idCourse}/{slugCourse}/edit/"
+        url = f"{HOST}/course/{course_id}/{course_slug}/edit/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
         self.raise_for_status(response)
@@ -665,7 +665,7 @@ class ApiRequestor:
         csrftoken = response.cookies.get("csrftoken")
 
         return {
-            "id": idCourse,
+            "id": course_id,
             "csrftoken": csrftoken,
             "referer": url,
             "html": html,

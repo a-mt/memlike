@@ -15,18 +15,18 @@ const build = {
 /* global $, window, document, console */
 /* global setTimeout, setInterval, clearInterval */
 $(document).ready(function(){
-  if(window.MEMLIKE.garden.levelsIndexes == '') {
+  if(window.MEMLIKE.garden.levels_indexes == '') {
     window.MEMLIKE.course.levels[1] = {'name': '', 'type': 1};
   }
   Object.freeze(window.MEMLIKE.course);
   Object.freeze(window.MEMLIKE.garden);
 
   render(<Learn
-            level_idx={window.MEMLIKE.garden.levelsIndexes}
-            session_type={window.MEMLIKE.garden.sessionType}
-            preview_thing_id={window.MEMLIKE.garden.previewThing}
-            sendresults={window.MEMLIKE.garden.saveProgress}
-            session_id={window.MEMLIKE.garden.sessionIsAnonymous}
+            level_index={window.MEMLIKE.garden.levels_indexes}
+            session_type={window.MEMLIKE.garden.session_type}
+            preview_thing_id={window.MEMLIKE.garden.preview_thing_id}
+            saveProgress={window.MEMLIKE.garden.save_progress}
+            session_id={window.MEMLIKE.garden.session_is_anonymous}
             course={window.MEMLIKE.course}
         />, document.getElementById('learn-container'));
 });
@@ -174,9 +174,9 @@ class Learn extends Component {
     data: false,
     error: false,
     screen: false,
-    recap: {}, num_scheduled_correct: 0, num_scheduled: 0,
+    recap: {}, nb_scheduled_correct: 0, nb_scheduled: 0,
     points: 0, hearts: 3, speed_bonus: 0,
-    level_idx: 1, maxlevel: 1, level_type: 1,
+    level_index: 1, maxlevel: 1, level_type: 1,
     get_all: false,
     events: [],
   };
@@ -189,21 +189,21 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    if(typeof this.props.level_idx == 'string') { // all
-      this.levels          = this.props.level_idx.split(',').map((i) => parseInt(i));
+    if(typeof this.props.level_index == 'string') { // all
+      this.levels            = this.props.level_index.split(',').map((i) => parseInt(i));
 
-      this.state.level_idx = this.levels[0] || 1;
-      this.state.maxlevel  = this.levels[this.levels.length-1] || 1;
-      this.state.get_all   = (this.props.session_type != 'preview');
+      this.state.level_index = this.levels[0] || 1;
+      this.state.maxlevel    = this.levels[this.levels.length-1] || 1;
+      this.state.get_all     = (this.props.session_type != 'preview');
     } else {
-      this.state.level_idx = parseInt(this.props.level_idx);
-      this.state.maxlevel  = parseInt(this.props.level_idx);
+      this.state.level_index = parseInt(this.props.level_index);
+      this.state.maxlevel    = parseInt(this.props.level_index);
     }
 
     this.state.settings = {
-        "disable_multimedia": false,
-        "disable_tapping": false,
-        "disable_typing": false,
+        'disable_multimedia': false,
+        'disable_tapping': false,
+        'disable_typing': false,
     };
     this.setChoices = this.setChoices.bind(this);
   }
@@ -257,7 +257,7 @@ class Learn extends Component {
     });
 
     // Retrieve data
-    this.getData(this.state.level_idx, function(data){
+    this.getData(this.state.level_index, function(data){
       if(!this.props.preview_thing_id) {
         window.onbeforeunload = this.warnbeforeunload.bind(this);
       }
@@ -294,7 +294,7 @@ class Learn extends Component {
             var elem = document.createElement('span');
             elem.innerHTML = `
               <audio id="audio-${k}" src=${src}></audio>
-              <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.i18n.play_audio}">
+              <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.I18N.play_audio}">
                 <i class="ico ico-l ico-audio"></i>
               </button>`;
 
@@ -309,9 +309,9 @@ class Learn extends Component {
 
     // Update level title
     if(!this.state.get_all) {
-      if(!prevState.data || prevState.level_idx != this.state.level_idx) {
+      if(!prevState.data || prevState.level_index != this.state.level_index) {
         var name = '';
-        var idx = this.state.level_idx;
+        var idx = this.state.level_index;
 
         if (idx < 1) {
           idx += 1;
@@ -527,30 +527,30 @@ class Learn extends Component {
   /**
    * Retrieve the current level data
    */
-  getData(level_idx, callback) {
+  getData(level_index, callback) {
     const session_type = this.props.session_type;
 
     // Retrieve level type
     var level_type = 1;
-    if (level_idx == 0) {
-      level_idx = 1;
+    if (level_index == 0) {
+      level_index = 1;
     }
-    if (level_idx == 1 && !this.props.course.levels.length) {
+    if (level_index == 1 && !this.props.course.levels.length) {
       // pass
-    } else if (!(level_idx in this.props.course.levels)) {
+    } else if (!(level_index in this.props.course.levels)) {
       console.error('Level data cannot be retrieved');
       return this.setState({error: 1});
     } else {
-      level_type = this.props.course.levels[level_idx].type;
+      level_type = this.props.course.levels[level_index].type;
     }
 
     var url = '/ajax' + this.props.course.url;
     if(this.state.get_all) {
       url += 'all/' + session_type;
     } else if(level_type == 2) {
-      url += level_idx + '/media';
+      url += level_index + '/media';
     } else {
-      url += level_idx + '/' + session_type;
+      url += level_index + '/' + session_type;
     }
 
     $.ajax({
@@ -565,19 +565,19 @@ class Learn extends Component {
         if (!gameData.boxes.length) {
           switch (session_type) {
             case 'learn':
-              error = window.i18n.learn_err_empty_learn;
+              error = window.I18N.learn_err_empty_learn;
               break;
 
             case 'preview':
-              error = window.i18n.learn_err_empty_preview;
+              error = window.I18N.learn_err_empty_preview;
               break;
 
             case 'review':
-              error = window.i18n.learn_err_empty_review;
+              error = window.I18N.learn_err_empty_review;
               break;
 
             default:
-              error = window.i18n.learn_err_empty;
+              error = window.I18N.learn_err_empty;
               break;
           }
         }
@@ -586,7 +586,7 @@ class Learn extends Component {
           recap  : {},
           screen : false,
           error,
-          level_idx,
+          level_index,
           level_type,
           data   : gameData,
           events : [],
@@ -848,7 +848,7 @@ class Learn extends Component {
       progress.current_streak,
     );
 
-    this.props.sendresults && this.registerEvent(progress, event);
+    this.props.saveProgress && this.registerEvent(progress, event);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
@@ -874,10 +874,10 @@ class Learn extends Component {
 
         $(document.body).append(`<div class="overlay">
           <div class="no-heart"></div>
-          <p class="overlay-text">${window.i18n.no_more_hearts} !</p>
+          <p class="overlay-text">${window.I18N.no_more_hearts} !</p>
           <div class="btn-group">
-            <a href="${window.MEMLIKE.garden.sessionOriginURL}">${window.i18n.return}</a>
-            <a href="${window.location.href}">${window.i18n.replay}</a>
+            <a href="${window.MEMLIKE.garden.session_origin_url}">${window.I18N.return}</a>
+            <a href="${window.location.href}">${window.I18N.replay}</a>
           </div>
         </div>`);
 
@@ -889,8 +889,8 @@ class Learn extends Component {
       // We intentionally don't update the state, so that componentDidUpdate isn't updated
       this.state.recap = recap;
       this.state.points = this.state.points + event.points;
-      this.state.num_scheduled = this.state.num_scheduled + 1;
-      this.state.num_scheduled_correct = this.state.num_scheduled_correct + (is_correct ? 1 : 0);
+      this.state.nb_scheduled = this.state.nb_scheduled + 1;
+      this.state.nb_scheduled_correct = this.state.nb_scheduled_correct + (is_correct ? 1 : 0);
 
       setTimeout(function(){
         $('.choice-box').removeClass('correct').removeClass('incorrect');
@@ -906,8 +906,8 @@ class Learn extends Component {
         points: this.state.points + event.points,
         speed_bonus: this.state.speed_bonus + event.bonus_points,
         session_streak: is_correct ? this.state.session_streak + 1 : 0,
-        num_scheduled: this.state.num_scheduled + 1,
-        num_scheduled_correct: this.state.num_scheduled_correct + (is_correct ? 1 : 0)
+        nb_scheduled: this.state.nb_scheduled + 1,
+        nb_scheduled_correct: this.state.nb_scheduled_correct + (is_correct ? 1 : 0)
       });
       this.expectChoice  = false;
       this.choices       = false;
@@ -940,21 +940,21 @@ class Learn extends Component {
 
     // Next level or go back to course's page
     } else if(this.state.screen == 'recap' || this.state.level_type == 2){
-      if(!this.state.get_all && this.state.level_idx < this.state.maxlevel) {
+      if(!this.state.get_all && this.state.level_index < this.state.maxlevel) {
         if(this.state.data) {
           this.setState({
             data: false
           });
-          this.getData(this.levels[this.levels.indexOf(this.state.level_idx) + 1]);
+          this.getData(this.levels[this.levels.indexOf(this.state.level_index) + 1]);
         }
       } else {
         this.state.error = 1; // prevent warning
-        window.location.href = window.MEMLIKE.garden.sessionOriginURL;
+        window.location.href = window.MEMLIKE.garden.session_origin_url;
       }
 
     // Recap
     } else {
-      this.props.sendresults && this.session_end();
+      this.props.saveProgress && this.session_end();
 
       this.setState({
         i: this.state.n,
@@ -1203,13 +1203,13 @@ class Learn extends Component {
     // Send session end
     var data = {
       session_points: this.state.points,
-      //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.num_scheduled_correct / this.state.num_scheduled * 100, this.state.num_scheduled),
+      //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.nb_scheduled_correct / this.state.nb_scheduled * 100, this.state.nb_scheduled),
       session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
       session_source_type: 'course',
       session_source_id: this.props.course.id,
     };
     if (!this.state.get_all) {
-      data.session_source_sub_index = this.state.level_idx;
+      data.session_source_sub_index = this.state.level_index;
     }
     requests.push({
       url: '/ajax/register_end',
@@ -1249,11 +1249,11 @@ class Learn extends Component {
     // Something went wrong
     if(this.state.error) {
       if(this.state.error == 403) {
-        return <p>{window.i18n._403} <a href="/login" className="link">{window.i18n.login}</a></p>;
+        return <p>{window.I18N._403} <a href="/login" className="link">{window.I18N.login}</a></p>;
       } else if (typeof this.state.error == 'string') {
         return <p>{this.state.error}</p>;
       } else {
-        return <p>{window.i18n.error}</p>;
+        return <p>{window.I18N.error}</p>;
       }
     }
 
@@ -1293,7 +1293,7 @@ class Learn extends Component {
         ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
         : this.screen()}
 
-      <span className="btn submit" tabIndex="0">{window.i18n.next}</span>
+      <span className="btn submit" tabIndex="0">{window.I18N.next}</span>
     </div>;
   }
 
@@ -1654,8 +1654,8 @@ class Learn extends Component {
       <Presentation
         item={this.get_screen('presentation')}
         correct={correct}
-        langTarget={this.props.course.target ? this.props.course.target.language_code : null}
-        langSource={this.props.course.source ? this.props.course.source.language_code : null}
+        langCodeTarget={this.props.course.target ? this.props.course.target.language_code : null}
+        langCodeSource={this.props.course.source ? this.props.course.source.language_code : null}
       />
     );
   }
@@ -1703,7 +1703,7 @@ const Value = function(props) {
       case 'audio': return (
         <span key={k}>
           <audio id={'audio-' + k} src={content}></audio>
-          <button type="button" data-id={'audio-' + k} className="audio-player" aria-label={window.i18n.play_audio}>
+          <button type="button" data-id={'audio-' + k} className="audio-player" aria-label={window.I18N.play_audio}>
             <i className="ico ico-l ico-audio"></i>
           </button>
         </span>
@@ -1721,7 +1721,7 @@ const Value = function(props) {
       case 'audio': return <div className="audio"><div className="media-list">{content.map(media => (
         <span key={k + i++}>
           <audio id={'audio-' + (k + i)} src={media.normal}></audio>
-          <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.i18n.play_audio}>
+          <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.I18N.play_audio}>
             <i className="ico ico-l ico-audio"></i>
           </button>
         </span>
@@ -1741,20 +1741,20 @@ const Correction = function(props) {
   var data = props.data;
 
   if(data.score == 1) {
-    return <div className="alert alert-success">{window.i18n.correct_answer}!</div>;
+    return <div className="alert alert-success">{window.I18N.correct_answer}!</div>;
 
   } else if(data.score == 0) {
     return <div className="alert alert-danger">
-      {window.i18n.wrong_answer}!&nbsp;
+      {window.I18N.wrong_answer}!&nbsp;
       {data.value
-        ? <span>{window.i18n.your_answer_was}: <strong><Value content={data.value} type={data.kind} single="1" /></strong></span>
-        : <span>{window.i18n.your_answer_was_empty}</span>}
+        ? <span>{window.I18N.your_answer_was}: <strong><Value content={data.value} type={data.kind} single="1" /></strong></span>
+        : <span>{window.I18N.your_answer_was_empty}</span>}
     </div>;
 
   } else {
     return <div className="alert alert-warning">
-      {window.i18n.near_answer}!&nbsp;
-      <span>{window.i18n.your_answer_was}: <strong>
+      {window.I18N.near_answer}!&nbsp;
+      <span>{window.I18N.your_answer_was}: <strong>
         {data.kind == 'text'
           ? <span>{data.testValue} <small className="correction" dangerouslySetInnerHTML={{__html: '(' + diff(data.testValue, data.refValue) + ')'}} /></span>
           : <Value content={data.value} type={data.kind} single="1" />}
@@ -1772,8 +1772,8 @@ const Presentation = function(props){
       autoplay = LEARN_WITH_AUTOPLAY_AUDIO || !correct;
 
   // Add TSS if we're learning a language
-  if (this.props.langTarget && this.props.langSource) {
-    item_lang = item.item.direction == 'target' ? this.props.langTarget : this.props.langSource;
+  if (this.props.langCodeTarget && this.props.langCodeSource) {
+    item_lang = item.item.direction == 'target' ? this.props.langCodeTarget : this.props.langCodeSource;
   }
 	return <div>
 
@@ -2137,21 +2137,21 @@ function calculate_speed_bonus_v1(time_spent, tpl) {
     return time_spent < 2e3 ? 3 : 0;
   }
 }
-function calculate_accuracy_bonus_v1(percent_correct, num_scheduled_correct) {
+function calculate_accuracy_bonus_v1(percent_correct, nb_scheduled_correct) {
   if(percent_correct == 100) {
-    return 20 * num_scheduled_correct;
+    return 20 * nb_scheduled_correct;
 
   } else if(percent_correct >= 90) {
-    return 12 * num_scheduled_correct;
+    return 12 * nb_scheduled_correct;
 
   } else if(percent_correct >= 80) {
-    return 6 * num_scheduled_correct;
+    return 6 * nb_scheduled_correct;
 
   } else if(percent_correct >= 70) {
-    return 4 * num_scheduled_correct;
+    return 4 * nb_scheduled_correct;
 
   } else if(percent_correct >= 50) {
-    return 2 * num_scheduled_correct;
+    return 2 * nb_scheduled_correct;
 
   } else {
     return 0;

@@ -1,6 +1,6 @@
 $def with (course, currentPeriod, items)
 $var currentPage: courses
-$var title: $(course['title']) - $(i18n.misc['leaderboard'])
+$var title: $(course['title']) - $(I18N.misc['leaderboard'])
 
 $:(prender.inc_course_banner(course))
 
@@ -10,13 +10,13 @@ $:(prender.inc_course_banner(course))
     <!-- Levels name -->
     <a href="$(course['url'])" class="pill">
       <i class="ico ico-list"></i>
-      $(i18n.misc['levels']) ($(len(course['levels'])))
+      $(I18N.misc['levels']) ($(len(course['levels'])))
     </a>
 
     <!-- Link to leaderboard -->
     <button type="button" class="pill active">
       <i class="ico ico-trophy ico-white"></i>
-      $(i18n.misc['leaderboard'])
+      $(I18N.misc['leaderboard'])
     </button>
 
   </div>
@@ -30,7 +30,7 @@ $:(prender.inc_course_banner(course))
         <div class="btn-group">
           $for period in ['week', 'month', 'alltime']:
             <a class="btn btn-small $('active' if currentPeriod == period else None)" href="?period=$(period)">
-              $:(i18n.misc[period])
+              $:(I18N.misc[period])
             </a>
         </div>
       </div>
@@ -55,7 +55,7 @@ $:(prender.inc_course_banner(course))
             </li>
         </ul>
       $else:
-        <div class="empty-box"><p>$:(i18n.misc['leaderboard_none'])</p></div>
+        <div class="empty-box"><p>$:(I18N.misc['leaderboard_none'])</p></div>
     </div>
 
   </div>

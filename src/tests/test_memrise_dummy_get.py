@@ -105,10 +105,10 @@ class MemriseDummyGetTest(SimpleTestCase):
     def test_memrise_categories(self):
         self.assertIsNotNone(self.session["session_id"])
 
-        lang_code = "french"
+        lang_slug = "french"
         lang_id = "2"
 
-        result = self.memrise.categories(lang_code, sessionid=self.session["session_id"])
+        result = self.memrise.categories(lang_slug, sessionid=self.session["session_id"])
 
         self.assertIs(type(result), dict)
         self.assertTrue(lang_id in result)
@@ -159,13 +159,13 @@ class MemriseDummyGetTest(SimpleTestCase):
         result = self.memrise.user_courses(tab="teaching", username="Decks", sessionid=self.session["session_id"])
 
         self.assertIs(type(result), dict)
-        self.assertTrue(result.get("nbCourse", 0) > 0)
+        self.assertTrue(result.get("nb_courses", 0) > 0)
         self.assertIsNotNone(result.get("content", None))
         self.assertTrue(len(result["content"]) > 0)
         self.assertIs(type(result["content"][0]), str)
 
     def test_memrise_courses(self):
-        result = self.memrise.courses(lang="french", page=1)
+        result = self.memrise.courses(lang_slug="french", page=1)
 
         self.assertIs(type(result), dict)
         self.assertEqual(result["page"], 1)
@@ -209,7 +209,7 @@ class MemriseDummyGetTest(SimpleTestCase):
         self.assertEqual(result["stats"].get("ignored", None), 1)
         self.assertEqual(result["stats"].get("learned", None), 122)
         self.assertEqual(result["stats"].get("review", None), 72)
-        self.assertEqual(result["stats"].get("num_things", None), 125)
+        self.assertEqual(result["stats"].get("nb_things", None), 125)
         self.assertEqual(result["stats"].get("percent_complete", None), 98)
 
     def test_memrise_course_single_level(self):
@@ -238,14 +238,14 @@ class MemriseDummyGetTest(SimpleTestCase):
 
         self.assertIs(type(result["levels"]), dict)
         self.assertEqual(len(result["levels"]), 0)
-        self.assertIsNotNone(result.get("num_things", None))
+        self.assertIsNotNone(result.get("nb_things", None))
 
         self.assertIsNotNone(result.get("stats", None))
         self.assertIsNotNone(result["stats"].get("ignored", None))
         self.assertIsNotNone(result["stats"].get("learned", None))
         self.assertIsNotNone(result["stats"].get("percent_complete", None))
         self.assertIsNotNone(result["stats"].get("review", None))
-        self.assertIsNotNone(result["stats"].get("num_things", None))
+        self.assertIsNotNone(result["stats"].get("nb_things", None))
 
     def test_memrise_level_multimedia(self):
         self.assertIsNotNone(self.session["session_id"])

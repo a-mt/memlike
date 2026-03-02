@@ -1,5 +1,5 @@
 from os.path import isfile
-from settings import DEFAULT_LANG, ROOTDIR
+from settings import DEFAULT_LANG_SLUG, ROOTDIR
 from utils.module_loading import load_source
 import web
 import logging
@@ -19,34 +19,38 @@ class Lang(object):
         if app:
             app.add_processor(self._processor)
 
-    def get_locale_path(self, lang):
+    def get_locale_path(self, lang_slug):
         """
         Get the location of the file
         containing the translation strings for the given language
         """
-        return ROOTDIR + "/locales/" + lang + ".py"
+        return ROOTDIR + "/locales/" + lang_slug + ".py"
 
-    def get_module(self, lang=None, retry=True):
-        if lang is None:
-            lang = DEFAULT_LANG
+    def get_module(self, lang_slug=None, retry=True):
+        """
+        :param string lang_slug - engish | french
+        :param boolean retry
+        """
+        if lang_slug is None:
+            lang_slug = DEFAULT_LANG_SLUG
 
-        if lang not in self.locales:
-            logger.debug(f"Loading lang={lang}")
+        if lang_slug not in self.locales:
+            logger.debug(f"Loading lang_slug={lang_slug}")
 
-            path = self.get_locale_path(lang)
+            path = self.get_locale_path(lang_slug)
             if isfile(path):
-                self.locales[lang] = load_source(lang, path)
+                self.locales[lang_slug] = load_source(lang_slug, path)
 
-            # Session.lang contains a language that doesn't have
+            # Session.lang_slug contains a language that doesn't have
             # an associated file in locales/ (not supposed to happen)
             else:
                 if retry:
-                    logger.warning(f"lang={lang} does not exist")
+                    logger.warning(f"lang_slug={lang_slug} does not exist")
                     return self.get_module(retry=False)
 
-                raise Exception(f"Could not load lang={lang}")
+                raise Exception(f"Could not load lang_slug={lang_slug}")
 
-        return self.locales[lang]
+        return self.locales[lang_slug]
 
     def _processor(self, handler):
         """
@@ -59,9 +63,9 @@ class Lang(object):
         """
         Puts the translation string of the current language into self._data
         """
-        lang = web.ctx.session.get("lang", DEFAULT_LANG)
-        mod = self.get_module(lang=lang)
-        web.ctx.lang = mod
+        lang_slug = web.ctx.session.get("lang_slug", DEFAULT_LANG_SLUG)
+        mod = self.get_module(lang_slug=lang_slug)
+        web.ctx.lang_slug = mod
 
         # Make it accessible in templates
-        web.config.template["i18n"] = mod
+        web.config.template["I18N"] = mod

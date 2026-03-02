@@ -1,7 +1,11 @@
 # coding=utf-8
-menu = [{"slug": "index", "url": "/"}, {"slug": "courses", "url": "/fr/courses/"}, {"slug": "login", "url": "/login"}]
+MENU = [
+    {"slug": "index", "url": "/"},
+    {"slug": "courses", "url": "/fr/courses/"},
+    {"slug": "login", "url": "/login"},
+]
 
-locales = [
+LOCALES = [
     {"slug": "english", "name": "English", "photo": "/static/img/flag_uk.svg"},
     {"slug": "french", "name": "Français", "photo": "/static/img/flag_french.svg"},
 ]
@@ -775,7 +779,7 @@ categories_code = {
     "zulu": "496",
 }
 
-levels = [
+USER_RANKS = [
     0,
     500,
     1000,

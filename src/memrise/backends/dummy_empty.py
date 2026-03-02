@@ -16,21 +16,21 @@ class DummyEmptyMemrise(DummyMemrise):
             "rows": [],
         }
 
-    def courses(self, lang, page=1, cat="", query="", **kwargs):
+    def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         return {
             "page": page,
             "content": "",
             "has_next": False,
         }
 
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         return {}
 
-    def course(self, idCourse, slugCourse="example", **kwargs):
+    def course(self, course_id, course_slug="example", **kwargs):
         return {
-            "id": idCourse,
+            "id": course_id,
             "title": "Example",
-            "url": f"/community/course/{idCourse}/{slugCourse}/",
+            "url": f"/community/course/{course_id}/{course_slug}/",
             "author": "",
             "description": "",
             "photo": "",
@@ -38,20 +38,20 @@ class DummyEmptyMemrise(DummyMemrise):
             "breadcrumb": [],
         }
 
-    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         return {
             "learnables": [],
             "progress": [],
             "session_source_info": {
-                "source_id": idCourse,
+                "source_id": course_id,
                 "source_type": "course_id_and_level_index",
                 "name": "Example",
                 "translated_name": "Example",
                 "learnable_ids_to_course_ids": {},
-                "num_due_for_review": 0,
+                "nb_due_for_review": 0,
                 "level_id": None,
                 "level_name": "New level",
-                "source_sub_index": lvl,
+                "source_sub_index": level_index,
                 "template_id": None,
                 "parent_source_id": None,
                 "parent_template_id": None,
@@ -64,10 +64,10 @@ class DummyEmptyMemrise(DummyMemrise):
             },
         }
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         return ""
 
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         return {"rows": []}
 
     def user(self, username, **kwargs):
@@ -96,72 +96,72 @@ class DummyEmptyMemrise(DummyMemrise):
 
     def user_courses(self, tab, username, **kwargs):
         return {
-            "nbCourse": 0,
+            "nb_courses": 0,
             "content": [],
         }
 
-    def level_edit_get(self, idLevel, **kwargs):
+    def level_edit_get(self, level_id, **kwargs):
         return {
             "success": True,
             "rendered": "",
         }
 
-    def level_thing_add(self, idLevel, data, **kwargs):
+    def level_thing_add(self, level_id, data, **kwargs):
         return {
             "success": True,
             "thing": {"id": 477757811, "pool_id": 7758772, "columns": {}, "attributes": {}},
             "rendered_thing": "",
         }
 
-    def level_thing_edit(self, idThing, cellId, cellValue, **kwargs):
+    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
         return {
             "success": None,
         }
 
-    def level_thing_upload(self, idThing, cellId, file, **kwargs):
+    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
         return {
             "success": True,
             "rendered": "",
         }
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, **kwargs):
+    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
         return {
             "success": True,
             "rendered": "",
         }
 
-    def level_thing_remove(self, idLevel, idThing, **kwargs):
+    def level_thing_remove(self, level_id, thing_id, **kwargs):
         return {
             "success": True,
         }
 
-    def level_thing_get(self, idThing, **kwargs):
+    def level_thing_get(self, thing_id, **kwargs):
         return {
             "thing": {
-                "id": idThing,
+                "id": thing_id,
                 "pool_id": 7758772,
                 "columns": {},
                 "attributes": {},
             }
         }
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
+    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
         return {
             "success": None,
         }
 
-    def level_multimedia_edit(self, idLevel, txt, **kwargs):
+    def level_multimedia_edit(self, level_id, txt, **kwargs):
         return {
             "success": True,
             "multimedia": "",
         }
 
-    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+    def course_edit_get(self, course_id, course_slug, **kwargs):
         return {
-            "id": idCourse,
+            "id": course_id,
             "csrftoken": "",
             "referer": "",
-            "url": f"/community/course/{idCourse}/{slugCourse}/",
+            "url": f"/community/course/{course_id}/{course_slug}/",
             "title": "Example",
             "levels": [],
             "last_pool_id": None,

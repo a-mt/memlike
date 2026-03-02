@@ -14,7 +14,7 @@ LEVEL_MULTIMEDIA_ID = "16266978"
 
 class MemriseDummyEditTest(SimpleTestCase):
     session = {}
-    idThing = "478400195"
+    thing_id = "478400195"
     memrise = load_memrise("memrise.backends.DummyMemrise")
 
     def setUp(self):
@@ -48,8 +48,8 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_edit_get(self):
         result = self.memrise.course_edit_get(
-            idCourse=COURSE_ID,
-            slugCourse=COURSE_SLUG,
+            course_id=COURSE_ID,
+            course_slug=COURSE_SLUG,
             sessionid=self.session["session_id"],
         )
 
@@ -68,7 +68,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIsNotNone(level.get("name", None))
 
     def test_memrise_level_edit_get(self):
-        result = self.memrise.level_edit_get(idLevel=LEVEL_ID, sessionid=self.session["session_id"])
+        result = self.memrise.level_edit_get(level_id=LEVEL_ID, sessionid=self.session["session_id"])
 
         self.assertIs(type(result), dict)
         self.assertTrue(result.get("success", False))
@@ -79,7 +79,7 @@ class MemriseDummyEditTest(SimpleTestCase):
     # -------------------------------------------------------------------------
     def test_memrise_course_level_thing_add(self):
         result = self.memrise.level_thing_add(
-            idLevel=LEVEL_ID,
+            level_id=LEVEL_ID,
             data='{"1":"a","2":"b"}',
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
@@ -98,7 +98,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIs(type(thing.get("attributes", None)), dict)
         self.assertTrue("1" in thing["columns"])
 
-        self.idThing = thing.get("id", None)
+        self.thing_id = thing.get("id", None)
 
         column = thing["columns"]["1"]
         self.assertIs(type(column.get("alts", None)), list)
@@ -110,7 +110,7 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_level_thing_get(self):
         result = self.memrise.level_thing_get(
-            idThing=self.idThing,
+            thing_id=self.thing_id,
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
             referer="",
@@ -119,7 +119,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIs(type(result.get("thing", None)), dict)
 
         thing = result["thing"]
-        self.assertIsNotNone(thing.get("id", None), self.idThing)
+        self.assertIsNotNone(thing.get("id", None), self.thing_id)
         self.assertIsNotNone(thing.get("pool_id", None))
         self.assertIs(type(thing.get("columns", None)), dict)
         self.assertIs(type(thing.get("attributes", None)), dict)
@@ -135,9 +135,9 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_level_thing_edit(self):
         result = self.memrise.level_thing_edit(
-            idThing=self.idThing,
-            cellId="2",
-            cellValue="b2",
+            thing_id=self.thing_id,
+            cell_id="2",
+            cell_value="b2",
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
             referer="",
@@ -148,7 +148,7 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_level_thing_alt_edit(self):
         result = self.memrise.level_thing_alt_edit(
-            idThing=self.idThing,
+            thing_id=self.thing_id,
             column_key="2",
             alts='["a2","a3"]',
             sessionid=self.session["session_id"],
@@ -169,8 +169,8 @@ class MemriseDummyEditTest(SimpleTestCase):
             }
         )
         result = self.memrise.level_thing_upload(
-            idThing=self.idThing,
-            cellId="3",
+            thing_id=self.thing_id,
+            cell_id="3",
             file=file,
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
@@ -183,9 +183,9 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_level_thing_upload_remove(self):
         result = self.memrise.level_thing_upload_remove(
-            idThing=self.idThing,
-            cellId="3",
-            fileId="1",
+            thing_id=self.thing_id,
+            cell_id="3",
+            file_id="1",
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
             referer="",
@@ -197,8 +197,8 @@ class MemriseDummyEditTest(SimpleTestCase):
 
     def test_memrise_course_level_thing_remove(self):
         result = self.memrise.level_thing_remove(
-            idLevel=LEVEL_ID,
-            idThing=self.idThing,
+            level_id=LEVEL_ID,
+            thing_id=self.thing_id,
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
             referer="",
@@ -227,7 +227,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         " name="new_val">
         """)
         result = self.memrise.level_multimedia_edit(
-            idLevel=LEVEL_MULTIMEDIA_ID,
+            level_id=LEVEL_MULTIMEDIA_ID,
             txt=txt,
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],

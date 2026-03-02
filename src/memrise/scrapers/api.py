@@ -1,7 +1,7 @@
 import re
 
 from bs4 import BeautifulSoup, Tag
-from variables import categories_code, levels, languages
+from variables import categories_code, USER_RANKS, languages
 
 
 class Scraper:
@@ -57,12 +57,12 @@ class Scraper:
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
-    def course(self, idCourse, html, isLoggedIn=False):
+    def course(self, course_id, html, is_logged_in=False):
         assert len(html) > 0
 
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         course = {
-            "id": idCourse,
+            "id": course_id,
             "title": "",
             "url": "",
             "author": "",
@@ -154,17 +154,17 @@ class Scraper:
                     continue
 
                 name = child.find("div", {"class": "level-title"}).text.strip()
-                idx = child.find("div", {"class": "level-index"}).text.strip()
+                index = child.find("div", {"class": "level-index"}).text.strip()
                 ico = child.find(attrs={"class": "level-ico"}).attrs["class"].pop()
 
-                course["levels"][idx] = {
+                course["levels"][index] = {
                     "name": name,
                     "type": (2 if ico == "level-ico-multimedia-inactive" or ico == "level-ico-multimedia" else 1),
                 }
-                if isLoggedIn:
+                if is_logged_in:
                     status = child.find("div", {"class": "level-status"})
                     if status is not None:
-                        course["levels"][idx]["status"] = re.sub(r"\s+", " ", str(status))
+                        course["levels"][index]["status"] = re.sub(r"\s+", " ", str(status))
 
         # List of things (course without levels)
         div = DOM.find("div", {"class": "things"})
@@ -174,9 +174,9 @@ class Scraper:
             for child in div.find_all("div", {"class": "thing"}, recursive=False):
                 things += 1
 
-            course["num_things"] = things
+            course["nb_things"] = things
 
-        if isLoggedIn:
+        if is_logged_in:
             stats = self._course_progress(DOM)
             if stats is not None:
                 course["stats"] = stats
@@ -189,7 +189,7 @@ class Scraper:
             "learned": 0,
             "percent_complete": 0,
             "review": 0,
-            "num_things": 0,
+            "nb_things": 0,
         }
 
         div = DOM.find("div", {"class", "progress-box"})
@@ -204,22 +204,22 @@ class Scraper:
                 res = re.search(r"^(\d+) ?/ ?(\d+)", text.strip())
                 if res:
                     stats["learned"] = int(res.group(1))
-                    stats["num_things"] = int(res.group(2))
+                    stats["nb_things"] = int(res.group(2))
 
             text = item.find(attrs={"class": "pull-right"})
             if text:
                 res = re.search(r"^(\d+)", text.text.strip())
                 if res:
                     stats["ignored"] = int(res.group(1))
-                    stats["num_things"] += int(res.group(1))
+                    stats["nb_things"] += int(res.group(1))
 
             # Percentage complete
             if stats["learned"] > 0:
-                if stats["num_things"] == 0:
+                if stats["nb_things"] == 0:
                     stats["percent_complete"] = 100
                 else:
                     percent = float(stats["learned"])
-                    percent /= float(stats["num_things"]) - float(stats["ignored"])
+                    percent /= float(stats["nb_things"]) - float(stats["ignored"])
                     stats["percent_complete"] = int(percent * 100)
 
         # Review
@@ -301,7 +301,7 @@ class Scraper:
             points = int(user["stats"]["points"].replace(",", ""))
             rank = 0
 
-            for i, threshold in enumerate(levels):
+            for i, threshold in enumerate(USER_RANKS):
                 if threshold < points:
                     rank = i
                 else:
@@ -387,7 +387,7 @@ class Scraper:
 
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         courses = {
-            "nbCourse": 0,
+            "nb_courses": 0,
             "content": [],
         }
 
@@ -398,7 +398,7 @@ class Scraper:
 
             for wrapper in content:
                 courses["content"].append(str(wrapper))
-                courses["nbCourse"] += 1
+                courses["nb_courses"] += 1
 
         return courses
 

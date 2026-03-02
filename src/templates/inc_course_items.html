@@ -17,13 +17,13 @@ $def thing(i, item, attr):
       <div class="media-list">
         $for j, song in enumerate(it['value']):
           <audio id="audio-$(i)-$(j)" src="$(song['normal'])"></audio>
-          <button type="button" data-id="audio-$(i)-$(j)" class="audio-player" aria-label="$(i18n.misc['play_audio'])">
+          <button type="button" data-id="audio-$(i)-$(j)" class="audio-player" aria-label="$(I18N.misc['play_audio'])">
             <i class="ico ico-l ico-audio"></i>
           </button>
       </div>
   </div>
 
-$ num_things = len(items['learnables'])
+$ nb_things = len(items['learnables'])
 $ learned  = 0
 $ ignored  = 0
 $ tolearn  = 0
@@ -56,7 +56,7 @@ $code:
 
         $if progress['ignored']:
           $ ignored += 1
-          <div class="status">$:(i18n.misc['ignored'])</div>
+          <div class="status">$:(I18N.misc['ignored'])</div>
 
         $elif progress['growth_level'] < 6:
           $ tolearn += 1
@@ -74,24 +74,24 @@ $code:
           $if days > 1:
             $if hours > 0:
               $ days += 1
-            <div class="status review" title="$:(i18n.misc['review_in_x_days'].replace('%', str(days)))">
-              $:(i18n.misc['x_days'].replace('%', str(days)))
+            <div class="status review" title="$:(I18N.misc['review_in_x_days'].replace('%', str(days)))">
+              $:(I18N.misc['x_days'].replace('%', str(days)))
               <i class="ico-color-water grey"></i>
             </div>
           $elif hours > 1:
-            <div class="status review" title="$:(i18n.misc['review_in_x_hours'].replace('%', str(int(hours))))">
-              $:(i18n.misc['x_hours'].replace('%', str(int(hours))))
+            <div class="status review" title="$:(I18N.misc['review_in_x_hours'].replace('%', str(int(hours))))">
+              $:(I18N.misc['x_hours'].replace('%', str(int(hours))))
               <i class="ico-color-water grey"></i>
             </div>
           $elif review.total_seconds() > 1:
             $ min = ceil(review.total_seconds()/60)
-            <div class="status review" title="$:(i18n.misc['review_in_x_min'].replace('%', str(int(min))))">
-              $:(i18n.misc['x_min'].replace('%', str(int(min))))
+            <div class="status review" title="$:(I18N.misc['review_in_x_min'].replace('%', str(int(min))))">
+              $:(I18N.misc['x_min'].replace('%', str(int(min))))
               <i class="ico-color-water grey"></i>
             </div>
           $else:
             $ toreview += 1
-            <div class="status review" title="$:(i18n.misc['review_now'])">
+            <div class="status review" title="$:(I18N.misc['review_now'])">
               <i class="ico-color-water"></i>
             </div>
       $else:
@@ -101,11 +101,11 @@ $code:
       <a
         href="$(course['url'])$(str(level['index']))/$(item['id'])"
         class="view-detail"
-        title="$:(i18n.misc['preview'])"></a>
+        title="$:(I18N.misc['preview'])"></a>
     </li>
 </ul>
 
-$var num_things = num_things
+$var nb_things = nb_things
 $var learned  = learned
 $var ignored  = ignored
 $var tolearn  = tolearn

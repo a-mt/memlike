@@ -10,16 +10,16 @@ urls = (
 
 
 class learn:
-    def GET(self, kind):
+    def GET(self, session_type):
         _GET = web.input(course_id="", level_index="")
 
         try:
-            course = memrise.course(_GET["course_id"], slugCourse="")
+            course = memrise.course(_GET["course_id"], course_slug="")
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.learn(course, kind, _GET["level_index"], False, 1)
+        return web.config.template.render.learn(course, session_type, _GET["level_index"], False, 1)
 
 
 app = web.application(urls, locals(), autoreload=False)

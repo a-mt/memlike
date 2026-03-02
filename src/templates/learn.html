@@ -1,10 +1,10 @@
-$def with(course, type, lvl, thing, sendresults)
-$var title: $(i18n.misc[type]) ~ $(course['title'])
+$def with(course, session_type, level_index, thing_id, sendresults)
+$var title: $(I18N.misc[session_type]) ~ $(course['title'])
 $var js: /static/js/markdown.min.js, /static/js/preact.min.js, /static/js/learn.js
 $var header: 1
 $var footer: 1
 
-$ url = course['url'] + str(lvl) if lvl else course['url']
+$ url = course['url'] + str(level_index) if level_index else course['url']
 
 <header class="white">
   <div class="inner">
@@ -21,20 +21,20 @@ $ url = course['url'] + str(lvl) if lvl else course['url']
   window.MEMLIKE.course = $:(json(course));
   /*
   ${"$"}_URL = {
-    lvl        : $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
-    type       : "$(type)",
-    urlFrom    : "$(url)",
-    thing      : $(thing if thing else 0),
+    level_index : $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
+    session_type: "$(session_type)",
+    urlFrom     : "$(url)",
+    thing_id    : $(thing_id if thing_id else 0),
     sendresults : $(sendresults if session["loggedin"] else 0),
     session     : $(1 if session["loggedin"] else 0)
   */
   window.MEMLIKE.garden = {
-    levelsIndexes: $:(lvl if lvl else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
-    sessionType: "$(type)",
-    sessionOriginURL: "$(url)",
-    previewThing: $(thing if thing else 0),
-    saveProgress: $(sendresults if session["loggedin"] else 0),
-    sessionIsAnonymous: $(1 if session["loggedin"] else 0),
+    levels_indexes: $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
+    session_type: "$(session_type)",
+    session_origin_url: "$(url)",
+    preview_thing_id: $(thing_id if thing_id else 0),
+    save_progress: $(sendresults if session["loggedin"] else 0),
+    session_is_anonymous: $(1 if session["loggedin"] else 0),
   };
 </script>
 

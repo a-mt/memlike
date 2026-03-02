@@ -219,7 +219,7 @@ Request Header
     	__stripe_sid=d7d1b258-fad7-41ed-9659-43d87cc5f44b280976;
     	csrftoken=oBHCl1hlhi3dPunm3zs5TtgvKZrbcMBlFJrppYp1tXaCW8oOzC6YGaiJWawQWIzX;
     	sessionid_2=zwrpo2uktmjzby5fla2wl23nlm0vcuto4;
-    	i18next=fr;
+    	I18Next=fr;
     	ajs_user_id=34497740
 
 ## Signin JSON

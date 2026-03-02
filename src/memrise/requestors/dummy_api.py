@@ -40,27 +40,27 @@ class DummyApiRequestor:
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------
-    def courses(self, lang, page, cat, query, **kwargs):
+    def courses(self, lang_slug, page, cat, query, **kwargs):
         data = self.get_testset_json("browse_cat-languages_scat-french_page-1.json")
         data["has_next"] = False
         data["page"] = page
         return data
 
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         return self.get_testset_text("courses.html")
 
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", **kwargs):
-        if idCourse == settings.DUMMY_SINGLE_LEVEL:
+    def course(self, course_id, course_slug="", **kwargs):
+        if course_id == settings.DUMMY_SINGLE_LEVEL:
             return self.get_testset_text("course-6618687.html")
 
         return self.get_testset_text("course-1892646.html")
         return self.get_testset_text("course-6660056.html")
 
-    def level(self, idCourse, lvl, **kwargs):
-        if idCourse == settings.DUMMY_SINGLE_LEVEL:
+    def level(self, course_id, level_index, **kwargs):
+        if course_id == settings.DUMMY_SINGLE_LEVEL:
             return self.get_testset_json("course-6618687_level-1_learning_session_preview.json")
 
         return self.get_testset_json("course-1892646_level-2_learning_session_preview.json")  # attributes
@@ -68,10 +68,10 @@ class DummyApiRequestor:
         return self.get_testset_json("course-365747_level-3_learning_session_preview.json")  # audio
         return self.get_testset_json("course-57289_level-1_learning_session_preview.json")  # hidden_info
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         return self.get_testset_text("course-1892646_level-1_multimedia.html")
 
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         return self.get_testset_json("course_leaderboard.json")
 
     # +-----------------------------------------------------
@@ -89,10 +89,10 @@ class DummyApiRequestor:
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
-    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+    def course_edit_get(self, course_id, course_slug, **kwargs):
         html = self.get_testset_text("course_get_edit.html")
         return {
-            "id": idCourse,
+            "id": course_id,
             "csrftoken": "",
             "referer": "",
             "html": html,

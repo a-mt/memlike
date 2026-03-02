@@ -14,7 +14,7 @@ const build = {
 
 /* global $, window, document, console */
 /* global setTimeout, confirm, alert, fetch */
-/* global navigator, Blob, URL, File, FormData, FileReader */
+/* global navigator, Blob, URL, File, FormData, FileReader, Promise */
 
 $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
@@ -227,11 +227,11 @@ class EditLevel extends Component {
         {this.state.isLoading && <span className="loading-spinner left"></span>}
         {this.state.show && (
           <div className="edit-level-actions-group">
-            {window.i18n.import_export_actions}:
-            <label className="export action" title={window.i18n.export}>
+            {window.I18N.import_export_actions}:
+            <label className="export action" title={window.I18N.export}>
               <i dangerouslySetInnerHTML={{__html: '&darr;'}} />
             </label>
-            <label className="import action" title={window.i18n.import} htmlFor={'import_' + level.id}>
+            <label className="import action" title={window.I18N.import} htmlFor={'import_' + level.id}>
               <input type="file" id={'import_' + level.id} />
               <i dangerouslySetInnerHTML={{__html: '&uarr;'}} />
             </label>
@@ -345,10 +345,10 @@ function bindEditEvents(tpl) {
   // POST new row
   function addRow($tr, data, callback){
     var $level  = $tr.closest('.edit-level'),
-        idLevel = $level.data('level-id');
+        levelId = $level.data('level-id');
 
     $.ajax({
-      url: '/ajax/level/' + idLevel + '/add',
+      url: '/ajax/level/' + levelId + '/add',
       method: 'POST',
       data: {
         csrftoken: window.MEMLIKE.course.csrftoken,
@@ -360,18 +360,18 @@ function bindEditEvents(tpl) {
             $newTr = $(html).appendTo($('.things', $level));
 
         $tr.remove();
-        callback && callback('success', idLevel, $newTr);
+        callback && callback('success', levelId, $newTr);
       },
       error: function(xhr){
         console.error(xhr);
         $tr.remove('disabled');
-        callback && callback('error', idLevel, $tr);
+        callback && callback('error', levelId, $tr);
       },
     });
   }
 
   // Import rows: handle file upload from URL
-  async function downloadFromUrls($tr, idLevel, uploads) {
+  async function downloadFromUrls($tr, levelId, uploads) {
     var thingId = $tr.data('thing-id');
 
     for(var i=0; i<uploads.length; i++) {
@@ -520,7 +520,7 @@ function bindEditEvents(tpl) {
         csrftoken: window.MEMLIKE.course.csrftoken,
         referer: window.MEMLIKE.course.referer,
         alts: JSON.stringify(alts),
-        cellId: cellId
+        cell_id: cellId,
       },
       success: function() {
         window.modal.close();
@@ -532,7 +532,7 @@ function bindEditEvents(tpl) {
   // On click "delete": delete row
   function click_deleteRow(e){
     e.preventDefault();
-    if(confirm(window.i18n.confirm_del_row)) {
+    if(confirm(window.I18N.confirm_del_row)) {
       removeRow($(e.target).closest('tr'));
     }
   }
@@ -579,15 +579,15 @@ function bindEditEvents(tpl) {
   }
 
   // POST new cell value
-  function updateCell(thingId, cellId, cellValue) {
+  function updateCell(thingId, cellId, txt) {
     $.ajax({
       url: '/ajax/level/' + thingId + '/edit',
       method: 'POST',
       data: {
         csrftoken: window.MEMLIKE.course.csrftoken,
         referer: window.MEMLIKE.course.referer,
-        cellId: cellId,
-        cellValue: cellValue,
+        cell_id: cellId,
+        cell_value: txt,
       },
       error: function(){
         alert('Something went wrong when trying to update cell');
@@ -611,7 +611,7 @@ function bindEditEvents(tpl) {
     fd.append('file', file);
     fd.append('csrftoken', window.MEMLIKE.course.csrftoken);
     fd.append('referer', window.MEMLIKE.course.referer);
-    fd.append('cellId', cellId);
+    fd.append('cell_id', cellId);
 
     $.ajax({
       url: '/ajax/level/' + thingId + '/upload',
@@ -654,7 +654,7 @@ function bindEditEvents(tpl) {
     e.preventDefault();
     e.stopPropagation();
 
-    if(!confirm(window.i18n.confirm_del_file)) {
+    if(!confirm(window.I18N.confirm_del_file)) {
       return;
     }
     removeFile($(e.target));
@@ -671,8 +671,8 @@ function bindEditEvents(tpl) {
       data: {
         'csrftoken': window.MEMLIKE.course.csrftoken,
         'referer': window.MEMLIKE.course.referer,
-        'cellId': cellId,
-        'fileId': fileId,
+        'cell_id': cellId,
+        'file_id': fileId,
       },
       type: 'POST',
       success: function(data){
@@ -691,16 +691,16 @@ function bindEditEvents(tpl) {
     $btn.attr('disabled', 'disabled').addClass('loading-spinner-after');
 
     var $level = $btn.closest('.edit-level');
-    var idLevel = $level.data('level-id');
+    var levelId = $level.data('level-id');
     $.ajax({
-      url: '/ajax/level/' + idLevel + '/edit_multimedia',
+      url: '/ajax/level/' + levelId + '/edit_multimedia',
       method: 'POST',
       data: {
         csrftoken: window.MEMLIKE.course.csrftoken,
         referer: window.MEMLIKE.course.referer,
         txt: $btn.prev().val(),
-        idCourse: window.MEMLIKE.course.id,
-        idxLevel: $level.data('level-index'),
+        course_id: window.MEMLIKE.course.id,
+        level_index: $level.data('level-index'),
       },
       error: function() {
         alert('Something went wrong when trying to update the content');
@@ -729,7 +729,7 @@ function bindEditEvents(tpl) {
     if(isPreview) {
       var html = window.markdown.decode($textarea.val());
 
-      $preview.children(":first").html(html);
+      $preview.children(':first').html(html);
       $preview.removeClass('hide');
       $textarea.addClass('hide');
     } else {
@@ -818,11 +818,11 @@ function bindEditEvents(tpl) {
   }
   function click_export() {
     var $level     = $(this).closest('.edit-level'),
-        idLevel    = $level.data('level-id'),
+        levelId    = $level.data('level-id'),
         $table     = $level.find('table'),
         csvContent = export_things($table);
 
-    download(csvContent, window.MEMLIKE.course.title + '_' + idLevel + '.csv', 'text/csv;encoding:utf-8');
+    download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
   }
 
   function send_import(e) {
@@ -831,7 +831,7 @@ function bindEditEvents(tpl) {
     }
     var file = e.target.files[0];
     if(file.type != 'text/csv') {
-      alert(window.i18n.import_err_ext);
+      alert(window.I18N.import_err_ext);
       return;
     }
 
@@ -977,11 +977,11 @@ function bindEditEvents(tpl) {
 
   function import_preview(rows, headers, $adding) {
     if(!headers) {
-      alert(window.i18n.import_err_empty);
+      alert(window.I18N.import_err_empty);
       return;
     }
     var html = '<div class="import_preview">';
-    html += '<button class="btn active run_import top">' + window.i18n._import + '</button>';
+    html += '<button class="btn active run_import top">' + window.I18N.import_level + '</button>';
     html += '<table>';
 
     // Display headers
@@ -1039,7 +1039,7 @@ function bindEditEvents(tpl) {
       html += '</tr>';
     }
     html += '</tbody></table>';
-    html += '<button class="btn active run_import bottom">' + window.i18n._import + '</button>';
+    html += '<button class="btn active run_import bottom">' + window.I18N.import_level + '</button>';
     html += '</div>';
     window.modal.open(html);
 
@@ -1087,7 +1087,7 @@ function bindEditEvents(tpl) {
       var row = rows[i],
           uploads = row.upload;
 
-      downloadFromUrls(row.$tr, row.idLevel, row.upload);
+      downloadFromUrls(row.$tr, row.levelId, row.upload);
     }
   }
 
@@ -1098,10 +1098,10 @@ function bindEditEvents(tpl) {
     var addCallback = function(data, upload) {
       pending++;
 
-      return function(status, idLevel, $newTr) {
+      return function(status, levelId, $newTr) {
         pending--;
         if (status == 'success') {
-          callbackRows.push({data, upload, idLevel, $tr: $newTr});
+          callbackRows.push({data, upload, levelId, $tr: $newTr});
         }
         if(pending == 0) {
           setTimeout(function() {

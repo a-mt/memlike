@@ -1,7 +1,7 @@
 /* global $, window, document, console, setTimeout */
 $(document).ready(function(){
   window.$_GET = param();
-  Object.freeze(window.i18n);
+  Object.freeze(window.I18N);
   Object.freeze(window.$_GET);
 
   if(window.MEMLIKE.page) {
@@ -140,7 +140,7 @@ function courses() {
       q   : window.$_GET.q
   }, (window.$_GET.q ? '?q=' + encodeURIComponent(window.$_GET.q) : ''), content, paging, function(data, current_page) {
     if(data.content.trim() == '' && current_page == 1) {
-      return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
+      return '<div class="empty-box"><p>' + window.I18N.courses_none + '</p></div>';
     } else {
       return data.content;
     }
@@ -188,22 +188,22 @@ function _paginate(ajax_url, data, q, content, paging, tpl) {
           if(lastpage && current_page > 2) {
             paging.filter('.first').show()
                 .attr('href', q + 'page=' + 1)
-                .find('.page').html(window.i18n.page.replace('%', 1));
+                .find('.page').html(window.I18N.page.replace('%', 1));
           }
           paging.filter('.prev').show()
                 .attr('href', q + 'page=' + (current_page - 1))
-                .find('.page').html(window.i18n.page.replace('%', current_page - 1));
+                .find('.page').html(window.I18N.page.replace('%', current_page - 1));
         }
 
         if(has_next) {
           if(lastpage && current_page + 1 < lastpage) {
             paging.filter('.last').show()
                 .attr('href', q + 'page=' + lastpage)
-                .find('.page').html(window.i18n.page.replace('%', lastpage));
+                .find('.page').html(window.I18N.page.replace('%', lastpage));
           }
           paging.filter('.next')
                 .attr('href', q + 'page=' + (current_page + 1))
-                .show().find('.page').html(window.i18n.page.replace('%', current_page + 1));
+                .show().find('.page').html(window.I18N.page.replace('%', current_page + 1));
         } else {
           paging.filter('.next').hide();
         }
@@ -215,7 +215,7 @@ function _paginate(ajax_url, data, q, content, paging, tpl) {
       error: function(xhr) {
         console.error(xhr.status + ' ' + xhr.statusText);
 
-        content.html(window.i18n.error);
+        content.html(window.I18N.error);
         paging.hide();
       }
     });
@@ -512,7 +512,7 @@ function user_mempals() {
 
   _paginate(url, {}, '', content, paging, function(data){
     if(!data.users.length) {
-      var msg = window.i18n[tab + '_none'].replace('%', '<span class="grey">' + window.MEMLIKE.page.username + '</span>');
+      var msg = window.I18N[tab + '_none'].replace('%', '<span class="grey">' + window.MEMLIKE.page.username + '</span>');
       return '<div class="empty-box"><p>' + msg + '</p></div>';
     }
 
@@ -544,7 +544,7 @@ function user_courses() {
 
   _paginate(url, {}, '', content, paging, function(data){
     if(data.content.length == 0) {
-      return '<div class="empty-box"><p>' + window.i18n.courses_none + '</p></div>';
+      return '<div class="empty-box"><p>' + window.I18N.courses_none + '</p></div>';
     }
     return data.content.join('')
           + '<div class="course-box is-empty"></div>'
@@ -650,7 +650,7 @@ var Dashboard = {
 
                       } else if(data.next_offset) {
                         Dashboard.offset = data.next_offset;
-                        Dashboard.loadNext.html('<button class="btn">' + window.i18n.load_more +'</button>');
+                        Dashboard.loadNext.html('<button class="btn">' + window.I18N.load_more +'</button>');
                       }
                     }
                   } catch(e) {
@@ -664,7 +664,7 @@ var Dashboard = {
     // Ajax done running
     runner.done(function(data) {
       if(!Dashboard.content) {
-        Dashboard.container.html('<div class="empty-box"><p>' + window.i18n.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.i18n.browse_courses + '</a></div>');
+        Dashboard.container.html('<div class="empty-box"><p>' + window.I18N.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.I18N.browse_courses + '</a></div>');
         return;
       }
 
@@ -695,9 +695,9 @@ var Dashboard = {
         return;
       }
       if(xhr.status == 403) {
-        Dashboard.container.html('<div style="width: 100%">' + window.i18n._403 + ' <a class="link" href="/login">' + window.i18n.login + '</a></div>');
+        Dashboard.container.html('<div style="width: 100%">' + window.I18N._403 + ' <a class="link" href="/login">' + window.I18N.login + '</a></div>');
       } else {
-        Dashboard.container.html('<div style="width: 100%">' + window.i18n.error + '</div>');
+        Dashboard.container.html('<div style="width: 100%">' + window.I18N.error + '</div>');
         console.log('Error: ', xhr);
       }
     });

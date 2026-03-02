@@ -5,7 +5,7 @@ import json
 import settings
 
 from bs4 import BeautifulSoup
-from variables import categories_code, levels
+from variables import categories_code, USER_RANKS
 from .base import Memrise
 
 
@@ -216,7 +216,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSES
     #+-----------------------------------------------------
-    def courses(self, lang, page=1, cat="", query="", **kwargs):
+    def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         """
         Testset: browse_cat-languages_scat-french_page-1.json
         """
@@ -229,7 +229,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang, **kwargs):
+    def categories(self, lang_slug, **kwargs):
         return {
             "569": True,
             "578": True,
@@ -401,11 +401,11 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE
     #+-----------------------------------------------------
-    def course(self, idCourse, slugCourse="", **kwargs):
+    def course(self, course_id, course_slug="", **kwargs):
         """
         Testset: course-1892646.html
         """
-        if idCourse == settings.DUMMY_SINGLE_LEVEL:
+        if course_id == settings.DUMMY_SINGLE_LEVEL:
             return {
                 "id": settings.DUMMY_SINGLE_LEVEL,
                 "title": "Tables de multiplication",
@@ -414,7 +414,7 @@ class DummyMemrise(Memrise):
                 "description": "About this course",
                 "photo": "https://static.memrise.com/garden/img/placeholders/course-2.png",
                 "levels": {},
-                "num_things": 10,
+                "nb_things": 10,
                 "breadcrumb": [{
                     "id": "62",
                     "name": "afrikaans"
@@ -437,12 +437,12 @@ class DummyMemrise(Memrise):
                     "learned": 11,
                     "percent_complete": 100,
                     "review": 0,
-                    "num_things": 11,
+                    "nb_things": 11,
                 }
             }
 
         course = {
-            "id"         : idCourse,
+            "id"         : course_id,
             "title"      : "Grammaire • Le groupe nominal",
             "url"        : "/community/course/1892646/grammaire-le-groupe-nominal/",
             "author"     : "4v15721",
@@ -501,7 +501,7 @@ class DummyMemrise(Memrise):
             "learned": 0,
             "percent_complete": 0,
             "review": 0,
-            "num_things": 0
+            "nb_things": 0
         }
 
         # Learned
@@ -510,7 +510,7 @@ class DummyMemrise(Memrise):
             res = re.search(r"^(\d+) ?/ ?(\d+)", text)
             if res:
                 stats["learned"]      = int(res.group(1))
-                stats["num_things"]   = int(res.group(2))
+                stats["nb_things"]   = int(res.group(2))
 
         # Ignored
         text = "1 ignoriert"
@@ -518,15 +518,15 @@ class DummyMemrise(Memrise):
             res = re.search(r"^(\d+)", text)
             if res:
                 stats["ignored"]     = int(res.group(1))
-                stats["num_things"] += int(res.group(1))
+                stats["nb_things"] += int(res.group(1))
 
         # Percentage complete
         if stats["learned"] > 0:
-            if stats["num_things"] == 0:
+            if stats["nb_things"] == 0:
                 stats["percent_complete"] = 100
             else:
                 percent  = float(stats["learned"])
-                percent /= float(stats["num_things"]) - float(stats["ignored"])
+                percent /= float(stats["nb_things"]) - float(stats["ignored"])
                 stats["percent_complete"] = int(percent * 100)
 
         # Review
@@ -541,14 +541,14 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE > LEVEL
     #+-----------------------------------------------------
-    def level(self, idCourse, slugCourse, lvl, slug="preview", **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         """
         Testset: course-1892646_level-2_learning_session_preview.json
         """
         with open(settings.ROOTDIR + "/tests/testset/course-1892646_level-2_learning_session_preview.json") as f:
             return json.loads(f.read())
 
-    def level_multimedia(self, idCourse, slugCourse, lvl, **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
         """
         Testset: course-1892646_level-1_multimedia.html
         """
@@ -557,7 +557,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| COURSE > LEADERBOARD
     #+-----------------------------------------------------
-    def course_leaderboard(self, idCourse, period, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
         """
         Testset: course_leaderboard.json
         """
@@ -599,7 +599,7 @@ class DummyMemrise(Memrise):
             points = int(user["stats"]["points"].replace(",",""))
             rank   = 0
 
-            for i, threshold in enumerate(levels):
+            for i, threshold in enumerate(USER_RANKS):
                 if threshold < points:
                     rank = i
                 else:
@@ -657,7 +657,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     def user_courses(self, tab, username, **kwargs):
         courses = {
-            "nbCourse": 0,
+            "nb_courses": 0,
             "content": []
         }
         # https://community-courses.memrise.com/v1.25/dashboard/courses/?filter=teaching&limit=4&offset=0
@@ -670,22 +670,22 @@ class DummyMemrise(Memrise):
             content = DOM.find_all("div",{"class":"course-box-wrapper"})
             for wrapper in content:
                 courses["content"].append(str(wrapper))
-                courses["nbCourse"] += 1
+                courses["nb_courses"] += 1
 
             return courses
 
     #+-----------------------------------------------------
     #| EDIT
     #+-----------------------------------------------------
-    def level_add(self, idCourse, idPool=None, **kwargs):
+    def level_add(self, course_id, pool_id=None, **kwargs):
         return {
             "success": True,
             "redirect_url": "/course/6719284/test/edit/#l_16273536",
             "id": 16180581,
-            "pool_id": idPool,
+            "pool_id": pool_id,
         }
 
-    def level_edit_get(self, idLevel, **kwargs):
+    def level_edit_get(self, level_id, **kwargs):
         # Type things
         return {
             "success": True,
@@ -697,7 +697,7 @@ class DummyMemrise(Memrise):
             "rendered": "<div id=\"l_16260539\"\n     class=\"level\"\n     data-level-id=\"16260539\"\n     ><div class=\"level-header clearfix\"><div class=\"level-actions\"><div class=\"btn-group\"><a class=\"show-hide btn btn-small\" data-role=\"level-toggle\">Einblenden/Ausblenden</a><a class=\"btn btn-small\" data-role=\"level-preview\" href=\"/community/course/6698294/german-vocab/7/\">\n                    Vorschau\n                </a><a class=\"btn btn-small\" data-role=\"level-duplicate\">\n                    Duplizieren\n                </a><a class=\"btn btn-small\" data-role=\"level-delete\">\n                    L\u00f6schen\n                </a></div></div><div class=\"level-handle\">7</div><h3 class=\"level-name\" title=\"Doppelklick um den Namen dieses Levels zu \u00e4ndern\">\n            New level\n        </h3></div><div class=\"level-options\"><div class=\"options-col clearfix\"><a href=\"#\" class=\"toggle-edit btn btn-icos-active\"><i class=\"ico ico-edit\"></i>\n        Multimedia bearbeiten\n    </a></div></div><div class=\"level-multimedia\"><div class=\"multimedia-view hide\"><code>\n                None\n            </code></div><div class=\"multimedia-edit \" ><textarea id=\"mmTooltip\" data-placement=\"top\" data-original-title=\"\n\n<p>\n    Wenn du Multimedia aus dem Web einf\u00fcgen willst (Fotos, Videos, gifs, usw.) sind hier ein paar Tipps:\n</p>\n1. F\u00fcr Bilder schreibe \"img:\" vor die URL, z.B.\n\n<br /><b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\"></textarea><button class=\"noMrg btn btn-primary\" data-role=\"level-multimedia-save\">\n                Speichern\n            </button></div></div><script>\n    MEMRISE.renderer.ready(function(){\n        $(\"#mmTooltip\").tooltip({\n            html : true,\n            template :  '<div class=\"tooltip wide\" role=\"tooltip\">' +\n                            '<div class=\"tooltip-arrow\"></div>' +\n                            '<div class=\"tooltip-inner\"></div>' +\n                        '</div>'\n        });\n    })\n    </script></div>\n"
         }
 
-    def level_thing_add(self, idLevel, data, **kwargs):
+    def level_thing_add(self, level_id, data, **kwargs):
         return {
             "success": True,
             "thing": {
@@ -755,29 +755,29 @@ class DummyMemrise(Memrise):
             "rendered_thing": "\n\n<tr class=\"thing\" data-thing-id=\"477757811\">\n    <td>\n        <div class=\"thing__actions\">\n            <i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i>\n            <i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i>\n        </div>\n    </td>\n    \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">a</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">b</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">plural</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n    \n    \n        \n            \n                \n\n<td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n\n            \n            <div class=\"text\"></div>\n        </div>\n    \n</td>\n\n            \n        \n    \n</tr>\n"
         }
 
-    def level_thing_edit(self, idThing, cellId, cellValue, **kwargs):
+    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
         return {
             "success": None,
         }
 
-    def level_thing_upload(self, idThing, cellId, file, **kwargs):
+    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n    <div class=\"dropdown-row\" data-file-id=\"1\">\n        <i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i>\n        <a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/477757811_260208_1842_02.mp3\"></a>\n    </div>\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_upload_remove(self, idThing, cellId, fileId, **kwargs):
+    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_remove(self, idLevel, idThing, **kwargs):
+    def level_thing_remove(self, level_id, thing_id, **kwargs):
         return {
             "success": True,
         }
 
-    def level_thing_get(self, idThing, **kwargs):
+    def level_thing_get(self, thing_id, **kwargs):
         # https://community-courses.memrise.com/ajax/thing/get/?thing_id=477757876&_=1770575744741
         return {
             "thing": {
@@ -867,25 +867,25 @@ class DummyMemrise(Memrise):
             },
         }
 
-    def level_thing_alt_edit(self, idThing, alts, column_key, **kwargs):
+    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
         return {
             "success": None,
         }
 
-    def level_multimedia_edit(self, idLevel, txt, **kwargs):
+    def level_multimedia_edit(self, level_id, txt, **kwargs):
         return {
             "success": True,
             "multimedia": r"<b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\">",
         }
 
-    def course_edit_get(self, idCourse, slugCourse, **kwargs):
+    def course_edit_get(self, course_id, course_slug, **kwargs):
         """
         Testset: tests/testset/course_get_edit.html
         """
         return {
-            "id": idCourse,
+            "id": course_id,
             "csrftoken": "",
-            "referer": "https://app.memrise.com/course/" + idCourse + "/" + slugCourse + "/edit/",
+            "referer": "https://app.memrise.com/course/" + course_id + "/" + course_slug + "/edit/",
             "url": "/community/course/6698294/german-vocab/",
             "title": "German vocab",
             "levels": [

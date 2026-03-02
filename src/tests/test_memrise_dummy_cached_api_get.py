@@ -29,7 +29,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "NA" => page 1
-            result = self.memrise.courses(lang="french", cat="german", page="NA")
+            result = self.memrise.courses(lang_slug="french", cat="german", page="NA")
             self.assertIs(type(result), dict)
             self.assertEqual(result["page"], 1)
 
@@ -42,7 +42,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "1" => page 1
-            result = self.memrise.courses(lang="french", cat="german", page="1")
+            result = self.memrise.courses(lang_slug="french", cat="german", page="1")
             self.assertIs(type(result), dict)
             self.assertEqual(result["page"], 1)
 
@@ -53,7 +53,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "1" => page 1
-            result = self.memrise.courses(lang="french", cat="german", page=1)
+            result = self.memrise.courses(lang_slug="french", cat="german", page=1)
             self.assertIs(type(result), dict)
             self.assertEqual(result["page"], 1)
 
@@ -66,7 +66,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "NA" => page 1
-            result = self.memrise.courses(lang="french", cat="german", page=2)
+            result = self.memrise.courses(lang_slug="french", cat="german", page=2)
             self.assertIs(type(result), dict)
             self.assertEqual(result["page"], 2)
 

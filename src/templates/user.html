@@ -23,7 +23,7 @@ $var title: $(user['username'])
         $if session.loggedin and session.loggedin['username'] == user['username']:
          <div class="actions-right">
             <button class="ajax btn" data-href="/ajax/sync">Sync</button>
-            <a href="/logout" class="btn btn-pink logout">$:(i18n.menu['logout'])</a>
+            <a href="/logout" class="btn btn-pink logout">$:(I18N.menu['logout'])</a>
           </div>
       </div>
     </div>
@@ -37,13 +37,13 @@ $var title: $(user['username'])
     $ name, url = tab
     $if currentTab == name:
       <button type="button" class="pill active">
-        $(i18n.misc[name])
+        $(I18N.misc[name])
         $if name != "stats":
           ($(user['stats'][name] if name in user['stats'] else 0))
       </button>
     $else:
       <a href="/user/$(user['username'])$(url)" class="pill">
-        $(i18n.misc[name])
+        $(I18N.misc[name])
         $if name != "stats":
           ($(user['stats'][name] if name in user['stats'] else 0))
       </a>
@@ -59,7 +59,7 @@ $var title: $(user['username'])
         $for stat in ["following", "followers", "words", "points"]:
           $if stat in user['stats']:
             <li>
-              <strong>$(user['stats'][stat])</strong> $(i18n.misc[stat])
+              <strong>$(user['stats'][stat])</strong> $(I18N.misc[stat])
             </li>
       </ul>
     </div>
@@ -72,18 +72,18 @@ $var title: $(user['username'])
         <div class="level-progress">
 
           <!-- Persona -->
-          $ nextLvl = (user['rank'] + 1 < len(levels))
+          $ hasNextRank = (user['rank'] + 1 < len(levels))
           <div class="level-persona">
             $if user['rank']:
-              <img src="/static/img/ranks/rank_$(user['rank']).jpg" title="$(i18n.misc['rank'].replace('%', str(user['rank'])))" height="125px" class="current">
-            $if nextLvl:
-              <img src="/static/img/ranks/rank_$(user['rank']+1).jpg" title="$(i18n.misc['rank'].replace('%', str(user['rank']+1)))" height="125px" class="hide next">
+              <img src="/static/img/ranks/rank_$(user['rank']).jpg" title="$(I18N.misc['rank'].replace('%', str(user['rank'])))" height="125px" class="current">
+            $if hasNextRank:
+              <img src="/static/img/ranks/rank_$(user['rank']+1).jpg" title="$(I18N.misc['rank'].replace('%', str(user['rank']+1)))" height="125px" class="hide next">
           </div>
 
         <!-- Progress bar -->
         $if 'points' in user['stats'] and user['stats']['points']:
           $ points = floatval(user['stats']['points'])
-          $if nextLvl and user['rank']:
+          $if hasNextRank and user['rank']:
             $ nextPoints = levels[user['rank']]
             $ percent    = points / nextPoints * 100
             $ counter    = number_format(int(points)) + " / " + number_format(nextPoints)
@@ -102,9 +102,9 @@ $var title: $(user['username'])
 
         <!-- Text -->
         <div class="level-info">
-          <h3>$(i18n.misc['level_current'])</h3> <p>$(i18n.misc['rank'].replace('%', str(user['rank'])))</p>
-          $if nextLvl:
-            <h3>$(i18n.misc['level_next'])</h3> <p>$(i18n.misc['rank'].replace('%', str(user['rank']+1)))</p>
+          <h3>$(I18N.misc['level_current'])</h3> <p>$(I18N.misc['rank'].replace('%', str(user['rank'])))</p>
+          $if hasNextRank:
+            <h3>$(I18N.misc['level_next'])</h3> <p>$(I18N.misc['rank'].replace('%', str(user['rank']+1)))</p>
         </div>
       </div>
 

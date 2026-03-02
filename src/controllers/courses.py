@@ -1,5 +1,6 @@
 import web
 import variables
+import settings
 from memrise import memrise
 
 # fmt: off
@@ -17,14 +18,14 @@ class courses:
         # ex https://community-courses.memrise.com/de/community/courses/arabic/swedish/
         # [path: arabic/swedish] = swedish courses for users that speak arabic
         parts = path.strip("/").split("/")
-        lang = parts[0]
+        lang_slug = parts[0]
         cat = ""
         catId = ""
 
         # Filter courses in a given language
         # "I speak..." (french,german,arabic,etc)
-        if lang == "":
-            lang = web.ctx.session["lang"]
+        if lang_slug == "":
+            lang_slug = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
 
         # Filter courses in a given category
         if len(parts) > 1 and parts[1] in variables.categories_code:
@@ -32,17 +33,17 @@ class courses:
             catId = variables.categories_code[cat]
 
         # Retrieve list of categories that have a course
-        catHaveCourse = memrise.categories(lang)
+        has_courses = memrise.categories(lang_slug)
         return web.config.template.render.courses(
             {
-                "lang": lang,
+                "lang": lang_slug,
                 "cat": cat,
                 "catId": catId,
                 "q": _GET.q,
             },
             variables.languages,
             variables.categories,
-            catHaveCourse,
+            has_courses,
         )
 
 

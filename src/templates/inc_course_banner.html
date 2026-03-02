@@ -9,15 +9,15 @@ $def with (course)
 
       <!-- Categories -->
       <ul class="page-breadcrumb">
-        $ baseUrl = ""
+        $ url = ""
         $for i, cat in enumerate(course['breadcrumb']):
           <li>
             $if i == 0:
-              $ baseUrl = '/fr/courses/' + cat["name"]
-              <a href="$(baseUrl)">$:(i18n.categories[cat['id']])</a>
+              $ url = '/fr/courses/' + cat["name"]
+              <a href="$(url)">$:(I18N.categories[cat['id']])</a>
             $else:
               <i class="ico ico-white ico-grey ico-arr-right ico-s"></i>
-              <a href="$(baseUrl)/$(cat['name'])">$:(i18n.categories[cat['id']])</a>
+              <a href="$(url)/$(cat['name'])">$:(I18N.categories[cat['id']])</a>
           </li>
       </ul>
 

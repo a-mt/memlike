@@ -17,14 +17,14 @@ MEMRISE_ANON_PASSWORD = "66b1d91e8e66b1d91e8e!"
 DUMMY_SINGLE_LEVEL = "6618687"
 
 DATABASE_URL = getenv("DATABASE_URL", "")
-DEFAULT_LANG = getenv("DEFAULT_LANG", "french")
+DEFAULT_LANG_SLUG = getenv("DEFAULT_LANG_SLUG", "french")
 
 if IS_TEST:
     MEMRISE_BACKEND = "memrise.backends.DummyApiMemrise"
     MEMCACHE_KEY_PREFIX = "test_"
 
     DEBUG = False
-    DEFAULT_LANG = "english"
+    DEFAULT_LANG_SLUG = "english"
 
 # Import global web object to hold web.py config
 import web
@@ -71,7 +71,7 @@ web.config.session_parameters = web.utils.storage(
 
 # Save session to database or to disk
 DEFAULT_SESSION = {
-    "lang": DEFAULT_LANG,
+    "lang_slug": DEFAULT_LANG_SLUG,
     "loggedin": False,
     "learning": {},
 }
@@ -86,7 +86,7 @@ import re
 import json
 
 if web.config.get("template", None) is None:
-    from variables import menu, locales
+    from variables import MENU, LOCALES
     from math import ceil
 
     def debug(x):
@@ -121,9 +121,9 @@ if web.config.get("template", None) is None:
     template["floatval"] = lambda x: float(re.sub(r"[^\d]", "", x))
 
     # Variables accessible globally in templates
-    template["locales"] = locales
-    template["env"] = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
-    template["MENU"] = menu
+    template["LOCALES"] = LOCALES
+    template["ENV"] = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
+    template["MENU"] = MENU
 
     web.config.template = template
 
@@ -170,7 +170,7 @@ import logging
 import logging.config
 
 
-class KeepDebugLinksFilter(logging.Filter):
+class DebugLinksFilter(logging.Filter):
     def filter(self, record):
         """
         Determine if the specified record is to be logged.
@@ -239,7 +239,7 @@ conf = {
     },
     "filters": {
         "keepDebugLinks": {
-            "()": KeepDebugLinksFilter,
+            "()": DebugLinksFilter,
         },
     },
     "root": {

@@ -1,6 +1,6 @@
 $def with (page, languages, categories, catHaveCourse)
 $var currentPage: courses
-$var title: $(i18n.menu["courses"])
+$var title: $(I18N.menu["courses"])
 
 $ currentLang = page['lang']
 <script>
@@ -22,17 +22,17 @@ $ currentLang = page['lang']
         $if currentLang in languages:
           $if "url" in languages[currentLang]:
             <img class="flag-circle" src="$(languages[currentLang]['url'])" alt="">
-          $(i18n.languages[currentLang])
+          $(I18N.languages[currentLang])
         <span class="caret"></span>
       </button>
 
       <ul class="dropdown-menu">
-        $for lang, item in sorted(languages.items(), key=lambda x: i18n.languages[x[0]]):
+        $for lang, item in sorted(languages.items(), key=lambda x: I18N.languages[x[0]]):
          <li>
            <a href="/fr/courses/$(lang)/">
             $if "url" in item:
               <img class="flag-circle" src="$(item['url'])" alt="">
-            $(i18n.languages[lang])
+            $(I18N.languages[lang])
            </a>
          </li>
       </ul>
@@ -40,13 +40,13 @@ $ currentLang = page['lang']
 
     <!-- Page title-->
     <div class="page-title">
-      <h1>$(i18n.menu["courses"])</h1>
+      <h1>$(I18N.menu["courses"])</h1>
 
       <h2 data-toggle=".filter-category">
         $if page["catId"]:
-          $:(i18n.categories[page['catId']])
+          $:(I18N.categories[page['catId']])
         $else:
-          $(i18n.misc['all'])
+          $(I18N.misc['all'])
       </h2>
     </div>
 
@@ -56,7 +56,7 @@ $ currentLang = page['lang']
         $if "code" in item and item['id'] in catHaveCourse:
           $ id   = item['id']
           $ code = item['code']
-          $ name = i18n.categories[id]
+          $ name = I18N.categories[id]
           $ children = []
 
           $if "children" in item:
@@ -71,7 +71,7 @@ $ currentLang = page['lang']
               <ul>
                 <li>
                   <a data-category-leaf="" href="/fr/courses/$(currentLang)/$(code)/" class="$('active' if item['id'] == page['catId'] else '')">
-                    $(i18n.misc['all']) $:(name)
+                    $(I18N.misc['all']) $:(name)
                   </a>
                   </li>
                   $:tree(children)
@@ -95,7 +95,7 @@ $ currentLang = page['lang']
     <!-- Search course -->
     <form method="GET">
       <div class="btn-group pull-right search-box">
-        <input name="q" placeholder="$(i18n.misc['search'])..." value="$(page['q'])" type="text">
+        <input name="q" placeholder="$(I18N.misc['search'])..." value="$(page['q'])" type="text">
         <button type="submit" class="btn-default btn-ico">
             <span class="ico ico-search"></span>
         </button>

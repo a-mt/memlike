@@ -1,6 +1,6 @@
 import web
 from memrise import memrise
-from variables import levels
+from variables import USER_RANKS
 from requests.exceptions import HTTPError
 
 # fmt: off
@@ -24,7 +24,7 @@ class user:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.user(user, tab, levels)
+        return web.config.template.render.user(user, tab, USER_RANKS)
 
 
 app = web.application(urls, locals(), autoreload=False)
