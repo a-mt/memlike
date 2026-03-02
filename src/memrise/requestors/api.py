@@ -321,6 +321,12 @@ class ApiRequestor:
             referer += f"&level_index=${level_index}"
             data["session_source_sub_index"] = level_index
             data["session_source_type"] = "course_id_and_level_index"
+
+        elif session_type == "preview":
+            # Can't preview all things...
+            referer += "&level_index=1"
+            data["session_source_sub_index"] = "1"
+            data["session_source_type"] = "course_id_and_level_index"
         else:
             data["session_source_type"] = "course"
 

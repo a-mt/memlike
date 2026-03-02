@@ -642,6 +642,12 @@ footer .active a {
 .ico-trash {
   background-position: -18px -72px;
 }
+.ico-settings {
+  background-position:-90px -36px;
+}
+.ico-settings.ico-l {
+  background-position:-160px -64px;
+}
 
 a > .expand-icon { /* ico-s icon-arr-right */
   background-position: -36px -12px;
@@ -1725,6 +1731,20 @@ header .course-title {
 #level-title:not(:empty)::before {
   content: "/ ";
   color: #3e3e3e;
+}
+
+#learn-settings-btn {
+  float: right;
+}
+#learn-settings-btn button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.learn-settings .form {
+  text-align: left;
+  margin-bottom: 20px;
 }
 
 #learn-container {

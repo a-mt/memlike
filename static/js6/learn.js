@@ -21,15 +21,139 @@ $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
   Object.freeze(window.MEMLIKE.garden);
 
+  window.MEMLIKE.session_settings = {
+    'disable_multimedia': !!localStorage.getItem('session_settings_disable_multimedia'),
+    'disable_tapping': !!localStorage.getItem('session_settings_disable_tapping'),
+    'disable_typing': !!localStorage.getItem('session_settings_disable_typing'),
+    'save_progress': !!window.MEMLIKE.garden.save_progress,
+  };
   render(<Learn
-            level_index={window.MEMLIKE.garden.levels_indexes}
-            session_type={window.MEMLIKE.garden.session_type}
-            preview_thing_id={window.MEMLIKE.garden.preview_thing_id}
-            saveProgress={window.MEMLIKE.garden.save_progress}
-            session_id={window.MEMLIKE.garden.session_is_anonymous}
-            course={window.MEMLIKE.course}
-        />, document.getElementById('learn-container'));
+    level_index={window.MEMLIKE.garden.levels_indexes}
+    session_type={window.MEMLIKE.garden.session_type}
+    preview_thing_id={window.MEMLIKE.garden.preview_thing_id}
+    session_id={window.MEMLIKE.garden.session_is_anonymous}
+    course={window.MEMLIKE.course}
+  />, document.getElementById('learn-container'));
+
+  render(<LearnSettingsBtn />, document.getElementById('learn-settings-btn'));
 });
+
+//+--------------------------------------------------------
+//| Settings
+//+--------------------------------------------------------
+
+class LearnSettingsModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {...window.MEMLIKE.session_settings};
+
+    this.closeModal = this.closeModal.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
+  }
+  closeModal() {
+    window.modal.close();
+  }
+  updateSettings() {
+    Object.assign(window.MEMLIKE.session_settings, this.state);
+    localStorage.setItem('session_settings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
+    localStorage.setItem('session_settings_disable_tapping', this.state.disable_tapping ? '1' : '');
+    localStorage.setItem('session_settings_disable_typing', this.state.disable_typing ? '1' : '');
+
+    this.closeModal();
+    window.GlobalEventEmitter.dispatch('update-settings', this.state);
+  }
+
+  handleChange(id) {
+    this.setState({
+      [id]: !this.state[id],
+    });
+  }
+
+  render() {
+    return <div className="learn-settings">
+      <div className="form">
+        <div>
+          <input
+            id="disable_typing"
+            type="checkbox"
+            defaultChecked={this.state.disable_typing}
+            onChange={this.handleChange.bind(this, "disable_typing")}
+          />
+          <label for="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
+        </div>
+        <div>
+          <input
+            id="disable_tapping"
+            type="checkbox"
+            defaultChecked={this.state.disable_tapping}
+            onChange={this.handleChange.bind(this, "disable_tapping")}
+          />
+          <label for="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
+        </div>
+        <div>
+          <input
+            id="disable_multimedia"
+            type="checkbox"
+            defaultChecked={this.state.disable_multimedia}
+            onChange={this.handleChange.bind(this, "disable_multimedia")}
+          />
+          <label for="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+        </div>
+        <div>
+          <input
+            id="save_progress"
+            type="checkbox"
+            defaultChecked={this.state.save_progress}
+            onChange={this.handleChange.bind(this, "save_progress")}
+          />
+          <label for="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+        </div>
+      </div>
+      <div className="btn-group">
+        <button className="btn" onClick={this.closeModal}>Annuler</button>
+        <button className="btn green" onClick={this.updateSettings}>Sauvegarder</button>
+      </div>
+    </div>
+  }
+}
+
+class LearnSettingsBtn extends Component {
+  constructor(props) {
+    super(props);
+
+    this.show = false;
+    this.toggleSettings = this.toggleSettings.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+  }
+  onCloseModal() {
+    window.modal.onclose('learn-settings', null);
+
+    if(!this.show) {
+      return;
+    }
+    this.show = false;
+  }
+  toggleSettings() {
+    this.show = !this.show;
+
+    if(this.show) {
+      var div = window.modal.getContainer().get(0).querySelector('.modal');
+      div.innerHTML = '';
+
+      render(<LearnSettingsModal />, div);
+      window.modal.reopen();
+      window.modal.onclose('learn-settings', this.onCloseModal);
+    }
+  }
+  render() {
+    return (
+      <button type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+        <span className="ico ico-settings ico-l ico-grey"></span>
+      </button>
+    );
+  }
+}
 
 //+--------------------------------------------------------
 //| Helper functions
@@ -199,17 +323,21 @@ class Learn extends Component {
       this.state.level_index = parseInt(this.props.level_index);
       this.state.maxlevel    = parseInt(this.props.level_index);
     }
+    this.state.settings = {...window.MEMLIKE.session_settings};
 
-    this.state.settings = {
-        'disable_multimedia': false,
-        'disable_tapping': false,
-        'disable_typing': false,
-    };
     this.setChoices = this.setChoices.bind(this);
+    this.onSessionSettingsUpdated = this.onSessionSettingsUpdated.bind(this);
+  }
+
+  onSessionSettingsUpdated(settings) {
+    console.log('Session settings', settings);
+
+    Object.assign(this.state.settings, settings);
   }
 
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
+    window.GlobalEventEmitter.subscribe('update-settings', this.onSessionSettingsUpdated);
 
     document.body.addEventListener('load', function(e){
       if(e.target.tagName == 'IMG' && e.target.classList.contains('loading')){
@@ -684,7 +812,7 @@ class Learn extends Component {
 
     // Check if we got the right answer
     var idx    = parseInt(i)-1,
-        choice = this.choices[idx].attributes;
+        choice = idx < this.choices.length ? this.choices[idx].attributes : '';
 
     // getNormalPoints, getSpeedPoints
     this.choice_feedback({
@@ -848,7 +976,7 @@ class Learn extends Component {
       progress.current_streak,
     );
 
-    this.props.saveProgress && this.registerEvent(progress, event);
+    this.state.settings.save_progress && this.registerEvent(progress, event);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
@@ -954,7 +1082,7 @@ class Learn extends Component {
 
     // Recap
     } else {
-      this.props.saveProgress && this.session_end();
+      this.state.settings.save_progress && this.session_end();
 
       this.setState({
         i: this.state.n,
@@ -1174,7 +1302,7 @@ class Learn extends Component {
     }
     item.when = item.last_date;
 
-    console.log('event', item);
+    console.log('Event', item);
     this.state.events.push(item);
   }
 
@@ -1467,7 +1595,7 @@ class Learn extends Component {
                 promptWith: 'audio'
               });
             }
-            if(screens.reversed_multiple_choice.audio) {
+            if(screens.reversed_multiple_choice.audio && !this.state.settings.disable_multimedia) {
               s.push({
                 template: 'reversed_multiple_choice',
                 nChoices: 4,
@@ -1656,6 +1784,7 @@ class Learn extends Component {
         correct={correct}
         langCodeTarget={this.props.course.target ? this.props.course.target.language_code : null}
         langCodeSource={this.props.course.source ? this.props.course.source.language_code : null}
+        disableMultimedia={this.state.settings.disable_multimedia}
       />
     );
   }
@@ -1807,7 +1936,7 @@ const Presentation = function(props){
         <tr className="sep"><td colSpan="2"></td></tr>
 
         {/*-- Audio --*/}
-        {item.audio && <tr key={k + i++}>
+        {!this.props.disableMultimedia && item.audio && <tr key={k + i++}>
           <td className="label">{item.audio.label}</td>
           <td className="audio"><Value content={item.audio.value} type="audio" /></td>
         </tr>}

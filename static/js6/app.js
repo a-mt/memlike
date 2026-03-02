@@ -1,4 +1,17 @@
 /* global $, window, document, console, setTimeout */
+window.GlobalEventEmitter = {
+  _events: {},
+  dispatch: function (eventName, data) {
+      if (!this._events[eventName]) return;
+      for (var i = 0; i < this._events[eventName].length; i++)
+          this._events[eventName][i](data);
+  },
+  subscribe: function (eventName, callback) {
+    if (!this._events[eventName]) this._events[eventName] = [];
+    this._events[eventName].push(callback);
+  }
+}
+
 $(document).ready(function(){
   window.$_GET = param();
   Object.freeze(window.I18N);
@@ -440,7 +453,7 @@ var imgZoom = {
 //| Modal
 //+--------------------------------------------------------
 var modal = {
-  container: false,
+  $container: false,
   close_callback: {},
 
   createContainer: function() {
@@ -453,16 +466,23 @@ var modal = {
 
     // Modal
     $('<div class="modal">').appendTo(div);
-    modal.container = div;
+    modal.$container = div;
   },
-  open: function(html) {
-    if(!modal.container) {
+  getContainer: function() {
+    if(!modal.$container) {
       modal.createContainer();
     }
-
-    // Render
-    $('.modal', modal.container).html(html);
-    modal.container.show();
+    return modal.$container;
+  },
+  open: function(html) {
+    if(!modal.$container) {
+      modal.createContainer();
+    }
+    $('.modal', modal.$container).html(html);
+    model.reopen();
+  },
+  reopen() {
+    modal.$container.show();
   },
   onclose: function(k, callback){
     if(!callback) {
@@ -473,7 +493,7 @@ var modal = {
     }
   },
   close: function() {
-    modal.container && modal.container.hide();
+    modal.$container && modal.$container.hide();
 
     for(var k in modal.close_callback) {
       modal.close_callback[k].call(modal, k);

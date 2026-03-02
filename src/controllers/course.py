@@ -28,7 +28,7 @@ class learn_fromform:
     def GET(self, course_id, path, level_index=False):
         course_slug = path.split("/", 2)[0]
 
-        _GET = web.input(session="", sendresults=0)
+        _GET = web.input(session="", save_progress=0)
         if not _GET.session:
             raise web.seeother(f"/course/{course_id}/{course_slug}/", absolute=True)
 
@@ -38,7 +38,7 @@ class learn_fromform:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.learn(course, _GET.session, level_index, False, _GET.sendresults)
+        return web.config.template.render.learn(course, _GET.session, level_index, False, _GET.save_progress)
 
 
 class learn:

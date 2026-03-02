@@ -8,6 +8,8 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
 
 <header class="white">
   <div class="inner">
+    <div id="learn-settings-btn"></div>
+
     <p class="course-title">
       <a href="$(url)"><span class="ico ico-arr-left"></span></a>
       $(course['title'])
@@ -39,5 +41,8 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
 </script>
 
 <main id="body">
+  $if not session["loggedin"]:
+    <div class="alert alert-danger">$(I18N.misc['learn_is_anonymous'])</div>
+
   <div id="learn-container" class="inner"></div>
 </main>
