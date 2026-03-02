@@ -16,7 +16,7 @@ $def with (course)
               $ baseUrl = '/fr/courses/' + cat["name"]
               <a href="$(baseUrl)">$:(i18n.categories[cat['id']])</a>
             $else:
-              <i class="ico ico-grey ico-arr-right ico-s"></i>
+              <i class="ico ico-white ico-grey ico-arr-right ico-s"></i>
               <a href="$(baseUrl)/$(cat['name'])">$:(i18n.categories[cat['id']])</a>
           </li>
       </ul>

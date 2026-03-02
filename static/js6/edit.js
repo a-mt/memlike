@@ -96,7 +96,6 @@ class Edit extends Component {
   }
 
   onLevelAdded(data) {
-    console.log('level added', data);
     if (!data.id) {
       return;
     }
@@ -111,6 +110,7 @@ class Edit extends Component {
 
   render() {
     var opentab = window.location.hash.match(/#(i|l)_(\d+)/);
+    var c = 0;
 
     return <div>
       {this.props.course.last_pool_id && (
@@ -125,11 +125,10 @@ class Edit extends Component {
             show = (level.id == opentab[2]);
           }
         }
-        return <EditLevel show={show} key={i} level={level} setNewRow={this.setNewRow} />;
+        return <EditLevel show={show} index={++c} key={i} level={level} setNewRow={this.setNewRow} />;
       })}
-
       {this.state.addedLevels.map((level, i) => {
-        return <EditLevel show={true} key={'a_' + i} level={level} setNewRow={this.setNewRow} />;
+        return <EditLevel show={true} index={++c} key={'a_' + i} level={level} setNewRow={this.setNewRow} />;
       })}
     </div>;
   }
@@ -167,14 +166,16 @@ class EditLevel extends Component {
   onGetDataSuccess(data) {
     var content = '';
     if(this.props.level.pool_id) {
-      var div = $('.table-container', data.rendered);
-      content = div.get(0).outerHTML;
+      var $div = $('.table-container', data.rendered);
+      content = $div.get(0).outerHTML;
 
-      var newRowTemplate = div.find('tr').last().get(0).outerHTML;
+      var newRowTemplate = $div.find('tr').last().get(0).outerHTML;
       this.props.setNewRow(newRowTemplate);
 
     } else {
-      var div = $('.multimedia-edit', data.rendered);
+      var $div = $('.multimedia-edit', data.rendered);
+
+      $('*[id]', $div).attr('id', null);
 
       content = `<div class="multimedia-edit">
         <nav>
@@ -185,7 +186,7 @@ class EditLevel extends Component {
         </nav>
         <div class="multimedia-preview__content hide">
           <div class="multimedia-wrapper"></div>
-        </div>` + div.get(0).innerHTML + '</div>';
+        </div>` + $div.get(0).innerHTML + '</div>';
 
       this.props.setNewRow();
     }
@@ -216,21 +217,28 @@ class EditLevel extends Component {
   render() {
     var level = this.props.level;
 
-    return <div className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')} data-level-id={level.id} data-pool-id={level.pool_id || ''}>
+    return <div
+      className={'edit-level nicebox' + (this.state.show ? '' : ' collapsed')}
+      data-level-index={this.props.index}
+      data-level-id={level.id}
+      data-pool-id={level.pool_id || ''}
+    >
       <div className="edit-level-actions">
-        {this.state.isLoading
-          && <span className="loading-spinner left"></span>
-        }
-        {this.state.show
-          && <label className="export action" title={window.i18n._export}>
+        {this.state.isLoading && <span className="loading-spinner left"></span>}
+        {this.state.show && (
+          <div className="edit-level-actions-group">
+            {window.i18n.import_export_actions}:
+            <label className="export action" title={window.i18n.export}>
               <i dangerouslySetInnerHTML={{__html: '&darr;'}} />
-            </label>}
-        {this.state.show
-          && <label className="import action" title={window.i18n._import} htmlFor={'import_' + level.id}>
+            </label>
+            <label className="import action" title={window.i18n.import} htmlFor={'import_' + level.id}>
               <input type="file" id={'import_' + level.id} />
               <i dangerouslySetInnerHTML={{__html: '&uarr;'}} />
-            </label>}
-        <label className="toggle action" onClick={this.toggle} dangerouslySetInnerHTML={{__html: '&updownarrow;'}} />
+            </label>
+          </div>)}
+        <label className="toggle action" onClick={this.toggle}>
+          <span className="ico ico-grey ico-arr-down"></span>
+        </label>
       </div>
 
       <div className="edit-level-label">
@@ -680,19 +688,25 @@ function bindEditEvents(tpl) {
   // On click save: update multimedia content
   function click_saveMultimedia() {
     var $btn = $(this);
-    $btn.attr('disabled', 'disabled');
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-after');
 
-    var idLevel = $btn.closest('.edit-level').data('level-id');
+    var $level = $btn.closest('.edit-level');
+    var idLevel = $level.data('level-id');
     $.ajax({
       url: '/ajax/level/' + idLevel + '/edit_multimedia',
       method: 'POST',
       data: {
         csrftoken: window.MEMLIKE.course.csrftoken,
         referer: window.MEMLIKE.course.referer,
-        txt: $btn.prev().val()
+        txt: $btn.prev().val(),
+        idCourse: window.MEMLIKE.course.id,
+        idxLevel: $level.data('level-index'),
       },
-      success: function(){
-        $btn.removeAttr('disabled');
+      error: function() {
+        alert('Something went wrong when trying to update the content');
+      },
+      complete: function(){
+        $btn.removeAttr('disabled').removeClass('loading-spinner-after');
       }
     });
   }
@@ -702,7 +716,7 @@ function bindEditEvents(tpl) {
     // Toggle current tab
     var $btn       = $(e.target),
         isPreview  = $btn.hasClass('multimedia-preview__tab--preview');
-    console.log('toggle', $btn);
+
     $btn.addClass('active')
         .siblings()
         .removeClass('active');
@@ -725,11 +739,8 @@ function bindEditEvents(tpl) {
   }
 
   //+---------------------------------------------------------------------------
-  function click_export() {
-    var $level     = $(this).closest('.edit-level'),
-        idLevel    = $level.data('level-id'),
-        $table     = $level.find('table'),
-        row        = [],
+  function export_things($table) {
+    var row        = [],
         csvContent = '';
 
     // Get headers
@@ -803,6 +814,14 @@ function bindEditEvents(tpl) {
         csvContent += exportCsv(row);
       }
     });
+    return csvContent;
+  }
+  function click_export() {
+    var $level     = $(this).closest('.edit-level'),
+        idLevel    = $level.data('level-id'),
+        $table     = $level.find('table'),
+        csvContent = export_things($table);
+
     download(csvContent, window.MEMLIKE.course.title + '_' + idLevel + '.csv', 'text/csv;encoding:utf-8');
   }
 

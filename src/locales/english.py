@@ -81,6 +81,7 @@ misc = {
     "edit_level": "Edit this level",
     "import": "Import",
     "export": "Export",
+    "import_export_actions": "I/O",
     "import_err_ext": "You should send a .csv file (comma separated)",
     "import_err_empty": "The headers of your file don't match. Make sure your file is comma-separated.",
     "play_audio": "Play audio",

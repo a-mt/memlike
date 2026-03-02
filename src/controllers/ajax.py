@@ -311,12 +311,14 @@ class level_editmultimedia:
         if not web.ctx.session.get("loggedin", False):
             raise web.Forbidden()
 
-        _POST = web.input()
+        _POST = web.input(idCourse="", levelIndex="", txt="")
         return _response(
             lambda: memrise.level_multimedia_edit(
                 idLevel,
                 _POST.txt,
                 referer=_POST.referer,
+                idCourse=_POST.idCourse,
+                idxLevel=_POST.idxLevel,
             )
         )
 

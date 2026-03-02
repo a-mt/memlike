@@ -4,22 +4,22 @@ import web
 
 
 def beautify_pattern(pattern, fn):
-
     # Retrieve the list of arguments (ie "(self, idCourse, slug, lvl)")
     args = str(inspect.signature(fn))[1:-1].split(", ")
 
     i = 0
+
     def replace_args(match):
         nonlocal i
         i += 1
 
         argname = args[i] if i <= len(args) else match[0][1:-1]
-        return "{" +  argname + "}"
+        return "{" + argname + "}"
 
     return re.sub(r"\([^)]+\)", replace_args, pattern)
 
 
-def autodetect_urls(app, prefix='', res={}):
+def autodetect_urls(app, prefix="", res={}):
     for i, (pattern, handler) in enumerate(app.mapping):
         if isinstance(handler, web.application):
             autodetect_urls(handler, prefix + pattern, res)

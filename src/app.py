@@ -45,6 +45,11 @@ def notfound():
     return web.notfound(web.config.template.prender._404())
 
 
+class designSystem():
+    def GET(self):
+        return web.config.template.render.design_system()
+
+
 # fmt: off
 urls = (
     "/fr/courses", controllers.courses.app,
@@ -56,6 +61,7 @@ urls = (
     "/login", controllers.login.app,
     "/logout", "logout",
     "/lang/(.*)", "switchLang",
+    "/design-system", "designSystem",
     "", controllers.index.app,
 )
 # fmt: on

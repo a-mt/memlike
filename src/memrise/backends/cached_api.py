@@ -186,6 +186,18 @@ class CachedApiMemrise(ApiMemrise):
 
             return data
 
+    def level_multimedia_edit(self, idLevel, txt, **kwargs):
+        result = super().level_multimedia_edit(idLevel, txt, **kwargs)
+
+        if kwargs.get("idCourse", None) and kwargs.get("idxLevel", None):
+            cache_key = "course_{idCourse:s}_{idxLevel:s}_multimedia".format(
+                idCourse=kwargs["idCourse"],
+                idxLevel=kwargs["idxLevel"],
+            )
+            memcache_client.delete(cache_key)
+
+        return result
+
     def course_leaderboard(self, idCourse, period, **kwargs):
         """
         Retrieve the course leaderboard
