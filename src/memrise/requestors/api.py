@@ -435,6 +435,28 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def level_delete(self, level_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        log_session = self.buildCookiesLog(sessionid, csrftoken)
+        logger.debug(f"Requestor:Level delete [level_id={level_id}] ({log_session})")
+
+        url = f"{HOST}/ajax/level/delete/"
+        response = requests.post(
+            url,
+            data={
+                "level_id": level_id,
+            },
+            cookies=self.buildCookies(sessionid, csrftoken),
+            headers={
+                "Origin": HOST,
+                "Referer": referer or HOST,
+                "User-Agent": USER_AGENT,
+                "X-CSRFToken": csrftoken,
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def level_edit_get(self, level_id, sessionid=None, csrftoken=None, **kwargs):
         log_session = self.buildCookiesLog(sessionid, csrftoken)
         logger.debug(f"Requestor:Level edition: get things / multimedia [level_id={level_id}] ({log_session})")

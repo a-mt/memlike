@@ -10,6 +10,7 @@ from requests.exceptions import HTTPError
 # /ajax/level/...
 urls_level = (
     r"/add", "level_add",
+    r"/delete", "level_delete",
     r"/(\d+)", "level_edit",
     r"/(\d+)/alt", "level_alt",
     r"/(\d+)/alt_edit", "level_editalt",
@@ -184,6 +185,21 @@ class level_add:
             lambda: memrise.level_add(
                 course_id=data["course_id"],
                 pool_id=data.get("pool_id", None),
+                csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN", None),
+                referer=web.ctx.env.get("HTTP_X_REFERER", None),
+            )
+        )
+
+
+class level_delete:
+    def POST(self, *args, **kwargs):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        data = web.input()
+        return _response(
+            lambda: memrise.level_delete(
+                level_id=data["level_id"],
                 csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN", None),
                 referer=web.ctx.env.get("HTTP_X_REFERER", None),
             )

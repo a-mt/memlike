@@ -86,6 +86,7 @@ misc = {
     "edit_level": "Edit this level",
     "import": "Import",
     "export": "Export",
+    "delete": "Delete",
     "import_export_actions": "I/O",
     "import_err_ext": "You should send a .csv file (comma separated)",
     "import_err_empty": "The headers of your file don't match. Make sure your file is comma-separated.",
@@ -96,6 +97,7 @@ misc = {
     "learn_err_empty": "There's no item",
     "confirm_del_file": "Delete this file?",
     "confirm_del_row": "Delete this row?",
+    "confirm_del_level": "Delete this level?",
 }
 
 menu = {

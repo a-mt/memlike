@@ -264,6 +264,15 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_add() method")
 
+    def level_delete(self, level_id, *args, **kwargs):
+        """
+        Delete the given level
+
+        @param string level_id
+        @return dict - {success}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a level_delete() method")
+
     def level_edit_get(self, level_id, **kwargs):
         """
         Retrieve the content of a level for the edit page

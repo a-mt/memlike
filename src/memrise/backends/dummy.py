@@ -685,6 +685,11 @@ class DummyMemrise(Memrise):
             "pool_id": pool_id,
         }
 
+    def level_delete(self, level_id, **kwargs):
+        return {
+            "success": True,
+        }
+
     def level_edit_get(self, level_id, **kwargs):
         # Type things
         return {

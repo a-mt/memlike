@@ -329,6 +329,15 @@ class ApiMemrise(Memrise):
 
         return result
 
+    def level_delete(self, level_id, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_delete(
+            level_id,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     def level_edit_get(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 

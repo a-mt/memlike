@@ -85,6 +85,7 @@ misc = {
     "edit_level": "Modifier ce niveau",
     "import": "Importer",
     "export": "Exporter",
+    "delete": "Supprimer",
     "import_export_actions": "E/S",
     "import_err_ext": "Seul les fichiers .csv sont acceptés (séparé par des virgules)",
     "import_err_empty": "Les entêtes du fichier ne correspondent pas. Assurez-vous que votre fichier est séparé par des virgules.",
@@ -95,6 +96,7 @@ misc = {
     "learn_err_empty": "Il n'y a pas d'éléments",
     "confirm_del_file": "Supprimer ce fichier?",
     "confirm_del_row": "Supprimer cette ligne?",
+    "confirm_del_level": "Supprimer ce niveau?",
 }
 
 menu = {
