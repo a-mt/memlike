@@ -21,6 +21,11 @@ urls_level = (
     r"/(\d+)/upload_remove", "level_removefile",
     r"/(\d+)/edit_multimedia", "level_editmultimedia",
 )
+
+urls_thing = (
+    r"/cell/upload_file/", "level_uploadfile_compat",
+)
+
 # /ajax/course/...
 urls_course = (
     r"/(\d+)/([^/]+)/edit", "course_edit",
@@ -36,6 +41,7 @@ urls = (
     r"/community/course", subapp_course,
     r"/course", subapp_course,
     r"/level", web.application(urls_level, locals(), autoreload=False),
+    r"/thing", web.application(urls_thing, locals(), autoreload=False),
 
     r"/user/([^/]+)", "user",
     r"/user/([^/]+)/(followers)", "user_mempals",
@@ -276,6 +282,22 @@ class level_uploadfile:
             )
         )
 
+
+class level_uploadfile_compat:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Forbidden()
+
+        _POST = web.input(f={})
+        return _response(
+            lambda: memrise.level_thing_upload(
+                _POST.thing_id,
+                _POST.cell_id,
+                _POST.f,
+                referer=_POST.referer,
+                csrftoken=_POST.csrfmiddlewaretoken,
+            )
+        )
 
 class level_removefile:
     def POST(self, thing_id):

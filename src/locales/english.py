@@ -99,6 +99,7 @@ misc = {
     "confirm_del_file": "Delete this file?",
     "confirm_del_row": "Delete this row?",
     "confirm_del_level": "Delete this level?",
+    "generate_audio": "Generate audio",
 }
 
 menu = {

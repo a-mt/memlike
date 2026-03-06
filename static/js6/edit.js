@@ -246,12 +246,17 @@ class EditLevel extends Component {
         {this.state.isLoading && <span className="loading-spinner left"></span>}
         {this.state.show && (
           <div className="edit-level-actions-group">
-            <a class="btn action" href={this.props.url} title={window.I18N.goto_level}>
-              <i class="ico ico-grey ico-play ico-l"></i>
-            </a>
-            <button className="delete-level btn action" title={window.I18N.delete_level}>
-              <i class="ico ico-grey ico-trash"></i>
-            </button>
+            <div className="btn-group">
+              <button className="delete-level btn action" title={window.I18N.delete_level}>
+                <i class="ico ico-grey ico-trash"></i>
+              </button>
+            </div>
+
+            <div className="btn-group">
+              <button className="generate-audio btn action" title="">
+                {window.I18N.generate_audio}
+              </button>
+            </div>
 
             <div className="btn-group">
               <label className="export-level btn action" title={window.I18N.export_level}>
@@ -261,6 +266,12 @@ class EditLevel extends Component {
                 <input type="file" id={'import_' + level.id} />
                 {window.I18N.import_level}
               </label>
+            </div>
+
+            <div className="btn-group">
+              <a class="btn action" href={this.props.url} title={window.I18N.goto_level}>
+                {window.I18N.goto_level}
+              </a>
             </div>
           </div>
         )}
@@ -331,6 +342,7 @@ function bindEditEvents(tpl) {
     // Import/export
     .on('click', '.export-level', click_exportLevel)
     .on('change', '.import-level input', send_importLevel)
+    .on('click', '.generate-audio', AudioUploader.click_generateAudio)
 
     // Delete level
     .on('click', '.delete-level', click_deleteLevel);
@@ -394,8 +406,10 @@ function bindEditEvents(tpl) {
         callback && callback('success', levelId, $newTr);
       },
       error: function(xhr){
+        alert('Something went wrong');
+
         console.error(xhr);
-        $tr.remove('disabled');
+        $tr.removeClass('disabled');
         callback && callback('error', levelId, $tr);
       },
     });
@@ -1244,4 +1258,124 @@ var download = function(content, fileName, mimeType) {
   } else {
     window.location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
   }
+};
+
+//+------------------------------------------------------
+//|
+//| UPLOAD AUDIO
+//|
+//+------------------------------------------------------
+
+function findValue(obj, value) {
+  for(let k in obj) {
+    if(obj.hasOwnProperty(k) && obj[k] == value) {
+      return k;
+    }
+  }
+  return undefined;
+}
+
+var AudioUploader = {
+
+  /**
+   * Generate audio for the current level
+   */
+  click_generateAudio: function(e) {
+    var $level  = $(this).closest('.edit-level'),
+        table   = $level.find('table').get(0),
+        column1 = table.firstElementChild.querySelector('.column').innerText.trim();
+
+    // Get lang label
+    var languageCode = findValue(window.TTS.langs, column1);
+    if(typeof languageCode == 'undefined') {
+      alert(column1 + " isn't a recognized language");
+      return;
+    }
+
+    // Get list of words without audio
+    var things = table.querySelector('.things').children;
+
+    for(let i=0; i<things.length; i++) {
+      let thing   = things[i],
+          word    = thing.querySelector('.column').innerText.trim(),
+          $column = $('.audio', thing);
+
+      // Already has an audio?
+      let listAudio = $('.dropdown-toggle', $column).text().trim();
+      if(/^[1-9]/.test(listAudio)) {
+        continue;
+      }
+
+      // If not: generate the audio from Google TTS and upload it
+      AudioUploader.uploadWord({
+        word,
+        $column,
+        thingId: thing.getAttribute('data-thing-id'),
+        cellId : $column.data('key'),
+        url    : AudioUploader.getGoogleTtsUrl(languageCode, word)
+      });
+    }
+  },
+
+  /**
+   * Returns Google TTS url
+   * for the given word and language
+   *
+   * @return string
+   */
+  getGoogleTtsUrl: function(languageCode, word) {
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${languageCode || "en"}&client=tw-ob&q=${encodeURIComponent(word)}&tk=${Math.floor(Math.random() * 1000000)}&ttsspeed=1`;
+
+    const proxy_url = 'https://cors-anywhere.99901dev.workers.dev/?q=' + encodeURIComponent(url);
+
+    return proxy_url;
+  },
+
+  /**
+   * Upload Google TTS to Memrise
+   */
+  uploadWord: function({url, word, thingId, cellId, $column}) {
+    $('.files-add', $column).remove();
+
+    let status = 200;
+
+    fetch(url)
+      .then(res => {
+        status = res.status;
+
+        if(res.status!=200) {
+          return res.text();
+        } else {
+          return res.blob()
+        }
+      })
+      .then(blob => {
+        if(status!=200) {
+          console.error(status, blob);
+          return;
+        }
+        let file = new File([blob], word + '.mp3', {type: "audio/mpeg"});
+
+        let fd = new FormData();
+        fd.append('cell_id', cellId);
+        fd.append('cell_type', 'column');
+        fd.append('csrftoken', window.MEMLIKE.course.csrftoken);
+        fd.append('referer', window.MEMLIKE.course.referer);
+        fd.append('file', file);
+
+        $.ajax({
+          url: '/ajax/level/' + thingId + '/upload',
+          data: fd,
+          processData: false,
+          contentType: false,
+          type: 'POST',
+          success: function(data){
+            if(data.message) {
+              alert(data.message);
+            }
+            $column.replaceWith(data.rendered);
+          }
+        }); // end ajax
+      }); // end fetch
+  } // end uploadWord
 };
