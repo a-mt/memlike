@@ -87,6 +87,7 @@ misc = {
     "import": "Import",
     "export": "Export",
     "delete": "Delete",
+    "goto": "Go to",
     "import_export_actions": "I/O",
     "import_err_ext": "You should send a .csv file (comma separated)",
     "import_err_empty": "The headers of your file don't match. Make sure your file is comma-separated.",

@@ -125,10 +125,24 @@ class Edit extends Component {
             show = (level.id == opentab[2]);
           }
         }
-        return <EditLevel show={show} index={++c} key={i} level={level} setNewRow={this.setNewRow} />;
+        return c++, <EditLevel
+          show={show}
+          index={c}
+          key={i}
+          level={level}
+          setNewRow={this.setNewRow}
+          url={this.props.course['url'] + c}
+          />;
       })}
       {this.state.addedLevels.map((level, i) => {
-        return <EditLevel show={true} index={++c} key={'a_' + i} level={level} setNewRow={this.setNewRow} />;
+        return c++, <EditLevel
+          show={true}
+          index={c}
+          key={'a_' + i}
+          level={level}
+          setNewRow={this.setNewRow}
+          url={this.props.course['url'] + c}
+          />;
       })}
     </div>;
   }
@@ -202,6 +216,10 @@ class EditLevel extends Component {
     });
   }
 
+  onGetDataError() {
+    alert('Something went wrong');
+  }
+
   getData() {
     this.setState({
       isLoading: true,
@@ -210,6 +228,7 @@ class EditLevel extends Component {
     $.ajax({
       url: '/ajax/level/' + this.props.level.id,
       success: this.onGetDataSuccess.bind(this),
+      error: this.onGetDataError.bind(this),
       complete: this.onGetDataDone.bind(this),
     });
   }
@@ -227,15 +246,24 @@ class EditLevel extends Component {
         {this.state.isLoading && <span className="loading-spinner left"></span>}
         {this.state.show && (
           <div className="edit-level-actions-group">
-            {window.I18N.import_export_actions}:
-            <label className="export action" title={window.I18N.export}>
-              <i dangerouslySetInnerHTML={{__html: '&darr;'}} />
-            </label>
-            <label className="import action" title={window.I18N.import} htmlFor={'import_' + level.id}>
-              <input type="file" id={'import_' + level.id} />
-              <i dangerouslySetInnerHTML={{__html: '&uarr;'}} />
-            </label>
-          </div>)}
+            <a class="btn action" href={this.props.url} title={window.I18N.goto_level}>
+              <i class="ico ico-grey ico-play ico-l"></i>
+            </a>
+            <button className="delete-level btn action" title={window.I18N.delete_level}>
+              <i class="ico ico-grey ico-trash"></i>
+            </button>
+
+            <div className="btn-group">
+              <label className="export-level btn action" title={window.I18N.export_level}>
+                {window.I18N.export_level}
+              </label>
+              <label className="import-level btn action" title={window.I18N.import_level} htmlFor={'import_' + level.id}>
+                <input type="file" id={'import_' + level.id} />
+                {window.I18N.import_level}
+              </label>
+            </div>
+          </div>
+        )}
         <label className="toggle action" onClick={this.toggle}>
           <span className="ico ico-grey ico-arr-down"></span>
         </label>
@@ -285,6 +313,9 @@ function bindEditEvents(tpl) {
 
     .on('click', '.multimedia-edit button', click_saveMultimedia)
 
+    // Preview multimedia
+    .on('click', 'li.multimedia-preview__tab', click_multimediaPreviewToggle)
+
     // Update alternatives
     .on('click', '.edit-alts', click_editAlt)
 
@@ -298,11 +329,11 @@ function bindEditEvents(tpl) {
     .on('click', '.ico-close', click_deleteRow)
 
     // Import/export
-    .on('click', '.export', click_export)
-    .on('change', '.import input', send_import)
+    .on('click', '.export-level', click_exportLevel)
+    .on('change', '.import-level input', send_importLevel)
 
-    // Preview multimedia
-    .on('click', 'li.multimedia-preview__tab', click_multimediaPreviewToggle);
+    // Delete level
+    .on('click', '.delete-level', click_deleteLevel);
   }
 
   //+---------------------------------------------------------------------------
@@ -739,6 +770,51 @@ function bindEditEvents(tpl) {
   }
 
   //+---------------------------------------------------------------------------
+  function click_deleteLevel() {
+    if(!confirm(window.I18N.confirm_del_level)) {
+      return;
+    }
+
+    var $btn = $(this);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner loading-spinner-m');
+
+    var $level = $btn.closest('.edit-level');
+    var levelId = $level.data('level-id');
+
+    $.ajax({
+      url: '/ajax/level/delete',
+      method: 'POST',
+      data: {
+        course_id: window.MEMLIKE.course.id,
+        level_id: levelId,
+      },
+      headers: {
+        'X-CSRFToken': window.MEMLIKE.course.csrftoken,
+        'X-Referer': window.MEMLIKE.course.referer,
+      },
+      error: function() {
+        alert('Something went wrong when trying to delete the level');
+      },
+      success: function() {
+        $level.addClass('hide');
+      },
+      complete: function(){
+        $btn.removeAttr('disabled').removeClass('loading-spinner loading-spinner-m');
+      }
+    });
+  }
+
+  //+---------------------------------------------------------------------------
+  // Import/export
+  function click_exportLevel() {
+    var $level     = $(this).closest('.edit-level'),
+        levelId    = $level.data('level-id'),
+        $table     = $level.find('table'),
+        csvContent = export_things($table);
+
+    download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
+  }
+
   function export_things($table) {
     var row        = [],
         csvContent = '';
@@ -816,16 +892,8 @@ function bindEditEvents(tpl) {
     });
     return csvContent;
   }
-  function click_export() {
-    var $level     = $(this).closest('.edit-level'),
-        levelId    = $level.data('level-id'),
-        $table     = $level.find('table'),
-        csvContent = export_things($table);
 
-    download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
-  }
-
-  function send_import(e) {
+  function send_importLevel(e) {
     if(!e.target.files) {
       return;
     }

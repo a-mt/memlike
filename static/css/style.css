@@ -584,11 +584,11 @@ footer .active a {
   width: 32px;
   height: 32px;
 }
-.ico-m {
+/*.ico-m {
   width: 26px;
   height: 26px;
   background-size: 182px 260px
-}
+}*/
 .ico-s {
   width: 12px;
   height: 12px;
@@ -657,6 +657,12 @@ footer .active a {
 }
 .ico-settings.ico-l {
   background-position:-160px -64px;
+}
+.ico-play {
+  background-position:-36px -162px;
+}
+.ico-play.ico-l {
+  background-position:-64px -288px;
 }
 
 a > .expand-icon { /* ico-s icon-arr-right */
@@ -1457,6 +1463,9 @@ code.header {
   margin-top: 50px;
   text-align: center;
 }
+.mode-options > * {
+  margin-bottom: 10px;
+}
 .mode-options .danger-zone {
   margin-top: 20px;
   opacity: 0.5;
@@ -1760,6 +1769,9 @@ header .course-title {
 .learn-settings .form {
   text-align: left;
   margin-bottom: 20px;
+}
+.learn-settings .btn-group {
+  justify-content: center;
 }
 
 #learn-container {
@@ -2270,12 +2282,19 @@ form .error {
 .edit-level-actions-group .btn-group {
   margin: 0 0 0 5px;
 }
+.edit-level-actions .loading-spinner .ico {
+  opacity: 0;
+}
 .edit-level-actions .action:disabled {
   opacity: 0.7;
   pointer-events: none;
 }
-.edit-level-actions .loading-spinner .ico {
-  opacity: 0;
+.edit-level-actions .action {
+  height: 30px;
+  line-height: 20px;
+}
+.edit-level-actions .action .ico-l {
+  margin-top: -5px;
 }
 .edit-level-actions .action:hover {
   background-color: #f5f5f5;
