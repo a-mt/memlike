@@ -386,8 +386,14 @@ class user:
 class user_mempals:
     def GET(self, username, tab):
         _GET = web.input(page=1)
+        page = int(_GET.page)
 
-        return _response(lambda: getattr(memrise, "user_" + tab)(username, _GET.page))
+        if not isinstance(page, int) and not page.isdigit():
+            page = 1
+        if page < 1:
+            page = 1
+
+        return _response(lambda: getattr(memrise, "user_" + tab)(username, page))
 
 
 class user_courses:
@@ -404,6 +410,8 @@ class user_courses:
         page = int(_GET.page)
 
         if not isinstance(page, int) and not page.isdigit():
+            page = 1
+        if page < 1:
             page = 1
 
         lastpage = int(ceil(data["nb_courses"] / NBPERPAGE)) or 1

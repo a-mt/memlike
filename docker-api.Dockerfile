@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED=1
 # (SASL is used for memcache authentication)
 RUN apt update \
   && apt install -y gettext wget curl procps \
-  && apt install -y memcached libmemcached-dev sasl2-bin \
+  && apt install -y memcached libmemcached-tools libmemcached-dev sasl2-bin \
   && apt install -y python3-pip python3-wheel git \
   # cleanup apt cache
   && apt-get clean \

@@ -381,12 +381,13 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
-    def user_mempals(self, tab, username, page):
-        logger.debug(f"Requestor:User pals [username={username},tab={tab},page={page}]")
+    def user_mempals(self, tab, username, page, sessionid=None):
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:User pals [username={username},tab={tab},page={page}] ({log_session})")
 
         url = f"{HOST}/user/{username}/mempals/{tab}/?page={page}"
 
-        response = requests.get(url)
+        response = requests.get(url, cookies=self.buildCookies(sessionid), allow_redirects=False)
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 

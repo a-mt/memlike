@@ -58,5 +58,6 @@ done
 # To check accesses:
 #     apt update && apt install -y libmemcached-tools
 #     memcstat --servers="127.0.0.1:11213" --username=$MEMCACHIER_USERNAME --password=$MEMCACHIER_PASSWORD --binary
+#     memcflush --servers="127.0.0.1:11213" --username=$MEMCACHIER_USERNAME --password=$MEMCACHIER_PASSWORD --binary
 # ERR Unable to canonify user and get auxprops =
 # Did the container's hostname change (= domain in database)

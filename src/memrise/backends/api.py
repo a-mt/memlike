@@ -139,6 +139,8 @@ class ApiMemrise(Memrise):
 
         if not isinstance(page, int) and not page.isdigit():
             page = 1
+        if page < 1:
+            page = 1
 
         if not kwargs["sessionid"]:
             self.set_kwargs_session(kwargs, session=self.login_as_anonymous())

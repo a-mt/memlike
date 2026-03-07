@@ -85,9 +85,6 @@ class CachedApiMemrise(ApiMemrise):
         Retrieve courses
         Is cached via memcached for 1day unless we're using a query
         """
-        if not isinstance(page, int) and not page.isdigit():
-            page = 1
-
         cache_key = f"{lang_slug}_courses_{page}_{cat}"
         use_cache = query == ""
 
@@ -234,12 +231,6 @@ class CachedApiMemrise(ApiMemrise):
         Retrieve the users associated to an user (follower or following)
         Is cached via memcached for 1hour
         """
-        if not isinstance(page, int):
-            if page.isdigit():
-                page = int(page)
-            else:
-                page = 1
-
         need_cache_page_max = True
         cache_key = f"user_{username}_{tab}"
 
@@ -265,6 +256,8 @@ class CachedApiMemrise(ApiMemrise):
             # Save the max page
             if need_cache_page_max and data:
                 max_page = data.get("lastpage", 1)
+                if max_page < 1:
+                    max_page = 1
 
                 helper_page_max.update(max_page)
 
