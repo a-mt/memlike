@@ -392,7 +392,9 @@ class Learn extends Component {
       var parent = this.parentNode;
 
       if(parent.className == 'keyboard') {
-        parent.previousElementSibling.innerHTML += '<button class="button" data-id="' + this.getAttribute('id') + '">' + this.innerHTML + '</button>';
+        parent.previousElementSibling.innerHTML += (
+          '<button class="button" data-id="' + this.getAttribute('id') + '">' + this.innerHTML + '</button>'
+        );
         this.classList.add('disabled');
 
       } else {
@@ -408,10 +410,10 @@ class Learn extends Component {
     }.bind(this));
 
     $('main').on('mouseover focus', '.choice-box.audio', function(e){
-      window.audioPlayer && window.audioPlayer.play.call(this.lastElementChild, e, true);
+      window.audioPlayer && window.audioPlayer.play.call(this.querySelector('audio'), e, true);
 
     }).on('mouseleave', '.choice-box.audio', function(){
-      window.audioPlayer && window.audioPlayer.pause.call(this.lastElementChild);
+      window.audioPlayer && window.audioPlayer.pause.call(this.querySelector('audio'));
     });
 
     // Retrieve data
@@ -438,6 +440,7 @@ class Learn extends Component {
     window.audioPlayer && window.audioPlayer.reset();
 
     // Add text To Speech
+    let ttsAdded = false;
     if(window.TTS) {
       $('.text[lang].tts').each(function(){
         var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
@@ -457,13 +460,17 @@ class Learn extends Component {
               </button>`;
 
             this.appendChild(elem);
+            ttsAdded = true;
           }
         }
       });
     }
 
     // Automatically play an audio track
-    $('.autoplay .audio .audio-player').random().focus().trigger('click');
+    // if there aren't any audio elements in the course, try the tts instead (outside .audio elements)
+    $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
+      ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
+    );
 
     // Update level title
     if(!this.state.get_all) {
