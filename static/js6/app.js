@@ -336,6 +336,13 @@ var audioPlayer = {
 
     if (audioBtn.dataset && 'id' in audioBtn.dataset) {
       audioElement = document.getElementById(audioBtn.dataset.id);
+      if(!audioElement) {
+        console.error('Element with ID ' + audioBtn.dataset.id + ' doesnt exist');
+      }
+    }
+    if (audioElement.nodeName != 'AUDIO') {
+      console.error('Expected an audio element, instead of:', audioElement);
+      return;
     }
     audioElement.button = audioBtn;
 
@@ -479,7 +486,7 @@ var modal = {
       modal.createContainer();
     }
     $('.modal', modal.$container).html(html);
-    model.reopen();
+    modal.reopen();
   },
   reopen() {
     modal.$container.show();
