@@ -1,4 +1,4 @@
-$def with(course, session_type, level_index, thing_id, sendresults)
+$def with(course, session_type, level_index, thing_id, save_progress)
 $var title: $(I18N.misc[session_type]) ~ $(course['title'])
 $var js: /static/js/markdown.min.js, /static/js/preact.min.js, /static/js/learn.js
 $var header: 1
@@ -21,22 +21,14 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
 <script>
   window.MEMLIKE = window.MEMLIKE || {};
   window.MEMLIKE.course = $:(json(course));
-  /*
-  ${"$"}_URL = {
-    level_index : $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
-    session_type: "$(session_type)",
-    urlFrom     : "$(url)",
-    thing_id    : $(thing_id if thing_id else 0),
-    sendresults : $(sendresults if session["loggedin"] else 0),
-    session     : $(1 if session["loggedin"] else 0)
-  */
   window.MEMLIKE.garden = {
     levels_indexes: $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
     session_type: "$(session_type)",
     session_origin_url: "$(url)",
     preview_thing_id: $(thing_id if thing_id else 0),
-    save_progress: $(sendresults if session["loggedin"] else 0),
+    save_progress: $(save_progress if session["loggedin"] else 0),
     session_is_anonymous: $(1 if session["loggedin"] else 0),
+    session_id: "$(session['session_id'])",
   };
 </script>
 

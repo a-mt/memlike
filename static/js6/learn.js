@@ -26,6 +26,7 @@ $(document).ready(function(){
     'disable_tapping': !!localStorage.getItem('session_settings_disable_tapping'),
     'disable_typing': !!localStorage.getItem('session_settings_disable_typing'),
     'save_progress': !!window.MEMLIKE.garden.save_progress,
+    'session_id': window.MEMLIKE.garden.session_id,
   };
   render(<Learn
     level_index={window.MEMLIKE.garden.levels_indexes}
@@ -35,125 +36,10 @@ $(document).ready(function(){
     course={window.MEMLIKE.course}
   />, document.getElementById('learn-container'));
 
-  render(<LearnSettingsBtn />, document.getElementById('learn-settings-btn'));
+  render(<LearnSettingsBtn
+    session_type={window.MEMLIKE.garden.session_type}
+  />, document.getElementById('learn-settings-btn'));
 });
-
-//+--------------------------------------------------------
-//| Settings
-//+--------------------------------------------------------
-
-class LearnSettingsModal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {...window.MEMLIKE.session_settings};
-
-    this.closeModal = this.closeModal.bind(this);
-    this.updateSettings = this.updateSettings.bind(this);
-  }
-  closeModal() {
-    window.modal.close();
-  }
-  updateSettings() {
-    Object.assign(window.MEMLIKE.session_settings, this.state);
-    localStorage.setItem('session_settings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
-    localStorage.setItem('session_settings_disable_tapping', this.state.disable_tapping ? '1' : '');
-    localStorage.setItem('session_settings_disable_typing', this.state.disable_typing ? '1' : '');
-
-    this.closeModal();
-    window.GlobalEventEmitter.dispatch('update-settings', this.state);
-  }
-
-  handleChange(id) {
-    this.setState({
-      [id]: !this.state[id],
-    });
-  }
-
-  render() {
-    return <div className="learn-settings">
-      <div className="form">
-        <div>
-          <input
-            id="disable_typing"
-            type="checkbox"
-            defaultChecked={this.state.disable_typing}
-            onChange={this.handleChange.bind(this, "disable_typing")}
-          />
-          <label for="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
-        </div>
-        <div>
-          <input
-            id="disable_tapping"
-            type="checkbox"
-            defaultChecked={this.state.disable_tapping}
-            onChange={this.handleChange.bind(this, "disable_tapping")}
-          />
-          <label for="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
-        </div>
-        <div>
-          <input
-            id="disable_multimedia"
-            type="checkbox"
-            defaultChecked={this.state.disable_multimedia}
-            onChange={this.handleChange.bind(this, "disable_multimedia")}
-          />
-          <label for="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
-        </div>
-        <div>
-          <input
-            id="save_progress"
-            type="checkbox"
-            defaultChecked={this.state.save_progress}
-            onChange={this.handleChange.bind(this, "save_progress")}
-          />
-          <label for="save_progress">{window.I18N['learn_settings_save_progress']}</label>
-        </div>
-      </div>
-      <div className="btn-group">
-        <button className="btn" onClick={this.closeModal}>Annuler</button>
-        <button className="btn green" onClick={this.updateSettings}>Sauvegarder</button>
-      </div>
-    </div>
-  }
-}
-
-class LearnSettingsBtn extends Component {
-  constructor(props) {
-    super(props);
-
-    this.show = false;
-    this.toggleSettings = this.toggleSettings.bind(this);
-    this.onCloseModal = this.onCloseModal.bind(this);
-  }
-  onCloseModal() {
-    window.modal.onclose('learn-settings', null);
-
-    if(!this.show) {
-      return;
-    }
-    this.show = false;
-  }
-  toggleSettings() {
-    this.show = !this.show;
-
-    if(this.show) {
-      var div = window.modal.getContainer().get(0).querySelector('.modal');
-      div.innerHTML = '';
-
-      render(<LearnSettingsModal />, div);
-      window.modal.reopen();
-      window.modal.onclose('learn-settings', this.onCloseModal);
-    }
-  }
-  render() {
-    return (
-      <button type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
-        <span className="ico ico-settings ico-l ico-grey"></span>
-      </button>
-    );
-  }
-}
 
 //+--------------------------------------------------------
 //| Helper functions
@@ -190,6 +76,135 @@ function fromKeyCode(key) {
 }
 
 //+--------------------------------------------------------
+//| Settings
+//+--------------------------------------------------------
+
+class LearnSettingsModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {...window.MEMLIKE.session_settings};
+
+    this.closeModal = this.closeModal.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
+  }
+  closeModal() {
+    window.modal.close();
+  }
+  updateSettings() {
+    Object.assign(window.MEMLIKE.session_settings, this.state);
+    localStorage.setItem('session_settings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
+    localStorage.setItem('session_settings_disable_tapping', this.state.disable_tapping ? '1' : '');
+    localStorage.setItem('session_settings_disable_typing', this.state.disable_typing ? '1' : '');
+    localStorage.setItem('session_settings_id', this.state.session_id || '');
+
+    this.closeModal();
+    window.GlobalEventEmitter.dispatch('update-settings', this.state);
+  }
+
+  handleChange(id) {
+    this.setState({
+      [id]: !this.state[id],
+    });
+  }
+
+  render() {
+    return <div className="learn-settings">
+      <div className="form">
+        <div>
+          <input
+            id="disable_typing"
+            type="checkbox"
+            defaultChecked={this.state.disable_typing}
+            onChange={this.handleChange.bind(this, "disable_typing")}
+            autocomplete="off"
+          />
+          <label for="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
+        </div>
+        <div>
+          <input
+            id="disable_tapping"
+            type="checkbox"
+            defaultChecked={this.state.disable_tapping}
+            onChange={this.handleChange.bind(this, "disable_tapping")}
+            autocomplete="off"
+          />
+          <label for="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
+        </div>
+        <div>
+          <input
+            id="disable_multimedia"
+            type="checkbox"
+            defaultChecked={this.state.disable_multimedia}
+            onChange={this.handleChange.bind(this, "disable_multimedia")}
+            autocomplete="off"
+          />
+          <label for="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+        </div>
+        <div>
+          <input
+            id="save_progress"
+            type="checkbox"
+            defaultChecked={this.state.save_progress}
+            onChange={this.handleChange.bind(this, "save_progress")}
+            autocomplete="off"
+          />
+          <label for="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+        </div>
+      </div>
+      <div className="btn-group">
+        <button className="btn" onClick={this.closeModal}>Annuler</button>
+        <button className="btn green" onClick={this.updateSettings}>Sauvegarder</button>
+      </div>
+    </div>
+  }
+}
+
+class LearnSettingsBtn extends Component {
+  constructor(props) {
+    super(props);
+
+    this.timerIsRunning = false;
+    this.show = false;
+    this.toggleSettings = this.toggleSettings.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+  }
+  onCloseModal() {
+    window.modal.onclose('learn-settings', null);
+
+    if(!this.show) {
+      return;
+    }
+    this.show = false;
+    Timer && Timer.continue();
+  }
+  toggleSettings() {
+    this.show = !this.show;
+
+    if(!this.show) {
+      return;
+    }
+    Timer && Timer.pause();
+    var div = window.modal.getContainer().get(0).querySelector('.modal');
+    div.innerHTML = '';
+
+    render(<LearnSettingsModal />, div);
+    window.modal.reopen();
+    window.modal.onclose('learn-settings', this.onCloseModal);
+  }
+  render() {
+    if (this.props.session_type == 'preview') {
+      return null;
+    }
+    return (
+      <button type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+        <span className="ico ico-settings ico-l ico-grey"></span>
+      </button>
+    );
+  }
+}
+
+//+--------------------------------------------------------
 //| Speed review timer
 //+--------------------------------------------------------
 
@@ -201,6 +216,7 @@ var Timer = {
   interval: null,
   callback: null,
   isRunning: false,
+  isPaused: false,
 
   stop: function(){
     Timer.interval && clearInterval(Timer.interval);
@@ -221,6 +237,7 @@ var Timer = {
     Timer.lastUpdate    = Date.now();
     Timer.interval      = setInterval(Timer.tick.bind(this), 150);
     Timer.isRunning     = true;
+    Timer.isPaused      = false;
   },
   get_time: function(){
     if (Timer.remainingTime === null) {
@@ -228,8 +245,21 @@ var Timer = {
     }
     return Timer.maxTime - Math.max(Timer.remainingTime, 0);
   },
+  pause: function() {
+    if (Timer.isPaused) {
+      return;
+    }
+    Timer.isPaused = true;
+  },
+  continue: function() {
+    if (!Timer.isPaused) {
+      return;
+    }
+    Timer.lastUpdate = Date.now();
+    Timer.isPaused = false;
+  },
   tick: function(){
-    if(!Timer.isRunning) {
+    if(!Timer.isRunning || Timer.isPaused) {
       return;
     }
     var time = Date.now();
