@@ -497,21 +497,21 @@ function bindEditEvents(tpl) {
       success: function(data) {
         var alts = data.thing.columns[cellId].alts,
             html = `<div class="alts">
-          ${alts.map((alt) => `<div class="alt">
-            <input type="text" name="${alt.id}" value="${alt.val}" />
-            <button type="button" class="alt-action"></button>
-          </div>`).join('')}
+              ${alts.map((alt) => `<div class="alt">
+                <input type="text" name="${alt.id}" value="${alt.val}" />
+                <button type="button" class="alt-action"></button>
+              </div>`).join('')}
 
-          <div class="alt">
-            <input type="text" value="" />
-            <button type="button" class="alt-action"></button>
-          </div>
-        </div>
+              <div class="alt">
+                <input type="text" value="" />
+                <button type="button" class="alt-action"></button>
+              </div>
+            </div>
 
-        <div class="alt-actions">
-          <button class="btn alt-cancel">Annuler</button>
-          <button class="btn active alt-save" data-cell="${cellId}" data-thing=${thingId}>Sauvegarder</button>
-        </div>`;
+            <div class="alt-actions">
+              <button class="btn alt-cancel">Annuler</button>
+              <button class="btn active alt-save" data-cell="${cellId}" data-thing=${thingId}>Sauvegarder</button>
+            </div>`;
 
         window.modal.open(html);
         bindAltEvents();

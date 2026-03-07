@@ -22,10 +22,7 @@ class user:
             user = memrise.user(username)
         except HTTPError as e:
             print(e)
-            if (
-                web.ctx.session.get("loggedin", False)
-                and web.ctx.session["loggedin"]["username"] == username
-            ):
+            if web.ctx.session.get("loggedin", False) and web.ctx.session["loggedin"]["username"] == username:
                 return web.config.template.prender._403()
 
             return web.config.template.prender._404()

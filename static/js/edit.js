@@ -1,6 +1,6 @@
 /** @jsx h */'use strict';function _asyncToGenerator(fn){return function(){var gen=fn.apply(this,arguments);return new Promise(function(resolve,reject){function step(key,arg){try{var info=gen[key](arg);var value=info.value}catch(error){reject(error);return}if(info.done){resolve(value)}else{return Promise.resolve(value).then(function(value){step('next',value)},function(err){step('throw',err)})}}return step('next')})}}const{h,Component,render}=window.preact;// Incorrectly configured build doesn't replace in-place process.env:
 // ensure the js still works
-var process=process||{};process.env=process.env||{};const build={status:'ok',date:'2026-03-06T11:32:28+00:00'};/* global $, window, document, console *//* global setTimeout, confirm, alert, fetch *//* global navigator, Blob, URL, File, FormData, FileReader, Promise */$(document).ready(function(){Object.freeze(window.MEMLIKE.course);render(h(Edit,{course:window.MEMLIKE.course}),document.getElementById('edit-levels'))});//+--------------------------------------------------------
+var process=process||{};process.env=process.env||{};const build={status:'ok',date:'2026-03-07T21:36:40+00:00'};/* global $, window, document, console *//* global setTimeout, confirm, alert, fetch *//* global navigator, Blob, URL, File, FormData, FileReader, Promise */$(document).ready(function(){Object.freeze(window.MEMLIKE.course);render(h(Edit,{course:window.MEMLIKE.course}),document.getElementById('edit-levels'))});//+--------------------------------------------------------
 //| Render Levels
 //+--------------------------------------------------------
 class EditCourseActions extends Component{constructor(props){super(props);this.addLevel=this.addLevel.bind(this);this.state={isLoading:false}}addLevel(kind){this.setState({isLoading:true});var pool_id=null;if(kind=='things'){pool_id=this.props.course.last_pool_id}var data={course_id:this.props.course.id,pool_id:pool_id,kind:kind};$.ajax({url:'/ajax/level/add',method:'POST',data,headers:{'X-CSRFToken':window.MEMLIKE.course.csrftoken,'X-Referer':window.MEMLIKE.course.referer},success:data=>{this.props.onLevelAdded&&this.props.onLevelAdded(data)},complete:()=>{this.setState({isLoading:false})}})}render(){return h('div',{className:'edit-course-actions clearfix'},h('div',{className:'actions actions-right'},this.state.isLoading&&h('span',{className:'loading-spinner left'}),h('button',{type:'button',className:'btn',onClick:()=>this.addLevel('multimedia')},'Add multimedia'),h('button',{type:'button',className:'btn green',onClick:()=>this.addLevel('things')},'Add level')))}}class Edit extends Component{constructor(props){super(props);this.setNewRow=this.setNewRow.bind(this);this.onLevelAdded=this.onLevelAdded.bind(this);this.state={addedLevels:[]}}setNewRow(thingsRowTemplate){this.thingsRowTemplate=thingsRowTemplate;bindEditEvents(thingsRowTemplate)}onLevelAdded(data){if(!data.id){return}this.setState({addedLevels:[...this.state.addedLevels,{id:data.id,pool_id:data.pool_id,name:''}]})}render(){var opentab=window.location.hash.match(/#(i|l)_(\d+)/);var c=0;return h('div',null,this.props.course.last_pool_id&&h(EditCourseActions,{course:this.props.course,onLevelAdded:this.onLevelAdded}),this.props.course.levels.map((level,i)=>{var show=false;if(opentab){if(opentab[1]=='i'){show=i+1==opentab[2]}else{show=level.id==opentab[2]}}return c++,h(EditLevel,{show:show,index:c,key:i,level:level,setNewRow:this.setNewRow,url:this.props.course['url']+c})}),this.state.addedLevels.map((level,i)=>{return c++,h(EditLevel,{show:true,index:c,key:'a_'+i,level:level,setNewRow:this.setNewRow,url:this.props.course['url']+c})}))}}class EditLevel extends Component{constructor(props){super(props);this.state={show:false,isLoading:false,content:''};this.toggle=this.toggle.bind(this)}componentDidMount(){if(this.props.show){this.getData()}}toggle(){if(!this.state.show&&!this.data){this.getData()}else{this.setState({show:!this.state.show})}}onGetDataSuccess(data){var content='';if(this.props.level.pool_id){var $div=$('.table-container',data.rendered);content=$div.get(0).outerHTML;var newRowTemplate=$div.find('tr').last().get(0).outerHTML;this.props.setNewRow(newRowTemplate)}else{var $div=$('.multimedia-edit',data.rendered);$('*[id]',$div).attr('id',null);content=`<div class="multimedia-edit">
@@ -40,21 +40,21 @@ function click_cell(){if(this.firstElementChild){return}var input=document.creat
 function type_cell(e){if(e.which!=13){return}var $tr=$(e.target).closest('tr'),$nextTr=$tr.next('tr');if($nextTr.length==0){$nextTr=$tr.closest('tbody').next('tbody').children(':not(.header)').first();$nextTr.find('input.wide').first().focus()}else{$nextTr.find('div.text, input.wide').first().trigger('click').focus()}}//+---------------------------------------------------------------------------
 // On click "alternatives": edit alternatives
 function click_editAlt(e){e.preventDefault();var $btn=$(e.target),thingId=$btn.closest('.thing').data('thing-id'),cellId=$btn.closest('.column').data('key');$.ajax({url:'/ajax/level/'+thingId+'/alt',method:'POST',data:{csrftoken:window.MEMLIKE.course.csrftoken,referer:window.MEMLIKE.course.referer},success:function(data){var alts=data.thing.columns[cellId].alts,html=`<div class="alts">
-          ${alts.map(alt=>`<div class="alt">
-            <input type="text" name="${alt.id}" value="${alt.val}" />
-            <button type="button" class="alt-action"></button>
-          </div>`).join('')}
+              ${alts.map(alt=>`<div class="alt">
+                <input type="text" name="${alt.id}" value="${alt.val}" />
+                <button type="button" class="alt-action"></button>
+              </div>`).join('')}
 
-          <div class="alt">
-            <input type="text" value="" />
-            <button type="button" class="alt-action"></button>
-          </div>
-        </div>
+              <div class="alt">
+                <input type="text" value="" />
+                <button type="button" class="alt-action"></button>
+              </div>
+            </div>
 
-        <div class="alt-actions">
-          <button class="btn alt-cancel">Annuler</button>
-          <button class="btn active alt-save" data-cell="${cellId}" data-thing=${thingId}>Sauvegarder</button>
-        </div>`;window.modal.open(html);bindAltEvents()}})}function bindAltEvents(){if(altInit){return}altInit=true;$('#modal').on('click','.alt-cancel',function(){window.modal.close()}).on('click','.alt-action',click_altAction).on('click','.alt-save',click_altSave)}// Click alt action: last row = add new, others = remove current
+            <div class="alt-actions">
+              <button class="btn alt-cancel">Annuler</button>
+              <button class="btn active alt-save" data-cell="${cellId}" data-thing=${thingId}>Sauvegarder</button>
+            </div>`;window.modal.open(html);bindAltEvents()}})}function bindAltEvents(){if(altInit){return}altInit=true;$('#modal').on('click','.alt-cancel',function(){window.modal.close()}).on('click','.alt-action',click_altAction).on('click','.alt-save',click_altSave)}// Click alt action: last row = add new, others = remove current
 function click_altAction(){var $alt=$(this).closest('.alt'),$alts=$(this).closest('.alts');if($alts.children().last().is($alt)){$alts.append(`<div class="alt">
         <input type="text" value="" />
         <button type="button" class="alt-action"></button>

@@ -26,6 +26,7 @@ $(document).ready(function(){
     'disable_tapping': !!localStorage.getItem('session_settings_disable_tapping'),
     'disable_typing': !!localStorage.getItem('session_settings_disable_typing'),
     'save_progress': !!window.MEMLIKE.garden.save_progress,
+    'reverse_prompt_and_answer': !!window.MEMLIKE.garden.reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
   };
   render(<Learn
@@ -150,6 +151,16 @@ class LearnSettingsModal extends Component {
             autocomplete="off"
           />
           <label for="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+        </div>
+        <div>
+          <input
+            id="reverse_prompt_and_answer"
+            type="checkbox"
+            defaultChecked={this.state.reverse_prompt_and_answer}
+            onChange={this.handleChange.bind(this, "reverse_prompt_and_answer")}
+            autocomplete="off"
+          />
+          <label for="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
         </div>
       </div>
       <div className="btn-group">
@@ -287,6 +298,7 @@ var Timer = {
 const LEARN_UNTIL_GROWTH_LEVEL = 6;
 const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
 const LEARN_WITH_AUTOPLAY_AUDIO = 1;
+const LEARN_BUILD_CHOICES_LENGTH = 12;
 
 const TEST_DIFFICULTY = {
   'Unknown': 0,
@@ -424,7 +436,6 @@ class Learn extends Component {
 
       // Listen to keyboard inputs: next screen, multiple choice
       $(window).on('keyup', this.keyup.bind(this));
-
     }.bind(this));
   }
 
@@ -519,7 +530,7 @@ class Learn extends Component {
   }
 
   //+--------------------------------------------------------
-  //| BUILD LEVEL LEARN SESSION DATA
+  //| BUILDING STATE.DATA
   //+--------------------------------------------------------
 
   buildBoxes(session_type, learnables, progress_map) {
@@ -528,7 +539,7 @@ class Learn extends Component {
     switch(session_type) {
       case 'learn':
         let add_tests = [];
-        for (let learnable of learnables.slice(0,10)) {
+        for (let learnable of learnables) {
           const learnable_id = learnable.id;
 
           if (this.shouldDisplayPresentation(progress_map[learnable_id])) {
@@ -769,6 +780,227 @@ class Learn extends Component {
         }
       }.bind(this)
     });
+  }
+
+  //+--------------------------------------------------------
+  //| BUILDING SCREENS (for inverted prompt/answer)
+  //+--------------------------------------------------------
+
+  buildLearningElements() {
+    var learnables = Object.values(this.state.data.learnables_map);
+    var list = [];
+
+    for (let i=0; i<learnables.length; i++) {
+      let learnable = learnables[i];
+      let definition = learnable.screens['1'].definition;
+
+      // text
+      /**
+        "id": 30664511848706,
+        "learning_element": "die Auswertung",
+        "definition_element": "l'évaluation",
+        "learning_element_tokens": ["die", "Auswertung"],
+        "definition_element_tokens": ["l", "évaluation"],
+        "difficulty": "unknown",
+        "item_type": "word",
+      */
+      if(learnable.definition_element_tokens) {
+        let value = learnable.definition_element;
+        let valueSanitized = sanitizeTyping(value);
+
+        if (valueSanitized) {
+          list.push({value, valueSanitized});
+        }
+        definition.alternatives.forEach((value) => {
+          let s = sanitizeTyping(value);
+
+          if (s && get_distance(valueSanitized, s) > 3) {
+            list.push({value, valueSanitized: s});
+          }
+        });
+
+      // others
+      } else {
+        /**
+          "definition": {
+            "label": "English",
+            "kind": "text",
+            "value": "l'évaluation",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "definition": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "definition": {
+            "label": "Brain",
+            "kind": "image",
+            "value": [
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
+            ],
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+        */
+        this.getValue(definition.value).forEach((value) => {
+          list.push({value});
+        });
+        definition.alternatives.forEach((value) => {
+          list.push({value});
+        });
+      }
+    }
+    return list;
+  }
+
+  getRandomLearningElements(kind, correct) {
+    if (!this.state.data.learning_elements) {
+      this.state.data.learning_elements = this.buildLearningElements();
+    }
+    let choices = [];
+
+    // Retrieve the definition of other learnables
+    var elements = this.state.data.learning_elements;
+    console.log('Elements', elements, kind, value);
+
+    if (elements.length <= 15 || kind != 'text') {
+      choices = randomize(elements).filter((element) => correct.indexOf(element.value) == -1);
+
+    } else {
+      var value = correct[0],
+          valueSanitized = sanitizeTyping(value),
+          valueTokens = valueSanitized.split(' ').slice(0, 10);
+
+      for (let i=0; i<elements.length; i++) {
+        let item = elements[i];
+        if (!item.valueSanitized || item.valueSanitized == valueSanitized) {
+          continue;
+        }
+
+        // Retrieve definitions that are fairly similar in length to our current word
+        let itemTokens = item.valueSanitized.split(' ');
+        let X = valueTokens.map((token, i) => {
+          return i < itemTokens.length ? Math.abs(token.length - itemTokens[i].length) : 1
+        });
+        let w = 1;
+        let x = X.reduce((i, s) => s + i*(w += .5, w), 0) | 0;
+
+        choices.push(Object.assign({weight: x}, item));
+      }
+      choices = choices.sort((a, b) => a.weight - b.weight);
+    }
+    return choices.slice(0, LEARN_BUILD_CHOICES_LENGTH).map(item => item.value);
+  }
+
+  invertedPromptAndAnswer(screen) {
+    var answerKind = screen.answer.kind;
+    var promptKind = get_prompt_type(screen.prompt);
+
+    return [
+      {[answerKind]: screen.answer},
+      screen.prompt[promptKind],
+    ];
+  }
+
+  /**
+   * Normalize value as a flat array of strings
+   *
+   * "value": "l'évaluation"
+   * -> ["l'évaluation"]
+   *
+   * "value": [{
+   *   "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
+   *   "slow": null
+   * }],
+   * -> ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3"]
+   *
+   * "value": [
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
+   * ]
+   * -> idem
+   */
+  getValue(value) {
+    const inner = function(value) {
+      if (typeof value == 'string') {
+        return [value];
+      }
+      if (value.normal) {
+        return value.normal;
+      }
+      if (value.forEach && value.length > 0) {
+        return value.map((s) => inner(s));
+      }
+      console.log('nop', value);
+    }
+    return inner(value).flat();
+  }
+
+  buildScreen_reversed_multiple_choice(screens) {
+    if ('reversed_multiple_choice2' in screens) {
+      return true;
+    }
+    var screen = screens.multiple_choice[0];
+    screen.template = 'reversed_multiple_choice2';
+    [screen.prompt, screen.answer] = this.invertedPromptAndAnswer(screen);
+
+    screen.correct = [];
+    let value = this.getValue(screen.answer.value).forEach((value) => {
+      screen.correct.push(value);
+    });
+    screen.answer.alternatives.forEach((value) => {
+      screen.correct.push(value);
+    });
+
+    screen.choices = this.getRandomLearningElements(
+      screen.answer.kind,
+      screen.correct,
+    );
+    screens['reversed_multiple_choice2'] = [screen];
+    console.log('buildScreen_reversed_multiple_choice', screen, screens.reversed_multiple_choice[0]);
+    return true;
+  }
+
+  buildScreen_reverse_typing(screens) {
+    if ('reversed_typing' in screens) {
+      return true;
+    }
+    var screen = screens.typing[0];
+    screen.template = 'reversed_typing';
+    [screen.prompt, screen.answer] = this.invertedPromptAndAnswer(screen);
+    if (screen.answer.kind != 'text') {
+      return false;
+    }
+    screens['reversed_typing'] = [screen];
+
+    screen.correct = [];
+    let value = this.getValue(screen.answer.value).forEach((value) => {
+      screen.correct.push(value);
+    });
+    screen.answer.alternatives.forEach((value) => {
+      screen.correct.push(value);
+    });
+
+    var tmp = sanitizeTyping(screen.answer.value).replace(' ', '').split('');
+    screen.choices = randomize(Array.from(new Set(tmp)));
+    console.log('buildScreen_reverse_typing', screen);
+    return true;
   }
 
   //+--------------------------------------------------------
@@ -1305,10 +1537,10 @@ class Learn extends Component {
     */
     var is_correct = score == 1;
     return {
-      attempts      : progress.attempts + 1,
-      correct       : progress.correct + (is_correct ? 1 : 0),
-      current_streak: is_correct ? progress.current_streak + 1 : 0,
-      total_streak  : Math.max(progress.total_streak + (is_correct ? 1 : -1), 0),
+      attempts       : progress.attempts + 1,
+      correct        : progress.correct + (is_correct ? 1 : 0),
+      current_streak : is_correct ? progress.current_streak + 1 : 0,
+      total_streak   : Math.max(progress.total_streak + (is_correct ? 1 : -1), 0),
     }
   }
 
@@ -1319,6 +1551,17 @@ class Learn extends Component {
     if (learnable.id !== progress.learnable_id) {
       console.error('Couldnt find learnable related to event', progress, event);
       return;
+    }
+
+    // Replace our custom game data to be compatible with memrise
+    if (event.box_template == 'reversed_multiple_choice2') {
+      event.box_template = 'reversed_multiple_choice';
+
+    } else if(event.box_template == 'reversed_typing') {
+      event.box_template = 'typing';
+      event.given_answer = (
+        event.score == 0 ? '' : this.getValue(learnable.screens['1'].definition.value)[0]
+      );
     }
 
     var item = {
@@ -1467,7 +1710,10 @@ class Learn extends Component {
 
     return <div className="progress-stats">
       {this.props.session_type == 'speed_review' &&
-        <div className="hearts-wrapper">{[1,2,3].map((i) => <span key={i} className={'heart ' + (i <= this.state.hearts ? 'full' : 'empty')}></span>)}</div>}
+        <div className="hearts-wrapper">{[1,2,3].map((i) => (
+          <span key={i} className={'heart ' + (i <= this.state.hearts ? 'full' : 'empty')}></span>
+          ))}
+        </div>}
       <div className="points-num">{this.state.points}</div>
 
       <div className="progress-bar" role="progressbar" aria-valuenow={this.state.i} aria-valuemin="0" aria-valuemax={this.state.i}>
@@ -1576,7 +1822,7 @@ class Learn extends Component {
             });
 
         case 2:
-          if(screens.multiple_choice.video && !this.state.settings.disable_multimedia) {
+          if(screens.reversed_multiple_choice.video && !this.state.settings.disable_multimedia) {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
@@ -1613,7 +1859,7 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: 'multiple_choice',
-            nChoices: 8
+            nChoices: 9
           });
 
         case 4:
@@ -1657,7 +1903,7 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: 'multiple_choice',
-            nChoices: [6, 8].random()
+            nChoices: [6, 9].random()
           });
 
         default:
@@ -1668,22 +1914,42 @@ class Learn extends Component {
           }
           return {
             template: 'multiple_choice',
-            nChoices: 8
+            nChoices: 9
           };
       }
     }
 
     if(this.props.session_type == 'speed_review') {
+      if(this.state.settings.reverse_prompt_and_answer && screens.reversed_multiple_choice) {
+        return this.render_tpl({
+          template: 'reversed_multiple_choice',
+          nChoices: 4
+        });
+      }
       return this.render_tpl({
         template: 'multiple_choice',
         nChoices: 4
       });
     }
 
-    if(item.template == 'sentinel') {
+    if (item.template == 'sentinel') {
+
+      // Reversing Question on the answer, answer with the question
+      if(this.state.settings.reverse_prompt_and_answer) {
+        if(screens.typing && !this.state.settings.disable_typing && this.buildScreen_reverse_typing(screens)) {
+          return this.render_tpl({
+            template: 'reversed_typing',
+          });
+        }
+        return this.render_tpl({
+            template: (this.buildScreen_reversed_multiple_choice(screens), 'reversed_multiple_choice2'),
+            nChoices: 9
+        });
+      }
+
       if(screens.typing && !this.state.settings.disable_typing) {
         return this.render_tpl({
-          template: 'typing'
+          template: 'typing',
         });
       }
       if(screens.audio_multiple_choice && Math.random() > .5 && !this.state.settings.disable_multimedia) {
@@ -1693,19 +1959,22 @@ class Learn extends Component {
       }
       return this.render_tpl({
           template: 'multiple_choice',
-          nChoices: 8
+          nChoices: 9
       });
     }
 
     return this.render_tpl({ template: item.template });
   }
+
   render_tpl(setting) {
     this.template = setting.template;
 
     switch(setting.template) {
       case 'multiple_choice': return this.render_multiple_choice(setting);
+      case 'reversed_typing': return this.render_reversed_typing(setting);
       case 'typing': return this.render_typing(setting);
       case 'reversed_multiple_choice': return this.render_reversed_multiple_choice(setting);
+      case 'reversed_multiple_choice2': return this.render_reversed_multiple_choice2(setting);
       case 'audio_multiple_choice': return this.render_audio_multiple_choice(setting);
       case 'tapping': return this.render_tapping(setting);
       case 'copytyping': return this.render_copytyping(setting);
@@ -1795,6 +2064,12 @@ class Learn extends Component {
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
+  render_reversed_multiple_choice2(setting) {
+    return <MultipleChoice
+              item={this.get_screen('reversed_multiple_choice2')}
+              nChoices={setting.nChoices || (this.props.session_type == 'speed_review' ? 4 : 9)}
+              setChoices={this.setChoices} />;
+  }
   render_multiple_choice(setting) {
     return <MultipleChoice
               item={this.get_screen('multiple_choice')}
@@ -1802,17 +2077,30 @@ class Learn extends Component {
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
+  render_reversed_typing(setting) {
+    return <Typing
+              item={this.get_screen('reversed_typing')}
+              setChoices={this.setChoices} />;
+  }
   render_typing(setting) {
-    return <Typing item={this.get_screen('typing')} setChoices={this.setChoices} promptWith={setting.promptWith} />;
+    return <Typing
+              item={this.get_screen('typing')}
+              setChoices={this.setChoices}
+              promptWith={setting.promptWith} />;
   }
   render_tapping(setting) {
-    return <Tapping item={this.get_screen('tapping')} difficulty={setting.difficulty || 1} setChoices={this.setChoices} />;
+    return <Tapping
+              item={this.get_screen('tapping')}
+              difficulty={setting.difficulty || 1}
+              setChoices={this.setChoices} />;
   }
   render_copytyping(){
     var prompt = this.get_screen('typing');
     this.setChoices(prompt.correct, 'text', prompt.is_strict);
 
-    return <Presentation item={this.get_screen('presentation')} prompt={prompt} />;
+    return <Presentation
+              item={this.get_screen('presentation')}
+              prompt={prompt} />;
   }
   render_presentation(correct) {
     return (
@@ -1852,10 +2140,9 @@ class Learn extends Component {
 }
 
 const Value = function(props) {
-  var content = props.content,
-      attrs   = {
-        className: props.className || '',
-      };
+  var content   = props.content,
+      attrs     = {},
+      className = props.className || '';
   if(props.lang) {
     attrs.lang = props.lang;
   }
@@ -1864,8 +2151,12 @@ const Value = function(props) {
 
   if(props.single) {
     switch(props.type) {
-      case 'text' : return <span>{content}</span>;
-      case 'image': return <img key={k} src={content} className="text-image" />;
+      case 'text' : return (
+        <span>{content}</span>
+      );
+      case 'image': return (
+        <img key={k} src={content} className="text-image" />
+      );
       case 'audio': return (
         <span key={k}>
           <audio id={'audio-' + k} src={content}></audio>
@@ -1875,27 +2166,41 @@ const Value = function(props) {
         </span>
       );
       case 'video': return (
-        <video key={k} src={content} className="video-player" controls autoPlay>Your browser does not support the video tag.</video>
+        <video key={k} src={content} className="video-player" controls autoPlay>
+          Your browser does not support the video tag.
+        </video>
       );
     }
   } else {
     switch(props.type) {
-      case 'text' : return <div className="text" {...attrs}>{content}</div>;
-      case 'image': return <div className="image"><div className="media-list">{content.map(media => (
-        <img key={k + i++} src={media} className="text-image loading" />
-      ))}</div></div>;
-      case 'audio': return <div className="audio"><div className="media-list">{content.map(media => (
-        <span key={k + i++}>
-          <audio id={'audio-' + (k + i)} src={media.normal}></audio>
-          <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.I18N.play_audio}>
-            <i className="ico ico-l ico-audio"></i>
-          </button>
-        </span>
-      ))}</div></div>;
+      case 'text' : return (
+        <div className={"text " + className} {...attrs}>{content}</div>
+      );
+      case 'image': return (
+        <div className="image">
+          <div className="media-list">{content.map(media => (
+            <img key={k + i++} src={media} className="text-image loading" />
+          ))}</div>
+        </div>
+      );
+      case 'audio': return (
+        <div className="audio">
+          <div className="media-list">{content.map(media => (
+            <span key={k + i++}>
+              <audio id={'audio-' + (k + i)} src={media.normal}></audio>
+              <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.I18N.play_audio}>
+                <i className="ico ico-l ico-audio"></i>
+              </button>
+            </span>
+          ))}</div>
+        </div>
+      );
       case 'video': return (
         <div className="video">
           <div className="media-list">
-            <video key={k + i++} src={content.random()} className="video-player" controls autoPlay>Your browser does not support the video tag.</video>
+            <video key={k + i++} src={content.random()} className="video-player" controls autoPlay>
+              Your browser does not support the video tag.
+            </video>
           </div>
         </div>
       );
@@ -2008,16 +2313,16 @@ const Presentation = function(props){
     </div>;
 };
 
-function get_prompt_type(item) {
-  if(item.prompt.text) return 'text';
-  if(item.prompt.image) return 'image';
-  if(item.prompt.audio) return 'audio';
-  if(item.prompt.video) return 'video';
+function get_prompt_type(prompt) {
+  if(prompt.text) return 'text';
+  if(prompt.image) return 'image';
+  if(prompt.audio) return 'audio';
+  if(prompt.video) return 'video';
 }
 
 const MultipleChoice = function(props) {
   var item       = props.item,
-      itemType   = props.promptWith || get_prompt_type(item),
+      itemType   = props.promptWith || get_prompt_type(item.prompt),
       answerType = item.answer.kind;
 
   // Randomize choices order
@@ -2028,11 +2333,16 @@ const MultipleChoice = function(props) {
   if(n > props.nChoices) {
     n = props.nChoices;
     choicesRnd = choicesRnd.slice(0, n);
+
+  } else if(n < props.nChoices) {
+    for (let i=n; i<props.nChoices; i++) {
+      choicesRnd.push(choicesRnd.random());
+    }
   }
 
   // Place the right answer somewhere in it
-  var rnd    = (Math.random() * n - 1) | 0,
-     isArr   = $.isArray(item.answer.value);
+  var rnd  = (Math.random() * n - 1) | 0,
+     isArr = $.isArray(item.answer.value);
 
   if(isArr) {
     var choice = item.answer.value.random();
@@ -2056,7 +2366,15 @@ const MultipleChoice = function(props) {
 
   // Display our boxes
   var choices = choicesRnd.map((value, i) => {
-    return <ChoiceBox key={i} i={i+1} value={value} answerType={answerType} isValid={rightAnswers.includes(value)} />;
+    return (
+      <ChoiceBox
+        key={i}
+        i={i+1}
+        value={value}
+        answerType={answerType}
+        isValid={rightAnswers.includes(value)}
+      />
+    );
   });
   props.setChoices(choices, 'numeric');
 
@@ -2083,7 +2401,7 @@ class ChoiceBox extends Component {
 
 const Typing = function(props) {
   var item     = props.item,
-      itemType = props.promptWith || get_prompt_type(item),
+      itemType = props.promptWith || get_prompt_type(item.prompt),
       i = 0;
 
   props.setChoices(item.correct, 'text', item.is_strict);
@@ -2110,7 +2428,7 @@ const Typing = function(props) {
 
 const Tapping = function(props) {
   var item     = props.item,
-      itemType = get_prompt_type(item);
+      itemType = get_prompt_type(item.prompt);
 
   props.setChoices(item.correct, 'tapping', item.is_strict);
 
@@ -2169,7 +2487,11 @@ const Recap = function(props) {
     // Compute success rate
     if(session_type != 'preview') {
       var successRate = item.right / item.count * 100,
-          className   = (successRate == 100 ? 'neverMissed' : (successRate < 20 ? 'oftenMissed' : (successRate > 80 ? 'rarelyMissed' : 'sometimesMissed'))),
+          className   = (
+            successRate == 100 ? 'neverMissed' : (
+              successRate < 20 ? 'oftenMissed' : (
+                successRate > 80 ? 'rarelyMissed' : 'sometimesMissed'
+          ))),
           rate        = <span className={className}>{item.right}/{item.count}</span>;
     }
 
@@ -2186,6 +2508,9 @@ const Recap = function(props) {
 //| SCORING SYSTEM
 //+--------------------------------------------------------
 
+const FIRST_LETTER_WEIGHT = .1,
+      DISTANCE_WEIGHT = .9;
+
 /**
  * Score the similarity between the given response
  * and the expected answer
@@ -2195,37 +2520,46 @@ const Recap = function(props) {
  * 0<x<1 = similar
  */
 function get_score(response, answer) {
- var FIRST_LETTER_WEIGHT = .1,
-     DISTANCE_WEIGHT = .9;
-
   if(!response) {
     return 0;
   }
-  var both_are_numeric = function() {
-    return $.isNumeric(parseInt(response, 10)) && $.isNumeric(parseInt(answer, 10));
-  },
-  get_tolerance = function() {
-    var t = answer.length > 18 ? .5 : answer.length < 3 ? 1 : -1 * answer.length / 33 + 1.1;
-    return t, answer.length * t;
-  },
-  get_numeric_score = function() {
-    return (parseInt(response, 10) === parseInt(answer, 10) ? 1 : 0);
-  },
-  get_string_score = function() {
-    var tolerance = get_tolerance(),
-        n = distance(response, answer);
-    if (n >= tolerance) return 0;
+  var both_are_numeric = $.isNumeric(parseInt(response, 10)) && $.isNumeric(parseInt(answer, 10));
 
-    var r = answer.charAt(0) === response.charAt(0) ? 1 : 0,
-        i = (tolerance - n) / tolerance,
-        s = FIRST_LETTER_WEIGHT * r + DISTANCE_WEIGHT * i;
-
-    return s < .5 && (s = 0), s;
-  };
-  return both_are_numeric() ? get_numeric_score() : get_string_score();
+  if(both_are_numeric) {
+    return get_numeric_score(response, answer);
+  } else {
+    return get_string_score(response, answer);
+  }
 }
 
-function distance(a, b) {
+function get_tolerance(length) {
+  return length * (
+    length > 18 ? .5
+      : length < 3 ? 1
+        : -1 * length / 33 + 1.1
+  );
+}
+
+function get_numeric_score(response, answer) {
+  return (parseInt(response, 10) === parseInt(answer, 10) ? 1 : 0);
+}
+
+function get_string_score(response, answer) {
+  var tolerance = get_tolerance(answer.length),
+      distance = get_distance(response, answer);
+  if (distance >= tolerance) return 0;
+
+  var weightFirstLetter = answer.charAt(0) === response.charAt(0) ? 1 : 0,
+      weight = (tolerance - distance) / tolerance,
+      s = FIRST_LETTER_WEIGHT * weightFirstLetter + DISTANCE_WEIGHT * weight;
+
+  return s < .5 && (s = 0), s;
+}
+
+/**
+ * Compute the levenshtein distance between a and b
+ */
+function get_distance(a, b) {
   var calculate_distance_matrix = function() {
     var get_item_at;
 
@@ -2272,11 +2606,11 @@ function sanitizeTyping(text, strict) {
   // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
   if(!strict) {
     text = text.replace(/\(.*?\)/g, '')
-               .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), '') // punctuation, symbol
-               .replace(/[-Ù‹Ù›]+/g, '')
+               .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), ' ') // punctuation, symbol
+               .replace(/[-Ù‹Ù›]+/g, ' ')
                .replace(/\s+/g, ' ');
   }
-  return text;
+  return text.trim();
 }
 
 //+--------------------------------------------------------
@@ -2328,7 +2662,6 @@ function calculate_accuracy_bonus_v1(percent_correct, nb_scheduled_correct) {
 //| HIGHLIGHT TEXT DIFF
 //+--------------------------------------------------------
 
-// https://codereview.stackexchange.com/questions/133586/a-string-prototype-diff-implementation-text-diff
 // https://codereview.stackexchange.com/questions/133586/a-string-prototype-diff-implementation-text-diff
 var diff = (function(){
 

@@ -29,6 +29,7 @@ misc = {
     "learn_settings_disable_typing": "Disable keyboard typing",
     "learn_settings_disable_tapping": "Disable words ordering",
     "learn_settings_disable_multimedia": "Disable multimedia",
+    "learn_settings_reverse_prompt_and_answer": "Reverse the tests (prompt the answer, test the definition)",
     "learn_settings_save_progress": "Send results to Memrise",
     "learn_is_anonymous": "You're playing anonymously",
     "learn": "Learn",

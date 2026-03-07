@@ -299,6 +299,7 @@ class level_uploadfile_compat:
             )
         )
 
+
 class level_removefile:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
