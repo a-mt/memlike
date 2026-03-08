@@ -16,6 +16,15 @@ class DummyEmptyMemrise(DummyMemrise):
             "rows": [],
         }
 
+    def my_progress_summary(self, **kwargs):
+        return {}
+
+    def my_progress(self, **kwargs):
+        return {
+          "sync_token": 0,
+          "thingusers": [],
+        }
+
     def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         return {
             "page": page,

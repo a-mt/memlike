@@ -66,6 +66,7 @@ class Lang(object):
         lang_slug = web.ctx.session.get("lang_slug", DEFAULT_LANG_SLUG)
         mod = self.get_module(lang_slug=lang_slug)
         web.ctx.lang_slug = mod
+        web.ctx.lang_code = lang_slug[:2]
 
         # Make it accessible in templates
         web.config.template["I18N"] = mod

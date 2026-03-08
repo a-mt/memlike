@@ -2616,3 +2616,87 @@ tr.disabled {
 .hide {
   display: none;
 }
+
+/*-------------------------------------------------------
+ * EDIT
+ *-------------------------------------------------------*/
+
+:root {
+  --contribution-default-bgColor-0: #eff2f5;
+  --contribution-default-bgColor-1: #aceebb;
+  --contribution-default-bgColor-2: #4ac26b;
+  --contribution-default-bgColor-3: #2da44e;
+  --contribution-default-bgColor-4: #116329;
+  --contribution-default-borderColor-0: #1f23280d;
+  --bgColor-default: #fff;
+  --contribution-default-borderColor-1: var(--contribution-default-borderColor-0);
+  --contribution-default-borderColor-2: var(--contribution-default-borderColor-0);
+  --contribution-default-borderColor-3: var(--contribution-default-borderColor-0);
+  --contribution-default-borderColor-4: var(--contribution-default-borderColor-0);
+  --fgColor-default: #1f2328;
+}
+.ContributionCalendar-grid {
+  border-spacing: 3px;
+  overflow: hidden;
+  position: relative;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+}
+.ContributionCalendar-grid thead tr {
+  height: 13px;
+}
+.ContributionCalendar-grid thead td:first-child {
+  width: 28px;
+}
+.ContributionCalendar-grid tbody tr {
+  height: 10px;
+}
+.ContributionCalendar-grid tbody td {
+  width: 10px;
+}
+.ContributionCalendar-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: #1f2328;
+  text-align: left;
+  fill: #1f2328;
+  padding: .125em .5em .125em 0;
+  position: relative;
+}
+tbody .ContributionCalendar-label span[aria-hidden] { /*day of the week*/
+  position: absolute;
+  bottom: -3px;
+}
+tbody tr:nth-child(odd) .ContributionCalendar-label span[aria-hidden] {
+  clip-path: Circle(0);
+}
+thead .ContributionCalendar-label span[aria-hidden] { /*month*/
+  position: absolute;
+  top: 0
+}
+.ContributionCalendar-day, .ContributionCalendar-day[data-level="0"] {
+  fill: var(--contribution-default-bgColor-0);
+  shape-rendering: geometricPrecision;
+  background-color: var(--contribution-default-bgColor-0);
+  border: .5px solid var(--contribution-default-borderColor-0);
+  border-radius: 2px;
+}
+.ContributionCalendar-day[data-level="1"] {
+  fill: var(--contribution-default-bgColor-1);
+  background-color: var(--contribution-default-bgColor-1);
+  border-color: var(--contribution-default-borderColor-1);
+}
+.ContributionCalendar-day[data-level="2"] {
+  fill: var(--contribution-default-bgColor-2);
+  background-color: var(--contribution-default-bgColor-2);
+  border-color: var(--contribution-default-borderColor-2);
+}
+.ContributionCalendar-day[data-level="3"] {
+  fill: var(--contribution-default-bgColor-3);
+  background-color: var(--contribution-default-bgColor-3);
+  border-color: var(--contribution-default-borderColor-3);
+}
+.ContributionCalendar-day[data-level="4"] {
+  fill: var(--contribution-default-bgColor-4);
+  background-color: var(--contribution-default-bgColor-4);
+  border-color: var(--contribution-default-borderColor-4);
+}

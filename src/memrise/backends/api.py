@@ -99,6 +99,39 @@ class ApiMemrise(Memrise):
             sessionid=kwargs["sessionid"],
         )
 
+    def my_progress_summary(self, sync_token=0, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        summary = {}
+        prev_sync_token = None
+
+        while sync_token is not None and prev_sync_token != sync_token:
+            prev_sync_token = sync_token
+
+            data = self.my_progress(sync_token, **kwargs)
+
+            for thing in data["thingusers"]:
+                date, time = thing["last_date"].split("T", 1)
+                month, day = date.rsplit("-", 1)
+
+                if month not in summary:
+                    summary[month] = {}
+                if day not in summary[month]:
+                    summary[month][day] = 0
+
+                summary[month][day] += 1
+
+            if len(data["thingusers"]) == 5000:
+                sync_token = data.get("sync_token", None)
+
+        print('my_progress_summary', summary)
+        return summary
+
+    def my_progress(self, sync_token=0, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.my_progress(sync_token, sessionid=kwargs["sessionid"])
+
     # +-----------------------------------------------------
     # | LEARNING SESSION
     # +-----------------------------------------------------

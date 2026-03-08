@@ -25,6 +25,10 @@ class DummyApiRequestor:
     def my_leaderboard(self, period, **kwargs):
         return self.get_testset_json("profile_leaderboard.json")
 
+    def my_progress(self, sync_token=0, sessionid=None):
+        with open(settings.ROOTDIR + "/tests/testset/progress3.json") as f:
+            return json.loads(f.read())
+
     # +-----------------------------------------------------
     # | LEARNING SESSION
     # +-----------------------------------------------------

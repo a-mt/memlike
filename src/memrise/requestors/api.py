@@ -170,6 +170,10 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def my_progress(self, sync_token=0, sessionid=None):
+        # https://community-courses.memrise.com/v1.25/progress/?sync_token=0
+        raise NotImplementedError()
+
     # +-----------------------------------------------------
     # | LEARNING SESSION
     # +-----------------------------------------------------

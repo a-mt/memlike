@@ -68,6 +68,22 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a my_leaderboard() method")
 
+    def my_progress_summary(self, sync_token=0, **kwargs):
+        """
+        Count progress thingusers by month/day
+        @param int sync_token - 0 or timestamp
+        @return dict - ie {{'2025-09': {'12': 222, '20': 157, '23': 19, '24': 37}}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a my_progress_summary() method")
+
+    def my_progress(self, sync_token=0, **kwargs):
+        """
+        Testset: progress1.json
+        @param int sync_token - 0 or timestamp
+        @return dict - {thingusers: [], sync_token}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a my_progress() method")
+
     # +-----------------------------------------------------
     # | LEARNING SESSION
     # +-----------------------------------------------------
