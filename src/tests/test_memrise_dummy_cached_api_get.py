@@ -28,17 +28,17 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
         cache_key = "french_courses_1_german"
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
-            # Retrieve the list of courses on page "NA" => page 1
-            result = self.memrise.courses(lang_slug="french", cat="german", page="NA")
+            # Retrieve the list of courses on page "1" => page 1
+            result = self.memrise.courses(lang_slug="french", cat="german", page="1")
             self.assertIs(type(result), dict)
             self.assertEqual(result["page"], 1)
 
             # The result is now cached
             logs = list(cm.output)
             self.assertEqual(len(logs), 3)
-            self.assertTrue(logs[0].endswith(f"Get {cache_key}"))
-            self.assertTrue(logs[1].endswith(f"Miss {cache_key}"))
-            self.assertTrue(logs[2].endswith(f"Save {cache_key}"))
+            self.assertEndsWith(logs[0], f"Get {cache_key}")
+            self.assertEndsWith(logs[1], f"Miss {cache_key}")
+            self.assertEndsWith(logs[2], f"Save {cache_key}")
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "1" => page 1
@@ -49,7 +49,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
             # The result is from the cache
             logs = list(cm.output)
             self.assertEqual(len(logs), 1)
-            self.assertTrue(logs[-1].endswith(f"Get {cache_key}"))
+            self.assertEndsWith(logs[-1], f"Get {cache_key}")
 
         with self.assertLogs("memrise.backends.cached_api", level="DEBUG") as cm:
             # Retrieve the list of courses on page "1" => page 1
@@ -60,7 +60,7 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
             # The result is from the cache
             logs = list(cm.output)
             self.assertEqual(len(logs), 1)
-            self.assertTrue(logs[-1].endswith(f"Get {cache_key}"))
+            self.assertEndsWith(logs[-1], f"Get {cache_key}")
 
         cache_key = "french_courses_2_german"
 
@@ -73,6 +73,6 @@ class MemriseCachedApiUserGetTest(test_memrise_dummy_get.MemriseDummyGetTest):
             # The result is now cached
             logs = list(cm.output)
             self.assertEqual(len(logs), 3)
-            self.assertTrue(logs[0].endswith(f"Get {cache_key}"))
-            self.assertTrue(logs[1].endswith(f"Miss {cache_key}"))
-            self.assertTrue(logs[2].endswith(f"Save {cache_key}"))
+            self.assertEndsWith(logs[0], f"Get {cache_key}")
+            self.assertEndsWith(logs[1], f"Miss {cache_key}")
+            self.assertEndsWith(logs[2], f"Save {cache_key}")

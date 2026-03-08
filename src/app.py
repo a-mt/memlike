@@ -156,6 +156,23 @@ app.add_processor(web.loadhook(flash_load))
 
 
 # ---
+# Catching raise web.Unauthorized exceptions to display template,
+# unless a sub-app added a __next__ to the exception
+def catch_unauthorized(handler):
+    try:
+        result = handler()
+    except web.Unauthorized as e:
+        if getattr(e, '__next__', False):
+            raise
+
+        return web.config.template.prender._403()
+    return result
+
+
+app.add_processor(catch_unauthorized)
+
+
+# ---
 # Run app
 if __name__ == "__main__" and not settings.IS_TEST:
     print(f"web2py: {web.__version__}")

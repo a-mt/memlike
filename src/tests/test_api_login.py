@@ -154,7 +154,7 @@ class ApplicationLoginTest(SimpleTestCase):
     def test_session_deleted2(self):
         # Unauthenticated request = cannot access dashboard
         response = self.client.request("/ajax/dashboard")
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
         # Authenticated request = can access dashboard
         cookies = self.get_auth_cookies()
@@ -168,7 +168,7 @@ class ApplicationLoginTest(SimpleTestCase):
 
         # Authenticated request with deleted session = cannot access dashboard
         response = self.client.request("/ajax/dashboard", headers={"Cookie": cookies.simple_output()})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
     def test_session_ip_update(self):
         cookie_name = self.session_parameters["cookie_name"]
@@ -194,7 +194,7 @@ class ApplicationLoginTest(SimpleTestCase):
         self.assertNotEqual(response.get_cookies()[cookie_name].value, cookies[cookie_name].value)
 
         response = self.client.request("/ajax/dashboard", headers=headers, env={"REMOTE_ADDR": "0.0.0.1"})
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 401)
 
         # Request with old IP = session was deleted, gets new session
         response = self.client.request("/ajax/session", headers=headers, env={"REMOTE_ADDR": None})

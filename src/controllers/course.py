@@ -185,7 +185,7 @@ class edit:
         course_slug = path.split("/", 2)[0]
 
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         try:
             course = memrise.course_edit_get(course_id, course_slug=course_slug)
@@ -201,7 +201,7 @@ class reset_progress_level:
         # Note that the URL parameters are use to redirec to the course
         # Wgile the GET parameters are used to reset the progress
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _GET = web.input(level_id="")
         if _GET.level_id:

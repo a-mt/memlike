@@ -137,8 +137,8 @@ class ApiMemrise(Memrise):
     def courses(self, lang_slug, page=1, cat="", query="", **kwargs):
         self.set_default_kwargs(kwargs)
 
-        if not isinstance(page, int) and not page.isdigit():
-            page = 1
+        if not isinstance(page, int):
+            page = int(page) if page.isdigit() else 1
         if page < 1:
             page = 1
 

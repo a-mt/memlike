@@ -23,7 +23,7 @@ class index:
 class leaderboard:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
-            return web.config.template.render.Forbidden()
+            raise web.Unauthorized()
 
         _GET = web.input(period="alltime")
         try:

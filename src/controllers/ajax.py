@@ -68,6 +68,7 @@ NBPERPAGE = 15
 class index:
     def GET(self):
         web.header("Content-Type", "application/json")
+        raise web.Unauthorized()
 
         # fmt: off
         patterns = {
@@ -102,7 +103,7 @@ class index:
 def _error(e):
     # https://github.com/webpy/webpy/blob/master/web/webapi.py#L15
     if e.response.status_code == 403:
-        return web.Forbidden()
+        return web.Unauthorized()
     elif e.response.status_code == 404:
         return web.NotFound()
     else:
@@ -137,7 +138,7 @@ class course:
 
         if _GET.session and _GET.session != "0":
             if not web.ctx.session.get("loggedin", False):
-                return web.Forbidden()
+                return web.Unauthorized()
 
         return _response(lambda: memrise.course(course_id, course_slug))
 
@@ -148,7 +149,7 @@ class course_level:
 
         if _GET.session and _GET.session != "0":
             if not web.ctx.session.get("loggedin", False):
-                return web.Forbidden()
+                return web.Unauthorized()
 
         if course_slug == "":
             course_slug = "-"
@@ -176,7 +177,7 @@ class course_leaderboard:
 class course_edit:
     def GET(self, course_id, course_slug):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         return _response(lambda: memrise.course_edit_get(course_id, course_slug))
 
@@ -184,7 +185,7 @@ class course_edit:
 class level_add:
     def POST(self, *args, **kwargs):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         data = web.input()
         return _response(
@@ -200,7 +201,7 @@ class level_add:
 class level_delete:
     def POST(self, *args, **kwargs):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         data = web.input()
         return _response(
@@ -215,7 +216,7 @@ class level_delete:
 class level_edit:
     def GET(self, level_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         return _response(lambda: memrise.level_edit_get(level_id))
 
@@ -224,7 +225,7 @@ class level_edit:
 class level_getcell:
     def GET(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _GET = web.input()
         return _response(
@@ -239,7 +240,7 @@ class level_getcell:
 class level_addrow:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input()
         return _response(
@@ -254,7 +255,7 @@ class level_addrow:
 class level_editcell:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input()
         return _response(
@@ -270,7 +271,7 @@ class level_editcell:
 class level_uploadfile:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input(file={})
         return _response(
@@ -286,7 +287,7 @@ class level_uploadfile:
 class level_uploadfile_compat:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input(f={})
         return _response(
@@ -303,7 +304,7 @@ class level_uploadfile_compat:
 class level_removefile:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input(file={})
         return _response(
@@ -319,7 +320,7 @@ class level_removefile:
 class level_alt:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input()
         return _response(
@@ -333,7 +334,7 @@ class level_alt:
 class level_editalt:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input()
         return _response(
@@ -349,7 +350,7 @@ class level_editalt:
 class level_editmultimedia:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input(course_id="", level_index="", txt="")
         return _response(
@@ -366,7 +367,7 @@ class level_editmultimedia:
 class level_removerow:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _POST = web.input()
         return _response(
@@ -388,8 +389,8 @@ class user_mempals:
         _GET = web.input(page=1)
         page = int(_GET.page)
 
-        if not isinstance(page, int) and not page.isdigit():
-            page = 1
+        if not isinstance(page, int):
+            page = int(page) if page.isdigit() else 1
         if page < 1:
             page = 1
 
@@ -409,8 +410,8 @@ class user_courses:
         _GET = web.input(page=1)
         page = int(_GET.page)
 
-        if not isinstance(page, int) and not page.isdigit():
-            page = 1
+        if not isinstance(page, int):
+            page = int(page) if page.isdigit() else 1
         if page < 1:
             page = 1
 
@@ -430,7 +431,7 @@ class user_courses:
 class user_dashboard:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _GET = web.input(offset=0)
         offset = _GET.offset
@@ -463,7 +464,7 @@ class user_dashboard:
             print("HTTPError", e)
 
             if e.response.status_code == 403:
-                raise web.Forbidden()
+                raise web.Unauthorized()
             else:
                 raise web.NotFound()
 
@@ -473,7 +474,7 @@ class user_dashboard:
 class user_leaderboard:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         _GET = web.input(period="week")
         return _response(lambda: memrise.my_leaderboard(_GET.period))
@@ -482,13 +483,13 @@ class user_leaderboard:
 class user_sync:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         try:
             data = memrise.user(web.ctx.session["loggedin"]["username"], True)
         except HTTPError as e:
             if e.response.status_code == 403:
-                raise web.Forbidden()
+                raise web.Unauthorized()
             else:
                 raise web.NotFound()
 
@@ -505,7 +506,7 @@ class debug_session:
 class learning_session_register_progress:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         data = web.jsoninput()
         progress = memrise.learning_session_register_progress(data)
@@ -515,7 +516,7 @@ class learning_session_register_progress:
 class learning_session_register_end:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         data = web.jsoninput()
         progress = memrise.learning_session_register_end(data)
@@ -525,7 +526,7 @@ class learning_session_register_end:
 class reset_progress_level:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
-            raise web.Forbidden()
+            raise web.Unauthorized()
 
         data = web.jsoninput()
         response = memrise.reset_progress_level(data)
@@ -533,3 +534,20 @@ class reset_progress_level:
 
 
 app = web.application(urls, locals(), autoreload=False)
+
+
+def catch_unauthorized(handler):
+    """
+    Don't let the main app render a template for web.Unauthorized exceptions
+    Just send the status code and message
+    """
+    try:
+        result = handler()
+    except web.Unauthorized as e:
+        setattr(e, '__next__', True)
+
+        raise e
+    return result
+
+
+app.add_processor(catch_unauthorized)

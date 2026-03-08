@@ -2,6 +2,7 @@ from app import app
 from functools import partial
 from re import compile
 from utils.datastructures import CaseInsensitiveMapping, SimpleCookie
+from unittest.util import safe_repr
 
 import json
 import unittest
@@ -95,3 +96,18 @@ class SimpleTestCase(unittest.TestCase):
 
         assert response.status_code == 303
         return response.get_cookies()
+
+    def assertEndsWith(self, s, suffix, msg=None):
+        try:
+            if s.endswith(suffix):
+                return
+        except (AttributeError, TypeError):
+            self._tail_type_check(s, suffix, msg)
+            raise
+        a = safe_repr(s, short=True)
+        b = safe_repr(suffix)
+        if isinstance(suffix, tuple):
+            standardMsg = f"{a} doesn't end with any of {b}"
+        else:
+            standardMsg = f"{a} doesn't end with {b}"
+        self.fail(self._formatMessage(msg, standardMsg))
