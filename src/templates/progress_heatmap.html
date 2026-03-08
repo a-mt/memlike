@@ -20,8 +20,8 @@ $def with (months, weeks, days_of_week, get_level)
                     <span aria-hidden="true">$(day['label_short'])</span>
                 </td>
                 $for week in weeks:
-                    $if dayofweek < len(week['days']):
-                        $ dateFmt, count = week['days'][dayofweek] 
+                    $if dayofweek < len(week):
+                        $ dateFmt, count = week[dayofweek]
                         $ level = get_level(count)
                         <td
                             data-date="$(dateFmt)"
