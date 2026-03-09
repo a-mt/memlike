@@ -73,7 +73,8 @@ urls_course = (
 
 urls = (
     r"/courses", courses,
-    r"(/community)?/course", web.application(urls_course, locals(), autoreload=False),
+    r"/community/course", course_app := web.application(urls_course, locals(), autoreload=False),
+    r"/course", course_app,
     r"/level", web.application(urls_level, locals(), autoreload=False),
     r"/thing", web.application(urls_thing, locals(), autoreload=False),
 

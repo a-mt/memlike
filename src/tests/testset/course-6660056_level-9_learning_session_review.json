@@ -1,0 +1,2966 @@
+{
+  "learnables": [{
+    "id": 30126931640578,
+    "learning_element": "ein gewisser Wege",
+    "definition_element": "une certaine manière",
+    "learning_element_tokens": ["ein", "gewisser", "Wege"],
+    "definition_element_tokens": ["une", "certaine", "manière"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "ein gewisser Wege",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "une certaine manière",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "une certaine manière",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "ein gewisser Wege",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["ein gewisser Wege"],
+        "choices": ["gewaltig", "eindrucksvoll", "einberufen", "erst einmal", "ein lieber Mensch", "geprägt", "es gelingt ihm zu tun", "die Eigenschaft", "gelingen", "gelegene", "die Gespräche", "die Gelassenheit"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "ein gewisser Wege",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "une certaine manière",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["une certaine manière"],
+        "choices": ["une personne chère", "suivre une formation", "l'empreinte (être imprégné d'une idée)", "incontrollable", "invincible", "la ceinture", "faire un clin d'oeil (rendre hommage)", "arrête-toi un instant", "controversé", "est considéré comme", "le camp", "en cours"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "une certaine manière",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/455428140_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/456518620_250416_1917_20.mp3", "https://static.memrise.com/uploads/things/audio/454680532_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/454680520_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/455113537_250401_0114_26.mp3", "https://static.memrise.com/uploads/things/audio/454971944_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/455046968_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/455113303_250401_0114_26.mp3", "https://static.memrise.com/uploads/things/audio/459700521_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/456517186_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/454972770_250329_1708_11.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "une certaine manière",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "ein gewisser Wege",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["ein gewisser Wege", "ein gewisser wege"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "6": {
+        "template": "tapping",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "une certaine manière",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "ein gewisser Wege",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": [
+          ["ein", "gewisser", "Wege"],
+          ["ein", "gewisser", "wege"],
+          ["ein", "gewisser", "wege"]
+        ],
+        "choices": ["gewaltig", "eindrucksvoll", "einberufen", "erst", "einmal", "ein", "lieber", "Mensch", "geprägt", "es", "gelingt", "ihm", "zu", "tun", "die", "Eigenschaft", "gelingen", "gelegene", "die", "Gespräche", "die", "Gelassenheit"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126958969090,
+    "learning_element": "das Kloster",
+    "definition_element": "le monastère",
+    "learning_element_tokens": ["das", "Kloster"],
+    "definition_element_tokens": ["le", "monastère"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "das Kloster",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "le monastère",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "le monastère",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "das Kloster",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["das Kloster"],
+        "choices": ["das Heer", "das Lager", "das Wissen", "das Vorbild", "das Streben", "das Gedicht", "das Ereignis", "kläglich", "das Künstler-Dasein", "es kommt nur darauf an", "das Drehbuch", "der Krawall"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "das Kloster",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "le monastère",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["le monastère"],
+        "choices": ["le modèle (la référence)", "la motivation", "les moustiques", "le défi", "le métier d'artiste", "le poème", "le frein", "à partir de ce moment là", "le savoir", "le barrage", "le secteur", "le directeur"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "le monastère",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/459700724_250604_2134_19.mp3", "https://static.memrise.com/uploads/things/audio/455046975_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/456516895_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3", "https://static.memrise.com/uploads/things/audio/459700727_250604_2134_19.mp3", "https://static.memrise.com/uploads/things/audio/454972789_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/454680562_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/454680497_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3", "https://static.memrise.com/uploads/things/audio/455046968_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/456516890_250416_1805_31.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "le monastère",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "das Kloster",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["das Kloster", "das kloster"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700912_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126959886594,
+    "learning_element": "die Ablenkung",
+    "definition_element": "la distraction",
+    "learning_element_tokens": ["die", "Ablenkung"],
+    "definition_element_tokens": ["la", "distraction"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "die Ablenkung",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "la distraction",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "la distraction",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "die Ablenkung",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["die Ablenkung"],
+        "choices": ["die Aufforderung", "die du aufnimmst", "die Blase", "die Mücken", "die Seuche", "die Folgen", "die Bremse", "die Branche", "die Forschung", "die Vorstellung", "die Weitergabe", "die Wachstum"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "die Ablenkung",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "la distraction",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["la distraction"],
+        "choices": ["le droit, la loi et l'ordre", "la bulle", "le directeur", "se languir", "le détachement", "la sortie de secours", "obtenez-la", "diminuer", "le camp", "la science", "la recherche", "la croissance"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "la distraction",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/459700724_250604_2134_19.mp3", "https://static.memrise.com/uploads/things/audio/456516874_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/455112658_250331_2343_59.mp3", "https://static.memrise.com/uploads/things/audio/459700490_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/454971981_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/456518455_250416_1917_19.mp3", "https://static.memrise.com/uploads/things/audio/456526105_250417_0556_57.mp3", "https://static.memrise.com/uploads/things/audio/456518394_250416_1917_18.mp3", "https://static.memrise.com/uploads/things/audio/455046975_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/455113541_250401_0114_26.mp3", "https://static.memrise.com/uploads/things/audio/454680515_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/456516805_250416_1805_31.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "la distraction",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "die Ablenkung",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["die Ablenkung", "die ablenkung"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700926_250604_2139_31.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126958444802,
+    "learning_element": "berühmt",
+    "definition_element": "célèbre",
+    "learning_element_tokens": ["berühmt"],
+    "definition_element_tokens": ["célèbre"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "berühmt",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "célèbre",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "célèbre",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "berühmt",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["berühmt"],
+        "choices": ["bereichern", "die Bereitschaft", "in die Wiege gelegt", "in die Wiege", "bewußt", "belagern", "die Beteiligten", "die Begeisterung", "sich beschleunigen", "GmbH (Gesellschaft mit beschränkter Haftung)", "die Blase", "bürgerlich"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "berühmt",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "célèbre",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["célèbre"],
+        "choices": ["ce qui compte c'est", "est considéré comme", "le camp", "te cible", "en cours", "contrer", "circuler", "consciemment", "conventionnel", "controversé", "convoquer", "constituer"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "célèbre",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/459700495_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/454680543_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/459700506_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/455113504_250401_0114_26.mp3", "https://static.memrise.com/uploads/things/audio/459700512_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/456517141_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/459700838_250604_2134_20.mp3", "https://static.memrise.com/uploads/things/audio/459700748_250604_2134_20.mp3", "https://static.memrise.com/uploads/things/audio/456518614_250416_1917_20.mp3", "https://static.memrise.com/uploads/things/audio/455113527_250401_0114_26.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "célèbre",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "berühmt",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["berühmt", "beruhmt"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700904_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126958575874,
+    "learning_element": "in sich gekehrte",
+    "definition_element": "replié sur soi (introverti)",
+    "learning_element_tokens": ["in", "sich", "gekehrte"],
+    "definition_element_tokens": ["replié", "sur", "soi", "introverti"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "in sich gekehrte",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "replié sur soi (introverti)",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "replié sur soi (introverti)",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "in sich gekehrte",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["in sich gekehrte"],
+        "choices": ["sich sehnen", "sich beschleunigen", "sich entfalten", "sich ausbilden lassen", "angeboren", "in Gang setzen", "in Gang", "hol sie dir", "ausbilden", "unbesiegbar", "zwischenmenschlich", "unbändig"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "in sich gekehrte",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "replié sur soi (introverti)",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["replié sur soi (introverti)"],
+        "choices": ["refusé", "se faire remarquer", "rechercher", "la recherche", "sarl (société à responsabilité limitée)", "le droit, la loi et l'ordre", "jouer en boucle", "en règle générale", "faire un clin d'oeil (rendre hommage)", "Ma patience s'épuise", "réussir", "la gloire"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "replié sur soi (introverti)",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/456518391_250416_1917_18.mp3", "https://static.memrise.com/uploads/things/audio/459700512_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/454680560_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/456518527_250416_1917_20.mp3", "https://static.memrise.com/uploads/things/audio/454971981_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/459700881_250604_2139_30.mp3", "https://static.memrise.com/uploads/things/audio/456518394_250416_1917_18.mp3", "https://static.memrise.com/uploads/things/audio/455113517_250401_0114_26.mp3", "https://static.memrise.com/uploads/things/audio/459700508_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/456518542_250416_1917_19.mp3", "https://static.memrise.com/uploads/things/audio/456518505_250416_1917_19.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "replié sur soi (introverti)",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "in sich gekehrte",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["in sich gekehrte"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "6": {
+        "template": "tapping",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "replié sur soi (introverti)",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "in sich gekehrte",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": [
+          ["in", "sich", "gekehrte"],
+          ["in", "sich", "gekehrte"],
+          ["in", "sich", "gekehrte"]
+        ],
+        "choices": ["sich", "sehnen", "sich", "beschleunigen", "sich", "entfalten", "sich", "ausbilden", "lassen", "angeboren", "in", "Gang", "setzen", "in", "Gang", "hol", "sie", "dir", "ausbilden", "unbesiegbar", "zwischenmenschlich", "unbändig"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126931837186,
+    "learning_element": "öffentlich",
+    "definition_element": "publique",
+    "learning_element_tokens": ["öffentlich"],
+    "definition_element_tokens": ["publique"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "öffentlich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "publique",
+          "alternatives": ["public"],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "publique",
+            "alternatives": ["public"],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "öffentlich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["öffentlich"],
+        "choices": ["anschließend", "die Forschung", "der Treibstoff", "bewußt", "die Abteilung", "herausgesucht", "der Antrieb", "der Moderator", "promovieren", "außerdem", "GmbH (Gesellschaft mit beschränkter Haftung)", "herkömmliche"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "öffentlich",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "publique",
+          "alternatives": ["public"],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["publique"],
+        "choices": ["de plus", "pousser", "faire son doctorat", "progresser", "la providence", "l'empreinte (être imprégné d'une idée)", "l'infirmière", "le stagiaire", "les participants", "clair (et précis)", "l'empreinte (de pas)", "empêcher (prévenir)"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "publique",
+            "alternatives": ["public"],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/454680521_250324_0639_50.mp3", "https://static.memrise.com/uploads/things/audio/455046968_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/456516874_250416_1805_31.mp3", "https://static.memrise.com/uploads/things/audio/454680525_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/454972573_250329_1708_10.mp3", "https://static.memrise.com/uploads/things/audio/454972617_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/454680505_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/455046990_250331_0553_35.mp3", "https://static.memrise.com/uploads/things/audio/459700501_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/454680527_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/459700503_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/456517186_250416_1805_31.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "publique",
+            "alternatives": ["public"],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "öffentlich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["öffentlich", "offentlich"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700498_250604_2125_14.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }, {
+    "id": 30126957396226,
+    "learning_element": "kläglich",
+    "definition_element": "misérable",
+    "learning_element_tokens": ["kläglich"],
+    "definition_element_tokens": ["misérable"],
+    "difficulty": "unknown",
+    "item_type": "word",
+    "screens": {
+      "1": {
+        "item": {
+          "label": "German",
+          "kind": "text",
+          "value": "kläglich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "definition": {
+          "label": "French",
+          "kind": "text",
+          "value": "misérable",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "visible_info": [],
+        "hidden_info": [],
+        "attributes": [],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "video": null,
+        "template": "presentation",
+        "nugget": null
+      },
+      "2": {
+        "template": "multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "misérable",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "kläglich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["kläglich"],
+        "choices": ["knackig", "kräftig", "der Krawall", "der Kriegszug", "halte kurz inne", "es kommt nur darauf an", "anschließend", "die Forschung", "der Treibstoff", "bewußt", "die Abteilung", "herausgesucht"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "3": {
+        "template": "reversed_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "German",
+            "kind": "text",
+            "value": "kläglich",
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "French",
+          "kind": "text",
+          "value": "misérable",
+          "alternatives": [],
+          "style": [],
+          "direction": "source",
+          "markdown": false
+        },
+        "correct": ["misérable"],
+        "choices": ["maussade", "l'expédition militaire", "sarl (société à responsabilité limitée)", "Ma patience s'épuise", "mettre en marche", "marqué", "C'est trop pour moi (top bien, trop difficile, etc)", "les moustiques", "la motivation", "l'animateur", "une personne chère", "le trait humain"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "4": {
+        "template": "audio_multiple_choice",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "misérable",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3"],
+        "choices": ["https://static.memrise.com/uploads/things/audio/459700733_250604_2134_20.mp3", "https://static.memrise.com/uploads/things/audio/454972587_250329_1708_11.mp3", "https://static.memrise.com/uploads/things/audio/459700919_250604_2139_30.mp3", "https://static.memrise.com/uploads/things/audio/459700512_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/454680518_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/454680529_250324_0639_49.mp3", "https://static.memrise.com/uploads/things/audio/459700514_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/459700906_250604_2139_30.mp3", "https://static.memrise.com/uploads/things/audio/459700506_250604_2125_14.mp3", "https://static.memrise.com/uploads/things/audio/456518527_250416_1917_20.mp3", "https://static.memrise.com/uploads/things/audio/456518487_250416_1917_18.mp3", "https://static.memrise.com/uploads/things/audio/454680562_250324_0639_49.mp3"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      },
+      "5": {
+        "template": "typing",
+        "prompt": {
+          "text": {
+            "label": "French",
+            "kind": "text",
+            "value": "misérable",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "audio": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "target",
+            "markdown": false
+          },
+          "video": null,
+          "image": null
+        },
+        "answer": {
+          "label": "German",
+          "kind": "text",
+          "value": "kläglich",
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "correct": ["kläglich", "klaglich"],
+        "choices": ["ä", "é", "ö", "ü", "ß"],
+        "audio": {
+          "label": "Audio",
+          "kind": "audio",
+          "value": [{
+            "normal": "https://static.memrise.com/uploads/things/audio/459700888_250604_2139_30.mp3",
+            "slow": null
+          }],
+          "alternatives": [],
+          "style": [],
+          "direction": "target",
+          "markdown": false
+        },
+        "markdown": false,
+        "attributes": [],
+        "post_answer_info": null,
+        "placeholder": null,
+        "feedback_screen": null,
+        "is_strict": false,
+        "translation_prompt": null,
+        "gap_prompt": null
+      }
+    }
+  }],
+  "progress": [{
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T07:29:30Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-09-12T11:29:20Z",
+    "interval": 48.0,
+    "growth_level": 22,
+    "current_streak": 1,
+    "starred": false,
+    "correct": 22,
+    "attempts": 25,
+    "total_streak": 1,
+    "is_difficult": true,
+    "not_difficult": false,
+    "learnable_id": "30126931640578"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-23T07:09:02Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-09-16T07:13:14Z",
+    "interval": 24.0,
+    "growth_level": 22,
+    "current_streak": 6,
+    "starred": false,
+    "correct": 22,
+    "attempts": 23,
+    "total_streak": 6,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958969090"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-23T07:09:05Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-09-16T07:14:08Z",
+    "interval": 24.0,
+    "growth_level": 22,
+    "current_streak": 6,
+    "starred": false,
+    "correct": 22,
+    "attempts": 23,
+    "total_streak": 6,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126959886594"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-23T07:09:08Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-09-16T07:14:29Z",
+    "interval": 24.0,
+    "growth_level": 21,
+    "current_streak": 6,
+    "starred": false,
+    "correct": 21,
+    "attempts": 22,
+    "total_streak": 6,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958444802"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-12T16:19:51Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-09-29T16:25:49Z",
+    "interval": 48.0,
+    "growth_level": 18,
+    "current_streak": 2,
+    "starred": false,
+    "correct": 18,
+    "attempts": 23,
+    "total_streak": 2,
+    "is_difficult": true,
+    "not_difficult": false,
+    "learnable_id": "30126958575874"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T06:37:06Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-10-06T06:37:27Z",
+    "interval": 24.0,
+    "growth_level": 26,
+    "current_streak": 5,
+    "starred": false,
+    "correct": 26,
+    "attempts": 28,
+    "total_streak": 5,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126931837186"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T06:36:18Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-10-06T06:37:36Z",
+    "interval": 24.0,
+    "growth_level": 24,
+    "current_streak": 4,
+    "starred": false,
+    "correct": 24,
+    "attempts": 27,
+    "total_streak": 4,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126957396226"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T06:36:00Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-10-06T06:42:31Z",
+    "interval": 24.0,
+    "growth_level": 25,
+    "current_streak": 5,
+    "starred": false,
+    "correct": 25,
+    "attempts": 27,
+    "total_streak": 5,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947041538"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-23T07:01:19Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-10-10T07:07:42Z",
+    "interval": 48.0,
+    "growth_level": 25,
+    "current_streak": 7,
+    "starred": false,
+    "correct": 25,
+    "attempts": 27,
+    "total_streak": 7,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126931116290"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:09:27Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-10-14T00:09:51Z",
+    "interval": 24.0,
+    "growth_level": 21,
+    "current_streak": 5,
+    "starred": false,
+    "correct": 21,
+    "attempts": 23,
+    "total_streak": 5,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958248194"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-16T17:54:42Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-11-12T21:18:07Z",
+    "interval": 96.0,
+    "growth_level": 18,
+    "current_streak": 3,
+    "starred": false,
+    "correct": 18,
+    "attempts": 19,
+    "total_streak": 3,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958051586"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-16T17:57:15Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-11-12T21:19:58Z",
+    "interval": 96.0,
+    "growth_level": 22,
+    "current_streak": 3,
+    "starred": false,
+    "correct": 22,
+    "attempts": 23,
+    "total_streak": 3,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947893506"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-12T16:19:47Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-11-16T16:23:07Z",
+    "interval": 96.0,
+    "growth_level": 17,
+    "current_streak": 2,
+    "starred": false,
+    "correct": 17,
+    "attempts": 18,
+    "total_streak": 2,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126959624450"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-08-17T06:13:45Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-11-21T06:17:08Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 2,
+    "starred": false,
+    "correct": 23,
+    "attempts": 26,
+    "total_streak": 2,
+    "is_difficult": true,
+    "not_difficult": false,
+    "learnable_id": "30126932033794"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T07:22:36Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-17T07:23:01Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 8,
+    "starred": false,
+    "correct": 20,
+    "attempts": 21,
+    "total_streak": 8,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126956871938"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T10:56:46Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-17T10:58:45Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 7,
+    "starred": false,
+    "correct": 23,
+    "attempts": 24,
+    "total_streak": 7,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126932361474"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T10:59:54Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-17T11:08:59Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 9,
+    "starred": false,
+    "correct": 20,
+    "attempts": 21,
+    "total_streak": 9,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947369218"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-12T11:00:07Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-17T11:09:14Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 6,
+    "starred": false,
+    "correct": 20,
+    "attempts": 21,
+    "total_streak": 6,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126950777090"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:06Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-25T00:06:10Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 20,
+    "starred": false,
+    "correct": 20,
+    "attempts": 20,
+    "total_streak": 20,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126956937474"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:06Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:06:16Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126946255106"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:18Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:06:27Z",
+    "interval": 96.0,
+    "growth_level": 24,
+    "current_streak": 24,
+    "starred": false,
+    "correct": 24,
+    "attempts": 24,
+    "total_streak": 24,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126946648322"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:42Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-25T00:07:15Z",
+    "interval": 96.0,
+    "growth_level": 22,
+    "current_streak": 22,
+    "starred": false,
+    "correct": 22,
+    "attempts": 22,
+    "total_streak": 22,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126948155650"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:30Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-12-25T00:07:24Z",
+    "interval": 96.0,
+    "growth_level": 24,
+    "current_streak": 12,
+    "starred": false,
+    "correct": 24,
+    "attempts": 27,
+    "total_streak": 12,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126931181826"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:24Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:07:39Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126942454018"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:03Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-12-25T00:07:44Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 20,
+    "starred": false,
+    "correct": 20,
+    "attempts": 20,
+    "total_streak": 20,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958182658"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:33Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-12-25T00:07:52Z",
+    "interval": 96.0,
+    "growth_level": 24,
+    "current_streak": 24,
+    "starred": false,
+    "correct": 24,
+    "attempts": 24,
+    "total_streak": 24,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126931312898"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:54Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-25T00:08:48Z",
+    "interval": 96.0,
+    "growth_level": 21,
+    "current_streak": 21,
+    "starred": false,
+    "correct": 21,
+    "attempts": 21,
+    "total_streak": 21,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126957199618"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:35Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-25T00:08:58Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 20,
+    "starred": false,
+    "correct": 20,
+    "attempts": 20,
+    "total_streak": 20,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126956609794"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:39Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:09:14Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126932492546"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:21Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-12-25T00:09:21Z",
+    "interval": 96.0,
+    "growth_level": 19,
+    "current_streak": 13,
+    "starred": false,
+    "correct": 19,
+    "attempts": 21,
+    "total_streak": 13,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126959755522"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:03Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-12-25T00:09:29Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 14,
+    "starred": false,
+    "correct": 20,
+    "attempts": 21,
+    "total_streak": 14,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126960083202"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:07Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:09:31Z",
+    "interval": 96.0,
+    "growth_level": 25,
+    "current_streak": 25,
+    "starred": false,
+    "correct": 25,
+    "attempts": 25,
+    "total_streak": 25,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126946320642"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:09Z",
+    "created_date": "2025-06-05T05:21:39Z",
+    "next_date": "2025-12-25T00:09:35Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 20,
+    "starred": false,
+    "correct": 20,
+    "attempts": 20,
+    "total_streak": 20,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126957592834"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:46Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-25T00:10:12Z",
+    "interval": 96.0,
+    "growth_level": 22,
+    "current_streak": 22,
+    "starred": false,
+    "correct": 22,
+    "attempts": 22,
+    "total_streak": 22,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947959042"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:08:06Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:10:23Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126932754690"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:33Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:10:46Z",
+    "interval": 96.0,
+    "growth_level": 26,
+    "current_streak": 26,
+    "starred": false,
+    "correct": 26,
+    "attempts": 26,
+    "total_streak": 26,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126932885762"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:15Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:10:51Z",
+    "interval": 96.0,
+    "growth_level": 24,
+    "current_streak": 24,
+    "starred": false,
+    "correct": 24,
+    "attempts": 24,
+    "total_streak": 24,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947107074"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:59Z",
+    "created_date": "2025-06-05T00:05:27Z",
+    "next_date": "2025-12-25T00:11:01Z",
+    "interval": 96.0,
+    "growth_level": 22,
+    "current_streak": 22,
+    "starred": false,
+    "correct": 22,
+    "attempts": 22,
+    "total_streak": 22,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126932164866"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:46Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-12-25T00:11:01Z",
+    "interval": 96.0,
+    "growth_level": 19,
+    "current_streak": 19,
+    "starred": false,
+    "correct": 19,
+    "attempts": 19,
+    "total_streak": 19,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958706946"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:49Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:11:03Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126946582786"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:09Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-12-25T00:11:03Z",
+    "interval": 96.0,
+    "growth_level": 18,
+    "current_streak": 18,
+    "starred": false,
+    "correct": 18,
+    "attempts": 18,
+    "total_streak": 18,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126959165698"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:22Z",
+    "created_date": "2025-06-05T05:27:41Z",
+    "next_date": "2025-12-25T00:11:08Z",
+    "interval": 96.0,
+    "growth_level": 19,
+    "current_streak": 13,
+    "starred": false,
+    "correct": 19,
+    "attempts": 20,
+    "total_streak": 13,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126958838018"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:26Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-12-25T00:11:22Z",
+    "interval": 96.0,
+    "growth_level": 18,
+    "current_streak": 18,
+    "starred": false,
+    "correct": 18,
+    "attempts": 18,
+    "total_streak": 18,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126960148738"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:07:22Z",
+    "created_date": "2025-06-04T23:56:32Z",
+    "next_date": "2025-12-25T00:11:23Z",
+    "interval": 96.0,
+    "growth_level": 22,
+    "current_streak": 22,
+    "starred": false,
+    "correct": 22,
+    "attempts": 22,
+    "total_streak": 22,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126931771650"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:43Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:11:33Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 11,
+    "starred": false,
+    "correct": 23,
+    "attempts": 24,
+    "total_streak": 11,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947238146"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:00Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-25T00:11:56Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947434754"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:14Z",
+    "created_date": "2025-06-05T05:34:06Z",
+    "next_date": "2025-12-25T00:12:18Z",
+    "interval": 96.0,
+    "growth_level": 19,
+    "current_streak": 13,
+    "starred": false,
+    "correct": 19,
+    "attempts": 20,
+    "total_streak": 13,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126959493378"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:06:57Z",
+    "created_date": "2025-06-05T00:13:35Z",
+    "next_date": "2025-12-25T00:12:32Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 23,
+    "starred": false,
+    "correct": 23,
+    "attempts": 23,
+    "total_streak": 23,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126946910466"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:08:14Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-25T00:12:33Z",
+    "interval": 96.0,
+    "growth_level": 20,
+    "current_streak": 20,
+    "starred": false,
+    "correct": 20,
+    "attempts": 20,
+    "total_streak": 20,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126947631362"
+  }, {
+    "user_id": 5892033,
+    "ignored": false,
+    "last_date": "2025-09-20T00:05:36Z",
+    "created_date": "2025-06-05T00:24:52Z",
+    "next_date": "2025-12-25T00:12:36Z",
+    "interval": 96.0,
+    "growth_level": 23,
+    "current_streak": 4,
+    "starred": false,
+    "correct": 23,
+    "attempts": 24,
+    "total_streak": 4,
+    "is_difficult": false,
+    "not_difficult": false,
+    "learnable_id": "30126948221186"
+  }],
+  "session_source_info": {
+    "source_id": 6660056,
+    "source_type": "course_id_and_level_index",
+    "name": "German vocab",
+    "translated_name": "German vocab",
+    "learnable_ids_to_course_ids": {},
+    "num_due_for_review": 850,
+    "level_id": 16082953,
+    "level_name": "E",
+    "source_sub_index": 9,
+    "template_id": null,
+    "parent_source_id": null,
+    "parent_template_id": null
+  },
+  "settings": {
+    "disable_multimedia": false,
+    "disable_tapping": false,
+    "prioritize_typing": false,
+    "disable_typing": false
+  }
+}

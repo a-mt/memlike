@@ -27,9 +27,6 @@ def autodetect_urls(app, prefix="", res={}):
             autodetect_urls(handler, prefix + pattern, res)
 
         elif isinstance(handler, str):
-            if handler in res:
-                continue
-
             if handler not in app.fvars:
                 continue
 
@@ -42,6 +39,9 @@ def autodetect_urls(app, prefix="", res={}):
             handler = handler.__name__
 
         if f:
+            if handler in res:
+                continue
+
             if "GET" in f.__dict__:
                 res[handler] = "GET " + beautify_pattern(prefix + pattern, f.__dict__["GET"])
 

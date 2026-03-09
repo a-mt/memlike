@@ -1,0 +1,1321 @@
+
+.ico,
+a.audio-player {
+  display:inline-block;
+  vertical-align:middle;
+  width:18px;
+  height:18px;
+  background-size:126px 180px
+}
+.ico.ico-s,
+a.ico-s.audio-player {
+  width:12px;
+  height:12px;
+  background-size:84px 120px
+}
+.ico.ico-m,
+a.ico-m.audio-player {
+  width:26px;
+  height:26px;
+  background-size:182px 260px
+}
+.ico.ico-l,
+a.audio-player {
+  width:32px;
+  height:32px;
+  background-size:224px 320px
+}
+.ico.ico-xl,
+a.ico-xl.audio-player {
+  width:48px;
+  height:48px;
+  background-size:336px 480px
+}
+.ico.ico-blue,
+a.ico-blue.audio-player {
+  background-image:url("/img/sprites/icons-blue.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-blue,
+  a.ico-blue.audio-player {
+    background-image:url("/img/sprites/icons-blue.v5@2x.png")
+  }
+}
+.ico.ico-grey,
+a.ico-grey.audio-player {
+  background-image:url("/img/sprites/icons-grey.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-grey,
+  a.ico-grey.audio-player {
+    background-image:url("/img/sprites/icons-grey.v5@2x.png")
+  }
+}
+.ico.ico-grey-dark,
+a.ico-grey-dark.audio-player {
+  background-image:url("/img/sprites/icons-grey-dark.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-grey-dark,
+  a.ico-grey-dark.audio-player {
+    background-image:url("/img/sprites/icons-grey-dark.v5@2x.png")
+  }
+}
+.ico.ico-green,
+a.ico-green.audio-player {
+  background-image:url("/img/sprites/icons-green.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-green,
+  a.ico-green.audio-player {
+    background-image:url("/img/sprites/icons-green.v5@2x.png")
+  }
+}
+.ico.ico-purple,
+a.ico-purple.audio-player {
+  background-image:url("/img/sprites/icons-purple.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-purple,
+  a.ico-purple.audio-player {
+    background-image:url("/img/sprites/icons-purple.v5@2x.png")
+  }
+}
+.ico.ico-orange,
+a.ico-orange.audio-player {
+  background-image:url("/img/sprites/icons-orange.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-orange,
+  a.ico-orange.audio-player {
+    background-image:url("/img/sprites/icons-orange.v5@2x.png")
+  }
+}
+.ico.ico-yellow,
+a.ico-yellow.audio-player {
+  background-image:url("/img/sprites/icons-yellow.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-yellow,
+  a.ico-yellow.audio-player {
+    background-image:url("/img/sprites/icons-yellow.v5@2x.png")
+  }
+}
+.ico.ico-red,
+a.ico-red.audio-player {
+  background-image:url("/img/sprites/icons-red.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-red,
+  a.ico-red.audio-player {
+    background-image:url("/img/sprites/icons-red.v5@2x.png")
+  }
+}
+.ico.ico-white,
+a.ico-white.audio-player {
+  background-image:url("/img/sprites/icons-white.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-white,
+  a.ico-white.audio-player {
+    background-image:url("/img/sprites/icons-white.v5@2x.png")
+  }
+}
+.ico.ico-light-blue,
+a.ico-light-blue.audio-player {
+  background-image:url("/img/sprites/icons-light-blue.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-light-blue,
+  a.ico-light-blue.audio-player {
+    background-image:url("/img/sprites/icons-light-blue.v5@2x.png")
+  }
+}
+.ico.ico-pink,
+a.ico-pink.audio-player {
+  background-image:url("/img/sprites/icons-pink.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-pink,
+  a.ico-pink.audio-player {
+    background-image:url("/img/sprites/icons-pink.v5@2x.png")
+  }
+}
+.ico,
+a.audio-player,
+.ico.ico-active-states:active {
+  background-image:url("/img/sprites/icons-grey-dark.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico,
+  a.audio-player,
+  .ico.ico-active-states:active {
+    background-image:url("/img/sprites/icons-grey-dark.v5@2x.png")
+  }
+}
+.ico.ico-active-states,
+a.ico-active-states.audio-player {
+  cursor:pointer
+}
+.ico.ico-active-states:hover,
+a.ico-active-states.audio-player:hover,
+.ico.ico-active-states:focus,
+a.ico-active-states.audio-player:focus {
+  background-image:url("/img/sprites/icons-blue.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-active-states:hover,
+  a.ico-active-states.audio-player:hover,
+  .ico.ico-active-states:focus,
+  a.ico-active-states.audio-player:focus {
+    background-image:url("/img/sprites/icons-blue.v5@2x.png")
+  }
+}
+.ico.ico-active-states,
+a.ico-active-states.audio-player {
+  background-image:url("/img/sprites/icons-grey.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .ico.ico-active-states,
+  a.ico-active-states.audio-player {
+    background-image:url("/img/sprites/icons-grey.v5@2x.png")
+  }
+}
+.btn.btn-icos-active .ico,
+.btn.btn-icos-active a.audio-player {
+  background-image:url("/img/sprites/icons-grey-dark.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .btn.btn-icos-active .ico,
+  .btn.btn-icos-active a.audio-player {
+    background-image:url("/img/sprites/icons-grey-dark.v5@2x.png")
+  }
+}
+.btn.btn-icos-active:hover .ico,
+.btn.btn-icos-active:hover a.audio-player,
+.btn.btn-icos-active:focus .ico,
+.btn.btn-icos-active:focus a.audio-player {
+  background-image:url("/img/sprites/icons-blue.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .btn.btn-icos-active:hover .ico,
+  .btn.btn-icos-active:hover a.audio-player,
+  .btn.btn-icos-active:focus .ico,
+  .btn.btn-icos-active:focus a.audio-player {
+    background-image:url("/img/sprites/icons-blue.v5@2x.png")
+  }
+}
+.btn.btn-icos-active:active .ico,
+.btn.btn-icos-active:active a.audio-player {
+  background-image:url("/img/sprites/icons-grey-dark.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .btn.btn-icos-active:active .ico,
+  .btn.btn-icos-active:active a.audio-player {
+    background-image:url("/img/sprites/icons-grey-dark.v5@2x.png")
+  }
+}
+.btn.btn-icos-active.disabled .ico,
+.btn.btn-icos-active.disabled a.audio-player,
+.btn.btn-icos-active.disabled:focus .ico,
+.btn.btn-icos-active.disabled:hover .ico,
+.btn.btn-icos-active.disabled:active .ico {
+  background-image:url("/img/sprites/icons-grey.v5.png?flags2020")
+}
+@media only screen and (min-device-pixel-ratio: 1.5),only screen and (min-resolution: 192dpi),only screen and (min-resolution: 1.5dppx) {
+  .btn.btn-icos-active.disabled .ico,
+  .btn.btn-icos-active.disabled a.audio-player,
+  .btn.btn-icos-active.disabled:focus .ico,
+  .btn.btn-icos-active.disabled:hover .ico,
+  .btn.btn-icos-active.disabled:active .ico {
+    background-image:url("/img/sprites/icons-grey.v5@2x.png")
+  }
+}
+.ico-seed {
+  background-position:0px 0px
+}
+.ico-seed.ico-s {
+  background-position:0px 0px
+}
+.ico-seed.ico-m {
+  background-position:0px 0px
+}
+.ico-seed.ico-l,
+a.ico-seed.audio-player {
+  background-position:0px 0px
+}
+.ico-seed.ico-xl {
+  background-position:0px 0px
+}
+.ico-water {
+  background-position:-18px 0px
+}
+.ico-water.ico-s {
+  background-position:-12px 0px
+}
+.ico-water.ico-m {
+  background-position:-26px 0px
+}
+.ico-water.ico-l,
+a.ico-water.audio-player {
+  background-position:-32px 0px
+}
+.ico-water.ico-xl {
+  background-position:-48px 0px
+}
+.ico-sun {
+  background-position:-36px 0px
+}
+.ico-sun.ico-s {
+  background-position:-24px 0px
+}
+.ico-sun.ico-m {
+  background-position:-52px 0px
+}
+.ico-sun.ico-l,
+a.ico-sun.audio-player {
+  background-position:-64px 0px
+}
+.ico-sun.ico-xl {
+  background-position:-96px 0px
+}
+.ico-flower {
+  background-position:-54px 0px
+}
+.ico-flower.ico-s {
+  background-position:-36px 0px
+}
+.ico-flower.ico-m {
+  background-position:-78px 0px
+}
+.ico-flower.ico-l,
+a.ico-flower.audio-player {
+  background-position:-96px 0px
+}
+.ico-flower.ico-xl {
+  background-position:-144px 0px
+}
+.ico-question {
+  background-position:-72px 0px
+}
+.ico-question.ico-s {
+  background-position:-48px 0px
+}
+.ico-question.ico-m {
+  background-position:-104px 0px
+}
+.ico-question.ico-l,
+a.ico-question.audio-player {
+  background-position:-128px 0px
+}
+.ico-question.ico-xl {
+  background-position:-192px 0px
+}
+.ico-stats {
+  background-position:-90px 0px
+}
+.ico-stats.ico-s {
+  background-position:-60px 0px
+}
+.ico-stats.ico-m {
+  background-position:-130px 0px
+}
+.ico-stats.ico-l,
+a.ico-stats.audio-player {
+  background-position:-160px 0px
+}
+.ico-stats.ico-xl {
+  background-position:-240px 0px
+}
+.ico-thumbs-up {
+  background-position:-108px 0px
+}
+.ico-thumbs-up.ico-s {
+  background-position:-72px 0px
+}
+.ico-thumbs-up.ico-m {
+  background-position:-156px 0px
+}
+.ico-thumbs-up.ico-l,
+a.ico-thumbs-up.audio-player {
+  background-position:-192px 0px
+}
+.ico-thumbs-up.ico-xl {
+  background-position:-288px 0px
+}
+.ico-arr-left {
+  background-position:0px -18px
+}
+.ico-arr-left.ico-s {
+  background-position:0px -12px
+}
+.ico-arr-left.ico-m {
+  background-position:0px -26px
+}
+.ico-arr-left.ico-l,
+a.ico-arr-left.audio-player {
+  background-position:0px -32px
+}
+.ico-arr-left.ico-xl {
+  background-position:0px -48px
+}
+.ico-arr-down {
+  background-position:-18px -18px
+}
+.ico-arr-down.ico-s {
+  background-position:-12px -12px
+}
+.ico-arr-down.ico-m {
+  background-position:-26px -26px
+}
+.ico-arr-down.ico-l,
+a.ico-arr-down.audio-player {
+  background-position:-32px -32px
+}
+.ico-arr-down.ico-xl {
+  background-position:-48px -48px
+}
+.ico-arr-up {
+  background-position:-36px -18px
+}
+.ico-arr-up.ico-s {
+  background-position:-24px -12px
+}
+.ico-arr-up.ico-m {
+  background-position:-52px -26px
+}
+.ico-arr-up.ico-l,
+a.ico-arr-up.audio-player {
+  background-position:-64px -32px
+}
+.ico-arr-up.ico-xl {
+  background-position:-96px -48px
+}
+.ico-arr-right {
+  background-position:-54px -18px
+}
+.ico-arr-right.ico-s {
+  background-position:-36px -12px
+}
+.ico-arr-right.ico-m {
+  background-position:-78px -26px
+}
+.ico-arr-right.ico-l,
+a.ico-arr-right.audio-player {
+  background-position:-96px -32px
+}
+.ico-arr-right.ico-xl {
+  background-position:-144px -48px
+}
+.ico-home {
+  background-position:-72px -18px
+}
+.ico-home.ico-s {
+  background-position:-48px -12px
+}
+.ico-home.ico-m {
+  background-position:-104px -26px
+}
+.ico-home.ico-l,
+a.ico-home.audio-player {
+  background-position:-128px -32px
+}
+.ico-home.ico-xl {
+  background-position:-192px -48px
+}
+.ico-star {
+  background-position:-90px -18px
+}
+.ico-star.ico-s {
+  background-position:-60px -12px
+}
+.ico-star.ico-m {
+  background-position:-130px -26px
+}
+.ico-star.ico-l,
+a.ico-star.audio-player {
+  background-position:-160px -32px
+}
+.ico-star.ico-xl {
+  background-position:-240px -48px
+}
+.ico-pin {
+  background-position:-108px -18px
+}
+.ico-pin.ico-s {
+  background-position:-72px -12px
+}
+.ico-pin.ico-m {
+  background-position:-156px -26px
+}
+.ico-pin.ico-l,
+a.ico-pin.audio-player {
+  background-position:-192px -32px
+}
+.ico-pin.ico-xl {
+  background-position:-288px -48px
+}
+.ico-search {
+  background-position:0px -36px
+}
+.ico-search.ico-s {
+  background-position:0px -24px
+}
+.ico-search.ico-m {
+  background-position:0px -52px
+}
+.ico-search.ico-l,
+a.ico-search.audio-player {
+  background-position:0px -64px
+}
+.ico-search.ico-xl {
+  background-position:0px -96px
+}
+.ico-close {
+  background-position:-18px -36px
+}
+.ico-close.ico-s {
+  background-position:-12px -24px
+}
+.ico-close.ico-m {
+  background-position:-26px -52px
+}
+.ico-close.ico-l,
+a.ico-close.audio-player {
+  background-position:-32px -64px
+}
+.ico-close.ico-xl {
+  background-position:-48px -96px
+}
+.ico-correct {
+  background-position:-36px -36px
+}
+.ico-correct.ico-s {
+  background-position:-24px -24px
+}
+.ico-correct.ico-m {
+  background-position:-52px -52px
+}
+.ico-correct.ico-l,
+a.ico-correct.audio-player {
+  background-position:-64px -64px
+}
+.ico-correct.ico-xl {
+  background-position:-96px -96px
+}
+.ico-plus {
+  background-position:-54px -36px
+}
+.ico-plus.ico-s {
+  background-position:-36px -24px
+}
+.ico-plus.ico-m {
+  background-position:-78px -52px
+}
+.ico-plus.ico-l,
+a.ico-plus.audio-player {
+  background-position:-96px -64px
+}
+.ico-plus.ico-xl {
+  background-position:-144px -96px
+}
+.ico-minus {
+  background-position:-72px -36px
+}
+.ico-minus.ico-s {
+  background-position:-48px -24px
+}
+.ico-minus.ico-m {
+  background-position:-104px -52px
+}
+.ico-minus.ico-l,
+a.ico-minus.audio-player {
+  background-position:-128px -64px
+}
+.ico-minus.ico-xl {
+  background-position:-192px -96px
+}
+.ico-settings {
+  background-position:-90px -36px
+}
+.ico-settings.ico-s {
+  background-position:-60px -24px
+}
+.ico-settings.ico-m {
+  background-position:-130px -52px
+}
+.ico-settings.ico-l,
+a.ico-settings.audio-player {
+  background-position:-160px -64px
+}
+.ico-settings.ico-xl {
+  background-position:-240px -96px
+}
+.ico-hi-five {
+  background-position:-108px -36px
+}
+.ico-hi-five.ico-s {
+  background-position:-72px -24px
+}
+.ico-hi-five.ico-m {
+  background-position:-156px -52px
+}
+.ico-hi-five.ico-l,
+a.ico-hi-five.audio-player {
+  background-position:-192px -64px
+}
+.ico-hi-five.ico-xl {
+  background-position:-288px -96px
+}
+.ico-look {
+  background-position:0px -54px
+}
+.ico-look.ico-s {
+  background-position:0px -36px
+}
+.ico-look.ico-m {
+  background-position:0px -78px
+}
+.ico-look.ico-l,
+a.ico-look.audio-player {
+  background-position:0px -96px
+}
+.ico-look.ico-xl {
+  background-position:0px -144px
+}
+.ico-shuffle {
+  background-position:-18px -54px
+}
+.ico-shuffle.ico-s {
+  background-position:-12px -36px
+}
+.ico-shuffle.ico-m {
+  background-position:-26px -78px
+}
+.ico-shuffle.ico-l,
+a.ico-shuffle.audio-player {
+  background-position:-32px -96px
+}
+.ico-shuffle.ico-xl {
+  background-position:-48px -144px
+}
+.ico-audio {
+  background-position:-36px -54px
+}
+.ico-audio.ico-s {
+  background-position:-24px -36px
+}
+.ico-audio.ico-m {
+  background-position:-52px -78px
+}
+.ico-audio.ico-l,
+a.ico-audio.audio-player {
+  background-position:-64px -96px
+}
+.ico-audio.ico-xl {
+  background-position:-96px -144px
+}
+.ico-like {
+  background-position:-54px -54px
+}
+.ico-like.ico-s {
+  background-position:-36px -36px
+}
+.ico-like.ico-m {
+  background-position:-78px -78px
+}
+.ico-like.ico-l,
+a.ico-like.audio-player {
+  background-position:-96px -96px
+}
+.ico-like.ico-xl {
+  background-position:-144px -144px
+}
+.ico-talk {
+  background-position:-72px -54px
+}
+.ico-talk.ico-s {
+  background-position:-48px -36px
+}
+.ico-talk.ico-m {
+  background-position:-104px -78px
+}
+.ico-talk.ico-l,
+a.ico-talk.audio-player {
+  background-position:-128px -96px
+}
+.ico-talk.ico-xl {
+  background-position:-192px -144px
+}
+.ico-world {
+  background-position:-90px -54px
+}
+.ico-world.ico-s {
+  background-position:-60px -36px
+}
+.ico-world.ico-m {
+  background-position:-130px -78px
+}
+.ico-world.ico-l,
+a.ico-world.audio-player {
+  background-position:-160px -96px
+}
+.ico-world.ico-xl {
+  background-position:-240px -144px
+}
+.ico-mute {
+  background-position:-108px -54px
+}
+.ico-mute.ico-s {
+  background-position:-72px -36px
+}
+.ico-mute.ico-m {
+  background-position:-156px -78px
+}
+.ico-mute.ico-l,
+a.ico-mute.audio-player {
+  background-position:-192px -96px
+}
+.ico-mute.ico-xl {
+  background-position:-288px -144px
+}
+.ico-top {
+  background-position:0px -72px
+}
+.ico-top.ico-s {
+  background-position:0px -48px
+}
+.ico-top.ico-m {
+  background-position:0px -104px
+}
+.ico-top.ico-l,
+a.ico-top.audio-player {
+  background-position:0px -128px
+}
+.ico-top.ico-xl {
+  background-position:0px -192px
+}
+.ico-trash {
+  background-position:-18px -72px
+}
+.ico-trash.ico-s {
+  background-position:-12px -48px
+}
+.ico-trash.ico-m {
+  background-position:-26px -104px
+}
+.ico-trash.ico-l,
+a.ico-trash.audio-player {
+  background-position:-32px -128px
+}
+.ico-trash.ico-xl {
+  background-position:-48px -192px
+}
+.ico-bolt {
+  background-position:-36px -72px
+}
+.ico-bolt.ico-s {
+  background-position:-24px -48px
+}
+.ico-bolt.ico-m {
+  background-position:-52px -104px
+}
+.ico-bolt.ico-l,
+a.ico-bolt.audio-player {
+  background-position:-64px -128px
+}
+.ico-bolt.ico-xl {
+  background-position:-96px -192px
+}
+.ico-loop {
+  background-position:-54px -72px
+}
+.ico-loop.ico-s {
+  background-position:-36px -48px
+}
+.ico-loop.ico-m {
+  background-position:-78px -104px
+}
+.ico-loop.ico-l,
+a.ico-loop.audio-player {
+  background-position:-96px -128px
+}
+.ico-loop.ico-xl {
+  background-position:-144px -192px
+}
+.ico-trophy {
+  background-position:-72px -72px
+}
+.ico-trophy.ico-s {
+  background-position:-48px -48px
+}
+.ico-trophy.ico-m {
+  background-position:-104px -104px
+}
+.ico-trophy.ico-l,
+a.ico-trophy.audio-player {
+  background-position:-128px -128px
+}
+.ico-trophy.ico-xl {
+  background-position:-192px -192px
+}
+.ico-degree {
+  background-position:-90px -72px
+}
+.ico-degree.ico-s {
+  background-position:-60px -48px
+}
+.ico-degree.ico-m {
+  background-position:-130px -104px
+}
+.ico-degree.ico-l,
+a.ico-degree.audio-player {
+  background-position:-160px -128px
+}
+.ico-degree.ico-xl {
+  background-position:-240px -192px
+}
+.ico-temple {
+  background-position:-108px -72px
+}
+.ico-temple.ico-s {
+  background-position:-72px -48px
+}
+.ico-temple.ico-m {
+  background-position:-156px -104px
+}
+.ico-temple.ico-l,
+a.ico-temple.audio-player {
+  background-position:-192px -128px
+}
+.ico-temple.ico-xl {
+  background-position:-288px -192px
+}
+.ico-mem {
+  background-position:0px -90px
+}
+.ico-mem.ico-s {
+  background-position:0px -60px
+}
+.ico-mem.ico-m {
+  background-position:0px -130px
+}
+.ico-mem.ico-l,
+a.ico-mem.audio-player {
+  background-position:0px -160px
+}
+.ico-mem.ico-xl {
+  background-position:0px -240px
+}
+.ico-user {
+  background-position:-18px -90px
+}
+.ico-user.ico-s {
+  background-position:-12px -60px
+}
+.ico-user.ico-m {
+  background-position:-26px -130px
+}
+.ico-user.ico-l,
+a.ico-user.audio-player {
+  background-position:-32px -160px
+}
+.ico-user.ico-xl {
+  background-position:-48px -240px
+}
+.ico-twitter {
+  background-position:-36px -90px
+}
+.ico-twitter.ico-s {
+  background-position:-24px -60px
+}
+.ico-twitter.ico-m {
+  background-position:-52px -130px
+}
+.ico-twitter.ico-l,
+a.ico-twitter.audio-player {
+  background-position:-64px -160px
+}
+.ico-twitter.ico-xl {
+  background-position:-96px -240px
+}
+.ico-facebook {
+  background-position:-54px -90px
+}
+.ico-facebook.ico-s {
+  background-position:-36px -60px
+}
+.ico-facebook.ico-m {
+  background-position:-78px -130px
+}
+.ico-facebook.ico-l,
+a.ico-facebook.audio-player {
+  background-position:-96px -160px
+}
+.ico-facebook.ico-xl {
+  background-position:-144px -240px
+}
+.ico-gplus {
+  background-position:-72px -162px
+}
+.ico-gplus.ico-s {
+  background-position:-48px -108px
+}
+.ico-gplus.ico-m {
+  background-position:-104px -234px
+}
+.ico-gplus.ico-l,
+a.ico-gplus.audio-player {
+  background-position:-128px -288px
+}
+.ico-gplus.ico-xl {
+  background-position:-192px -432px
+}
+.ico-bubble {
+  background-position:-72px -90px
+}
+.ico-bubble.ico-s {
+  background-position:-48px -60px
+}
+.ico-bubble.ico-m {
+  background-position:-104px -130px
+}
+.ico-bubble.ico-l,
+a.ico-bubble.audio-player {
+  background-position:-128px -160px
+}
+.ico-bubble.ico-xl {
+  background-position:-192px -240px
+}
+.ico-edit {
+  background-position:-90px -90px
+}
+.ico-edit.ico-s {
+  background-position:-60px -60px
+}
+.ico-edit.ico-m {
+  background-position:-130px -130px
+}
+.ico-edit.ico-l,
+a.ico-edit.audio-player {
+  background-position:-160px -160px
+}
+.ico-edit.ico-xl {
+  background-position:-240px -240px
+}
+.ico-stop {
+  background-position:-108px -90px
+}
+.ico-stop.ico-s {
+  background-position:-72px -60px
+}
+.ico-stop.ico-m {
+  background-position:-156px -130px
+}
+.ico-stop.ico-l,
+a.ico-stop.audio-player {
+  background-position:-192px -160px
+}
+.ico-stop.ico-xl {
+  background-position:-288px -240px
+}
+.ico-tag {
+  background-position:0px -108px
+}
+.ico-tag.ico-s {
+  background-position:0px -72px
+}
+.ico-tag.ico-m {
+  background-position:0px -156px
+}
+.ico-tag.ico-l,
+a.ico-tag.audio-player {
+  background-position:0px -192px
+}
+.ico-tag.ico-xl {
+  background-position:0px -288px
+}
+.ico-media {
+  background-position:-18px -108px
+}
+.ico-media.ico-s {
+  background-position:-12px -72px
+}
+.ico-media.ico-m {
+  background-position:-26px -156px
+}
+.ico-media.ico-l,
+a.ico-media.audio-player {
+  background-position:-32px -192px
+}
+.ico-media.ico-xl {
+  background-position:-48px -288px
+}
+.ico-clock {
+  background-position:-36px -108px
+}
+.ico-clock.ico-s {
+  background-position:-24px -72px
+}
+.ico-clock.ico-m {
+  background-position:-52px -156px
+}
+.ico-clock.ico-l,
+a.ico-clock.audio-player {
+  background-position:-64px -192px
+}
+.ico-clock.ico-xl {
+  background-position:-96px -288px
+}
+.ico-lock {
+  background-position:-54px -108px
+}
+.ico-lock.ico-s {
+  background-position:-36px -72px
+}
+.ico-lock.ico-m {
+  background-position:-78px -156px
+}
+.ico-lock.ico-l,
+a.ico-lock.audio-player {
+  background-position:-96px -192px
+}
+.ico-lock.ico-xl {
+  background-position:-144px -288px
+}
+.ico-lab {
+  background-position:-72px -108px
+}
+.ico-lab.ico-s {
+  background-position:-48px -72px
+}
+.ico-lab.ico-m {
+  background-position:-104px -156px
+}
+.ico-lab.ico-l,
+a.ico-lab.audio-player {
+  background-position:-128px -192px
+}
+.ico-lab.ico-xl {
+  background-position:-192px -288px
+}
+.ico-envelope {
+  background-position:-90px -108px
+}
+.ico-envelope.ico-s {
+  background-position:-60px -72px
+}
+.ico-envelope.ico-m {
+  background-position:-130px -156px
+}
+.ico-envelope.ico-l,
+a.ico-envelope.audio-player {
+  background-position:-160px -192px
+}
+.ico-envelope.ico-xl {
+  background-position:-240px -288px
+}
+.ico-list {
+  background-position:-108px -108px
+}
+.ico-list.ico-s {
+  background-position:-72px -72px
+}
+.ico-list.ico-m {
+  background-position:-156px -156px
+}
+.ico-list.ico-l,
+a.ico-list.audio-player {
+  background-position:-192px -192px
+}
+.ico-list.ico-xl {
+  background-position:-288px -288px
+}
+.ico-backward {
+  background-position:-18px -126px
+}
+.ico-backward.ico-s {
+  background-position:-12px -84px
+}
+.ico-backward.ico-m {
+  background-position:-26px -182px
+}
+.ico-backward.ico-l,
+a.ico-backward.audio-player {
+  background-position:-32px -224px
+}
+.ico-backward.ico-xl {
+  background-position:-48px -336px
+}
+.ico-forward {
+  background-position:-36px -126px
+}
+.ico-forward.ico-s {
+  background-position:-24px -84px
+}
+.ico-forward.ico-m {
+  background-position:-52px -182px
+}
+.ico-forward.ico-l,
+a.ico-forward.audio-player {
+  background-position:-64px -224px
+}
+.ico-forward.ico-xl {
+  background-position:-96px -336px
+}
+.ico-rewind {
+  background-position:-54px -126px
+}
+.ico-rewind.ico-s {
+  background-position:-36px -84px
+}
+.ico-rewind.ico-m {
+  background-position:-78px -182px
+}
+.ico-rewind.ico-l,
+a.ico-rewind.audio-player {
+  background-position:-96px -224px
+}
+.ico-rewind.ico-xl {
+  background-position:-144px -336px
+}
+.ico-finish {
+  background-position:-72px -126px
+}
+.ico-finish.ico-s {
+  background-position:-48px -84px
+}
+.ico-finish.ico-m {
+  background-position:-104px -182px
+}
+.ico-finish.ico-l,
+a.ico-finish.audio-player {
+  background-position:-128px -224px
+}
+.ico-finish.ico-xl {
+  background-position:-192px -336px
+}
+.ico-press {
+  background-position:-90px -126px
+}
+.ico-press.ico-s {
+  background-position:-60px -84px
+}
+.ico-press.ico-m {
+  background-position:-130px -182px
+}
+.ico-press.ico-l,
+a.ico-press.audio-player {
+  background-position:-160px -224px
+}
+.ico-press.ico-xl {
+  background-position:-240px -336px
+}
+.ico-brain {
+  background-position:-108px -126px
+}
+.ico-brain.ico-s {
+  background-position:-72px -84px
+}
+.ico-brain.ico-m {
+  background-position:-156px -182px
+}
+.ico-brain.ico-l,
+a.ico-brain.audio-player {
+  background-position:-192px -224px
+}
+.ico-brain.ico-xl {
+  background-position:-288px -336px
+}
+.ico-mobile {
+  background-position:0px -144px
+}
+.ico-mobile.ico-s {
+  background-position:0px -96px
+}
+.ico-mobile.ico-m {
+  background-position:0px -208px
+}
+.ico-mobile.ico-l,
+a.ico-mobile.audio-player {
+  background-position:0px -256px
+}
+.ico-mobile.ico-xl {
+  background-position:0px -384px
+}
+.ico-circle {
+  background-position:-18px -144px
+}
+.ico-circle.ico-s {
+  background-position:-12px -96px
+}
+.ico-circle.ico-m {
+  background-position:-26px -208px
+}
+.ico-circle.ico-l,
+a.ico-circle.audio-player {
+  background-position:-32px -256px
+}
+.ico-circle.ico-xl {
+  background-position:-48px -384px
+}
+.ico-flag {
+  background-position:-36px -144px
+}
+.ico-flag.ico-s {
+  background-position:-24px -96px
+}
+.ico-flag.ico-m {
+  background-position:-52px -208px
+}
+.ico-flag.ico-l,
+a.ico-flag.audio-player {
+  background-position:-64px -256px
+}
+.ico-flag.ico-xl {
+  background-position:-96px -384px
+}
+.ico-re-order {
+  background-position:-54px -144px
+}
+.ico-re-order.ico-s {
+  background-position:-36px -96px
+}
+.ico-re-order.ico-m {
+  background-position:-78px -208px
+}
+.ico-re-order.ico-l,
+a.ico-re-order.audio-player {
+  background-position:-96px -256px
+}
+.ico-re-order.ico-xl {
+  background-position:-144px -384px
+}
+.ico-people {
+  background-position:-72px -144px
+}
+.ico-people.ico-s {
+  background-position:-48px -96px
+}
+.ico-people.ico-m {
+  background-position:-104px -208px
+}
+.ico-people.ico-l,
+a.ico-people.audio-player {
+  background-position:-128px -256px
+}
+.ico-people.ico-xl {
+  background-position:-192px -384px
+}
+.ico-follow {
+  background-position:-90px -144px
+}
+.ico-follow.ico-s {
+  background-position:-60px -96px
+}
+.ico-follow.ico-m {
+  background-position:-130px -208px
+}
+.ico-follow.ico-l,
+a.ico-follow.audio-player {
+  background-position:-160px -256px
+}
+.ico-follow.ico-xl {
+  background-position:-240px -384px
+}
+.ico-ignore {
+  background-position:-108px -144px
+}
+.ico-ignore.ico-s {
+  background-position:-72px -96px
+}
+.ico-ignore.ico-m {
+  background-position:-156px -208px
+}
+.ico-ignore.ico-l,
+a.ico-ignore.audio-player {
+  background-position:-192px -256px
+}
+.ico-ignore.ico-xl {
+  background-position:-288px -384px
+}
+.ico-shortcuts {
+  background-position:0px -162px
+}
+.ico-shortcuts.ico-s {
+  background-position:0px -108px
+}
+.ico-shortcuts.ico-m {
+  background-position:0px -234px
+}
+.ico-shortcuts.ico-l,
+a.ico-shortcuts.audio-player {
+  background-position:0px -288px
+}
+.ico-shortcuts.ico-xl {
+  background-position:0px -432px
+}
+.ico-pause {
+  background-position:-18px -162px
+}
+.ico-pause.ico-s {
+  background-position:-12px -108px
+}
+.ico-pause.ico-m {
+  background-position:-26px -234px
+}
+.ico-pause.ico-l,
+a.ico-pause.audio-player {
+  background-position:-32px -288px
+}
+.ico-pause.ico-xl {
+  background-position:-48px -432px
+}
+.ico-play {
+  background-position:-36px -162px
+}
+.ico-play.ico-s {
+  background-position:-24px -108px
+}
+.ico-play.ico-m {
+  background-position:-52px -234px
+}
+.ico-play.ico-l,
+a.ico-play.audio-player {
+  background-position:-64px -288px
+}
+.ico-play.ico-xl {
+  background-position:-96px -432px
+}
+.ico-thin-arr-left {
+  background-position:-54px -162px
+}
+.ico-thin-arr-left.ico-s {
+  background-position:-36px -108px
+}
+.ico-thin-arr-left.ico-m {
+  background-position:-78px -234px
+}
+.ico-thin-arr-left.ico-l,
+a.ico-thin-arr-left.audio-player {
+  background-position:-96px -288px
+}
+.ico-thin-arr-left.ico-xl {
+  background-position:-144px -432px
+}
+a.audio-player {
+  background-position:-36px -54px
+}
+a.audio-player.ico-s {
+  background-position:-24px -36px
+}
+a.audio-player.ico-m {
+  background-position:-52px -78px
+}
+a.audio-player.ico-l,
+a.audio-player {
+  background-position:-64px -96px
+}
+a.audio-player.ico-xl {
+  background-position:-96px -144px
+}
