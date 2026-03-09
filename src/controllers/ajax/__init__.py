@@ -1,9 +1,5 @@
 import json
-import settings
 import web
-from math import ceil
-from memrise import memrise
-from requests.exceptions import HTTPError
 
 from .courses import (
     courses,
@@ -90,7 +86,7 @@ urls = (
     # logged-in user only
     r"/dashboard", user_dashboard,
     r"/leaderboard", user_leaderboard,
-    f"/progress", my_progress,
+    r"/progress", my_progress,
     r"/sync", user_sync,
 
     r"/register_progress", learning_session_register_progress,
@@ -144,7 +140,6 @@ class debug_session:
         return json.dumps(session)
 
 
-
 app = web.application(urls, locals(), autoreload=False)
 
 
@@ -156,7 +151,7 @@ def catch_unauthorized(handler):
     try:
         result = handler()
     except web.Unauthorized as e:
-        setattr(e, '__next__', True)
+        setattr(e, "__next__", True)
 
         raise e
     return result

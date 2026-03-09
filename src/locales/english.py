@@ -484,7 +484,7 @@ formats = {
     "TIME_FORMAT": "%X",
     "DATETIME_FORMAT": "%b %-d, %Y, %X",
     "YEAR_MONTH_FORMAT": "%B %Y",  # year and month
-    "MONTH_DAY_FORMAT": "%B %-d",   # month and day
+    "MONTH_DAY_FORMAT": "%B %-d",  # month and day
     "SHORT_DATE_FORMAT": "%m/%d/%Y",
     "SHORT_DATETIME_FORMAT": "%m/%d/%Y %X",
     "FIRST_DAY_OF_WEEK": 0,  # 0 means Sunday, 1 means Monday...

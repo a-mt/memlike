@@ -95,5 +95,10 @@ python -m pytest src/tests/test_memrise_get.py -k 'test_memrise_categories' -s -
 
 # To launch eslint (js files linting):
 npm install eslint@4.x babel-eslint@8
-eslint src/static/js6
+npx eslint static/js6 --fix
+
+# To launch ruff
+pip install ruff
+ruff format
+ruff check --fix
 ```

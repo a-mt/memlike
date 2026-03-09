@@ -13,7 +13,7 @@ const build = {
 };
 
 /* global $, window, document, console */
-/* global setTimeout, setInterval, clearInterval */
+/* global setTimeout, setInterval, clearInterval, localStorage, Set */
 $(document).ready(function(){
   if(window.MEMLIKE.garden.levels_indexes == '') {
     window.MEMLIKE.course.levels[1] = {'name': '', 'type': 1};
@@ -117,50 +117,50 @@ class LearnSettingsModal extends Component {
             id="disable_typing"
             type="checkbox"
             defaultChecked={this.state.disable_typing}
-            onChange={this.handleChange.bind(this, "disable_typing")}
-            autocomplete="off"
+            onChange={this.handleChange.bind(this, 'disable_typing')}
+            autoComplete="off"
           />
-          <label for="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
+          <label htmlFor="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
         </div>
         <div>
           <input
             id="disable_tapping"
             type="checkbox"
             defaultChecked={this.state.disable_tapping}
-            onChange={this.handleChange.bind(this, "disable_tapping")}
-            autocomplete="off"
+            onChange={this.handleChange.bind(this, 'disable_tapping')}
+            autoComplete="off"
           />
-          <label for="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
+          <label htmlFor="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
         </div>
         <div>
           <input
             id="disable_multimedia"
             type="checkbox"
             defaultChecked={this.state.disable_multimedia}
-            onChange={this.handleChange.bind(this, "disable_multimedia")}
-            autocomplete="off"
+            onChange={this.handleChange.bind(this, 'disable_multimedia')}
+            autoComplete="off"
           />
-          <label for="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+          <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
         </div>
         <div>
           <input
             id="save_progress"
             type="checkbox"
             defaultChecked={this.state.save_progress}
-            onChange={this.handleChange.bind(this, "save_progress")}
-            autocomplete="off"
+            onChange={this.handleChange.bind(this, 'save_progress')}
+            autoComplete="off"
           />
-          <label for="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+          <label htmlFor="save_progress">{window.I18N['learn_settings_save_progress']}</label>
         </div>
         <div>
           <input
             id="reverse_prompt_and_answer"
             type="checkbox"
             defaultChecked={this.state.reverse_prompt_and_answer}
-            onChange={this.handleChange.bind(this, "reverse_prompt_and_answer")}
-            autocomplete="off"
+            onChange={this.handleChange.bind(this, 'reverse_prompt_and_answer')}
+            autoComplete="off"
           />
-          <label for="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
+          <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
         </div>
       </div>
       <div className="btn-group">
@@ -2174,7 +2174,7 @@ const Value = function(props) {
   } else {
     switch(props.type) {
       case 'text' : return (
-        <div className={"text " + className} {...attrs}>{content}</div>
+        <div className={'text ' + className} {...attrs}>{content}</div>
       );
       case 'image': return (
         <div className="image">

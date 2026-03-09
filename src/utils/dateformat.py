@@ -24,11 +24,12 @@ class DateFormat(Formatter):
 
     def B(self):
         "Month, textual, long; e.g. 'January'"
-        return self.i18n.MONTHS[self.data.month-1]
+        return self.i18n.MONTHS[self.data.month - 1]
 
     def b(self):
         "Month, textual, 3 letters; e.g. 'Jan'"
-        return self.i18n.MONTHS_ABBR[self.data.month-1]
+        return self.i18n.MONTHS_ABBR[self.data.month - 1]
+
     def A(self):  # NOQA: E743, E741
         "Day of the week, textual, long; e.g. 'Friday'"
         return self.i18n.WEEKDAYS[self.data.weekday()]

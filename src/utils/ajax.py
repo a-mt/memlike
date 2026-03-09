@@ -3,7 +3,7 @@ import web
 from requests.exceptions import HTTPError
 
 
-def _error(e):
+def error_response(e):
     # https://github.com/webpy/webpy/blob/master/web/webapi.py#L15
     if e.response.status_code == 403:
         return web.Unauthorized()
@@ -19,7 +19,7 @@ def proxied_response(call):
     try:
         data = call()
     except HTTPError as e:
-        return _error(e)
+        return error_response(e)
 
     return json_response(data)
 

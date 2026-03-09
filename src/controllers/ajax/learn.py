@@ -1,9 +1,5 @@
-import json
-import settings
 import web
-from math import ceil
 from memrise import memrise
-from requests.exceptions import HTTPError
 from utils.ajax import proxied_response
 
 
@@ -35,4 +31,3 @@ class reset_progress_level:
         data = web.jsoninput()
         response = memrise.reset_progress_level(data)
         return proxied_response(lambda: response)
-

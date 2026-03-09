@@ -1,10 +1,8 @@
-import json
 import settings
 import web
-from math import ceil
 from memrise import memrise
 from requests.exceptions import HTTPError
-from utils.ajax import proxied_response
+from utils.ajax import proxied_response, error_response
 
 
 class courses:
@@ -44,7 +42,7 @@ class course_level_multimedia:
         try:
             data = memrise.level_multimedia(course_id, course_slug, level_index)
         except HTTPError as e:
-            return _error(e)
+            return error_response(e)
 
         web.header("Content-Type", "text/plain")
         return data

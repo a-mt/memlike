@@ -162,7 +162,7 @@ def catch_unauthorized(handler):
     try:
         result = handler()
     except web.Unauthorized as e:
-        if getattr(e, '__next__', False):
+        if getattr(e, "__next__", False):
             raise
 
         return web.config.template.prender._403()

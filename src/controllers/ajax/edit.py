@@ -1,9 +1,5 @@
-import json
-import settings
 import web
-from math import ceil
 from memrise import memrise
-from requests.exceptions import HTTPError
 from utils.ajax import proxied_response
 
 

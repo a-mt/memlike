@@ -1,7 +1,5 @@
 import json
-import settings
 import web
-from math import ceil
 from memrise import memrise
 from requests.exceptions import HTTPError
 from utils.ajax import proxied_response
@@ -40,8 +38,6 @@ class user_dashboard:
                 yield json.dumps({"next_offset": page["next_offset"]}) + "$"
 
         except HTTPError as e:
-            print("HTTPError", e)
-
             if e.response.status_code == 403:
                 raise web.Unauthorized()
             else:

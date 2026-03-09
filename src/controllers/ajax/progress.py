@@ -1,15 +1,9 @@
-import json
-import settings
 import web
-from math import ceil
 from memrise import memrise
-from requests.exceptions import HTTPError
-from utils.ajax import json_response
 
 import datetime
 from dateutil.relativedelta import relativedelta
 from collections import OrderedDict
-from math import floor
 from utils.dateformat import date_format
 
 
@@ -19,6 +13,7 @@ class my_progress:
             raise web.Unauthorized()
 
         USE_SUNDAY_FIRST = web.ctx.i18n.formats.get("FIRST_DAY_OF_WEEK", 0) == 0
+
         def day_of_week(date):
             weekday = date.weekday()
 
@@ -35,15 +30,7 @@ class my_progress:
         # Get the number of things learned each day
         dt = datetime.datetime.combine(start_date, datetime.datetime.min.time())
 
-        import time
-        t = time.process_time()
-
-        progress = memrise.my_progress_summary(
-            sync_token=int(dt.timestamp())-1
-        )
-
-        elapsed_time = time.process_time() - t
-        print('>>>elapsed_time', elapsed_time)
+        progress = memrise.my_progress_summary(sync_token=int(dt.timestamp()) - 1)
 
         # Labels of days, in the order we should display then
         # ie [{'label': 'Sunday', 'label_short': 'Sun'}...]
@@ -51,11 +38,13 @@ class my_progress:
         date = start_date
         days_of_week = []
 
-        for i in range(0,7):
-            days_of_week.append({
-                "label": date_format(date, "%A"),
-                "label_short": date_format(date, "%a"),
-            })
+        for i in range(0, 7):
+            days_of_week.append(
+                {
+                    "label": date_format(date, "%A"),
+                    "label_short": date_format(date, "%a"),
+                }
+            )
             date += date_increment
 
         # Build the listing of weeks to show, with the associated progress
@@ -71,7 +60,7 @@ class my_progress:
             week = {}
 
             # Add days within that week and the progress for these days
-            for i in range(0,7):
+            for i in range(0, 7):
                 date_fmt = date_format(date, web.ctx.i18n.formats.get("DATE_FORMAT", "%x"))
 
                 month = date.strftime("%Y-%m")
@@ -110,11 +99,11 @@ class my_progress:
         n_groups = 4
         group_size = int(total / n_groups) if total else 1
 
-        for k in range(group_size, group_size*4, group_size):
-            thresholds.append(counts[k-1])
+        for k in range(group_size, group_size * 4, group_size):
+            thresholds.append(counts[k - 1])
 
         # ie [(4, 47), (3, 30), (2, 4), (1, 1)]
-        thresholds = [(i+1, t) for i, t in enumerate(thresholds)]
+        thresholds = [(i + 1, t) for i, t in enumerate(thresholds)]
         thresholds.reverse()
 
         def get_level(thresholds):
@@ -125,6 +114,7 @@ class my_progress:
                     if value >= threshold:
                         return level
                 return 0
+
             return f
 
         fn = get_level(thresholds=thresholds)

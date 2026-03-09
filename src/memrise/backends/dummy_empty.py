@@ -21,8 +21,8 @@ class DummyEmptyMemrise(DummyMemrise):
 
     def my_progress(self, **kwargs):
         return {
-          "sync_token": 0,
-          "thingusers": [],
+            "sync_token": 0,
+            "thingusers": [],
         }
 
     def courses(self, lang_slug, page=1, cat="", query="", **kwargs):

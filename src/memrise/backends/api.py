@@ -124,7 +124,6 @@ class ApiMemrise(Memrise):
             if len(data["thingusers"]) == 5000:
                 sync_token = data.get("sync_token", None)
 
-        print('my_progress_summary', summary)
         return summary
 
     def my_progress(self, sync_token=0, **kwargs):

@@ -248,7 +248,7 @@ class EditLevel extends Component {
           <div className="edit-level-actions-group">
             <div className="btn-group">
               <button className="delete-level btn action" title={window.I18N.delete_level}>
-                <i class="ico ico-grey ico-trash"></i>
+                <i className="ico ico-grey ico-trash"></i>
               </button>
             </div>
 
@@ -269,7 +269,7 @@ class EditLevel extends Component {
             </div>
 
             <div className="btn-group">
-              <a class="btn action" href={this.props.url} title={window.I18N.goto_level}>
+              <a className="btn action" href={this.props.url} title={window.I18N.goto_level}>
                 {window.I18N.goto_level}
               </a>
             </div>
@@ -375,7 +375,7 @@ function bindEditEvents(tpl) {
       return;
     }
     // Memrise won't add data unless both columns have values
-    if(data["1"] == "" || data["2"] == "") {
+    if(data['1'] == '' || data['2'] == '') {
       return;
     }
 
@@ -1334,7 +1334,7 @@ var AudioUploader = {
    * @return string
    */
   getGoogleTtsUrl: function(languageCode, word) {
-    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${languageCode || "en"}&client=tw-ob&q=${encodeURIComponent(word)}&tk=${Math.floor(Math.random() * 1000000)}&ttsspeed=1`;
+    const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${languageCode || 'en'}&client=tw-ob&q=${encodeURIComponent(word)}&tk=${Math.floor(Math.random() * 1000000)}&ttsspeed=1`;
 
     const proxy_url = 'https://cors-anywhere.99901dev.workers.dev/?q=' + encodeURIComponent(url);
 
@@ -1364,7 +1364,7 @@ var AudioUploader = {
           console.error(status, blob);
           return;
         }
-        let file = new File([blob], word + '.mp3', {type: "audio/mpeg"});
+        let file = new File([blob], word + '.mp3', {type: 'audio/mpeg'});
 
         let fd = new FormData();
         fd.append('cell_id', cellId);
