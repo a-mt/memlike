@@ -280,6 +280,25 @@ class CachedApiMemrise(ApiMemrise):
 
             return courses
 
+    def my_progress_summary(self, sync_token=0, **kwargs):
+        """
+        Retrieve the progress of an user
+        Is cached via memcached for 15 mmin
+        """
+        self.set_default_kwargs(kwargs)
+
+        cache_key = f"progress_{kwargs['sessionid']}"
+
+        with CachedData(cache_key=cache_key, cache_timeout=60 * 15) as helper:
+            summary = helper.data
+
+            if summary is None:
+                summary = helper.update(
+                    data=super().my_progress_summary(sync_token, **kwargs),
+                )
+
+            return summary
+
 
 class DummyCachedApiMemrise(DummyLoginMixin, DummyEditMixin, CachedApiMemrise):
     def create_requestor(self):
