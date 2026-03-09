@@ -1,5 +1,6 @@
 import re
 import web
+from settings import lang
 
 
 re_formatchars = re.compile(r"(?<!\\)%([aAbB])")
@@ -19,21 +20,22 @@ class Formatter:
 class DateFormat(Formatter):
     def __init__(self, obj):
         self.data = obj
+        self.i18n = web.ctx.get("i18n", None) or lang.switch_lang()
 
     def B(self):
         "Month, textual, long; e.g. 'January'"
-        return web.ctx.i18n.MONTHS[self.data.month-1]
+        return self.i18n.MONTHS[self.data.month-1]
 
     def b(self):
         "Month, textual, 3 letters; e.g. 'Jan'"
-        return web.ctx.i18n.MONTHS_ABBR[self.data.month-1]
+        return self.i18n.MONTHS_ABBR[self.data.month-1]
     def A(self):  # NOQA: E743, E741
         "Day of the week, textual, long; e.g. 'Friday'"
-        return web.ctx.i18n.WEEKDAYS[self.data.weekday()]
+        return self.i18n.WEEKDAYS[self.data.weekday()]
 
     def a(self):  # NOQA: E743, E741
         "Day of the week, 3 letters; e.g. 'Fri'"
-        return web.ctx.i18n.WEEKDAYS_ABBR[self.data.weekday()]
+        return self.i18n.WEEKDAYS_ABBR[self.data.weekday()]
 
 
 def date_format(value, format_string):

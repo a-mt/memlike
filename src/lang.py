@@ -63,10 +63,19 @@ class Lang(object):
         """
         Puts the translation string of the current language into self._data
         """
-        lang_slug = web.ctx.session.get("lang_slug", DEFAULT_LANG_SLUG)
+        self.switch_lang()
+
+    def switch_lang(self, lang_slug=None):
+        if lang_slug is None:
+            if web.ctx.get("session", None):
+                lang_slug = web.ctx.session.get("lang_slug", None)
+
+            lang_slug = lang_slug or DEFAULT_LANG_SLUG
+
         mod = self.get_module(lang_slug=lang_slug)
         web.ctx.i18n = mod
         web.ctx.lang_code = lang_slug[:2]
 
         # Make it accessible in templates
         web.config.template["I18N"] = mod
+        return mod

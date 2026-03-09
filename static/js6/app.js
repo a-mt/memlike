@@ -93,6 +93,7 @@ $(document).ready(function(){
   if($('#user-container').length) {
     user_mempals();
     user_courses();
+    user_progress_things();
   }
 
   // Dashboard
@@ -526,8 +527,10 @@ var multimedia = {
 };
 
 //+--------------------------------------------------------
-//| Browse followers/following users using AJAX
+//| User profile
 //+--------------------------------------------------------
+
+// Browse followers/following users using AJAX
 function user_mempals() {
   var content  = $('#mempals-container');
   if(!content.length) {
@@ -557,9 +560,7 @@ function user_mempals() {
   });
 }
 
-//+--------------------------------------------------------
-//| Browse user's courses using AJAX
-//+--------------------------------------------------------
+// Browse user's courses using AJA
 function user_courses() {
   var content  = $('#usercourses-container');
   if(!content.length) {
@@ -577,6 +578,28 @@ function user_courses() {
           + '<div class="course-box is-empty"></div>'
           + '<div class="course-box is-empty"></div>'
           + '<div class="course-box is-empty"></div>';
+  });
+}
+
+function user_progress_things() {
+  var content  = $('#things-progress-container');
+  if(!content.length) {
+    return;
+  }
+  $.ajax({
+    url: '/ajax/progress',
+    success: function(rendered) {
+      let table = $('.ContributionCalendar-grid', rendered);
+
+      if (table.length) {
+        content.html(table);
+      }
+    },
+    error: function(xhr) {
+      console.error(xhr.status + ' ' + xhr.statusText);
+
+      content.html(window.I18N.error);
+    }
   });
 }
 

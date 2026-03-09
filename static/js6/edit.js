@@ -374,6 +374,10 @@ function bindEditEvents(tpl) {
     if(empty) {
       return;
     }
+    // Memrise won't add data unless both columns have values
+    if(data["1"] == "" || data["2"] == "") {
+      return;
+    }
 
     // Check if we changed row or just cell of the row
     setTimeout(function(){
@@ -381,6 +385,8 @@ function bindEditEvents(tpl) {
         return;
       }
       $tr.addClass('disabled');
+
+      // data: { 1: "valcolA", 2: "valcolB", 3: undefined }
       addRow($tr, data);
     }, 100);
   }
@@ -390,6 +396,10 @@ function bindEditEvents(tpl) {
     var $level  = $tr.closest('.edit-level'),
         levelId = $level.data('level-id');
 
+    if (!levelId) {
+      console.error('Add row error: couldnt find idLevel');
+      return;
+    }
     $.ajax({
       url: '/ajax/level/' + levelId + '/add',
       method: 'POST',

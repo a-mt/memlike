@@ -21,6 +21,8 @@ def beautify_pattern(pattern, fn):
 
 def autodetect_urls(app, prefix="", res={}):
     for i, (pattern, handler) in enumerate(app.mapping):
+        f = None
+
         if isinstance(handler, web.application):
             autodetect_urls(handler, prefix + pattern, res)
 
@@ -35,6 +37,11 @@ def autodetect_urls(app, prefix="", res={}):
             if not inspect.isclass(f):
                 continue
 
+        elif inspect.isclass(handler):
+            f = handler
+            handler = handler.__name__
+
+        if f:
             if "GET" in f.__dict__:
                 res[handler] = "GET " + beautify_pattern(prefix + pattern, f.__dict__["GET"])
 

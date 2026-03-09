@@ -2618,15 +2618,26 @@ tr.disabled {
 }
 
 /*-------------------------------------------------------
- * EDIT
+ * PROGRESS
  *-------------------------------------------------------*/
 
+.nicebox .ContributionCalendar-grid {
+  margin: 0 auto;
+}
+
 :root {
+  /*
   --contribution-default-bgColor-0: #eff2f5;
   --contribution-default-bgColor-1: #aceebb;
   --contribution-default-bgColor-2: #4ac26b;
   --contribution-default-bgColor-3: #2da44e;
   --contribution-default-bgColor-4: #116329;
+  */
+  --contribution-default-bgColor-0: #eff2f5;
+  --contribution-default-bgColor-1: #a9ddf8;
+  --contribution-default-bgColor-2: #20a2e9;
+  --contribution-default-bgColor-3: #6286CD;
+  --contribution-default-bgColor-4: #00579e;
   --contribution-default-borderColor-0: #1f23280d;
   --bgColor-default: #fff;
   --contribution-default-borderColor-1: var(--contribution-default-borderColor-0);

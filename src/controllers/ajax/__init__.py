@@ -1,0 +1,165 @@
+import json
+import settings
+import web
+from math import ceil
+from memrise import memrise
+from requests.exceptions import HTTPError
+
+from .courses import (
+    courses,
+    course,
+    course_leaderboard,
+    course_level,
+    course_level_multimedia,
+)
+from .user import (
+    user,
+    user_mempals,
+    user_courses,
+)
+from .profile import (
+    user_dashboard,
+    user_leaderboard,
+    user_sync,
+)
+from .learn import (
+    learning_session_register_progress,
+    learning_session_register_end,
+    reset_progress_level,
+)
+from .edit import (
+    course_edit,
+    level_add,
+    level_delete,
+    level_edit,
+    level_alt,
+    level_editalt,
+    level_addrow,
+    level_editcell,
+    level_removerow,
+    level_uploadfile,
+    level_uploadfile_compat,
+    level_removefile,
+    level_editmultimedia,
+)
+from .progress import my_progress
+
+
+# fmt: off
+# /ajax/level/...
+urls_level = (
+    r"/add", level_add,
+    r"/delete", level_delete,
+    r"/(\d+)", level_edit,
+    r"/(\d+)/alt", level_alt,
+    r"/(\d+)/alt_edit", level_editalt,
+    r"/(\d+)/add", level_addrow,
+    r"/(\d+)/edit", level_editcell,
+    r"/(\d+)/remove", level_removerow,
+    r"/(\d+)/upload", level_uploadfile,
+    r"/(\d+)/upload_remove", level_removefile,
+    r"/(\d+)/edit_multimedia", level_editmultimedia,
+)
+
+urls_thing = (
+    r"/cell/upload_file/", level_uploadfile_compat,
+)
+
+# /ajax/course/...
+urls_course = (
+    r"/(\d+)/([^/]+)/edit", course_edit,
+    r"/(\d+)/([^/]+)/(\d+)/media", course_level_multimedia,
+    r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", course_level,
+    r"/(\d+)/([^/]+)/leaderboard", course_leaderboard,
+    r"/(\d+)/([^/]+)", course,
+)
+
+
+urls = (
+    r"/courses", courses,
+    r"(/community)?/course", web.application(urls_course, locals(), autoreload=False),
+    r"/level", web.application(urls_level, locals(), autoreload=False),
+    r"/thing", web.application(urls_thing, locals(), autoreload=False),
+
+    r"/user/([^/]+)", user,
+    r"/user/([^/]+)/(followers)", user_mempals,
+    r"/user/([^/]+)/(following)", user_mempals,
+    r"/user/([^/]+)/(teaching)", user_courses,
+    r"/user/([^/]+)/(learning)", user_courses,
+
+    # logged-in user only
+    r"/dashboard", user_dashboard,
+    r"/leaderboard", user_leaderboard,
+    f"/progress", my_progress,
+    r"/sync", user_sync,
+
+    r"/register_progress", learning_session_register_progress,
+    r"/register_end", learning_session_register_end,
+    r"/reset_progress_level", reset_progress_level,
+
+    r"/session", "debug_session",
+    "", "index",
+)
+# fmt: on
+
+
+class index:
+    def GET(self):
+        web.header("Content-Type", "application/json")
+
+        # fmt: off
+        patterns = {
+            "courses": r"GET /ajax/courses?{lang, cat, q, page}",
+            "course": r"GET /ajax/course/{course_id}/{course_slug}",
+            "course_leaderboard": r"GET /ajax/course/{course_id}/{course_slug}/leaderboard?{period}",
+            "course_level_preview": r"GET /ajax/course/{course_id}/{course_slug}/{level_index}/preview",
+            "course_level_multimedia": r"GET /ajax/course/{course_id}/{course_slug}/{level_index}/media",
+            "course_level_learn": r"GET /ajax/course/{course_id}/{course_slug}/{level_index}/learn {cookies.sessionid}",
+
+            "user": r"GET /ajax/user/{username}",
+            "user_followers": r"GET /ajax/user/{username}/followers?{page}",
+            "user_following": r"GET /ajax/user/{username}/following?{page}",
+            "user_teaching": r"GET /ajax/user/{username}/teaching?{page}",
+            "user_learning": r"GET /ajax/user/{username}/learning?{page}",
+
+            "user_dashboard": r"GET /ajax/dashboard {cookies.sessionid}",
+            "user_leaderboard": r"GET /ajax/leaderboard {cookies.sessionid}",
+            "user_sync": r"GET /ajax/sync {cookies.sessionid}",
+            "debug_session": r"GET /ajax/session",
+        }
+        # fmt: on
+
+        # Add URLs we did not bother to add in patterns
+        from utils.debug import autodetect_urls
+
+        autodetect_urls(app, prefix="/ajax", res=patterns)
+
+        return json.dumps(patterns)
+
+
+class debug_session:
+    def GET(self):
+        session = dict(web.ctx.session)
+        web.header("Content-Type", "application/json")
+        return json.dumps(session)
+
+
+
+app = web.application(urls, locals(), autoreload=False)
+
+
+def catch_unauthorized(handler):
+    """
+    Don't let the main app render a template for web.Unauthorized exceptions
+    Just send the status code and message
+    """
+    try:
+        result = handler()
+    except web.Unauthorized as e:
+        setattr(e, '__next__', True)
+
+        raise e
+    return result
+
+
+app.add_processor(catch_unauthorized)

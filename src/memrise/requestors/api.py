@@ -171,8 +171,14 @@ class ApiRequestor:
         return response.json()
 
     def my_progress(self, sync_token=0, sessionid=None):
-        # https://community-courses.memrise.com/v1.25/progress/?sync_token=0
-        raise NotImplementedError()
+        log_session = self.buildCookiesLog(sessionid)
+        logger.debug(f"Requestor:My progress [sync_token={sync_token}] ({log_session})")
+
+        url = f"{HOST}/{API_VERSION}/progress/?sync_token={sync_token}"
+
+        response = requests.get(url, cookies=self.buildCookies(sessionid))
+        self.raise_for_status(response)
+        return response.json()
 
     # +-----------------------------------------------------
     # | LEARNING SESSION

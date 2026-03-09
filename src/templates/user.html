@@ -64,6 +64,12 @@ $var title: $(user['username'])
       </ul>
     </div>
 
+    <!-- Learned things progress -->
+    $if session.loggedin and session.loggedin['username'] == user['username']:
+      <div id="things-progress-container" class="things-progress nicebox">
+        <div class="loading-spinner"></div>
+      </div>
+
     <!-- Level progress -->
     <div class="user-progress nicebox">
       <div>
@@ -107,7 +113,6 @@ $var title: $(user['username'])
             <h3>$(I18N.misc['level_next'])</h3> <p>$(I18N.misc['rank'].replace('%', str(user['rank']+1)))</p>
         </div>
       </div>
-
     </div>
   $else:
 
