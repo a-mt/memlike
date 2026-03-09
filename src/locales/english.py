@@ -477,3 +477,70 @@ err = {
     "required": "This field is required",
     "wrong_credentials": "Username or password is wrong",
 }
+
+# https://github.com/django/django/blob/main/django/conf/locale/en/formats.py
+formats = {
+    "DATE_FORMAT": "%b %-d, %Y",
+    "TIME_FORMAT": "%X",
+    "DATETIME_FORMAT": "%b %-d, %Y, %X",
+    "YEAR_MONTH_FORMAT": "%B %Y",  # year and month
+    "MONTH_DAY_FORMAT": "%B %-d",   # month and day
+    "SHORT_DATE_FORMAT": "%m/%d/%Y",
+    "SHORT_DATETIME_FORMAT": "%m/%d/%Y %X",
+    "FIRST_DAY_OF_WEEK": 0,  # 0 means Sunday, 1 means Monday...
+    "DECIMAL_SEPARATOR": ".",
+    "THOUSAND_SEPARATOR": ",",
+    "NUMBER_GROUPING": 3,  # THOUSAND_SEPARATOR: 0 means no grouping, 3 means splitting by thousands.
+}
+
+weekdays = {
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday",
+}
+weekdays_abbr = {
+    "Mon": "Mon",
+    "Tue": "Tue",
+    "Wed": "Wed",
+    "Thu": "Thu",
+    "Fri": "Fri",
+    "Sat": "Sat",
+    "Sun": "Sun",
+}
+months = {
+    "January": "January",
+    "February": "February",
+    "March": "March",
+    "April": "April",
+    "May": "May",
+    "June": "June",
+    "July": "July",
+    "August": "August",
+    "September": "September",
+    "October": "October",
+    "November": "November",
+    "December": "December",
+}
+months_abbr = {
+    "Jan": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Apr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Dec",
+}
+
+WEEKDAYS = list(weekdays.values())
+WEEKDAYS_ABBR = list(weekdays_abbr.values())
+MONTHS = list(months.values())
+MONTHS_ABBR = list(months_abbr.values())

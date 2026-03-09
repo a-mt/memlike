@@ -48,8 +48,9 @@ class progress:
         from dateutil.relativedelta import relativedelta
         from collections import OrderedDict
         from math import floor
+        from utils.dateformat import date_format
 
-        USE_SUNDAY_FIRST = 1
+        USE_SUNDAY_FIRST = web.ctx.i18n.formats.get("FIRST_DAY_OF_WEEK", 0) == 0
         def day_of_week(date):
             weekday = date.weekday()
 
@@ -64,8 +65,10 @@ class progress:
         start_date -= relativedelta(days=day_of_week(start_date))
 
         # Get the number of things learned each day
+        dt = datetime.datetime.combine(start_date, datetime.datetime.min.time())
+
         progress = memrise.my_progress_summary(
-            sync_token=int(datetime.datetime.combine(start_date, datetime.datetime.min.time()).timestamp())-1
+            sync_token=int(dt.timestamp())-1
         )
 
         # Labels of days, in the order we should display then
@@ -76,8 +79,8 @@ class progress:
 
         for i in range(0,7):
             days_of_week.append({
-                "label": date.strftime("%A"),
-                "label_short": date.strftime("%a"),
+                "label": date_format(date, "%A"),
+                "label_short": date_format(date, "%a"),
             })
             date += date_increment
 
@@ -96,7 +99,7 @@ class progress:
 
             # Add days within that week and the progress for these days
             for i in range(0,7):
-                date_fmt = date.strftime("%Y-%m-%d")
+                date_fmt = date_format(date, web.ctx.i18n.formats.get("DATE_FORMAT", "%x"))
 
                 month = date.strftime("%Y-%m")
                 day = date.strftime("%d")
@@ -126,8 +129,8 @@ class progress:
             if month not in months:
                 months[month] = {
                     "count_weeks": 0,
-                    "label": date.strftime("%B"),  # TODO set localization?
-                    "label_short": date.strftime("%b"),
+                    "label": date_format(date, "%B"),
+                    "label_short": date_format(date, "%b"),
                 }
             months[month]["count_weeks"] += 1
 
@@ -135,16 +138,11 @@ class progress:
         # so that there's roughly the same amount of counts in each level
         thresholds = [1]
         if total:
-            stem_and_leaf = {
-                stem: sorted(stem_and_leaf[stem])
-                for stem in sorted(stem_and_leaf.keys())
-            }
-
             n_groups = 4
             group_size = int(total / n_groups) if total else 1
             c = 0
 
-            stems = list(stem_and_leaf.keys())
+            stems = list(sorted(stem_and_leaf.keys()))
             while len(stems):
                 stem = stems.pop(0)
                 n_leaves = len(stem_and_leaf[stem])
@@ -153,7 +151,7 @@ class progress:
                     c += n_leaves
                     continue
 
-                leaves = stem_and_leaf[stem]
+                leaves = sorted(stem_and_leaf[stem])
                 k = group_size - c
                 thresholds.append(int(f"{stem}{leaves[k-1]}"))
 

@@ -476,3 +476,69 @@ err = {
     "required": "Ce champs est obligatoire",
     "wrong_credentials": "Le nom d'utilisateur ou le mot de passe est erroné",
 }
+
+formats = {
+    "DATE_FORMAT": "%-d %B %Y",
+    "TIME_FORMAT": "%H:%M",
+    "DATETIME_FORMAT": "%-d %B %Y %H:%M",
+    "YEAR_MONTH_FORMAT": "%B %Y",
+    "MONTH_DAY_FORMAT": "%-d %B",
+    "SHORT_DATE_FORMAT": "%d/%m/%Y",
+    "SHORT_DATETIME_FORMAT": "%d/%m/%Y %H:%M",
+    "FIRST_DAY_OF_WEEK": 1,  # Monday
+    "DECIMAL_SEPARATOR": ",",
+    "THOUSAND_SEPARATOR": "\xa0",  # non-breaking space
+    "NUMBER_GROUPING": 3,
+}
+
+weekdays = {
+    "Monday": "Lundi",
+    "Tuesday": "Mardi",
+    "Wednesday": "Mercredi",
+    "Thursday": "Jeudi",
+    "Friday": "Vendredi",
+    "Saturday": "Samedi",
+    "Sunday": "Dimanche",
+}
+weekdays_abbr = {
+    "Mon": "Lun",
+    "Tue": "Mar",
+    "Wed": "Mer",
+    "Thu": "Jeu",
+    "Fri": "Ven",
+    "Sat": "Sam",
+    "Sun": "Dim",
+}
+months = {
+    "January": "Janvier",
+    "February": "Février",
+    "March": "Mars",
+    "April": "Avril",
+    "May": "Mai",
+    "June": "Juin",
+    "July": "Juillet",
+    "August": "Août",
+    "September": "Septembre",
+    "October": "Octobre",
+    "November": "Novembre",
+    "December": "Décembre",
+}
+months_abbr = {
+    "Jan": "Jan",
+    "Feb": "Fév",
+    "Mar": "Mar",
+    "Apr": "Avr",
+    "May": "Mai",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Aug": "Aoû",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dec": "Déc",
+}
+
+WEEKDAYS = list(weekdays.values())
+WEEKDAYS_ABBR = list(weekdays_abbr.values())
+MONTHS = list(months.values())
+MONTHS_ABBR = list(months_abbr.values())
