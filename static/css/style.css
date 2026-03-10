@@ -147,7 +147,7 @@ td > .btn-group {
 .dropdown-toggle {
   cursor: pointer;
 }
-.btn-group > :not(:last-child) {
+.btn-group > :has(+ .btn) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }

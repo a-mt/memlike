@@ -1307,7 +1307,7 @@ var AudioUploader = {
 
     for(let i=0; i<things.length; i++) {
       let thing   = things[i],
-          word    = thing.querySelector('.column').innerText.trim(),
+          word    = thing.querySelector('.column .text').innerText.trim(),
           $column = $('.audio', thing);
 
       // Already has an audio?
