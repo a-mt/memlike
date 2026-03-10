@@ -589,10 +589,10 @@ function user_progress_things() {
   $.ajax({
     url: '/ajax/progress',
     success: function(rendered) {
-      let table = $('.ContributionCalendar-grid', rendered);
-
-      if (table.length) {
-        content.html(table);
+      let div = $('.ContributionCalendar', '<div>' + rendered + '</div>');
+      console.log(div);
+      if (div.length) {
+        content.html(div);
       }
     },
     error: function(xhr) {

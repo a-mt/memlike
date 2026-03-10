@@ -121,5 +121,5 @@ class my_progress:
 
         html = web.config.template.prender.progress_heatmap(months, weeks, days_of_week, fn)["__body__"]
 
-        web.header("Content-type", "text/plain")
+        web.header("Content-type", "text/html")
         return html

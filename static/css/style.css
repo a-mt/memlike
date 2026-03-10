@@ -13,7 +13,7 @@ img {
   vertical-align: middle;
   border: 0;
 }
-img.hide {
+img.next {
   filter: grayscale(100%);
   opacity: .2;
 }
@@ -2621,7 +2621,7 @@ tr.disabled {
  * PROGRESS
  *-------------------------------------------------------*/
 
-.nicebox .ContributionCalendar-grid {
+.nicebox .ContributionCalendar table {
   margin: 0 auto;
 }
 
@@ -2646,11 +2646,14 @@ tr.disabled {
   --contribution-default-borderColor-4: var(--contribution-default-borderColor-0);
   --fgColor-default: #1f2328;
 }
+.ContributionCalendar {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  font-size: 12px;
+}
 .ContributionCalendar-grid {
   border-spacing: 3px;
   overflow: hidden;
   position: relative;
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
 }
 .ContributionCalendar-grid thead tr {
   height: 13px;
@@ -2710,4 +2713,12 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
   fill: var(--contribution-default-bgColor-4);
   background-color: var(--contribution-default-bgColor-4);
   border-color: var(--contribution-default-borderColor-4);
+}
+.ContributionCalendar-legend {
+  float: right;
+}
+.ContributionCalendar-legend div {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
 }
