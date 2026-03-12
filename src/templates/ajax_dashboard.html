@@ -34,7 +34,7 @@ $for i, course in enumerate(courses):
 
     <div class="inner-wrap">
       <!-- Photo -->
-      <a href="/course/$(course['id'])/$(course['slug'])/" class="picture-wrapper">
+      <a href="/community/course/$(course['id'])/$(course['slug'])/" class="picture-wrapper">
         <div class="course-box-picture" style="background-image: url(&quot;$(course['photo_url'])&quot;)"></div>
       </a>
       <div class="details-wrapper">
@@ -48,14 +48,14 @@ $for i, course in enumerate(courses):
         <!-- Author + category -->
         $if idCat and 'source' in course:
           <div class="clearfix">
-            <a href="/fr/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
+            <a href="/community/courses/$(course['source']['slug'])/$(course['target']['slug'])/" class="category" title="$(category)">
               $:(category)
             </a>
           </div>
 
         <!-- Title -->
         <h3>
-          <a href="/course/$(course['id'])/$(course['slug'])/" class="inner" title="$(course['name']))">$(course['name'])</a>
+          <a href="/community/course/$(course['id'])/$(course['slug'])/" class="inner" title="$(course['name']))">$(course['name'])</a>
         </h3>
 
         <!-- Stats -->

@@ -7,7 +7,7 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
     """
 
     def test_courses(self):
-        response = self.client.request("/fr/courses?q=yoga")
+        response = self.client.request("/community/courses?q=yoga")
         self.assertEqual(response.status_code, 200)
 
         html = response.data

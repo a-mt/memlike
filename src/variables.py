@@ -1,7 +1,7 @@
 # coding=utf-8
 MENU = [
     {"slug": "index", "url": "/"},
-    {"slug": "courses", "url": "/fr/courses/"},
+    {"slug": "courses", "url": "/community/courses/"},
     {"slug": "login", "url": "/login"},
 ]
 

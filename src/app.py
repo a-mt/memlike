@@ -53,8 +53,9 @@ class designSystem:
 
 # fmt: off
 urls = (
-    "/fr/courses", controllers.courses.app,
+    "/community/courses", controllers.courses.app,
     "/community/course", controllers.course.app,
+    "/courses", controllers.courses.app,
     "/course", controllers.course.app,
     "/aprender", controllers.learn.app,
     "/user", controllers.user.app,

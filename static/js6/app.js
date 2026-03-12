@@ -718,7 +718,7 @@ var Dashboard = {
     // Ajax done running
     runner.done(function(data) {
       if(!Dashboard.content) {
-        Dashboard.container.html('<div class="empty-box"><p>' + window.I18N.empty_dashboard + '</p><a class="link" href="/fr/courses">' + window.I18N.browse_courses + '</a></div>');
+        Dashboard.container.html('<div class="empty-box"><p>' + window.I18N.empty_dashboard + '</p><a class="link" href="/community/courses">' + window.I18N.browse_courses + '</a></div>');
         return;
       }
 

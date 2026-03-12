@@ -52,7 +52,7 @@ class learn_fromform:
 
         _GET = web.storage(input_data)
         if not _GET.session_type:
-            raise web.seeother(f"/course/{course_id}/{course_slug}/", absolute=True)
+            raise web.seeother(f"/community/course/{course_id}/{course_slug}/", absolute=True)
 
         try:
             course = memrise.course(course_id, course_slug=course_slug)
@@ -105,7 +105,7 @@ class level:
             f"Could not retrieve the requested level ({level_index})",
             level=web.config.FLASH_MESSAGES_TAGS.ERROR,
         )
-        raise web.seeother(f"/course/{course_id}/{course_slug}/", absolute=True)
+        raise web.seeother(f"/community/course/{course_id}/{course_slug}/", absolute=True)
 
     def GET(self, course_id, course_slug, level_index, path2=""):
         try:
@@ -254,7 +254,7 @@ class reset_progress_level:
             except HTTPError as e:
                 print(e)
 
-        raise web.seeother(f"/course/{course_id}/{path}/{level_index}", absolute=True)
+        raise web.seeother(f"/community/course/{course_id}/{path}/{level_index}", absolute=True)
 
 
 app = web.application(urls, locals(), autoreload=False)

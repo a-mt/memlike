@@ -60,7 +60,7 @@ copy(tree);
 Retrieve categories' codes:
 
 ``` js
-// https://www.memrise.com/fr/courses/french/
+// https://www.memrise.com/community/courses/french/
 
 var list  = document.querySelectorAll('li[data-category-id]'),
     categories_code = {};

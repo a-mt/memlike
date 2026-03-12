@@ -13,7 +13,7 @@ $def with (course)
         $for i, cat in enumerate(course['breadcrumb']):
           <li>
             $if i == 0:
-              $ url = '/fr/courses/' + cat["name"]
+              $ url = '/community/courses/' + cat["name"]
               <a href="$(url)">$:(I18N.categories[cat['id']])</a>
             $else:
               <i class="ico ico-white ico-grey ico-arr-right ico-s"></i>
