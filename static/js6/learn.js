@@ -46,6 +46,9 @@ $(document).ready(function(){
 //| Helper functions
 //+--------------------------------------------------------
 
+/**
+ * Returns a random element from the current array
+ */
 $.fn.random = function() {
   var randomIndex = Math.floor(Math.random() * this.length);
   return $(this[randomIndex]);
@@ -57,11 +60,19 @@ Array.prototype.random = function(){
 
 /**
 * Returns an integer random number between min (included) and max (included)
+* @param int min
+* @param int max
+* @return int
 */
 function randrange(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/**
+ * Returns a new array, containing the elements of arr shuffled
+ * @param array arr
+ * @return array
+ */
 function randomize(arr){
  var c = arr.length, rnd;
 
@@ -72,8 +83,34 @@ function randomize(arr){
  return arr;
 }
 
+/**
+ * Returns the character corresponding to the keycode
+ * @param int key
+ * @return string char
+ */
 function fromKeyCode(key) {
   return String.fromCharCode((96 <= key && key <= 105)? key-48 : key);
+}
+
+/**
+ * Create a Date object from a valid ISO 8601 string
+ * @param string value
+ * @return Date
+ */
+function decodeDateString(value) {
+  if (!value) {
+    return null;
+  }
+  if (value instanceof Date) {
+    return value;
+  }
+  var d = new Date(value);
+
+  // invalid value: use now
+  if (isNaN(d.getTime())) {
+    return new Date();
+  }
+  return d;
 }
 
 //+--------------------------------------------------------
@@ -164,8 +201,8 @@ class LearnSettingsModal extends Component {
         </div>
       </div>
       <div className="btn-group">
-        <button className="btn" onClick={this.closeModal}>Annuler</button>
-        <button className="btn green" onClick={this.updateSettings}>Sauvegarder</button>
+        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
+        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
       </div>
     </div>
   }
@@ -219,7 +256,7 @@ class LearnSettingsBtn extends Component {
 //| Speed review timer
 //+--------------------------------------------------------
 
-var Timer = {
+const Timer = {
   maxTime: 6e3,
   remainingTime: null,
   lastUpdate: null,
@@ -250,7 +287,7 @@ var Timer = {
     Timer.isRunning     = true;
     Timer.isPaused      = false;
   },
-  get_time: function(){
+  getTime: function(){
     if (Timer.remainingTime === null) {
       return 0;
     }
@@ -292,7 +329,7 @@ var Timer = {
 };
 
 //+--------------------------------------------------------
-//| Render game
+//| BUILDING STATE.DATA
 //+--------------------------------------------------------
 
 const LEARN_UNTIL_GROWTH_LEVEL = 6;
@@ -319,20 +356,715 @@ const REVIEW_INTERVAL_LADDER = [
   {interval: 180, tolerance: 0},
 ];
 
-const EMPTY_PROGRESS = {
-  learnable_id: null,
-  attempts: 0,
-  correct: 0,
-  current_streak: 0,
-  total_streak: 0,
-  created_date: null,
-  next_date: null,
-  last_date: null,
-  starred: false,
-  ignored: false,
-  not_difficult: false,
-  growth_level: 0,
+/**
+ * Build the session state
+ * from the retrieved list of elements to learn
+ */
+const GameDataBuilder = {
+  learnablesMap: {},
+  sessionType: "preview",
+
+  shouldDisplayPresentation: function(learnableProgress) {
+    if (!learnableProgress || !learnableProgress.last_date) {
+      return true;
+    }
+    try {
+      const lastDate = new Date(learnableProgress.last_date);
+      const thresholdDate = new Date(Date.now() - LEARN_LASTDATE_TIMEOUT_SECONDS * 1000);
+      return lastDate < thresholdDate;
+    } catch(e) {
+      console.error(e);
+      return true;
+    }
+  },
+
+  getScreenList: function(sessionType, learnables, progressMap) {
+    var screens = [];
+
+    switch(sessionType) {
+      case 'learn':
+        let testsToAdd = [];
+
+        for (let learnable of learnables) {
+          const learnableID = learnable.id;
+          const learnableProgress = progressMap[learnableID];
+
+          if (GameDataBuilder.shouldDisplayPresentation(learnableProgress)) {
+            screens.push({
+              learnableID,
+              template: 'presentation',
+              learningGrowthLevel: 0,
+            });
+          }
+
+          // How many times do we have to repeat the test to learn it
+          const growthLevel = learnableProgress ? learnableProgress.growth_level : 0;
+
+          const learningLevel = (growthLevel | 0) + 1;
+          const targetLevel = Math.min((growthLevel | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL);
+
+          if (learningLevel > targetLevel) {
+            console.warn('The following learnable has already been learned:', learnable);
+          } else {
+            testsToAdd.push({learnableID, learningLevel, targetLevel});
+          }
+        }
+
+        // While there are still tests to add
+        while(testsToAdd.length) {
+          let testsToAdd_next = [];
+
+          // For each learnable that have to be tested
+          for(let i = 0; i < testsToAdd.length; i++) {
+            let item = testsToAdd[i];
+            let {learnableID, learningLevel, targetLevel} = item;
+
+            // Get a random index to insert the test
+            // 2 steps after the presentation of the learnable
+            // or anywhere after the first test
+            let idx = screens.findLastIndex((screen) => screen.learnableID == learnableID);
+            let min = 0;
+            let max = screens.length;
+            let isPresentation = false;
+
+            if (idx) {
+              min = idx;
+              isPresentation = idx in screens && screens[idx].template == 'presentation';
+            }
+            let insertAtIndex = isPresentation ? Math.min(min + 2, max) : randrange(min, max);
+
+            // Insert the test at the chosen random index
+            screens.splice(insertAtIndex, 0, {
+              learnableID,
+              template: 'sentinel',
+              learningGrowthLevel: learningLevel, // target growth level
+            });
+
+            // Do we still have to repeat the test to learn it
+            learningLevel += 1;
+            if (targetLevel >= learningLevel) {
+              testsToAdd_next.push({learnableID, learningLevel, targetLevel});
+            }
+          }
+          testsToAdd = testsToAdd_next;
+        }
+        break;
+
+      case 'speed_review':
+      case 'classic_review':
+        for (let learnable of learnables) {
+          screens.push({
+            learnableID: learnable.id,
+            template: 'sentinel',
+            learningGrowthLevel: 0,
+          });
+        }
+        screens = randomize(screens);
+        break;
+
+      case 'preview':
+      default:
+        for (let learnable of learnables) {
+          screens.push({
+            learnableID: learnable.id,
+            template: 'presentation',
+            learningGrowthLevel: 0,
+          });
+        }
+        break;
+    }
+    return screens;
+  },
+
+  /**
+   * Build the "data" to store in the current state
+   * from the data retrieved from the backend
+   *
+   * @param string sessionType
+   * @param dict data
+   * @return dict
+   */
+  formatData: function(sessionType, data) {
+
+    // Build screensTemplateMap (data.screensTemplateMap[learnableID][tpl][0])
+    const screensTemplateMap = {};
+    const learnablesMap = {};
+
+    for (let learnable of data.learnables) {
+      const screens = {};
+
+      // A screen = {correct, is_strict, ...} (cf learning_session_preview.json)
+      for (let screenID in learnable.screens) {
+        let screen = learnable.screens[screenID];
+        screens[screen.template] = [screen];
+      }
+      screensTemplateMap[learnable.id] = screens;
+      learnablesMap[learnable.id] = learnable;
+    }
+
+    // Build progressMap {learnableID: {growth_level, current_streak, correct, attempts, is_difficult}}
+    const progressMap = {};
+    for (let learnableProgress of data.progress) {
+      progressMap[learnableProgress.learnableID] = Object.assign(learnableProgress, {
+        created_date: decodeDateString(learnableProgress.created_date),
+        next_date: decodeDateString(learnableProgress.next_date),
+        last_date: decodeDateString(learnableProgress.last_date),
+      });
+    }
+
+    const screens = GameDataBuilder.getScreenList(sessionType, data.learnables, progressMap);
+    console.log('Screens:', screens);
+
+    GameDataBuilder.sessionType = sessionType;
+    GameDataBuilder.learnablesMap = learnablesMap;
+
+    GameScreenBuilder.definitions = null;
+    GameProgressHandler.events = [];
+
+    return {
+      screens,
+      screensTemplateMap,
+      progressMap,
+      learnablesMap,
+      csrftoken: '',
+      referer: '',
+    }
+  }
+}
+
+/**
+ * Build new screens to accomodate our session settings
+ * (inverted prompt/answer)
+ */
+const GameScreenBuilder = {
+  definitions: null,
+
+  getDefinitions: function() {
+    var learnables = Object.values(GameDataBuilder.learnablesMap);
+    var list = [];
+
+    for (let i=0; i<learnables.length; i++) {
+      let learnable = learnables[i];
+      let definition = learnable.screens['1'].definition;
+      let hasTokens = learnable.definition_element_tokens;
+
+      // text
+      /**
+        "id": 30664511848706,
+        "learning_element": "die Auswertung",
+        "definition_element": "l'évaluation",
+        "learning_element_tokens": ["die", "Auswertung"],
+        "definition_element_tokens": ["l", "évaluation"],
+        "difficulty": "unknown",
+        "item_type": "word",
+      */
+      if(hasTokens) {
+        let value = learnable.definition_element;
+        let valueSanitized = sanitizeTyping(value);
+
+        if (valueSanitized) {
+          list.push({value, valueSanitized});
+        }
+        definition.alternatives.forEach((value) => {
+          let s = sanitizeTyping(value);
+
+          if (s && ScoreAnswer.getStringDistance(valueSanitized, s) > 3) {
+            list.push({value, valueSanitized: s});
+          }
+        });
+
+      // others
+      } else {
+        /**
+          "definition": {
+            "label": "English",
+            "kind": "text",
+            "value": "l'évaluation",
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "definition": {
+            "label": "Audio",
+            "kind": "audio",
+            "value": [{
+              "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
+              "slow": null
+            }],
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+          "definition": {
+            "label": "Brain",
+            "kind": "image",
+            "value": [
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
+              "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
+            ],
+            "alternatives": [],
+            "style": [],
+            "direction": "source",
+            "markdown": false
+          },
+        */
+        GameScreenBuilder.flattenValue(definition.value).forEach((value) => {
+          list.push({value});
+        });
+        definition.alternatives.forEach((value) => {
+          list.push({value});
+        });
+      }
+    }
+    return list;
+  },
+
+  getChoices: function(kind, correctChoices) {
+    if (!GameScreenBuilder.definitions) {
+      GameScreenBuilder.definitions = GameScreenBuilder.getDefinitions();
+    }
+    let choices = [];
+
+    // Retrieve the definition of other learnables
+    var definitions = GameScreenBuilder.definitions;
+    console.log('Definitions', definitions, kind, value);
+
+    if (definitions.length <= 15 || kind != 'text') {
+      choices = randomize(definitions).filter((element) => correctChoices.indexOf(element.value) == -1);
+
+    } else {
+      var value = correctChoices[0],
+          valueSanitized = sanitizeTyping(value),
+          valueTokens = valueSanitized.split(' ').slice(0, 10);
+
+      for (let i=0; i<definitions.length; i++) {
+        let definition = definitions[i];
+        if (!definition.valueSanitized || definition.valueSanitized == valueSanitized) {
+          continue;
+        }
+
+        // Retrieve definitions that are fairly similar in length to our current word
+        let itemTokens = definition.valueSanitized.split(' ');
+        let X = valueTokens.map((token, i) => {
+          return i < itemTokens.length ? Math.abs(token.length - itemTokens[i].length) : 1
+        });
+        let w = 1;
+        let x = X.reduce((i, s) => s + i*(w += .5, w), 0) | 0;
+
+        choices.push(Object.assign({weight: x}, definition));
+      }
+      choices = choices.sort((a, b) => a.weight - b.weight);
+    }
+    return choices.slice(0, LEARN_BUILD_CHOICES_LENGTH).map(item => item.value);
+  },
+
+  getInvertedPromptAndAnswer: function(screen) {
+    var answerKind = screen.answer.kind;
+    var promptKind = getPromptType(screen.prompt);
+
+    return [
+      {[answerKind]: screen.answer},
+      screen.prompt[promptKind],
+    ];
+  },
+
+  /**
+   * Normalize value as a flat array of strings
+   *
+   * "value": "l'évaluation"
+   * -> ["l'évaluation"]
+   *
+   * "value": [{
+   *   "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
+   *   "slow": null
+   * }],
+   * -> ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3"]
+   *
+   * "value": [
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
+   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
+   * ]
+   * -> idem
+   */
+  flattenValue: function(value) {
+    const inner = function(value) {
+      if (typeof value == 'string') {
+        return [value];
+      }
+      if (value.normal) {
+        return value.normal;
+      }
+      if (value.forEach && value.length > 0) {
+        return value.map((s) => inner(s));
+      }
+      console.error('Dont know how to flatten this:', value);
+    }
+    return inner(value).flat();
+  },
+
+  buildScreen_reversed_multiple_choice: function(learnableScreens) {
+    if ('reversed_multiple_choice2' in learnableScreens) {
+      return true;
+    }
+    var screen = learnableScreens.multiple_choice[0];
+    screen.template = 'reversed_multiple_choice2';
+    [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
+
+    screen.correct = [];
+    let value = GameScreenBuilder.flattenValue(screen.answer.value).forEach((value) => {
+      screen.correct.push(value);
+    });
+    screen.answer.alternatives.forEach((value) => {
+      screen.correct.push(value);
+    });
+
+    screen.choices = GameScreenBuilder.getChoices(
+      screen.answer.kind,
+      screen.correct,
+    );
+    learnableScreens['reversed_multiple_choice2'] = [screen];
+    console.log('buildScreen_reversed_multiple_choice', screen, learnableScreens.reversed_multiple_choice[0]);
+    return true;
+  },
+
+  buildScreen_reverse_typing: function(learnableScreens) {
+    if ('reversed_typing' in learnableScreens) {
+      return true;
+    }
+    var screen = learnableScreens.typing[0];
+    screen.template = 'reversed_typing';
+    [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
+    if (screen.answer.kind != 'text') {
+      return false;
+    }
+    learnableScreens['reversed_typing'] = [screen];
+
+    screen.correct = [];
+    let value = GameScreenBuilder.flattenValue(screen.answer.value).forEach((value) => {
+      screen.correct.push(value);
+    });
+    screen.answer.alternatives.forEach((value) => {
+      screen.correct.push(value);
+    });
+
+    var tmp = sanitizeTyping(screen.answer.value).replace(' ', '').split('');
+    screen.choices = randomize(Array.from(new Set(tmp)));
+    console.log('buildScreen_reverse_typing', screen);
+    return true;
+  }
 };
+
+const GameProgressHandler = {
+  events: [],
+
+  /**
+   * Compute the next growh level for the given progress,
+   * assuming the user gave the right answer
+   *
+   * @param dict learnableProgress
+   * @param int growthLevel
+   */
+  getNextGrowthLevel: function(learnableProgress, difficulty=TEST_DIFFICULTY.Easy) {
+
+    // FirstOnboardingSessionGrowthLevelStrategy
+    if (GameDataBuilder.session_type == 'first_session') {
+      return 2 === learnableProgress.growth_level ? LEARN_UNTIL_GROWTH_LEVEL : learnableProgress.growth_level + 1;
+    }
+
+    // StandardGrowthLevelStrategy
+    if (true) {
+      return learnableProgress.growth_level + 1;
+    }
+
+    // SuperchargeGrowthLevelStrategy
+    return (
+      learnableProgress.attempts === learnableProgress.correct
+      && learnableProgress.growth_level < LEARN_UNTIL_GROWTH_LEVEL
+      && (
+          difficulty == TEST_DIFFICULTY.Easy && learnableProgress.growth_level >= 2
+       || difficulty == TEST_DIFFICULTY.Moderate && learnableProgress.growth_level >= 3
+      )
+    ) ? LEARN_UNTIL_GROWTH_LEVEL : learnableProgress.growth_level + 1;
+  },
+
+  /**
+   * Create a new date, with [interval] days added to date
+   *
+   * @param Date date
+   * @param float interval (in days) - see REVIEW_INTERVAL_LADDER
+   * @return Date
+   */
+  getDateIncrementedByInterval: function(date, interval) {
+    const deltaFrom = 0,
+          deltaTo = .007;
+
+    if (!interval) {
+      interval = deltaTo;
+    }
+    if (!date) {
+      date = new Date();
+    }
+    interval += randrange(deltaFrom, deltaTo);
+
+    return new Date(date.getTime() + 24 * interval * 3600 * 1000);
+  },
+
+  /**
+   * Retrieve the index corresponding
+   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
+   *
+   * @param float interval
+   * @return int index
+   */
+  getRungIndex: function(interval) {
+
+    // Get the last rung greater than the given interval
+    for (var i = REVIEW_INTERVAL_LADDER.length; i > 0 && REVIEW_INTERVAL_LADDER[--i | 0].interval > interval;) {
+        // pass
+    }
+    // Return the rung no greather than the given interval
+    return Math.max(i - 1 | 0, 0);
+  },
+
+  /**
+   * Compute the interval and next_date for the given progress
+   *
+   * @param dict progress
+   * @param Date date_answer
+   * @param float score
+   * @return dict
+   */
+  getNextIntervalDate: function(learnableProgress, dateAnswer, score) {
+
+    // No review data until we learned the item
+    if (learnableProgress.growth_level < LEARN_UNTIL_GROWTH_LEVEL) {
+      return {
+        interval : null,
+        next_date: null,
+      };
+    }
+
+    // We just learned the item: set the next review with the first interval
+    if(!learnableProgress.interval
+      || !learnableProgress.next_date
+      || learnableProgress.interval < REVIEW_INTERVAL_LADDER[0].interval
+    ) {
+      var interval = REVIEW_INTERVAL_LADDER[0].interval;
+      return {
+        interval,
+        next_date: GameProgressHandler.getDateIncrementedByInterval(dateAnswer, interval),
+      }
+    }
+
+    var rungIndex = GameProgressHandler.getRungIndex(learnableProgress.interval | 0),
+        tolerance = REVIEW_INTERVAL_LADDER[rungIndex].tolerance,
+        reviewDate = new Date(learnableProgress.next_date.getTime() - 24 * tolerance * 3600 * 1000),
+        isReviewDatePast = (new Date()).getTime() >= reviewDate.getTime();
+
+    // We got the answer right but the item isn't due to review: keep the nextDate as-is
+    var isCorrect = score == 1,
+        isIncorrect = score == 0;
+
+    if (isCorrect && !isReviewDatePast) {
+      return {
+        interval : learnableProgress.interval,
+        next_date: learnableProgress.next_date,
+      };
+    }
+
+    if (isIncorrect) {
+      rungIndex = rungIndex > 2 ? 2 : rungIndex;
+    } else if(isCorrect) {
+      if(rungIndex === 1
+        && learnableProgress.current_streak === learnableProgress.attempts
+        && learnableProgress.current_streak > 0
+      ) {
+        rungIndex += 2;
+      } else {
+        rungIndex += 1;
+      }
+    } else { // nearly correct
+      rungIndex = learnableProgress.current_streak > 0 ? rungIndex : Math.max(rungIndex - 1, 0);
+    }
+
+    var interval = REVIEW_INTERVAL_LADDER[rungIndex].interval;
+    return {
+      interval,
+      next_date: GameProgressHandler.getDateIncrementedByInterval(dateAnswer, interval),
+    }
+  },
+
+  /**
+   * Compute whether the progress of the current learnable
+   * is now considered to be difficult
+   *
+   * @param dict progress
+   * @return bool
+   */
+  isDifficult: function(learnableProgress) {
+    if (learnableProgress.ignored || learnableProgress.not_difficult) {
+      return false;
+    }
+    if (learnableProgress.starred) {
+      return true;
+    }
+    if (learnableProgress.attempts === 1 || learnableProgress.total_streak >= 3) {
+      return false;
+    }
+    var ratio = learnableProgress.attempts > 0 ? learnableProgress.correct / learnableProgress.attempts : 1;
+
+    return learnableProgress.attempts < 6 && ratio < .75 || learnableProgress.attempts >= 6 && ratio < .92
+  },
+
+  /**
+   * Compute the attempts and streak for the given progress
+   *
+   * @param dict progress
+   * @param float score
+   * @return dict
+   */
+  getNextStreak: function(learnableProgress, score) {
+    /*
+      "when": 1771925218,
+      "interval": 0.5,
+      "total_streak": -1,
+      "current_streak": 0,
+      "correct": 11,
+      "attempts": 12,
+      "points": 0,
+      "score": 0,
+    */
+    var isCorrect = score == 1;
+    return {
+      attempts       : learnableProgress.attempts + 1,
+      correct        : learnableProgress.correct + (isCorrect ? 1 : 0),
+      current_streak : isCorrect ? learnableProgress.current_streak + 1 : 0,
+      total_streak   : Math.max(learnableProgress.total_streak + (isCorrect ? 1 : -1), 0),
+    }
+  },
+
+  /**
+   * Create a new progress object from the saved on
+   * (send to memrise, will be used to trigger reviews)
+   */
+  getProgress: function(learnableID, savedProgress, score) {
+    var progress = {
+        learnable_id  : learnableID,
+        starred       : savedProgress.starred || false,
+        ignored       : savedProgress.ignored || false,
+        not_difficult : savedProgress.not_difficult || false,
+
+        attempts      : savedProgress.attempts || 0,
+        correct       : savedProgress.correct || 0,
+        current_streak: savedProgress.current_streak || 0,
+        total_streak  : savedProgress.total_streak || 0,
+
+        created_date  : savedProgress.created_date || new Date(),
+        last_date     : new Date(),
+        next_date     : savedProgress.next_date || null,
+        interval      : savedProgress.interval || null,
+        growth_level  : savedProgress.growth_level || 0,
+    };
+
+    // Update the progress
+    // progress.is_difficult = this.isDifficult(progress);
+    progress.growth_level = score == 1 ? GameProgressHandler.getNextGrowthLevel(progress) : progress.growth_level;
+
+    Object.assign(progress, GameProgressHandler.getNextIntervalDate(progress, progress.last_date, score));
+    Object.assign(progress, GameProgressHandler.getNextStreak(progress, score));
+    return progress;
+  },
+
+  // Send progress to memrise
+  registerEvent: function(courseID, learnableProgress, event) {
+    var learnable = GameDataBuilder.learnablesMap[learnableProgress.learnable_id] || {};
+
+    if (learnable.id !== learnableProgress.learnable_id) {
+      console.error('Couldnt find learnable related to event', learnableProgress, event);
+      return;
+    }
+
+    // Replace our custom game data to be compatible with memrise
+    if (event.box_template == 'reversed_multiple_choice2') {
+      event.box_template = 'reversed_multiple_choice';
+
+    } else if(event.box_template == 'reversed_typing') {
+      event.box_template = 'typing';
+      event.given_answer = (
+        event.score == 0 ? '' : GameScreenBuilder.flattenValue(learnable.screens['1'].definition.value)[0]
+      );
+    }
+
+    // Fluff up our event with the progress data
+    // and other info required by memrise
+    var item = {
+      course_id          : parseInt(courseID),
+      learning_element   : learnable.learning_element,
+      definition_element : learnable.definition_element,
+    };
+    Object.assign(item, learnableProgress, event);
+
+    if(item.created_date) {
+      item.created_date = (item.created_date.getTime() / 1000) | 0;
+    }
+    if(item.next_date) {
+      item.next_date = (item.next_date.getTime() / 1000) | 0;
+    }
+    if(item.last_date) {
+      item.last_date = (item.last_date.getTime() / 1000) | 0;
+    }
+    item.when = item.last_date;
+
+    console.log('Event', learnable, item);
+    GameProgressHandler.events.push(item);
+  },
+
+  registerSessionEnd(data) {
+    var events = [...GameProgressHandler.events];
+    var requests = [];
+
+    // Send events in batches of 50
+    while(events.length) {
+      var batch = events.splice(0, 50);
+
+      requests.push({
+        url: '/ajax/register_progress',
+        method: 'POST',
+        data: JSON.stringify({
+          events: batch,
+        }),
+        contentType: 'application/json',
+      });
+    }
+
+    // Send session end
+    requests.push({
+      url: '/ajax/register_end',
+      method: 'POST',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+    });
+
+    // Send each request one after the other
+    function execute_requests_queue() {
+      if(!requests.length) {
+        return;
+      }
+      var request = requests.shift();
+      request.success = execute_requests_queue;
+      $.ajax(request);
+    }
+    execute_requests_queue();
+  }
+};
+
+//+--------------------------------------------------------
+//| Render game
+//+--------------------------------------------------------
 
 class Learn extends Component {
   state = {
@@ -515,191 +1247,6 @@ class Learn extends Component {
     }.bind(this));
   }
 
-  shouldDisplayPresentation(progress) {
-    if (!progress || !progress.last_date) {
-      return true;
-    }
-    try {
-      const lastDate = new Date(progress.last_date);
-      const thresholdDate = new Date(Date.now() - LEARN_LASTDATE_TIMEOUT_SECONDS * 1000);
-      return lastDate < thresholdDate;
-    } catch(e) {
-      console.error(e);
-      return true;
-    }
-  }
-
-  //+--------------------------------------------------------
-  //| BUILDING STATE.DATA
-  //+--------------------------------------------------------
-
-  buildBoxes(session_type, learnables, progress_map) {
-    var boxes = [];
-
-    switch(session_type) {
-      case 'learn':
-        let add_tests = [];
-        for (let learnable of learnables) {
-          const learnable_id = learnable.id;
-
-          if (this.shouldDisplayPresentation(progress_map[learnable_id])) {
-            boxes.push({
-              learnable_id,
-              template: 'presentation',
-              learn_session_level: 0,
-            });
-          }
-
-          // How many times do we have to repeat the test to learn it
-          const progress = progress_map[learnable_id];
-          const target_level = progress ? progress.growth_level : 0;
-
-          const from_target_level = (target_level | 0) + 1;
-          const to_target_level = Math.min((target_level | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL);
-
-          if (from_target_level > to_target_level) {
-            console.warn('The following learnable has already been learned:', learnable);
-          } else {
-            add_tests.push({learnable_id, from_target_level, to_target_level});
-          }
-        }
-
-        // While there are still tests to add
-        while(add_tests.length) {
-          let still_add_tests = [];
-
-          // For each learnable that have to be tested
-          for(let i = 0; i < add_tests.length; i++) {
-            let item = add_tests[i];
-            let {learnable_id, from_target_level, to_target_level} = item;
-
-            // Get a random index to insert the test
-            // 2 steps after the presentation of the learnable
-            // or anywhere after the first test
-            let idx = boxes.findLastIndex((box) => box.learnable_id == learnable_id);
-            let min = 0;
-            let max = boxes.length;
-            let is_presentation = false;
-
-            if (idx) {
-              min = idx;
-              is_presentation = idx in boxes && boxes[idx].template == 'presentation';
-            }
-            let insertAtIndex = is_presentation ? Math.min(min + 2, max) : randrange(min, max);
-
-            // Insert the test at the chosen random index
-            boxes.splice(insertAtIndex, 0, {
-              learnable_id,
-              template: 'sentinel',
-              learn_session_level: from_target_level, // target growth level
-            });
-
-            // Do we still have to repeat the test to learn it
-            from_target_level += 1;
-            if (to_target_level >= from_target_level) {
-              still_add_tests.push({learnable_id, from_target_level, to_target_level});
-            }
-          }
-          add_tests = still_add_tests;
-        }
-        break;
-
-      case 'speed_review':
-      case 'classic_review':
-        for (let learnable of learnables) {
-          boxes.push({
-            learnable_id: learnable.id,
-            template: 'sentinel',
-            learn_session_level: 0,
-          });
-        }
-        boxes = randomize(boxes);
-        break;
-
-      case 'preview':
-      default:
-        for (let learnable of learnables) {
-          boxes.push({
-            learnable_id: learnable.id,
-            template: 'presentation',
-            learn_session_level: 0,
-          });
-        }
-        break;
-    }
-    return boxes;
-  }
-
-  /**
-   * Create a Date object from a valid ISO 8601 string
-   * @param string value
-   * @return Date
-   */
-  decodeDateString(value) {
-    if (!value) {
-      return null;
-    }
-    if (value instanceof Date) {
-      return value;
-    }
-    var d = new Date(value);
-
-    // invalid value: use now
-    if (isNaN(d.getTime())) {
-      return new Date();
-    }
-    return d;
-  }
-
-  /**
-   * Build the "data" to store in the current state
-   * from the data retrieved from the backend
-   *
-   * @param string session_type
-   * @param dict data
-   * @return dict
-   */
-  buildGameData(session_type, data) {
-
-    // Build screen_template_map (data.screen_template_map[learnable_id][tpl][0])
-    const screen_template_map = {};
-    const learnables_map = {};
-
-    for (let learnable of data.learnables) {
-      const screens = {};
-
-      // A screen = {correct, is_strict, ...} (cf learning_session_preview.json)
-      for (let screen_id in learnable.screens) {
-        let screen = learnable.screens[screen_id];
-        screens[screen.template] = [screen];
-      }
-      screen_template_map[learnable.id] = screens;
-      learnables_map[learnable.id] = learnable;
-    }
-
-    // Build progress_map {learnable_id: {growth_level, current_streak, correct, attempts, is_difficult}}
-    const progress_map = {};
-    for (let progress of data.progress) {
-      progress_map[progress.learnable_id] = Object.assign(progress, {
-        created_date: this.decodeDateString(progress.created_date),
-        next_date: this.decodeDateString(progress.next_date),
-        last_date: this.decodeDateString(progress.last_date),
-      });
-    }
-
-    const boxes = this.buildBoxes(session_type, data.learnables, progress_map);
-    console.log('Boxes:', boxes);
-
-    return {
-      boxes,
-      screen_template_map,
-      progress_map,
-      learnables_map,
-      csrftoken: '',
-      referer: '',
-    }
-  }
-
   /**
    * Retrieve the current level data
    */
@@ -735,10 +1282,10 @@ class Learn extends Component {
       success: function(data){
         callback && callback(data);
 
-        let gameData = this.buildGameData(session_type, data);
+        let gameData = GameDataBuilder.formatData(session_type, data);
         let error = false;
 
-        if (!gameData.boxes.length) {
+        if (!gameData.screens.length) {
           switch (session_type) {
             case 'learn':
               error = window.I18N.learn_err_empty_learn;
@@ -767,7 +1314,7 @@ class Learn extends Component {
           data   : gameData,
           events : [],
           i      : 0,
-          n      : (gameData.boxes ? gameData.boxes.length : 1)
+          n      : (gameData.screens ? gameData.screens.length : 1)
         });
       }.bind(this),
 
@@ -780,227 +1327,6 @@ class Learn extends Component {
         }
       }.bind(this)
     });
-  }
-
-  //+--------------------------------------------------------
-  //| BUILDING SCREENS (for inverted prompt/answer)
-  //+--------------------------------------------------------
-
-  buildLearningElements() {
-    var learnables = Object.values(this.state.data.learnables_map);
-    var list = [];
-
-    for (let i=0; i<learnables.length; i++) {
-      let learnable = learnables[i];
-      let definition = learnable.screens['1'].definition;
-
-      // text
-      /**
-        "id": 30664511848706,
-        "learning_element": "die Auswertung",
-        "definition_element": "l'évaluation",
-        "learning_element_tokens": ["die", "Auswertung"],
-        "definition_element_tokens": ["l", "évaluation"],
-        "difficulty": "unknown",
-        "item_type": "word",
-      */
-      if(learnable.definition_element_tokens) {
-        let value = learnable.definition_element;
-        let valueSanitized = sanitizeTyping(value);
-
-        if (valueSanitized) {
-          list.push({value, valueSanitized});
-        }
-        definition.alternatives.forEach((value) => {
-          let s = sanitizeTyping(value);
-
-          if (s && get_distance(valueSanitized, s) > 3) {
-            list.push({value, valueSanitized: s});
-          }
-        });
-
-      // others
-      } else {
-        /**
-          "definition": {
-            "label": "English",
-            "kind": "text",
-            "value": "l'évaluation",
-            "alternatives": [],
-            "style": [],
-            "direction": "source",
-            "markdown": false
-          },
-          "definition": {
-            "label": "Audio",
-            "kind": "audio",
-            "value": [{
-              "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
-              "slow": null
-            }],
-            "alternatives": [],
-            "style": [],
-            "direction": "source",
-            "markdown": false
-          },
-          "definition": {
-            "label": "Brain",
-            "kind": "image",
-            "value": [
-              "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
-              "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
-              "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
-            ],
-            "alternatives": [],
-            "style": [],
-            "direction": "source",
-            "markdown": false
-          },
-        */
-        this.getValue(definition.value).forEach((value) => {
-          list.push({value});
-        });
-        definition.alternatives.forEach((value) => {
-          list.push({value});
-        });
-      }
-    }
-    return list;
-  }
-
-  getRandomLearningElements(kind, correct) {
-    if (!this.state.data.learning_elements) {
-      this.state.data.learning_elements = this.buildLearningElements();
-    }
-    let choices = [];
-
-    // Retrieve the definition of other learnables
-    var elements = this.state.data.learning_elements;
-    console.log('Elements', elements, kind, value);
-
-    if (elements.length <= 15 || kind != 'text') {
-      choices = randomize(elements).filter((element) => correct.indexOf(element.value) == -1);
-
-    } else {
-      var value = correct[0],
-          valueSanitized = sanitizeTyping(value),
-          valueTokens = valueSanitized.split(' ').slice(0, 10);
-
-      for (let i=0; i<elements.length; i++) {
-        let item = elements[i];
-        if (!item.valueSanitized || item.valueSanitized == valueSanitized) {
-          continue;
-        }
-
-        // Retrieve definitions that are fairly similar in length to our current word
-        let itemTokens = item.valueSanitized.split(' ');
-        let X = valueTokens.map((token, i) => {
-          return i < itemTokens.length ? Math.abs(token.length - itemTokens[i].length) : 1
-        });
-        let w = 1;
-        let x = X.reduce((i, s) => s + i*(w += .5, w), 0) | 0;
-
-        choices.push(Object.assign({weight: x}, item));
-      }
-      choices = choices.sort((a, b) => a.weight - b.weight);
-    }
-    return choices.slice(0, LEARN_BUILD_CHOICES_LENGTH).map(item => item.value);
-  }
-
-  invertedPromptAndAnswer(screen) {
-    var answerKind = screen.answer.kind;
-    var promptKind = get_prompt_type(screen.prompt);
-
-    return [
-      {[answerKind]: screen.answer},
-      screen.prompt[promptKind],
-    ];
-  }
-
-  /**
-   * Normalize value as a flat array of strings
-   *
-   * "value": "l'évaluation"
-   * -> ["l'évaluation"]
-   *
-   * "value": [{
-   *   "normal": "https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3",
-   *   "slow": null
-   * }],
-   * -> ["https://static.memrise.com/uploads/things/audio/36962605_140810_2048_20.mp3"]
-   *
-   * "value": [
-   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0443_47.jpg",
-   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0444_07.jpg",
-   *   "https://static.memrise.com/uploads/things/images/39867261_140924_0445_10.jpg"
-   * ]
-   * -> idem
-   */
-  getValue(value) {
-    const inner = function(value) {
-      if (typeof value == 'string') {
-        return [value];
-      }
-      if (value.normal) {
-        return value.normal;
-      }
-      if (value.forEach && value.length > 0) {
-        return value.map((s) => inner(s));
-      }
-      console.log('nop', value);
-    }
-    return inner(value).flat();
-  }
-
-  buildScreen_reversed_multiple_choice(screens) {
-    if ('reversed_multiple_choice2' in screens) {
-      return true;
-    }
-    var screen = screens.multiple_choice[0];
-    screen.template = 'reversed_multiple_choice2';
-    [screen.prompt, screen.answer] = this.invertedPromptAndAnswer(screen);
-
-    screen.correct = [];
-    let value = this.getValue(screen.answer.value).forEach((value) => {
-      screen.correct.push(value);
-    });
-    screen.answer.alternatives.forEach((value) => {
-      screen.correct.push(value);
-    });
-
-    screen.choices = this.getRandomLearningElements(
-      screen.answer.kind,
-      screen.correct,
-    );
-    screens['reversed_multiple_choice2'] = [screen];
-    console.log('buildScreen_reversed_multiple_choice', screen, screens.reversed_multiple_choice[0]);
-    return true;
-  }
-
-  buildScreen_reverse_typing(screens) {
-    if ('reversed_typing' in screens) {
-      return true;
-    }
-    var screen = screens.typing[0];
-    screen.template = 'reversed_typing';
-    [screen.prompt, screen.answer] = this.invertedPromptAndAnswer(screen);
-    if (screen.answer.kind != 'text') {
-      return false;
-    }
-    screens['reversed_typing'] = [screen];
-
-    screen.correct = [];
-    let value = this.getValue(screen.answer.value).forEach((value) => {
-      screen.correct.push(value);
-    });
-    screen.answer.alternatives.forEach((value) => {
-      screen.correct.push(value);
-    });
-
-    var tmp = sanitizeTyping(screen.answer.value).replace(' ', '').split('');
-    screen.choices = randomize(Array.from(new Set(tmp)));
-    console.log('buildScreen_reverse_typing', screen);
-    return true;
   }
 
   //+--------------------------------------------------------
@@ -1106,28 +1432,29 @@ class Learn extends Component {
   }
 
   // Text entry: User submit its answer
-  choice(text) {
-    text = text.trim();
+  choice(givenAnswer) {
+    givenAnswer = givenAnswer.trim();
 
-    var score    = 0,
-        testText = sanitizeTyping(text, this.is_strict).toLowerCase(),
-        refText  = '';
+    var sanitizedGivenAnswer = sanitizeTyping(givenAnswer, this.is_strict).toLowerCase();
+
+    var score   = 0,
+        correctAnswer = '';
 
     // Text input
     for(let i=0; i<this.choices.length; i++) {
       var choice = this.choices[i].toLowerCase().trim(),
-          s      = get_score(testText, choice);
+          s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
 
       if(s && s > score) {
-        score   = s;
-        refText = choice;
+        score = s;
+        correctAnswer = choice;
       }
     }
 
     this.choice_feedback({
-      value    : text,
-      testValue: testText,
-      refValue : refText,
+      value    : givenAnswer,
+      testValue: sanitizedGivenAnswer,
+      refValue : correctAnswer,
       score    : score,
       kind     : 'text'
     });
@@ -1152,35 +1479,6 @@ class Learn extends Component {
     });
   }
 
-  getPointsV1(time_spent, score, current_streak) {
-    var points      = 0,
-        speed_bonus = 0;
-
-    // Score
-    switch(this.props.session_type){
-      case 'learn':
-        points = calculate_points_learn_v1(score);
-        break;
-
-      case 'classic_review':
-        points = calculate_points_learn_v1(score);
-        if(current_streak) {
-          points = calculate_points_review_v1(points, current_streak);
-        }
-        if(score == 1 && time_spent) {
-          speed_bonus = calculate_speed_bonus_v1(time_spent, this.template);
-        }
-        break;
-
-      case 'speed_review':
-        if(score == 1) {
-          points = calculate_points_speed_v1(time_spent);
-        }
-        break;
-    }
-    return points + speed_bonus;
-  }
-
   // Answer has been submitted and checked: compute progress, points & give feedback
   // input: {value,score,kind,...rest}
   choice_feedback(input) {
@@ -1189,76 +1487,64 @@ class Learn extends Component {
     if(!this.state.data) {
       return;
     }
-    var box           = this.state.data.boxes[this.state.i],
-        learnable_id  = box.learnable_id,
-        is_correct    = input.score == 1,
-        savedProgress = this.state.data.progress_map[learnable_id] || {};
+    var learnableID   = this.state.data.screens[this.state.i].learnableID,
+        savedProgress = this.state.data.progressMap[learnableID] || {};
 
-    // Create a "blank" progress from the saved one (to trigger reviews)
-    var progress = {
-        learnable_id,
-        starred       : savedProgress.starred || false,
-        ignored       : savedProgress.ignored || false,
-        not_difficult : savedProgress.not_difficult || false,
+    // Update the streak status and next review data
+    // Values from this object are incremented each time this learnable is learned
+    // and retrieved from the backend at the beginning of the learning session
+    var progress = GameProgressHandler.getProgress(
+      learnableID,
+      savedProgress,
+      input.score,
+    );
+    this.state.data.progressMap[learnableID] = progress;
 
-        attempts      : savedProgress.attempts || 0,
-        correct       : savedProgress.correct || 0,
-        current_streak: savedProgress.current_streak || 0,
-        total_streak  : savedProgress.total_streak || 0,
+    // Update the earned points
+    var current_streak = progress.current_streak;
+    var isCorrect = input.score == 1;
 
-        created_date  : savedProgress.created_date || new Date(),
-        last_date     : new Date(),
-        next_date     : savedProgress.next_date || null,
-        interval      : savedProgress.interval || null,
-        growth_level  : savedProgress.growth_level || 0,
-    };
-
-    // Update the progress
-    // progress.is_difficult = this.isDifficult(progress);
-    progress.growth_level = is_correct ? this.getNextGrowthLevel(progress) : progress.growth_level;
-
-    Object.assign(progress, this.getNextIntervalDate(progress, progress.last_date, input.score));
-    Object.assign(progress, this.getNextStreak(progress, input.score));
-
-    this.state.data.progress_map[learnable_id] = progress;
-
-    // Create an event (for stats)
-    var event = {
-        learnable_id,
-        box_template : this.template,
-        given_answer : input.value,
-        score        : input.score,
-        time_spent   : 0,
-        points       : 0,
-        bonus_points : 0,
-    };
+    var time_spent = 0;
     if (this.props.session_type == 'speed_review') {
-      event.time_spent = Timer.get_time();
+      time_spent = Timer.getTime();
 
-      if (!is_correct) {
+      if (!isCorrect) {
         this.state.hearts -= 1;
       }
     }
-    event.points = this.getPointsV1(
-      event.time_spent,
+    var points = AwardPoints.getPoints(
+      this.props.session_type,
+      this.template,
+      time_spent,
       input.score,
-      progress.current_streak,
+      current_streak,
     );
 
-    this.state.settings.save_progress && this.registerEvent(progress, event);
+    // Values from this object are send to the backend for stats
+    // But don't have an impact for the next learning session
+    var event = {
+        learnable_id : learnableID,
+        box_template : this.template,
+        given_answer : input.value,
+        score        : input.score,
+        time_spent   : time_spent,
+        points       : points,
+        bonus_points : 0,
+    };
+    this.state.settings.save_progress && GameProgressHandler.registerEvent(this.props.course.id, progress, event);
 
     // Count right and wrong answers
     var recap = Object.assign({}, this.state.recap);
-    if(!recap[learnable_id]) {
-      recap[learnable_id] = {
+    if(!recap[learnableID]) {
+      recap[learnableID] = {
         count: 0,
         right: 0,
         pos: Object.keys(recap).length,
       };
     }
-    recap[learnable_id].count++;
-    if(is_correct) {
-      recap[learnable_id].right++;
+    recap[learnableID].count++;
+    if(isCorrect) {
+      recap[learnableID].right++;
     }
 
     // Display correction
@@ -1287,12 +1573,12 @@ class Learn extends Component {
       this.state.recap = recap;
       this.state.points = this.state.points + event.points;
       this.state.nb_scheduled = this.state.nb_scheduled + 1;
-      this.state.nb_scheduled_correct = this.state.nb_scheduled_correct + (is_correct ? 1 : 0);
+      this.state.nb_scheduled_correct = this.state.nb_scheduled_correct + (isCorrect ? 1 : 0);
 
       setTimeout(function(){
         $('.choice-box').removeClass('correct').removeClass('incorrect');
         this.getNext();
-      }.bind(this), is_correct ? 500 : 3000);
+      }.bind(this), isCorrect ? 500 : 3000);
 
     } else {
       this.setState({
@@ -1302,9 +1588,9 @@ class Learn extends Component {
         debug_screen: false,
         points: this.state.points + event.points,
         speed_bonus: this.state.speed_bonus + event.bonus_points,
-        session_streak: is_correct ? this.state.session_streak + 1 : 0,
+        session_streak: isCorrect ? this.state.session_streak + 1 : 0,
         nb_scheduled: this.state.nb_scheduled + 1,
-        nb_scheduled_correct: this.state.nb_scheduled_correct + (is_correct ? 1 : 0)
+        nb_scheduled_correct: this.state.nb_scheduled_correct + (isCorrect ? 1 : 0)
       });
       this.expectChoice  = false;
       this.choices       = false;
@@ -1351,7 +1637,17 @@ class Learn extends Component {
 
     // Recap
     } else {
-      this.state.settings.save_progress && this.session_end();
+      var data = {
+        session_points: this.state.points,
+        //session_bonus_points : this.state.speed_bonus + computePoints_bonusForAccuracy(this.state.nb_scheduled_correct / this.state.nb_scheduled * 100, this.state.nb_scheduled),
+        session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
+        session_source_type: 'course',
+        session_source_id: this.props.course.id,
+      };
+      if (!this.state.get_all) {
+        data.session_source_sub_index = this.state.level_index;
+      }
+      this.state.settings.save_progress && GameProgressHandler.registerSessionEnd(data);
 
       this.setState({
         i: this.state.n,
@@ -1360,286 +1656,6 @@ class Learn extends Component {
         window.imgZoom && window.imgZoom.reset();
       });
     }
-  }
-
-  //+--------------------------------------------------------
-  //| COMPUTE POINTS / GROWTH LEVEL / REVIEW DATE
-  //+--------------------------------------------------------
-
-  /**
-   * Compute the next growh level for the given progress,
-   * assuming the user gave the right answer
-   *
-   * @param dict progress
-   * @param int growthLevel
-   */
-  getNextGrowthLevel(progress, difficulty=TEST_DIFFICULTY.Easy) {
-
-    // FirstOnboardingSessionGrowthLevelStrategy
-    if (this.props.session_type == 'first_session') {
-      return 2 === progress.growth_level ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
-    }
-
-    // StandardGrowthLevelStrategy
-    if (true) {
-      return progress.growth_level + 1;
-    }
-
-    // SuperchargeGrowthLevelStrategy
-    return (
-      progress.attempts === progress.correct && progress.growth_level < LEARN_UNTIL_GROWTH_LEVEL && (
-          difficulty == TEST_DIFFICULTY.Easy && progress.growth_level >= 2
-       || difficulty == TEST_DIFFICULTY.Moderate && progress.growth_level >= 3
-      )
-    ) ? LEARN_UNTIL_GROWTH_LEVEL : progress.growth_level + 1;
-  }
-
-  /**
-   * Create a new date, with [interval] days added to date
-   *
-   * @param Date date
-   * @param float interval (in days) - see REVIEW_INTERVAL_LADDER
-   * @return Date
-   */
-  incrementDateWithInterval(date, interval) {
-      const delta_from = 0,
-            delta_to = .007;
-
-      if (!interval) {
-        interval = delta_to;
-      }
-      if (!date) {
-        date = new Date();
-      }
-      interval += randrange(delta_from, delta_to);
-
-      return new Date(date.getTime() + 24 * interval * 3600 * 1000);
-  }
-
-  /**
-   * Retrieve the index corresponding
-   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
-   *
-   * @param float interval
-   * @return int index
-   */
-  getRungIndex(interval) {
-
-    // Get the last rung greater than the given interval
-    for (var i = REVIEW_INTERVAL_LADDER.length; i > 0 && REVIEW_INTERVAL_LADDER[--i | 0].interval > interval;) {
-        // pass
-    }
-    // Return the rung no greather than the given interval
-    return Math.max(i - 1 | 0, 0);
-  }
-
-  /**
-   * Compute the interval and next_date for the given progress
-   *
-   * @param dict progress
-   * @param Date date_answer
-   * @param float score
-   * @return dict
-   */
-  getNextIntervalDate(progress, date_answer, score) {
-
-    // No review data until we learned the item
-    if (progress.growth_level < LEARN_UNTIL_GROWTH_LEVEL) {
-      return {
-        interval : null,
-        next_date: null,
-      };
-    }
-
-    // We just learned the item: set the next review with the first interval
-    if(!progress.interval || !progress.next_date || progress.interval < REVIEW_INTERVAL_LADDER[0].interval) {
-      var interval = REVIEW_INTERVAL_LADDER[0].interval;
-      return {
-        interval,
-        next_date: this.incrementDateWithInterval(date_answer, interval),
-      }
-    }
-
-    var rungIndex = this.getRungIndex(progress.interval | 0),
-        tolerance = REVIEW_INTERVAL_LADDER[rungIndex].tolerance,
-        reviewDate = new Date(progress.next_date.getTime() - 24 * tolerance * 3600 * 1000),
-        isReviewDatePast = (new Date()).getTime() >= reviewDate.getTime();
-
-    // We got the answer right but the item isn't due to review: keep the nextDate as-is
-    var is_correct = score == 1,
-        is_incorrect = score == 0;
-
-    if (is_correct && !isReviewDatePast) {
-      return {
-        interval : progress.interval,
-        next_date: progress.next_date,
-      };
-    }
-
-    if (is_incorrect) {
-      rungIndex = rungIndex > 2 ? 2 : rungIndex;
-    } else if(is_correct) {
-      if(rungIndex === 1 && progress.current_streak === progress.attempts && progress.current_streak > 0) {
-        rungIndex += 2;
-      } else {
-        rungIndex += 1;
-      }
-    } else { // nearly correct
-      rungIndex = progress.current_streak > 0 ? rungIndex : Math.max(rungIndex - 1, 0);
-    }
-
-    var interval = REVIEW_INTERVAL_LADDER[rungIndex].interval;
-    return {
-      interval,
-      next_date: this.incrementDateWithInterval(date_answer, interval),
-    }
-  }
-
-  /**
-   * Compute whether the progress of the current learnable
-   * is now considered to be difficult
-   *
-   * @param dict progress
-   * @return bool
-   */
-  isDifficult(progress) {
-    if (progress.ignored || progress.not_difficult) {
-      return false;
-    }
-    if (progress.starred) {
-      return true;
-    }
-    if (progress.attempts === 1 || progress.total_streak >= 3) {
-      return false;
-    }
-    var ratio = progress.attempts > 0 ? progress.correct / progress.attempts : 1;
-
-    return progress.attempts < 6 && ratio < .75 || progress.attempts >= 6 && ratio < .92
-  }
-
-  /**
-   * Compute the attempts and streak for the given progress
-   *
-   * @param dict progress
-   * @param float score
-   * @return dict
-   */
-  getNextStreak(progress, score) {
-    /*
-      "when": 1771925218,
-      "interval": 0.5,
-      "total_streak": -1,
-      "current_streak": 0,
-      "correct": 11,
-      "attempts": 12,
-      "points": 0,
-      "score": 0,
-    */
-    var is_correct = score == 1;
-    return {
-      attempts       : progress.attempts + 1,
-      correct        : progress.correct + (is_correct ? 1 : 0),
-      current_streak : is_correct ? progress.current_streak + 1 : 0,
-      total_streak   : Math.max(progress.total_streak + (is_correct ? 1 : -1), 0),
-    }
-  }
-
-  // Send progress to memrise
-  registerEvent(progress, event) {
-    var learnable = this.state.data.learnables_map[progress.learnable_id] || {};
-
-    if (learnable.id !== progress.learnable_id) {
-      console.error('Couldnt find learnable related to event', progress, event);
-      return;
-    }
-
-    // Replace our custom game data to be compatible with memrise
-    if (event.box_template == 'reversed_multiple_choice2') {
-      event.box_template = 'reversed_multiple_choice';
-
-    } else if(event.box_template == 'reversed_typing') {
-      event.box_template = 'typing';
-      event.given_answer = (
-        event.score == 0 ? '' : this.getValue(learnable.screens['1'].definition.value)[0]
-      );
-    }
-
-    var item = {
-      course_id          : parseInt(this.props.course.id),
-      learning_element   : learnable.learning_element,
-      definition_element : learnable.definition_element,
-    };
-    Object.assign(item, progress, event);
-
-    if(item.created_date) {
-      item.created_date = (item.created_date.getTime() / 1000) | 0;
-    }
-    if(item.next_date) {
-      item.next_date = (item.next_date.getTime() / 1000) | 0;
-    }
-    if(item.last_date) {
-      item.last_date = (item.last_date.getTime() / 1000) | 0;
-    }
-    item.when = item.last_date;
-
-    console.log('Event', item);
-    this.state.events.push(item);
-  }
-
-  session_end() {
-    var events = [...this.state.events];
-    var requests = [];
-
-    // Send events in batches of 50
-    while(events.length) {
-      var batch = events.splice(0, 50);
-
-      requests.push({
-        url: '/ajax/register_progress',
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': this.state.data.csrftoken,
-          'X-Referer'  : this.state.data.referer,
-        },
-        data: JSON.stringify({
-          events: batch,
-        }),
-        contentType: 'application/json',
-      });
-    }
-
-    // Send session end
-    var data = {
-      session_points: this.state.points,
-      //session_bonus_points : this.state.speed_bonus + calculate_accuracy_bonus(this.state.nb_scheduled_correct / this.state.nb_scheduled * 100, this.state.nb_scheduled),
-      session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
-      session_source_type: 'course',
-      session_source_id: this.props.course.id,
-    };
-    if (!this.state.get_all) {
-      data.session_source_sub_index = this.state.level_index;
-    }
-    requests.push({
-      url: '/ajax/register_end',
-      method: 'POST',
-      headers: {
-        'X-CSRFToken': this.state.data.csrftoken,
-        'X-Referer'  : this.state.data.referer,
-      },
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-    });
-
-    // Send each request one after the other
-    function execute_requests_queue() {
-      if(!requests.length) {
-        return;
-      }
-      var request = requests.shift();
-      request.success = execute_requests_queue;
-      $.ajax(request);
-    }
-    execute_requests_queue();
   }
 
   //+--------------------------------------------------------
@@ -1726,8 +1742,8 @@ class Learn extends Component {
   }
 
   addBoxDebugMenu() {
-    var item    = this.state.data.boxes[this.state.i],
-        screen  = this.state.data.screen_template_map[item.learnable_id],
+    var item    = this.state.data.screens[this.state.i],
+        screen  = this.state.data.screensTemplateMap[item.learnableID],
         current = this.state.debug_screen;
 
     return <ul id="debug-screen">
@@ -1801,20 +1817,20 @@ class Learn extends Component {
     }
 
     // No defined screen: display next learnable
-    const item = this.state.data.boxes[this.state.i];
+    const item = this.state.data.screens[this.state.i];
     if(!item) {
-      console.log('No item to display', this.state.data.boxes, this.state.i);
+      console.log('No item to display', this.state.data.screens, this.state.i);
       return null;
     }
-    const screens = this.state.data.screen_template_map[item.learnable_id];
+    const screens = this.state.data.screensTemplateMap[item.learnableID];
     if(!screens) {
-      console.log('No screen to display', this.state.data.screen_template_map, item);
+      console.log('No screen to display', this.state.data.screensTemplateMap, item);
       return null;
     }
-    console.log('Box', item, screens);
+    console.log('Screen', item, screens);
 
-    if(item.learn_session_level) {
-      switch(item.learn_session_level) {
+    if(item.learningGrowthLevel) {
+      switch(item.learningGrowthLevel) {
         case 1:
             return this.render_tpl({
               template: 'multiple_choice',
@@ -1936,13 +1952,16 @@ class Learn extends Component {
 
       // Reversing Question on the answer, answer with the question
       if(this.state.settings.reverse_prompt_and_answer) {
-        if(screens.typing && !this.state.settings.disable_typing && this.buildScreen_reverse_typing(screens)) {
+        if(screens.typing
+          && !this.state.settings.disable_typing
+          && GameScreenBuilder.buildScreen_reverse_typing(screens)
+        ) {
           return this.render_tpl({
             template: 'reversed_typing',
           });
         }
         return this.render_tpl({
-            template: (this.buildScreen_reversed_multiple_choice(screens), 'reversed_multiple_choice2'),
+            template: (GameScreenBuilder.buildScreen_reversed_multiple_choice(screens), 'reversed_multiple_choice2'),
             nChoices: 9
         });
       }
@@ -2046,8 +2065,8 @@ class Learn extends Component {
           "gap_prompt": null
         }
     */
-    var id = this.props.preview_thing_id || this.state.data.boxes[this.state.i].learnable_id;
-    return this.state.data.screen_template_map[id][tpl][0];
+    var id = this.props.preview_thing_id || this.state.data.screens[this.state.i].learnableID;
+    return this.state.data.screensTemplateMap[id][tpl][0];
   }
 
   render_audio_multiple_choice(setting) {
@@ -2118,17 +2137,17 @@ class Learn extends Component {
 
     if(this.props.session_type == 'preview') {
       if(this.state.data) {
-        for(var i=0; i<this.state.data.boxes.length; i++) {
-          var id = this.state.data.boxes[i].learnable_id;
+        for(var i=0; i<this.state.data.screens.length; i++) {
+          var id = this.state.data.screens[i].learnableID;
 
-          items.push(this.state.data.screen_template_map[id].presentation[0]);
+          items.push(this.state.data.screensTemplateMap[id].presentation[0]);
         }
       }
     } else {
       for(var id in this.state.recap) {
         var item = this.state.recap[id];
 
-        items[item.pos] = {...item, ...this.state.data.screen_template_map[id].presentation[0]};
+        items[item.pos] = {...item, ...this.state.data.screensTemplateMap[id].presentation[0]};
       }
     }
     return <Recap items={Object.values(items)} session_type={this.props.session_type} />;
@@ -2227,7 +2246,7 @@ const Correction = function(props) {
       {window.I18N.near_answer}!&nbsp;
       <span>{window.I18N.your_answer_was}: <strong>
         {data.kind == 'text'
-          ? <span>{data.testValue} <small className="correction" dangerouslySetInnerHTML={{__html: '(' + diff(data.testValue, data.refValue) + ')'}} /></span>
+          ? <span>{data.testValue} <small className="correction" dangerouslySetInnerHTML={{__html: '(' + highlightDiff(data.testValue, data.refValue) + ')'}} /></span>
           : <Value content={data.value} type={data.kind} single="1" />}
       </strong></span>
     </div>;
@@ -2304,7 +2323,15 @@ const Presentation = function(props){
       {/*-- Copytyping --*/}
       {props.prompt && <div className="typing-container" key={k + i++}>
           <div className="typing">
-            <input type="text" autoComplete="off" spellCheck="false" value="" placeholder={props.prompt.answer.value} tabIndex="1" autoFocus="autofocus" />
+            <input
+              type="text"
+              autoComplete="off"
+              spellCheck="false"
+              value=""
+              placeholder={props.prompt.answer.value}
+              tabIndex="1"
+              autoFocus="autofocus"
+            />
             <ul className="keyboard">{props.prompt.choices.map((letter, i) =>
               <li key={i} className="button" tabIndex="0">{letter}</li>
             )}</ul>
@@ -2313,7 +2340,7 @@ const Presentation = function(props){
     </div>;
 };
 
-function get_prompt_type(prompt) {
+function getPromptType(prompt) {
   if(prompt.text) return 'text';
   if(prompt.image) return 'image';
   if(prompt.audio) return 'audio';
@@ -2322,7 +2349,7 @@ function get_prompt_type(prompt) {
 
 const MultipleChoice = function(props) {
   var item       = props.item,
-      itemType   = props.promptWith || get_prompt_type(item.prompt),
+      itemType   = props.promptWith || getPromptType(item.prompt),
       answerType = item.answer.kind;
 
   // Randomize choices order
@@ -2364,7 +2391,7 @@ const MultipleChoice = function(props) {
   }
   rightAnswers.push(...item.answer.alternatives);
 
-  // Display our boxes
+  // Display our screens
   var choices = choicesRnd.map((value, i) => {
     return (
       <ChoiceBox
@@ -2401,7 +2428,7 @@ class ChoiceBox extends Component {
 
 const Typing = function(props) {
   var item     = props.item,
-      itemType = props.promptWith || get_prompt_type(item.prompt),
+      itemType = props.promptWith || getPromptType(item.prompt),
       i = 0;
 
   props.setChoices(item.correct, 'text', item.is_strict);
@@ -2428,7 +2455,7 @@ const Typing = function(props) {
 
 const Tapping = function(props) {
   var item     = props.item,
-      itemType = get_prompt_type(item.prompt);
+      itemType = getPromptType(item.prompt);
 
   props.setChoices(item.correct, 'tapping', item.is_strict);
 
@@ -2508,91 +2535,165 @@ const Recap = function(props) {
 //| SCORING SYSTEM
 //+--------------------------------------------------------
 
-const FIRST_LETTER_WEIGHT = .1,
-      DISTANCE_WEIGHT = .9;
+const AwardPoints = {
+  getPoints(session_type, template, time_spent, score, current_streak) {
+    var points      = 0,
+        speed_bonus = 0;
 
-/**
- * Score the similarity between the given response
- * and the expected answer
- *
- * 1 = equal
- * 0 = non equal
- * 0<x<1 = similar
- */
-function get_score(response, answer) {
-  if(!response) {
-    return 0;
-  }
-  var both_are_numeric = $.isNumeric(parseInt(response, 10)) && $.isNumeric(parseInt(answer, 10));
+    // Score
+    switch(session_type){
+      case 'learn':
+        points = AwardPoints.getPoints_learn(score);
+        break;
 
-  if(both_are_numeric) {
-    return get_numeric_score(response, answer);
-  } else {
-    return get_string_score(response, answer);
-  }
-}
+      case 'classic_review':
+        points = AwardPoints.getPoints_learn(score);
+        if(current_streak) {
+          points = AwardPoints.getPoints_review(points, current_streak);
+        }
+        if(score == 1 && time_spent) {
+          speed_bonus = AwardPoints.getPoints_bonusForSpeed(time_spent, template);
+        }
+        break;
 
-function get_tolerance(length) {
-  return length * (
-    length > 18 ? .5
-      : length < 3 ? 1
-        : -1 * length / 33 + 1.1
-  );
-}
+      case 'speed_review':
+        if(score == 1) {
+          points = AwardPoints.getPoints_speedReview(time_spent);
+        }
+        break;
+    }
+    return points + speed_bonus;
+  },
 
-function get_numeric_score(response, answer) {
-  return (parseInt(response, 10) === parseInt(answer, 10) ? 1 : 0);
-}
-
-function get_string_score(response, answer) {
-  var tolerance = get_tolerance(answer.length),
-      distance = get_distance(response, answer);
-  if (distance >= tolerance) return 0;
-
-  var weightFirstLetter = answer.charAt(0) === response.charAt(0) ? 1 : 0,
-      weight = (tolerance - distance) / tolerance,
-      s = FIRST_LETTER_WEIGHT * weightFirstLetter + DISTANCE_WEIGHT * weight;
-
-  return s < .5 && (s = 0), s;
-}
-
-/**
- * Compute the levenshtein distance between a and b
- */
-function get_distance(a, b) {
-  var calculate_distance_matrix = function() {
-    var get_item_at;
-
-    if($.isArray(a)) {
-      get_item_at = function(arr, i) { return arr[i] };
+  getPoints_learn: function(score) {
+    return 1 === score ? 45 : 0 === score ? 0 : Math.max(10, Math.round(45 * score) - 20);
+  },
+  getPoints_speedReview: function(time_spent) {
+    var t = Math.floor(time_spent / 1e3);
+    return t >= 6 ? Math.min(15, 25) : Math.min(15 + 7 * (6 - t), 25);
+  },
+  getPoints_review: function(points, current_streak) {
+    points *= Math.pow(1.2, current_streak);
+    points  = Math.min(points, 150);
+    return Math.ceil(points);
+  },
+  getPoints_bonusForSpeed: function(time_spent, tpl) {
+    if(tpl == 'typing') {
+      return time_spent < 4e3 ? 5 : 0;
     } else {
-      get_item_at = function(arr, i) { return arr.charAt(i) };
+      return time_spent < 2e3 ? 3 : 0;
     }
+  },
+  getPoints_bonusForAccuracy: function(percent_correct, nb_scheduled_correct) {
+    if(percent_correct == 100) {
+      return 20 * nb_scheduled_correct;
 
-    // Create matrix
-    var matrix = [];
-    for (var i = 0; i <= a.length; i += 1) matrix[i] = [], matrix[i][0] = i;
-    for (var j = 0; j <= b.length; j += 1) matrix[0][j] = j;
+    } else if(percent_correct >= 90) {
+      return 12 * nb_scheduled_correct;
 
-    // Calculate distance
-    for (var i = 1; i <= a.length; i += 1) {
-      for (var j = 1; j <= b.length; j += 1) {
-        matrix[i][j] = Math.min(
-          matrix[i - 1][j] + 1,
-          matrix[i][j - 1] + 1,
-          matrix[i - 1][j - 1] + (get_item_at(a, i - 1) === get_item_at(b, j - 1) ? 0 : 1)
-        );
+    } else if(percent_correct >= 80) {
+      return 6 * nb_scheduled_correct;
+
+    } else if(percent_correct >= 70) {
+      return 4 * nb_scheduled_correct;
+
+    } else if(percent_correct >= 50) {
+      return 2 * nb_scheduled_correct;
+
+    } else {
+      return 0;
+    }
+  }
+};
+
+const ScoreAnswer = {
+  FIRST_LETTER_WEIGHT: .1,
+  DISTANCE_WEIGHT: .9,
+
+  /**
+   * Check whether the givenAnswer is right or not
+   * And score the similarity between the given response and the expected answer
+   * (1 = correct, 0 = incorrect, 0<x<1 = more or less similar)
+   */
+  computeScore: function(givenAnswer, correctAnswer) {
+    if(!givenAnswer) {
+      return 0;
+    }
+    var both_are_numeric = $.isNumeric(parseInt(givenAnswer, 10)) && $.isNumeric(parseInt(correctAnswer, 10));
+
+    if(both_are_numeric) {
+      return ScoreAnswer.getNumericScore(givenAnswer, correctAnswer);
+    } else {
+      return ScoreAnswer.getStringScore(givenAnswer, correctAnswer);
+    }
+  },
+
+  getNumericScore: function(givenAnswer, correctAnswer) {
+    return (parseInt(givenAnswer, 10) === parseInt(correctAnswer, 10) ? 1 : 0);
+  },
+
+  getStringScore: function(givenAnswer, correctAnswer) {
+    var tolerance = ScoreAnswer.getDistanceTolerance(correctAnswer.length),
+        distance = ScoreAnswer.getStringDistance(givenAnswer, correctAnswer);
+    if (distance >= tolerance) return 0;
+
+    var weightFirstLetter = correctAnswer.charAt(0) === givenAnswer.charAt(0) ? 1 : 0,
+        weight = (tolerance - distance) / tolerance,
+        s = ScoreAnswer.FIRST_LETTER_WEIGHT * weightFirstLetter + ScoreAnswer.DISTANCE_WEIGHT * weight;
+
+    return s < .5 && (s = 0), s;
+  },
+
+  getDistanceTolerance: function(length) {
+    return length * (
+      length > 18 ? .5
+        : length < 3 ? 1
+          : -1 * length / 33 + 1.1
+    );
+  },
+
+  /**
+   * Compute the levenshtein distance between a and b
+   */
+  getStringDistance: function(a, b) {
+    var computeDistanceMatrix = function() {
+      var getItemAt;
+
+      if($.isArray(a)) {
+        getItemAt = function(arr, i) { return arr[i] };
+      } else {
+        getItemAt = function(arr, i) { return arr.charAt(i) };
       }
-    }
-    return matrix;
-  };
 
-  var matrix = calculate_distance_matrix();
-  return matrix[a.length][b.length];
+      // Create matrix
+      var matrix = [];
+      for (var i = 0; i <= a.length; i += 1) matrix[i] = [], matrix[i][0] = i;
+      for (var j = 0; j <= b.length; j += 1) matrix[0][j] = j;
+
+      // Calculate distance
+      for (var i = 1; i <= a.length; i += 1) {
+        for (var j = 1; j <= b.length; j += 1) {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j - 1] + (getItemAt(a, i - 1) === getItemAt(b, j - 1) ? 0 : 1)
+          );
+        }
+      }
+      return matrix;
+    };
+
+    var matrix = computeDistanceMatrix();
+    return matrix[a.length][b.length];
+  }
 }
+
+//+--------------------------------------------------------
+//| TEXT NORMALIZATION
+//+--------------------------------------------------------
 
 // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
-var RegexUnicode = {
+const RegexUnicode = {
   'C': '\0-\x1F\x7F-\x9F\xAD\u0378\u0379\u0380-\u0383\u038B\u038D\u03A2\u0530\u0557\u0558\u0560\u0588\u058B\u058C\u0590\u05C8-\u05CF\u05EB-\u05EF\u05F5-\u0605\u061C\u061D\u06DD\u070E\u070F\u074B\u074C\u07B2-\u07BF\u07FB-\u07FF\u082E\u082F\u083F\u085C\u085D\u085F-\u089F\u08B5-\u08E2\u0984\u098D\u098E\u0991\u0992\u09A9\u09B1\u09B3-\u09B5\u09BA\u09BB\u09C5\u09C6\u09C9\u09CA\u09CF-\u09D6\u09D8-\u09DB\u09DE\u09E4\u09E5\u09FC-\u0A00\u0A04\u0A0B-\u0A0E\u0A11\u0A12\u0A29\u0A31\u0A34\u0A37\u0A3A\u0A3B\u0A3D\u0A43-\u0A46\u0A49\u0A4A\u0A4E-\u0A50\u0A52-\u0A58\u0A5D\u0A5F-\u0A65\u0A76-\u0A80\u0A84\u0A8E\u0A92\u0AA9\u0AB1\u0AB4\u0ABA\u0ABB\u0AC6\u0ACA\u0ACE\u0ACF\u0AD1-\u0ADF\u0AE4\u0AE5\u0AF2-\u0AF8\u0AFA-\u0B00\u0B04\u0B0D\u0B0E\u0B11\u0B12\u0B29\u0B31\u0B34\u0B3A\u0B3B\u0B45\u0B46\u0B49\u0B4A\u0B4E-\u0B55\u0B58-\u0B5B\u0B5E\u0B64\u0B65\u0B78-\u0B81\u0B84\u0B8B-\u0B8D\u0B91\u0B96-\u0B98\u0B9B\u0B9D\u0BA0-\u0BA2\u0BA5-\u0BA7\u0BAB-\u0BAD\u0BBA-\u0BBD\u0BC3-\u0BC5\u0BC9\u0BCE\u0BCF\u0BD1-\u0BD6\u0BD8-\u0BE5\u0BFB-\u0BFF\u0C04\u0C0D\u0C11\u0C29\u0C3A-\u0C3C\u0C45\u0C49\u0C4E-\u0C54\u0C57\u0C5B-\u0C5F\u0C64\u0C65\u0C70-\u0C77\u0C80\u0C84\u0C8D\u0C91\u0CA9\u0CB4\u0CBA\u0CBB\u0CC5\u0CC9\u0CCE-\u0CD4\u0CD7-\u0CDD\u0CDF\u0CE4\u0CE5\u0CF0\u0CF3-\u0D00\u0D04\u0D0D\u0D11\u0D3B\u0D3C\u0D45\u0D49\u0D4F-\u0D56\u0D58-\u0D5E\u0D64\u0D65\u0D76-\u0D78\u0D80\u0D81\u0D84\u0D97-\u0D99\u0DB2\u0DBC\u0DBE\u0DBF\u0DC7-\u0DC9\u0DCB-\u0DCE\u0DD5\u0DD7\u0DE0-\u0DE5\u0DF0\u0DF1\u0DF5-\u0E00\u0E3B-\u0E3E\u0E5C-\u0E80\u0E83\u0E85\u0E86\u0E89\u0E8B\u0E8C\u0E8E-\u0E93\u0E98\u0EA0\u0EA4\u0EA6\u0EA8\u0EA9\u0EAC\u0EBA\u0EBE\u0EBF\u0EC5\u0EC7\u0ECE\u0ECF\u0EDA\u0EDB\u0EE0-\u0EFF\u0F48\u0F6D-\u0F70\u0F98\u0FBD\u0FCD\u0FDB-\u0FFF\u10C6\u10C8-\u10CC\u10CE\u10CF\u1249\u124E\u124F\u1257\u1259\u125E\u125F\u1289\u128E\u128F\u12B1\u12B6\u12B7\u12BF\u12C1\u12C6\u12C7\u12D7\u1311\u1316\u1317\u135B\u135C\u137D-\u137F\u139A-\u139F\u13F6\u13F7\u13FE\u13FF\u169D-\u169F\u16F9-\u16FF\u170D\u1715-\u171F\u1737-\u173F\u1754-\u175F\u176D\u1771\u1774-\u177F\u17DE\u17DF\u17EA-\u17EF\u17FA-\u17FF\u180E\u180F\u181A-\u181F\u1878-\u187F\u18AB-\u18AF\u18F6-\u18FF\u191F\u192C-\u192F\u193C-\u193F\u1941-\u1943\u196E\u196F\u1975-\u197F\u19AC-\u19AF\u19CA-\u19CF\u19DB-\u19DD\u1A1C\u1A1D\u1A5F\u1A7D\u1A7E\u1A8A-\u1A8F\u1A9A-\u1A9F\u1AAE\u1AAF\u1ABF-\u1AFF\u1B4C-\u1B4F\u1B7D-\u1B7F\u1BF4-\u1BFB\u1C38-\u1C3A\u1C4A-\u1C4C\u1C80-\u1CBF\u1CC8-\u1CCF\u1CF7\u1CFA-\u1CFF\u1DF6-\u1DFB\u1F16\u1F17\u1F1E\u1F1F\u1F46\u1F47\u1F4E\u1F4F\u1F58\u1F5A\u1F5C\u1F5E\u1F7E\u1F7F\u1FB5\u1FC5\u1FD4\u1FD5\u1FDC\u1FF0\u1FF1\u1FF5\u1FFF\u200B-\u200F\u202A-\u202E\u2060-\u206F\u2072\u2073\u208F\u209D-\u209F\u20BF-\u20CF\u20F1-\u20FF\u218C-\u218F\u23FB-\u23FF\u2427-\u243F\u244B-\u245F\u2B74\u2B75\u2B96\u2B97\u2BBA-\u2BBC\u2BC9\u2BD2-\u2BEB\u2BF0-\u2BFF\u2C2F\u2C5F\u2CF4-\u2CF8\u2D26\u2D28-\u2D2C\u2D2E\u2D2F\u2D68-\u2D6E\u2D71-\u2D7E\u2D97-\u2D9F\u2DA7\u2DAF\u2DB7\u2DBF\u2DC7\u2DCF\u2DD7\u2DDF\u2E43-\u2E7F\u2E9A\u2EF4-\u2EFF\u2FD6-\u2FEF\u2FFC-\u2FFF\u3040\u3097\u3098\u3100-\u3104\u312E-\u3130\u318F\u31BB-\u31BF\u31E4-\u31EF\u321F\u32FF\u4DB6-\u4DBF\u9FD6-\u9FFF\uA48D-\uA48F\uA4C7-\uA4CF\uA62C-\uA63F\uA6F8-\uA6FF\uA7AE\uA7AF\uA7B8-\uA7F6\uA82C-\uA82F\uA83A-\uA83F\uA878-\uA87F\uA8C5-\uA8CD\uA8DA-\uA8DF\uA8FE\uA8FF\uA954-\uA95E\uA97D-\uA97F\uA9CE\uA9DA-\uA9DD\uA9FF\uAA37-\uAA3F\uAA4E\uAA4F\uAA5A\uAA5B\uAAC3-\uAADA\uAAF7-\uAB00\uAB07\uAB08\uAB0F\uAB10\uAB17-\uAB1F\uAB27\uAB2F\uAB66-\uAB6F\uABEE\uABEF\uABFA-\uABFF\uD7A4-\uD7AF\uD7C7-\uD7CA\uD7FC-\uF8FF\uFA6E\uFA6F\uFADA-\uFAFF\uFB07-\uFB12\uFB18-\uFB1C\uFB37\uFB3D\uFB3F\uFB42\uFB45\uFBC2-\uFBD2\uFD40-\uFD4F\uFD90\uFD91\uFDC8-\uFDEF\uFDFE\uFDFF\uFE1A-\uFE1F\uFE53\uFE67\uFE6C-\uFE6F\uFE75\uFEFD-\uFF00\uFFBF-\uFFC1\uFFC8\uFFC9\uFFD0\uFFD1\uFFD8\uFFD9\uFFDD-\uFFDF\uFFE7\uFFEF-\uFFFB\uFFFE\uFFFF',
   'P': '\x21-\x23\x25-\\x2A\x2C-\x2F\x3A\x3B\\x3F\x40\\x5B-\\x5D\x5F\\x7B\x7D\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E42\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65',
   'S': '\\x24\\x2B\x3C-\x3E\\x5E\x60\\x7C\x7E\xA2-\xA6\xA8\xA9\xAC\xAE-\xB1\xB4\xB8\xD7\xF7\u02C2-\u02C5\u02D2-\u02DF\u02E5-\u02EB\u02ED\u02EF-\u02FF\u0375\u0384\u0385\u03F6\u0482\u058D-\u058F\u0606-\u0608\u060B\u060E\u060F\u06DE\u06E9\u06FD\u06FE\u07F6\u09F2\u09F3\u09FA\u09FB\u0AF1\u0B70\u0BF3-\u0BFA\u0C7F\u0D79\u0E3F\u0F01-\u0F03\u0F13\u0F15-\u0F17\u0F1A-\u0F1F\u0F34\u0F36\u0F38\u0FBE-\u0FC5\u0FC7-\u0FCC\u0FCE\u0FCF\u0FD5-\u0FD8\u109E\u109F\u1390-\u1399\u17DB\u1940\u19DE-\u19FF\u1B61-\u1B6A\u1B74-\u1B7C\u1FBD\u1FBF-\u1FC1\u1FCD-\u1FCF\u1FDD-\u1FDF\u1FED-\u1FEF\u1FFD\u1FFE\u2044\u2052\u207A-\u207C\u208A-\u208C\u20A0-\u20BE\u2100\u2101\u2103-\u2106\u2108\u2109\u2114\u2116-\u2118\u211E-\u2123\u2125\u2127\u2129\u212E\u213A\u213B\u2140-\u2144\u214A-\u214D\u214F\u218A\u218B\u2190-\u2307\u230C-\u2328\u232B-\u23FA\u2400-\u2426\u2440-\u244A\u249C-\u24E9\u2500-\u2767\u2794-\u27C4\u27C7-\u27E5\u27F0-\u2982\u2999-\u29D7\u29DC-\u29FB\u29FE-\u2B73\u2B76-\u2B95\u2B98-\u2BB9\u2BBD-\u2BC8\u2BCA-\u2BD1\u2BEC-\u2BEF\u2CE5-\u2CEA\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3004\u3012\u3013\u3020\u3036\u3037\u303E\u303F\u309B\u309C\u3190\u3191\u3196-\u319F\u31C0-\u31E3\u3200-\u321E\u322A-\u3247\u3250\u3260-\u327F\u328A-\u32B0\u32C0-\u32FE\u3300-\u33FF\u4DC0-\u4DFF\uA490-\uA4C6\uA700-\uA716\uA720\uA721\uA789\uA78A\uA828-\uA82B\uA836-\uA839\uAA77-\uAA79\uAB5B\uFB29\uFBB2-\uFBC1\uFDFC\uFDFD\uFE62\uFE64-\uFE66\uFE69\uFF04\uFF0B\uFF1C-\uFF1E\uFF3E\uFF40\uFF5C\uFF5E\uFFE0-\uFFE6\uFFE8-\uFFEE\uFFFC\uFFFD'
@@ -2614,56 +2715,11 @@ function sanitizeTyping(text, strict) {
 }
 
 //+--------------------------------------------------------
-//| COUNTING POINTS V1
-//+--------------------------------------------------------
-
-function calculate_points_learn_v1(score) {
-  return 1 === score ? 45 : 0 === score ? 0 : Math.max(10, Math.round(45 * score) - 20);
-}
-function calculate_points_speed_v1(time_spent) {
-  var t = Math.floor(time_spent / 1e3);
-  return t >= 6 ? Math.min(15, 25) : Math.min(15 + 7 * (6 - t), 25);
-}
-function calculate_points_review_v1(points, current_streak) {
-  points *= Math.pow(1.2, current_streak);
-  points  = Math.min(points, 150);
-  return Math.ceil(points);
-}
-
-function calculate_speed_bonus_v1(time_spent, tpl) {
-  if(tpl == 'typing') {
-    return time_spent < 4e3 ? 5 : 0;
-  } else {
-    return time_spent < 2e3 ? 3 : 0;
-  }
-}
-function calculate_accuracy_bonus_v1(percent_correct, nb_scheduled_correct) {
-  if(percent_correct == 100) {
-    return 20 * nb_scheduled_correct;
-
-  } else if(percent_correct >= 90) {
-    return 12 * nb_scheduled_correct;
-
-  } else if(percent_correct >= 80) {
-    return 6 * nb_scheduled_correct;
-
-  } else if(percent_correct >= 70) {
-    return 4 * nb_scheduled_correct;
-
-  } else if(percent_correct >= 50) {
-    return 2 * nb_scheduled_correct;
-
-  } else {
-    return 0;
-  }
-}
-
-//+--------------------------------------------------------
 //| HIGHLIGHT TEXT DIFF
 //+--------------------------------------------------------
 
 // https://codereview.stackexchange.com/questions/133586/a-string-prototype-diff-implementation-text-diff
-var diff = (function(){
+const highlightDiff = (function(){
 
   function rotate(arr, n){
     var len = arr.length;
