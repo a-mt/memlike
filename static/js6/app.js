@@ -423,7 +423,7 @@ var imgZoom = {
       .on('click', '.slideshow-trigger', function(){
         var i = ($(this).hasClass('prev') ? imgZoom.i - 1 : imgZoom.i + 1);
         imgZoom.open.call(document.getElementById('imgZoom-' + i));
-      }
+      })
       // Handle close btn
       .on('click', '.modal-close-link', imgZoom.close);
 

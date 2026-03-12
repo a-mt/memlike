@@ -885,6 +885,9 @@ a > .expand-icon { /* ico-s icon-arr-right */
   padding: 26px 0;
   min-height: 200px;
 }
+#content-next {
+  text-align: center;
+}
 
 .inner-wrap {
   border: 1px solid #e4e4e4;

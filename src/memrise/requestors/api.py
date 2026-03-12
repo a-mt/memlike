@@ -153,7 +153,6 @@ class ApiRequestor:
         log_session = self.buildCookiesLog(sessionid)
         logger.debug(f"Requestor:What I study [offset={offset}] ({log_session})")
 
-        # url = f"https://app.memrise.com/ajax/courses/dashboard/?courses_filter=most_recent&offset={offset}&limit={nbperpage-1}&get_review_count=true"
         url = f"{HOST}/{API_VERSION}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))

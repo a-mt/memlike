@@ -102,6 +102,8 @@ misc = {
     "confirm_del_level": "Delete this level?",
     "generate_audio": "Generate audio",
     "close": "Close",
+    "cancel": "Cancel",
+    "save": "Save",
 }
 
 menu = {
