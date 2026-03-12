@@ -423,7 +423,9 @@ var imgZoom = {
       .on('click', '.slideshow-trigger', function(){
         var i = ($(this).hasClass('prev') ? imgZoom.i - 1 : imgZoom.i + 1);
         imgZoom.open.call(document.getElementById('imgZoom-' + i));
-      });
+      }
+      // Handle close btn
+      .on('click', '.modal-close-link', imgZoom.close);
 
     imgZoom.container = div;
   },
@@ -431,10 +433,12 @@ var imgZoom = {
     if(!imgZoom.container) {
       imgZoom.createContainer();
     }
+    var html = `<button type="button" class="modal-close-link">${window.I18N.close}</button>`;
 
     // Img & legend
-    var legend = $(this).closest('.thing').find('.text').text(),
-          html = `<figure>
+    var legend = $(this).closest('.thing').find('.text').text();
+
+    html += `<figure>
             <img class="zoom" src="${this.getAttribute('src')}">
             ${legend ? `<figcaption>${legend}</figcaption>` : ''}
           </figure>`;

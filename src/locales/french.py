@@ -100,6 +100,7 @@ misc = {
     "confirm_del_row": "Supprimer cette ligne?",
     "confirm_del_level": "Supprimer ce niveau?",
     "generate_audio": "Générer l'audio",
+    "close": "Fermer",
 }
 
 menu = {

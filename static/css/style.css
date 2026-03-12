@@ -1403,7 +1403,8 @@ code.header {
   padding-top: 1em;
   line-height: 1.25em;
 }
-.mode-selector-close {
+.mode-selector-close,
+.modal-close-btn {
   position: absolute;
   right: 12px;
   top: 0;
@@ -1419,8 +1420,10 @@ code.header {
   cursor: pointer;
   border: 0;
   padding: 0;
+  display: inline;
 }
-.mode-selector-close:hover {
+.mode-selector-close:hover,
+.modal-close-btn:hover {
   background: rgba(255,255,255,0.4);
 }
 .mode-icons {
@@ -1706,6 +1709,18 @@ code.header {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.modal-close-link {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: #aaa;
+}
+.modal-close-link:first-child {
+  margin-bottom: 20px;
+}
+.modal-close-link:last-child {
+  margin-top: 20px;
 }
 @media (min-width: 721px) {
   .modal {
