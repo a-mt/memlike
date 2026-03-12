@@ -3,18 +3,61 @@ import web
 from memrise import memrise
 from requests.exceptions import HTTPError
 from utils.ajax import proxied_response, error_response
+from utils import validator
+from variables import languages
+from pydantic_core import PydanticCustomError
 
 
 class courses:
     def GET(self):
-        _GET = web.input(lang=web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG), cat="", q="", page=1)
+        def is_valid_lang(value):
+            if value not in languages:
+                raise PydanticCustomError(
+                    'invalid',
+                    "Expected a valid language, got '{wrong_value}'",
+                    {'wrong_value': value},
+                )
+            return value
+
+        input_data = validator.validate(
+            fields={
+                'lang': validator.field(
+                    validator.schema.str_schema(),
+                    validator=is_valid_lang,
+                    default=web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG),
+                ),
+                'cat': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+                'q': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+                'page': validator.field(
+                    validator.schema.int_schema(gt=0),
+                    default=1,
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
 
         return proxied_response(lambda: memrise.courses(_GET.lang, _GET.page, _GET.cat, _GET.q))
 
 
 class course:
     def GET(self, course_id, course_slug):
-        _GET = web.input(session=False)
+        input_data = validator.validate(
+            fields={
+                'session': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
 
         if _GET.session and _GET.session != "0":
             if not web.ctx.session.get("loggedin", False):
@@ -25,7 +68,16 @@ class course:
 
 class course_level:
     def GET(self, course_id, course_slug, level_index, session_type="preview"):
-        _GET = web.input(session=False)
+        input_data = validator.validate(
+            fields={
+                'session': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
 
         if _GET.session and _GET.session != "0":
             if not web.ctx.session.get("loggedin", False):
@@ -50,5 +102,15 @@ class course_level_multimedia:
 
 class course_leaderboard:
     def GET(self, course_id, course_slug):
-        _GET = web.input(period="week")
+        input_data = validator.validate(
+            fields={
+                'period': validator.field(
+                    validator.str_choices_schema(['month', 'week', 'alltime']),
+                    default='week',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
         return proxied_response(lambda: memrise.course_leaderboard(course_id, _GET.period))

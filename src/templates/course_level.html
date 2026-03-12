@@ -139,25 +139,25 @@ $if level['type'] != 2:
         <button type="button" class="mode-selector-close">&times;</button>
       </h3>
       <div class="mode-icons">
-        <button name="session" value="learn" class="mode-icon-wrapper $('disabled' if tolearn == 0 else None)">
+        <button name="session_type" value="learn" class="mode-icon-wrapper $('disabled' if tolearn == 0 else None)">
           <div class="mode-icon learn">
             $if tolearn:
               <div class="mode-counter">$(tolearn)</div>
           </div>
           <div class="mode-icon-label">$:(I18N.misc['new_words'])</div>
         </button>
-        <button name="session" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
+        <button name="session_type" value="classic_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon classic_review">
             $if toreview:
               <div class="mode-counter">$(toreview)</div>
           </div>
           <div class="mode-icon-label">$:(I18N.misc['classic_review'])</div>
         </button>
-        <button name="session" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
+        <button name="session_type" value="speed_review" class="mode-icon-wrapper $('disabled' if learned == 0 else None)">
           <div class="mode-icon speed_review">&nbsp;</div>
           <div class="mode-icon-label">$:(I18N.misc['speed_review'])</div>
         </button>
-        <button name="session" value="preview" class="mode-icon-wrapper $('disabled' if nb_things == 0 else None)">
+        <button name="session_type" value="preview" class="mode-icon-wrapper $('disabled' if nb_things == 0 else None)">
           <div class="mode-icon preview">&nbsp;</div>
           <div class="mode-icon-label">$:(I18N.misc['preview'])</div>
         </button>

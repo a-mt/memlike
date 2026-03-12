@@ -165,7 +165,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         file = web.storage(
             {
                 "filename": "file.mp3",
-                "value": audio,
+                "raw": audio,
             }
         )
         result = self.memrise.level_thing_upload(

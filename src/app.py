@@ -14,6 +14,7 @@ sys.path.insert(0, settings.ROOTDIR)
 import controllers
 import session
 import re
+from pydantic_core import ValidationError
 
 
 class logout:
@@ -156,7 +157,7 @@ app.add_processor(web.loadhook(flash_load))
 
 
 # ---
-# Catching raise web.Unauthorized exceptions to display template,
+# Checking raised HTTPError exceptions (web.Unauthorized) to display template,
 # unless a sub-app added a __next__ to the exception
 def catch_unauthorized(handler):
     try:
@@ -170,6 +171,25 @@ def catch_unauthorized(handler):
 
 
 app.add_processor(catch_unauthorized)
+
+# ---
+# Checked raise Exception to return the right HTTPError
+base_internal_error = app.internalerror
+
+def format_badrequest(e):
+    headers = {
+        "Content-Type": "application/json"
+    }
+    return web.HTTPError(status="400 Bad request", headers=headers, data=e.json())
+
+def catch_generic_exception():
+    exc_type, exc_value, tback = sys.exc_info()
+    if exc_type is ValidationError:
+        return format_badrequest(exc_value)
+
+    return base_internal_error()
+
+app.internalerror = catch_generic_exception
 
 
 # ---

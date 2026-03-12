@@ -938,6 +938,8 @@ class DummyLoginMixin:
 class DummyEditMixin:
 
     # Return data directly without attempting to read testset files
+    level_add = DummyMemrise.__dict__["level_add"]
+    level_delete = DummyMemrise.__dict__["level_delete"]
     level_edit_get = DummyMemrise.__dict__["level_edit_get"]
     level_thing_add = DummyMemrise.__dict__["level_thing_add"]
     level_thing_edit = DummyMemrise.__dict__["level_thing_edit"]

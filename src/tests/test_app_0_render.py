@@ -14,7 +14,10 @@ LEVEL_ID = "16266974"
 LEVEL_MULTIMEDIA_ID = "16266978"
 
 
-class MemriseDummyEditTest(SimpleTestCase):
+class ApplicationRenderTest(SimpleTestCase):
+    """
+    Check that all templates can be rendered
+    """
     auth = False
     memrise = load_memrise("memrise.backends.DummyMemrise")
 

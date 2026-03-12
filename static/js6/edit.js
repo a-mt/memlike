@@ -603,7 +603,7 @@ function bindEditEvents(tpl) {
       data: {
         csrftoken: window.MEMLIKE.course.csrftoken,
         referer: window.MEMLIKE.course.referer,
-        id_thing: thingid
+        thing_id: thingid,
       },
       success: function(){
         $tr.remove();

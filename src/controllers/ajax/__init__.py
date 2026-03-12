@@ -58,7 +58,7 @@ urls_level = (
 )
 
 urls_thing = (
-    r"/cell/upload_file/", level_uploadfile_compat,
+    r"/cell/upload_file", level_uploadfile_compat,
 )
 
 # /ajax/course/...

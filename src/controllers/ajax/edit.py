@@ -1,6 +1,7 @@
 import web
 from memrise import memrise
 from utils.ajax import proxied_response
+from utils import validator
 
 
 class course_edit:
@@ -16,7 +17,19 @@ class level_add:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        data = web.input()
+        data = validator.validate(
+            fields={
+                'course_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'pool_id': validator.field(
+                    validator.schema.int_schema(),
+                    default=None,
+                ),
+            },
+            data=web.input(),
+        )
+
         return proxied_response(
             lambda: memrise.level_add(
                 course_id=data["course_id"],
@@ -32,7 +45,15 @@ class level_delete:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        data = web.input()
+        data = validator.validate(
+            fields={
+                'level_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+            },
+            data=web.input(),
+        )
+
         return proxied_response(
             lambda: memrise.level_delete(
                 level_id=data["level_id"],
@@ -71,12 +92,23 @@ class level_addrow:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input()
+        data = validator.validate(
+            fields={
+                'data': validator.field(
+                    validator.schema.str_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_add(
                 level_id,
-                _POST.data,
-                referer=_POST.referer,
+                data["data"],
+                referer=data["referer"],
             )
         )
 
@@ -86,13 +118,27 @@ class level_editcell:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input()
+        data = validator.validate(
+            fields={
+                'cell_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'cell_value': validator.field(
+                    validator.schema.str_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_edit(
                 thing_id,
-                _POST.cell_id,
-                _POST.cell_value,
-                referer=_POST.referer,
+                data["cell_id"],
+                data["cell_value"],
+                referer=data["referer"],
             )
         )
 
@@ -102,13 +148,29 @@ class level_uploadfile:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input(file={})
+        values = web.input(file={})
+
+        data = validator.validate(
+            fields={
+                'cell_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'file': validator.field(
+                    validator.is_file_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=values,
+        )
         return proxied_response(
             lambda: memrise.level_thing_upload(
                 thing_id,
-                _POST.cell_id,
-                _POST.file,
-                referer=_POST.referer,
+                data["cell_id"],
+                data["file"],
+                referer=data["referer"],
             )
         )
 
@@ -118,14 +180,36 @@ class level_uploadfile_compat:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input(f={})
+        data = validator.validate(
+            fields={
+                'thing_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'cell_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'f': validator.field(
+                    validator.is_file_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+                'csrfmiddlewaretoken': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(f={}),
+        )
+
         return proxied_response(
             lambda: memrise.level_thing_upload(
-                _POST.thing_id,
-                _POST.cell_id,
-                _POST.f,
-                referer=_POST.referer,
-                csrftoken=_POST.csrfmiddlewaretoken,
+                data["thing_id"],
+                data["cell_id"],
+                data["f"],
+                referer=data["referer"],
+                csrftoken=data["csrfmiddlewaretoken"],
             )
         )
 
@@ -135,13 +219,27 @@ class level_removefile:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input(file={})
+        data = validator.validate(
+            fields={
+                'cell_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'file_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_upload_remove(
                 thing_id,
-                _POST.cell_id,
-                _POST.file_id,
-                referer=_POST.referer,
+                data["cell_id"],
+                data["file_id"],
+                referer=data["referer"],
             )
         )
 
@@ -151,11 +249,19 @@ class level_alt:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input()
+        data = validator.validate(
+            fields={
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_get(
                 thing_id,
-                referer=_POST.referer,
+                referer=data["referer"],
             )
         )
 
@@ -165,13 +271,27 @@ class level_editalt:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input()
+        data = validator.validate(
+            fields={
+                'cell_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'alts': validator.field(
+                    validator.schema.str_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_alt_edit(
                 thing_id,
-                _POST.alts,
-                _POST.cell_id,
-                referer=_POST.referer,
+                data["alts"],
+                data["cell_id"],
+                referer=data["referer"],
             )
         )
 
@@ -181,14 +301,31 @@ class level_editmultimedia:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input(course_id="", level_index="", txt="")
+        data = validator.validate(
+            fields={
+                'course_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'level_index': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'txt': validator.field(
+                    validator.schema.str_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_multimedia_edit(
                 level_id,
-                _POST.txt,
-                referer=_POST.referer,
-                course_id=_POST.course_id,
-                level_index=_POST.level_index,
+                data["txt"],
+                referer=data["referer"],
+                course_id=data["course_id"],
+                level_index=data["level_index"],
             )
         )
 
@@ -198,11 +335,22 @@ class level_removerow:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _POST = web.input()
+        data = validator.validate(
+            fields={
+                'thing_id': validator.field(
+                    validator.schema.int_schema(),
+                ),
+                'referer': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
         return proxied_response(
             lambda: memrise.level_thing_remove(
                 level_id,
-                _POST.id_thing,
-                referer=_POST.referer,
+                data["thing_id"],
+                referer=data["referer"],
             )
         )

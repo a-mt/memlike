@@ -1,4 +1,5 @@
 import web
+from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
 
@@ -11,7 +12,17 @@ urls = (
 
 class login:
     def GET(self):
-        _GET = web.input(redirect="")
+        input_data = validator.validate(
+            fields={
+                'redirect': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
         err = web.ctx.flash["err"] if "err" in web.ctx.flash else {}
         data = web.ctx.flash["data"] if "data" in web.ctx.flash else {}
 
@@ -28,7 +39,25 @@ class login:
         raise web.seeother("/", absolute=True)
 
     def POST(self):
-        _POST = web.input(username="", password="", redirect="")
+        input_data = validator.validate(
+            fields={
+                'redirect': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+                'username': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+                'password': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _POST = web.storage(input_data)
         err = {}
 
         # Check required fields

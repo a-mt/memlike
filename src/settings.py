@@ -127,16 +127,6 @@ if web.config.get("template", None) is None:
 
     web.config.template = template
 
-    # Helper for controllers: read JSON body
-    def jsoninput():
-        if web.ctx.env.get("CONTENT_TYPE", "").lower() != "application/json":
-            return
-
-        text = web.data()
-        return json.loads(text)
-
-    setattr(web, "jsoninput", jsoninput)
-
     # Add a flash message in session
     web.config.FLASH_MESSAGES_TAGS = web.storage(
         {

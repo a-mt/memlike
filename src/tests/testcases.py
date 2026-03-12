@@ -1,11 +1,15 @@
 from app import app
-from functools import partial
+from functools import partial, cached_property
 from re import compile
 from utils.datastructures import CaseInsensitiveMapping, SimpleCookie
 from unittest.util import safe_repr
 
 import json
 import unittest
+import types
+import os
+import web
+
 
 JSON_CONTENT_TYPE_RE = compile(r"^application\/(.+\+)?json")
 
@@ -41,8 +45,15 @@ class Client:
             response._cookies = SimpleCookie([x[1] for x in response.header_items if x[0].lower() == "set-cookie"])
         return response._cookies
 
-    @property
-    def app(self):
+    def app(self, raw_data):
+        base_load = app.load
+
+        def load(self, env):
+            base_load(env)
+            web.ctx.data = raw_data
+            #web.ctx.environ["wsgi.errors"] = open(os.devnull, 'w')
+
+        app.load = types.MethodType(load, app)
         return app
 
     def request(self, *args, **kwargs):

@@ -3,6 +3,7 @@ import web
 from memrise import memrise
 from requests.exceptions import HTTPError
 from utils.ajax import proxied_response
+from utils import validator
 
 
 class user_dashboard:
@@ -10,12 +11,17 @@ class user_dashboard:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _GET = web.input(offset=0)
+        input_data = validator.validate(
+            fields={
+                'offset': validator.field(
+                    validator.schema.int_schema(),
+                    default=0,
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
         offset = _GET.offset
-        if type(offset) is not int and not offset.isdigit():
-            offset = 0
-        else:
-            offset = int(offset)
 
         web.header("Content-type", "text/plain")
         web.header("Transfer-Encoding", "chunked")
@@ -51,7 +57,16 @@ class user_leaderboard:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _GET = web.input(period="week")
+        input_data = validator.validate(
+            fields={
+                'period': validator.field(
+                    validator.str_choices_schema(['month', 'week', 'alltime']),
+                    default='week',
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
         return proxied_response(lambda: memrise.my_leaderboard(_GET.period))
 
 

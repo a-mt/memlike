@@ -1,4 +1,9 @@
 import web
+from pydantic_core import (
+    core_schema as schema,
+    SchemaValidator,
+)
+from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
 
@@ -9,17 +14,17 @@ urls = (
     # /6618687/tables-de-multiplication/0/28918327345410
     r"/(\d+)/(.*)/(\d+)/garden", "learn_fromform",
     r"/(\d+)/(.*)/(\d+)/reset", "reset_progress_level",
-    r"/(\d+)/(.*)/(\d+)/(\d+)", "view",
+    r"/(\d+)/(.*)/(\d+)/(\d+)", "thing",
     r"/(\d+)/(.*)/(\d+)/(.*)", "level",
     r"/(\d+)/(.*)/(\d+)", "level",
 
     # View course
     r"/(\d+)/(.*)/garden", "learn_fromform",
-    r"/(\d+)/(.*)/garden/(preview|learn|classic_review|speed_review)", "learn",
+    r"/(\d+)/(.*)/garden/(preview|learn|review|classic_review|speed_review)", "learn",
     r"/(\d+)/(.*)/leaderboard", "leaderboard",
-    r"/(\d+)/([^/]*)/edit", "edit",
+    r"/(\d+)/([^/]*)/edit", "edit_course",
     r"/(\d+)/(.*)", "course",
-    r"/(\d+)", "course",
+    #r"/(\d+)", "course",
 )
 # fmt: on
 
@@ -28,8 +33,29 @@ class learn_fromform:
     def GET(self, course_id, path, level_index=False):
         course_slug = path.split("/", 2)[0]
 
-        _GET = web.input(session="", save_progress=0, reverse_prompt_and_answer=0)
-        if not _GET.session:
+        input_data = validator.validate(
+            fields={
+                'session_type': validator.field(
+                    validator.str_choices_schema(['preview', 'learn', 'review', 'classic_review', 'speed_review']),
+                    default='preview',
+                    on_error='default',
+                ),
+                'save_progress': validator.field(
+                    validator.schema.bool_schema(),
+                    default=False,
+                    on_error='default',
+                ),
+                'reverse_prompt_and_answer': validator.field(
+                    validator.schema.bool_schema(),
+                    default=False,
+                    on_error='default',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
+        if not _GET.session_type:
             raise web.seeother(f"/course/{course_id}/{course_slug}/", absolute=True)
 
         try:
@@ -40,7 +66,7 @@ class learn_fromform:
 
         return web.config.template.render.learn(
             course,
-            _GET.session,
+            _GET.session_type,
             level_index,
             False,
             _GET.save_progress,
@@ -61,10 +87,10 @@ class learn:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.learn(course, session_type, level_index, False, 1)
+        return web.config.template.render.learn(course, session_type, level_index, False, 1, 0)
 
 
-class view:
+class thing:
     def GET(self, course_id, path, level_index, thing_id):
         course_slug = path.split("/", 2)[0]
 
@@ -74,7 +100,7 @@ class view:
             print(e)
             return web.config.template.prender._404()
 
-        return web.config.template.render.learn(course, "preview", level_index, thing_id, 0)
+        return web.config.template.render.learn(course, "preview", level_index, thing_id, 0, 0)
 
 
 class level:
@@ -169,7 +195,18 @@ class leaderboard:
     def GET(self, course_id, path=""):
         course_slug = path.split("/", 2)[0]
 
-        _GET = web.input(period="week")
+        input_data = validator.validate(
+            fields={
+                'period': validator.field(
+                    validator.str_choices_schema(['month', 'week', 'alltime']),
+                    default='week',
+                    on_error='default',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
         try:
             course = memrise.course(course_id, course_slug=course_slug)
             leaderboard = memrise.course_leaderboard(course_id, _GET.period)
@@ -180,7 +217,7 @@ class leaderboard:
         return web.config.template.render.course_leaderboard(course, _GET.period, leaderboard)
 
 
-class edit:
+class edit_course:
     def GET(self, course_id, path):
         course_slug = path.split("/", 2)[0]
 
@@ -203,7 +240,18 @@ class reset_progress_level:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _GET = web.input(level_id="")
+        input_data = validator.validate(
+            fields={
+                'level_id': validator.field(
+                    validator.schema.int_schema(),
+                    default='',
+                    on_error='default',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
         if _GET.level_id:
             try:
                 memrise.reset_progress_level({"level_id": _GET.level_id})

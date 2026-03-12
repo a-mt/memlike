@@ -1,7 +1,11 @@
 from .testcases import SimpleTestCase
 
 
-class ApplicatioDashboardTest(SimpleTestCase):
+class ApplicationDashboardTest(SimpleTestCase):
+    """
+    Check that the user dashboard can only be accessed
+    when a valid session_id is present in the cookies
+    """
     def test_dashboard_anonymous(self):
         response = self.client.request("/ajax/dashboard")
         self.assertEqual(response.status_code, 401)

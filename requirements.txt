@@ -1,9 +1,10 @@
 requests
 python-dotenv
 multipart
-web.py @ git+https://github.com/webpy/webpy@webpy-0.70
+web.py @ git+https://github.com/webpy/webpy@3e05bc6f5f5f4010e7453dc5d4b6f487a9adf91f
 pylibmc
 html5lib
 beautifulsoup4
 psycopg2-binary
 python_dateutil==2.9.0
+pydantic_core==2.42

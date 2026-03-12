@@ -1,6 +1,7 @@
 import web
 from requests.exceptions import HTTPError
 from memrise import memrise
+from utils import validator
 
 # fmt: off
 urls = (
@@ -25,7 +26,18 @@ class leaderboard:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        _GET = web.input(period="alltime")
+        input_data = validator.validate(
+            fields={
+                'period': validator.field(
+                    validator.str_choices_schema(['month', 'week', 'alltime']),
+                    default='week',
+                    on_error='default',
+                ),
+            },
+            data=web.input(),
+        )
+
+        _GET = web.storage(input_data)
         try:
             leaderboard = memrise.my_leaderboard(_GET.period)
         except HTTPError as e:

@@ -1,6 +1,7 @@
 import web
 import variables
 import settings
+from utils import validator
 from memrise import memrise
 
 # fmt: off
@@ -13,7 +14,17 @@ urls = (
 
 class courses:
     def GET(self, path=""):
-        _GET = web.input(q="")
+        input_data = validator.validate(
+            fields={
+                'q': validator.field(
+                    validator.schema.str_schema(),
+                    default='',
+                    on_error='default',
+                ),
+            },
+            data=web.input(),
+        )
+        _GET = web.storage(input_data)
 
         # ex https://community-courses.memrise.com/de/community/courses/arabic/swedish/
         # [path: arabic/swedish] = swedish courses for users that speak arabic
