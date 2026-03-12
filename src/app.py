@@ -8,6 +8,7 @@ import web
 import sys
 
 sys.path.insert(0, settings.ROOTDIR)
+sys.setrecursionlimit(500)
 
 # ---
 # Configure routes
