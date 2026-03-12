@@ -1,8 +1,6 @@
-from enum import Enum
 from pydantic_core import (
     core_schema as schema,
     SchemaValidator,
-    ValidationError,
     PydanticCustomError,
 )
 import web
@@ -26,7 +24,7 @@ def is_file(x):
         return x
 
     raise PydanticCustomError(
-        'file',
+        "file",
         "Input should be a valid file",
         {},
     )
@@ -43,11 +41,12 @@ def validate_choices(values):
     def fn(x):
         if x not in values:
             raise PydanticCustomError(
-                'enum',
+                "enum",
                 "Input should be one of ({values}), got '{wrong_value}'",
-                {'wrong_value': x, 'values': ', '.join([f"'{v}'" for v in values])},
+                {"wrong_value": x, "values": ", ".join([f"'{v}'" for v in values])},
             )
         return x
+
     return fn
 
 
@@ -63,8 +62,8 @@ class empty:
 
 
 def field(schema_instance, *args, **kwargs):
-    default = kwargs.pop('default', empty)
-    validator = kwargs.pop('validator', empty)
+    default = kwargs.pop("default", empty)
+    validator = kwargs.pop("validator", empty)
 
     if validator != empty:
         schema_instance = schema.no_info_after_validator_function(
@@ -73,11 +72,13 @@ def field(schema_instance, *args, **kwargs):
         )
 
     if default != empty:
-        return schema.typed_dict_field(schema.with_default_schema(
-            schema_instance,
-            default=default,
-            **kwargs,
-        ))
+        return schema.typed_dict_field(
+            schema.with_default_schema(
+                schema_instance,
+                default=default,
+                **kwargs,
+            )
+        )
 
     return schema.typed_dict_field(
         schema_instance,

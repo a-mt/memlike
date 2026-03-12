@@ -14,13 +14,13 @@ class learn:
     def GET(self, session_type):
         input_data = validator.validate(
             fields={
-                'course_id': validator.field(
+                "course_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'level_index': validator.field(
+                "level_index": validator.field(
                     validator.schema.int_schema(),
                     default=False,
-                    on_error='default',
+                    on_error="default",
                 ),
             },
             data=web.input(),

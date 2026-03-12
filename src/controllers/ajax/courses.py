@@ -13,28 +13,28 @@ class courses:
         def is_valid_lang(value):
             if value not in languages:
                 raise PydanticCustomError(
-                    'invalid',
+                    "invalid",
                     "Expected a valid language, got '{wrong_value}'",
-                    {'wrong_value': value},
+                    {"wrong_value": value},
                 )
             return value
 
         input_data = validator.validate(
             fields={
-                'lang': validator.field(
+                "lang": validator.field(
                     validator.schema.str_schema(),
                     validator=is_valid_lang,
                     default=web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG),
                 ),
-                'cat': validator.field(
+                "cat": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
-                'q': validator.field(
+                "q": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
-                'page': validator.field(
+                "page": validator.field(
                     validator.schema.int_schema(gt=0),
                     default=1,
                 ),
@@ -50,9 +50,9 @@ class course:
     def GET(self, course_id, course_slug):
         input_data = validator.validate(
             fields={
-                'session': validator.field(
+                "session": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -70,9 +70,9 @@ class course_level:
     def GET(self, course_id, course_slug, level_index, session_type="preview"):
         input_data = validator.validate(
             fields={
-                'session': validator.field(
+                "session": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -104,9 +104,9 @@ class course_leaderboard:
     def GET(self, course_id, course_slug):
         input_data = validator.validate(
             fields={
-                'period': validator.field(
-                    validator.str_choices_schema(['month', 'week', 'alltime']),
-                    default='week',
+                "period": validator.field(
+                    validator.str_choices_schema(["month", "week", "alltime"]),
+                    default="week",
                 ),
             },
             data=web.input(),

@@ -18,6 +18,7 @@ class ApplicationRenderTest(SimpleTestCase):
     """
     Check that all templates can be rendered
     """
+
     auth = False
     memrise = load_memrise("memrise.backends.DummyMemrise")
 

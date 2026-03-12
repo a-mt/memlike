@@ -1,5 +1,5 @@
 from app import app
-from functools import partial, cached_property
+from functools import partial
 from re import compile
 from utils.datastructures import CaseInsensitiveMapping, SimpleCookie
 from unittest.util import safe_repr
@@ -7,7 +7,6 @@ from unittest.util import safe_repr
 import json
 import unittest
 import types
-import os
 import web
 
 
@@ -51,7 +50,7 @@ class Client:
         def load(self, env):
             base_load(env)
             web.ctx.data = raw_data
-            #web.ctx.environ["wsgi.errors"] = open(os.devnull, 'w')
+            # web.ctx.environ["wsgi.errors"] = open(os.devnull, 'w')
 
         app.load = types.MethodType(load, app)
         return app

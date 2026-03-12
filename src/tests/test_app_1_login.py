@@ -8,6 +8,7 @@ class ApplicationLoginTest(SimpleTestCase):
     Testing the authentication logic
     and access to authentified route (401 if unauthenticated)
     """
+
     def setUp(self):
         session = web.test.session
 
@@ -263,11 +264,11 @@ class ApplicationLoginTest(SimpleTestCase):
         cookies = self.get_auth_cookies()
         headers = {"Cookie": cookies.simple_output()}
 
-        response = self.client.request("/ajax/dashboard", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request("/ajax/dashboard", headers=headers)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.request("/logout", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request("/logout", headers=headers)
         self.assertLess(response.status_code, 400)
 
-        response = self.client.request("/ajax/dashboard", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request("/ajax/dashboard", headers=headers)
         self.assertEqual(response.status_code, 401)

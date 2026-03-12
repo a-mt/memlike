@@ -176,11 +176,11 @@ app.add_processor(catch_unauthorized)
 # Checked raise Exception to return the right HTTPError
 base_internal_error = app.internalerror
 
+
 def format_badrequest(e):
-    headers = {
-        "Content-Type": "application/json"
-    }
+    headers = {"Content-Type": "application/json"}
     return web.HTTPError(status="400 Bad request", headers=headers, data=e.json())
+
 
 def catch_generic_exception():
     exc_type, exc_value, tback = sys.exc_info()
@@ -188,6 +188,7 @@ def catch_generic_exception():
         return format_badrequest(exc_value)
 
     return base_internal_error()
+
 
 app.internalerror = catch_generic_exception
 

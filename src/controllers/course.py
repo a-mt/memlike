@@ -1,8 +1,4 @@
 import web
-from pydantic_core import (
-    core_schema as schema,
-    SchemaValidator,
-)
 from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
@@ -35,20 +31,20 @@ class learn_fromform:
 
         input_data = validator.validate(
             fields={
-                'session_type': validator.field(
-                    validator.str_choices_schema(['preview', 'learn', 'review', 'classic_review', 'speed_review']),
-                    default='preview',
-                    on_error='default',
+                "session_type": validator.field(
+                    validator.str_choices_schema(["preview", "learn", "review", "classic_review", "speed_review"]),
+                    default="preview",
+                    on_error="default",
                 ),
-                'save_progress': validator.field(
+                "save_progress": validator.field(
                     validator.schema.bool_schema(),
                     default=False,
-                    on_error='default',
+                    on_error="default",
                 ),
-                'reverse_prompt_and_answer': validator.field(
+                "reverse_prompt_and_answer": validator.field(
                     validator.schema.bool_schema(),
                     default=False,
-                    on_error='default',
+                    on_error="default",
                 ),
             },
             data=web.input(),
@@ -197,10 +193,10 @@ class leaderboard:
 
         input_data = validator.validate(
             fields={
-                'period': validator.field(
-                    validator.str_choices_schema(['month', 'week', 'alltime']),
-                    default='week',
-                    on_error='default',
+                "period": validator.field(
+                    validator.str_choices_schema(["month", "week", "alltime"]),
+                    default="week",
+                    on_error="default",
                 ),
             },
             data=web.input(),
@@ -242,10 +238,10 @@ class reset_progress_level:
 
         input_data = validator.validate(
             fields={
-                'level_id': validator.field(
+                "level_id": validator.field(
                     validator.schema.int_schema(),
-                    default='',
-                    on_error='default',
+                    default="",
+                    on_error="default",
                 ),
             },
             data=web.input(),

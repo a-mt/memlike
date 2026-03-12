@@ -19,10 +19,10 @@ class level_add:
 
         data = validator.validate(
             fields={
-                'course_id': validator.field(
+                "course_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'pool_id': validator.field(
+                "pool_id": validator.field(
                     validator.schema.int_schema(),
                     default=None,
                 ),
@@ -47,7 +47,7 @@ class level_delete:
 
         data = validator.validate(
             fields={
-                'level_id': validator.field(
+                "level_id": validator.field(
                     validator.schema.int_schema(),
                 ),
             },
@@ -94,12 +94,12 @@ class level_addrow:
 
         data = validator.validate(
             fields={
-                'data': validator.field(
+                "data": validator.field(
                     validator.schema.str_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -120,15 +120,15 @@ class level_editcell:
 
         data = validator.validate(
             fields={
-                'cell_id': validator.field(
+                "cell_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'cell_value': validator.field(
+                "cell_value": validator.field(
                     validator.schema.str_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -152,15 +152,15 @@ class level_uploadfile:
 
         data = validator.validate(
             fields={
-                'cell_id': validator.field(
+                "cell_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'file': validator.field(
+                "file": validator.field(
                     validator.is_file_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=values,
@@ -182,22 +182,22 @@ class level_uploadfile_compat:
 
         data = validator.validate(
             fields={
-                'thing_id': validator.field(
+                "thing_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'cell_id': validator.field(
+                "cell_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'f': validator.field(
+                "f": validator.field(
                     validator.is_file_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
-                'csrfmiddlewaretoken': validator.field(
+                "csrfmiddlewaretoken": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(f={}),
@@ -221,15 +221,15 @@ class level_removefile:
 
         data = validator.validate(
             fields={
-                'cell_id': validator.field(
+                "cell_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'file_id': validator.field(
+                "file_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -251,9 +251,9 @@ class level_alt:
 
         data = validator.validate(
             fields={
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -273,15 +273,15 @@ class level_editalt:
 
         data = validator.validate(
             fields={
-                'cell_id': validator.field(
+                "cell_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'alts': validator.field(
+                "alts": validator.field(
                     validator.schema.str_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -303,18 +303,18 @@ class level_editmultimedia:
 
         data = validator.validate(
             fields={
-                'course_id': validator.field(
+                "course_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'level_index': validator.field(
+                "level_index": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'txt': validator.field(
+                "txt": validator.field(
                     validator.schema.str_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -337,12 +337,12 @@ class level_removerow:
 
         data = validator.validate(
             fields={
-                'thing_id': validator.field(
+                "thing_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'referer': validator.field(
+                "referer": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),

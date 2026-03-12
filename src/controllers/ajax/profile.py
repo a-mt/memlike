@@ -13,7 +13,7 @@ class user_dashboard:
 
         input_data = validator.validate(
             fields={
-                'offset': validator.field(
+                "offset": validator.field(
                     validator.schema.int_schema(),
                     default=0,
                 ),
@@ -59,9 +59,9 @@ class user_leaderboard:
 
         input_data = validator.validate(
             fields={
-                'period': validator.field(
-                    validator.str_choices_schema(['month', 'week', 'alltime']),
-                    default='week',
+                "period": validator.field(
+                    validator.str_choices_schema(["month", "week", "alltime"]),
+                    default="week",
                 ),
             },
             data=web.input(),

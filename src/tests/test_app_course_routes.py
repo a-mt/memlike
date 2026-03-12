@@ -5,6 +5,7 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
     """
     Check that the routes can be called and validate the input data
     """
+
     def test_courses(self):
         response = self.client.request("/fr/courses?q=yoga")
         self.assertEqual(response.status_code, 200)
@@ -32,7 +33,6 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         self.assertIsNotNone(html)
 
     def test_leaderboard(self):
-
         # Unset period: use the default value
         response = self.client.request("/course/1/my-course/leaderbord")
         self.assertEqual(response.status_code, 200)
@@ -75,7 +75,6 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         self.assertIsNotNone(html)
 
     def test_learn_course(self):
-
         # Learning using the direct URL
         response = self.client.request("/course/1/my-course/1/garden/preview")
         self.assertEqual(response.status_code, 200)
@@ -84,7 +83,6 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         self.assertIsNotNone(html)
 
     def test_learn_course_fromform(self):
-
         # Learn after choosing settings via the course form
         response = self.client.request("/course/1/my-course/1/garden?session_type=learn&save_progress=1")
         self.assertEqual(response.status_code, 200)
@@ -93,7 +91,6 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         self.assertIsNotNone(html)
 
     def test_learn_level_fromform(self):
-
         # Learn after choosing settings via the level form
         response = self.client.request("/course/1/my-course/1/garden?session_type=learn&save_progress=1")
         self.assertEqual(response.status_code, 200)

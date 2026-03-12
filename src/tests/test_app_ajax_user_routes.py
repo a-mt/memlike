@@ -5,6 +5,7 @@ class ApplicationAjaxUserRoutesTest(SimpleTestCase):
     """
     Check that the routes can be called and validate the input data
     """
+
     def test_leaderboard(self):
         response = self.client.request("/ajax/leaderboard")
         self.assertEqual(response.status_code, 401)
@@ -33,7 +34,7 @@ class ApplicationAjaxUserRoutesTest(SimpleTestCase):
 
         payload = response.json()
         self.assertIsNotNone(payload.get("username", None))
- 
+
     def test_user_followers(self):
         response = self.client.request("/ajax/user/bob/followers")
         self.assertEqual(response.status_code, 200)
@@ -47,7 +48,7 @@ class ApplicationAjaxUserRoutesTest(SimpleTestCase):
 
         payload = response.json()
         self.assertIsNotNone(payload.get("users", None))
- 
+
     def test_user_teaching(self):
         response = self.client.request("/ajax/user/bob/teaching")
         self.assertEqual(response.status_code, 200)

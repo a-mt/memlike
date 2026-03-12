@@ -13,14 +13,14 @@ class learning_session_register_progress:
         data = jsoninput() or web.input()
         validator.validate(
             fields={
-                'events': validator.field(
+                "events": validator.field(
                     validator.schema.list_schema(),
                 ),
-                'sync_token': validator.field(
+                "sync_token": validator.field(
                     validator.schema.int_schema(),
                     default=0,
                 ),
-                'limit': validator.field(
+                "limit": validator.field(
                     validator.schema.int_schema(),
                     default=0,
                 ),
@@ -39,20 +39,20 @@ class learning_session_register_end:
         data = jsoninput() or web.input()
         validator.validate(
             fields={
-                'session_points': validator.field(
+                "session_points": validator.field(
                     validator.schema.int_schema(),
                     default=0,
                 ),
-                'session_type': validator.field(
-                    validator.str_choices_schema(['preview', 'learn', 'review']),
+                "session_type": validator.field(
+                    validator.str_choices_schema(["preview", "learn", "review"]),
                 ),
-                'session_source_type': validator.field(
-                    validator.str_choices_schema(['course', 'course_id_and_level_index']),
+                "session_source_type": validator.field(
+                    validator.str_choices_schema(["course", "course_id_and_level_index"]),
                 ),
-                'session_source_id': validator.field(
+                "session_source_id": validator.field(
                     validator.schema.int_schema(),
                 ),
-                'session_source_sub_index': validator.field(
+                "session_source_sub_index": validator.field(
                     validator.schema.int_schema(),
                     required=False,
                 ),
@@ -71,7 +71,7 @@ class reset_progress_level:
         data = jsoninput() or web.input()
         validator.validate(
             fields={
-                'level_id': validator.field(
+                "level_id": validator.field(
                     validator.schema.int_schema(),
                 ),
             },

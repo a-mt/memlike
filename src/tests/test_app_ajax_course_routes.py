@@ -6,6 +6,7 @@ class ApplicationAjaxCourseRoutesTest(SimpleTestCase):
     """
     Check that the routes can be called and validate the input data
     """
+
     def test_courses(self):
         response = self.client.request("/ajax/courses")
         self.assertEqual(response.status_code, 200)
@@ -59,12 +60,19 @@ class ApplicationAjaxCourseRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/reset_progress_level", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request(
+            "/ajax/reset_progress_level", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
         self.assertEqual(response.status_code, 400)
 
-        response = self.client.request("/ajax/reset_progress_level", method="POST", headers={"Cookie": cookies.simple_output()}, data={
-            'level_id': 1,
-        })
+        response = self.client.request(
+            "/ajax/reset_progress_level",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "level_id": 1,
+            },
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_register_progress(self):
@@ -72,15 +80,24 @@ class ApplicationAjaxCourseRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/register_progress", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request(
+            "/ajax/register_progress", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
         self.assertEqual(response.status_code, 400)
 
-        response = self.client.request("/ajax/register_progress", method="POST", headers={
-            "Cookie": cookies.simple_output(),
-            "Content-type": "application/json",
-        }, data=json.dumps({
-            'events': [],
-        }))
+        response = self.client.request(
+            "/ajax/register_progress",
+            method="POST",
+            headers={
+                "Cookie": cookies.simple_output(),
+                "Content-type": "application/json",
+            },
+            data=json.dumps(
+                {
+                    "events": [],
+                }
+            ),
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_register_end(self):
@@ -91,10 +108,15 @@ class ApplicationAjaxCourseRoutesTest(SimpleTestCase):
         response = self.client.request("/ajax/register_end", method="POST", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 400)
 
-        response = self.client.request("/ajax/register_end", method="POST", headers={"Cookie": cookies.simple_output()}, data={
-            'session_points': 0,
-            'session_type': 'review',
-            'session_source_type': 'course',
-            'session_source_id': 1,
-        })
+        response = self.client.request(
+            "/ajax/register_end",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "session_points": 0,
+                "session_type": "review",
+                "session_source_type": "course",
+                "session_source_id": 1,
+            },
+        )
         self.assertEqual(response.status_code, 200)

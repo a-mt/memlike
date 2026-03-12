@@ -28,10 +28,10 @@ class leaderboard:
 
         input_data = validator.validate(
             fields={
-                'period': validator.field(
-                    validator.str_choices_schema(['month', 'week', 'alltime']),
-                    default='week',
-                    on_error='default',
+                "period": validator.field(
+                    validator.str_choices_schema(["month", "week", "alltime"]),
+                    default="week",
+                    on_error="default",
                 ),
             },
             data=web.input(),

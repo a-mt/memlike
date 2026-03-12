@@ -14,9 +14,9 @@ class login:
     def GET(self):
         input_data = validator.validate(
             fields={
-                'redirect': validator.field(
+                "redirect": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),
@@ -41,17 +41,17 @@ class login:
     def POST(self):
         input_data = validator.validate(
             fields={
-                'redirect': validator.field(
+                "redirect": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
-                'username': validator.field(
+                "username": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
-                'password': validator.field(
+                "password": validator.field(
                     validator.schema.str_schema(),
-                    default='',
+                    default="",
                 ),
             },
             data=web.input(),

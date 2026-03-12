@@ -16,10 +16,10 @@ class courses:
     def GET(self, path=""):
         input_data = validator.validate(
             fields={
-                'q': validator.field(
+                "q": validator.field(
                     validator.schema.str_schema(),
-                    default='',
-                    on_error='default',
+                    default="",
+                    on_error="default",
                 ),
             },
             data=web.input(),

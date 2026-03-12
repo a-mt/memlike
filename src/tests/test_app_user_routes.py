@@ -5,6 +5,7 @@ class ApplicationUserRoutesTest(SimpleTestCase):
     """
     Check that the routes can be called and validate the input data
     """
+
     def test_my_leaderboard(self):
         cookies = self.get_auth_cookies()
         response = self.client.request("/home/leaderboard")

@@ -19,7 +19,7 @@ class user_mempals:
     def GET(self, username, tab):
         input_data = validator.validate(
             fields={
-                'page': validator.field(
+                "page": validator.field(
                     validator.schema.int_schema(gt=0),
                     default=1,
                 ),
@@ -45,7 +45,7 @@ class user_courses:
         # Pagination
         input_data = validator.validate(
             fields={
-                'page': validator.field(
+                "page": validator.field(
                     validator.schema.int_schema(gt=0),
                     default=1,
                 ),
