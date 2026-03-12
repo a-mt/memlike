@@ -75,11 +75,11 @@ class Parser:
         "Month, textual, 3 letters; e.g. 'Jan'"
         return self.__get_regex_repl(self.i18n.months_abbr)
 
-    def A(self):  # NOQA: E743, E741
+    def A(self):
         "Day of the week, textual, long; e.g. 'Friday'"
         return self.__get_regex_repl(self.i18n.weekdays)
 
-    def a(self):  # NOQA: E743, E741
+    def a(self):
         "Day of the week, 3 letters; e.g. 'Fri'"
         return self.__get_regex_repl(self.i18n.weekdays_abbr)
 

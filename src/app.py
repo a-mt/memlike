@@ -36,7 +36,7 @@ class switchLang:
         if "HTTP_REFERER" in web.ctx.environ:
             referer = re.search(r"(https?://[^/]+)(.*)$", web.ctx.environ["HTTP_REFERER"])
 
-            if referer.group(1) + ":80" == web.ctx.home:
+            if referer.group(1) == web.ctx.homedomain or referer.group(1) + ":80" == web.ctx.home:
                 raise web.seeother(referer.group(2))
 
         raise web.seeother("/")
