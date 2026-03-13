@@ -101,6 +101,8 @@ class thing:
 
 class level:
     def gotoCourse(self, course_id, course_slug, level_index):
+        course_slug = course_slug.split("/", 2)[0]
+
         web.add_flash_message(
             f"Could not retrieve the requested level ({level_index})",
             level=web.config.FLASH_MESSAGES_TAGS.ERROR,
@@ -108,6 +110,7 @@ class level:
         raise web.seeother(f"/community/course/{course_id}/{course_slug}/", absolute=True)
 
     def GET(self, course_id, course_slug, level_index, path2=""):
+        course_slug = course_slug.split("/", 2)[0]
         try:
             course = memrise.course(course_id, course_slug)
             index = int(level_index)
@@ -161,6 +164,7 @@ class level:
 
 class course:
     def GET(self, course_id, course_slug=""):
+        course_slug = course_slug.split("/", 2)[0]
         items = False
         try:
             course = memrise.course(course_id, course_slug)

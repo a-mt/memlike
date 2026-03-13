@@ -307,7 +307,7 @@ class ApiRequestor:
     def course(self, course_id, course_slug="", sessionid=None, csrftoken=None):
         request_msg = f"Course [id={course_id},slug={course_slug}]"
 
-        url = f"{HOST}/community/course/{course_id}/"
+        url = url_base = f"{HOST}/community/course/{course_id}/"
         if course_slug:
             url += course_slug + "/"
 
@@ -318,14 +318,17 @@ class ApiRequestor:
         )
 
         # Follow redirect to canonical URL
-        if not course_slug and response.status_code == 301:
+        if response.status_code == 301:
             new_url = response.headers["Location"]
 
             if new_url[0] == "/":
                 new_url = HOST + new_url
 
-            if new_url.startswith(url):
-                response = requests.get(new_url, **request_kwargs)
+            if new_url.startswith(url_base):
+                response = requests.get(
+                    new_url,
+                    **request_kwargs,
+                )
 
         self.raise_for_status(response)
 
