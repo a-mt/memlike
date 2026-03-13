@@ -369,57 +369,57 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_edit_get(self, *args, **kwargs):
+    def level_get_editpage(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_edit_get(*args, **kwargs)
+        return self.requestor.level_get_editpage(*args, **kwargs)
 
     def level_thing_add(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
         return self.requestor.level_thing_add(*args, **kwargs)
 
-    def level_thing_edit(self, *args, **kwargs):
+    def level_thing_update(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_thing_edit(*args, **kwargs)
+        return self.requestor.level_thing_update(*args, **kwargs)
 
-    def level_thing_upload(self, *args, **kwargs):
+    def level_thing_file_upload(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_thing_upload(*args, **kwargs)
+        return self.requestor.level_thing_file_upload(*args, **kwargs)
 
-    def level_thing_upload_remove(self, *args, **kwargs):
+    def level_thing_file_delete(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_thing_upload_remove(*args, **kwargs)
+        return self.requestor.level_thing_file_delete(*args, **kwargs)
 
-    def level_thing_remove(self, *args, **kwargs):
+    def level_thing_delete(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_thing_remove(*args, **kwargs)
+        return self.requestor.level_thing_delete(*args, **kwargs)
 
     def level_thing_get(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
         return self.requestor.level_thing_get(*args, **kwargs)
 
-    def level_thing_alt_edit(self, *args, **kwargs):
+    def level_thing_alt_update(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_thing_alt_edit(*args, **kwargs)
+        return self.requestor.level_thing_alt_update(*args, **kwargs)
 
-    def level_multimedia_edit(self, *args, **kwargs):
+    def level_multimedia_update(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_multimedia_edit(*args, **kwargs)
+        return self.requestor.level_multimedia_update(*args, **kwargs)
 
-    def course_edit_get(self, course_id, course_slug, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        data = self.requestor.course_edit_get(course_id, course_slug, sessionid=kwargs["sessionid"])
+        data = self.requestor.course_get_editpage(course_id, course_slug, sessionid=kwargs["sessionid"])
         html = data.pop("html")
-        self.scraper.course_edit_get(data, html)
+        self.scraper.course_get_editpage(data, html)
 
         return data
 

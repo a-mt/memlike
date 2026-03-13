@@ -16,7 +16,7 @@ from .user import (
 from .profile import (
     user_dashboard,
     user_leaderboard,
-    user_sync,
+    reload_user,
 )
 from .learn import (
     learning_session_register_progress,
@@ -24,19 +24,19 @@ from .learn import (
     reset_progress_level,
 )
 from .edit import (
-    course_edit,
+    course_get_editpage,
     level_add,
     level_delete,
-    level_edit,
-    level_alt,
-    level_editalt,
-    level_addrow,
-    level_editcell,
-    level_removerow,
-    level_uploadfile,
-    level_uploadfile_compat,
-    level_removefile,
-    level_editmultimedia,
+    level_get_editpage,
+    level_thing_alt,
+    level_thing_alt_update,
+    level_thing_add,
+    level_thing_update,
+    level_thing_delete,
+    level_thing_file_upload,
+    level_thing_file_upload_compat,
+    level_thing_file_delete,
+    level_multimedia_update,
 )
 from .progress import my_progress
 
@@ -46,24 +46,24 @@ from .progress import my_progress
 urls_level = (
     r"/add", level_add,
     r"/delete", level_delete,
-    r"/(\d+)", level_edit,
-    r"/(\d+)/alt", level_alt,
-    r"/(\d+)/alt_edit", level_editalt,
-    r"/(\d+)/add", level_addrow,
-    r"/(\d+)/edit", level_editcell,
-    r"/(\d+)/remove", level_removerow,
-    r"/(\d+)/upload", level_uploadfile,
-    r"/(\d+)/upload_remove", level_removefile,
-    r"/(\d+)/edit_multimedia", level_editmultimedia,
+    r"/(\d+)", level_get_editpage,
+    r"/(\d+)/alt", level_thing_alt,
+    r"/(\d+)/alt_edit", level_thing_alt_update,
+    r"/(\d+)/add", level_thing_add,
+    r"/(\d+)/edit", level_thing_update,
+    r"/(\d+)/remove", level_thing_delete,
+    r"/(\d+)/upload", level_thing_file_upload,
+    r"/(\d+)/upload_remove", level_thing_file_delete,
+    r"/(\d+)/edit_multimedia", level_multimedia_update,
 )
 
 urls_thing = (
-    r"/cell/upload_file", level_uploadfile_compat,
+    r"/cell/upload_file", level_thing_file_upload_compat,
 )
 
 # /ajax/course/...
 urls_course = (
-    r"/(\d+)/([^/]+)/edit", course_edit,
+    r"/(\d+)/([^/]+)/edit", course_get_editpage,
     r"/(\d+)/([^/]+)/(\d+)/media", course_level_multimedia,
     r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", course_level,
     r"/(\d+)/([^/]+)/leaderboard", course_leaderboard,
@@ -89,7 +89,7 @@ urls = (
     r"/dashboard", user_dashboard,
     r"/leaderboard", user_leaderboard,
     r"/progress", my_progress,
-    r"/sync", user_sync,
+    r"/sync", reload_user,
 
     r"/register_progress", learning_session_register_progress,
     r"/register_end", learning_session_register_end,

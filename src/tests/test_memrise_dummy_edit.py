@@ -46,8 +46,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.session["session_id"] = result["sessionid"]
         self.session["csrftoken"] = result["csrftoken"]
 
-    def test_memrise_course_edit_get(self):
-        result = self.memrise.course_edit_get(
+    def test_memrise_course_get_editpage(self):
+        result = self.memrise.course_get_editpage(
             course_id=COURSE_ID,
             course_slug=COURSE_SLUG,
             sessionid=self.session["session_id"],
@@ -67,8 +67,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIsNotNone(level.get("pool_id", None))
         self.assertIsNotNone(level.get("name", None))
 
-    def test_memrise_level_edit_get(self):
-        result = self.memrise.level_edit_get(level_id=LEVEL_ID, sessionid=self.session["session_id"])
+    def test_memrise_level_get_editpage(self):
+        result = self.memrise.level_get_editpage(level_id=LEVEL_ID, sessionid=self.session["session_id"])
 
         self.assertIs(type(result), dict)
         self.assertTrue(result.get("success", False))
@@ -133,8 +133,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertEqual(column.get("val", None), "a")
         self.assertEqual(column.get("kind", None), "text")
 
-    def test_memrise_course_level_thing_edit(self):
-        result = self.memrise.level_thing_edit(
+    def test_memrise_course_level_thing_update(self):
+        result = self.memrise.level_thing_update(
             thing_id=self.thing_id,
             cell_id="2",
             cell_value="b2",
@@ -146,8 +146,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIs(type(result), dict)
         self.assertIsNone(result.get("success", False))
 
-    def test_memrise_course_level_thing_alt_edit(self):
-        result = self.memrise.level_thing_alt_edit(
+    def test_memrise_course_level_thing_alt_update(self):
+        result = self.memrise.level_thing_alt_update(
             thing_id=self.thing_id,
             column_key="2",
             alts='["a2","a3"]',
@@ -159,7 +159,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIs(type(result), dict)
         self.assertIsNone(result.get("success", False))
 
-    def test_memrise_course_level_thing_upload(self):
+    def test_memrise_course_level_thing_file_upload(self):
         # cgi.FieldStorage / multipart.MultipartPart
         audio = b"\xff\xe3Hd\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00Xing\x00\x00\x00\x0f\x00\x00\x00\x02\x00\x00\x01\xb0\x00\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\x80\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00PLAME3.100\x04(\x00\x00\x00\x00\x00\x00\x00\x005\x08$\x02@-\x00\x01\xe0\x00\x00\x01\xb0\xe8W}\xab\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xff\xe3\x18d\x00\x00\x00\x01\xa4\x00\x00\x00\x00\x00\x00\x03H\x00\x00\x00\x00LAME3.100UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU\xff\xe3\x18d3\x00\x00\x01\xa4\x00\x00\x00\x00\x00\x00\x03H\x00\x00\x00\x00UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU"  # noqa: E501
         file = web.storage(
@@ -168,7 +168,7 @@ class MemriseDummyEditTest(SimpleTestCase):
                 "raw": audio,
             }
         )
-        result = self.memrise.level_thing_upload(
+        result = self.memrise.level_thing_file_upload(
             thing_id=self.thing_id,
             cell_id="3",
             file=file,
@@ -181,8 +181,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertTrue(result.get("success", False))
         self.assertIs(type(result.get("rendered", None)), str)
 
-    def test_memrise_course_level_thing_upload_remove(self):
-        result = self.memrise.level_thing_upload_remove(
+    def test_memrise_course_level_thing_file_delete(self):
+        result = self.memrise.level_thing_file_delete(
             thing_id=self.thing_id,
             cell_id="3",
             file_id="1",
@@ -195,8 +195,8 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertTrue(result.get("success", False))
         self.assertIs(type(result.get("rendered", None)), str)
 
-    def test_memrise_course_level_thing_remove(self):
-        result = self.memrise.level_thing_remove(
+    def test_memrise_course_level_thing_delete(self):
+        result = self.memrise.level_thing_delete(
             level_id=LEVEL_ID,
             thing_id=self.thing_id,
             sessionid=self.session["session_id"],
@@ -211,7 +211,7 @@ class MemriseDummyEditTest(SimpleTestCase):
     # COURSE EDIT > MULTIMEDIA
     # -------------------------------------------------------------------------
 
-    def test_memrise_course_level_multimedia_edit(self):
+    def test_memrise_course_level_multimedia_update(self):
         txt = dedent("""
         <b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.
 
@@ -226,7 +226,7 @@ class MemriseDummyEditTest(SimpleTestCase):
         <br /><b>"spiel **nicht** mit dem Feuer"</b>.
         " name="new_val">
         """)
-        result = self.memrise.level_multimedia_edit(
+        result = self.memrise.level_multimedia_update(
             level_id=LEVEL_MULTIMEDIA_ID,
             txt=txt,
             sessionid=self.session["session_id"],

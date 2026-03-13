@@ -93,7 +93,7 @@ class DummyApiRequestor:
     # +-----------------------------------------------------
     # | EDIT COURSE
     # +-----------------------------------------------------
-    def course_edit_get(self, course_id, course_slug, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
         html = self.get_testset_text("course_get_edit.html")
         return {
             "id": course_id,

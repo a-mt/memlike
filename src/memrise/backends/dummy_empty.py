@@ -109,7 +109,7 @@ class DummyEmptyMemrise(DummyMemrise):
             "content": [],
         }
 
-    def level_edit_get(self, level_id, **kwargs):
+    def level_get_editpage(self, level_id, **kwargs):
         return {
             "success": True,
             "rendered": "",
@@ -122,24 +122,24 @@ class DummyEmptyMemrise(DummyMemrise):
             "rendered_thing": "",
         }
 
-    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
+    def level_thing_update(self, thing_id, cell_id, cell_value, **kwargs):
         return {
             "success": None,
         }
 
-    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
+    def level_thing_file_upload(self, thing_id, cell_id, file, **kwargs):
         return {
             "success": True,
             "rendered": "",
         }
 
-    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
+    def level_thing_file_delete(self, thing_id, cell_id, file_id, **kwargs):
         return {
             "success": True,
             "rendered": "",
         }
 
-    def level_thing_remove(self, level_id, thing_id, **kwargs):
+    def level_thing_delete(self, level_id, thing_id, **kwargs):
         return {
             "success": True,
         }
@@ -154,18 +154,18 @@ class DummyEmptyMemrise(DummyMemrise):
             }
         }
 
-    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
+    def level_thing_alt_update(self, thing_id, alts, column_key, **kwargs):
         return {
             "success": None,
         }
 
-    def level_multimedia_edit(self, level_id, txt, **kwargs):
+    def level_multimedia_update(self, level_id, txt, **kwargs):
         return {
             "success": True,
             "multimedia": "",
         }
 
-    def course_edit_get(self, course_id, course_slug, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
         return {
             "id": course_id,
             "csrftoken": "",

@@ -5,7 +5,7 @@ from utils import validator
 
 # fmt: off
 urls = (
-    r"/home/leaderboard", "leaderboard",
+    r"/home/leaderboard", "my_leaderboard",
     r"/home", "index",
     r"/about", "about",
     r"/", "index",
@@ -21,7 +21,7 @@ class index:
             return web.config.template.render.dashboard("courses", False, False)
 
 
-class leaderboard:
+class my_leaderboard:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()

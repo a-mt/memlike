@@ -183,8 +183,8 @@ class CachedApiMemrise(ApiMemrise):
 
             return data
 
-    def level_multimedia_edit(self, level_id, txt, **kwargs):
-        result = super().level_multimedia_edit(level_id, txt, **kwargs)
+    def level_multimedia_update(self, level_id, txt, **kwargs):
+        result = super().level_multimedia_update(level_id, txt, **kwargs)
 
         if kwargs.get("course_id", None) and kwargs.get("level_index", None):
             cache_key = "course_{course_id:s}_{level_index:s}_multimedia".format(

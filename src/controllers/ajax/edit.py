@@ -4,12 +4,12 @@ from utils.webapi import proxied_response
 from utils import validator
 
 
-class course_edit:
+class course_get_editpage:
     def GET(self, course_id, course_slug):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        return proxied_response(lambda: memrise.course_edit_get(course_id, course_slug))
+        return proxied_response(lambda: memrise.course_get_editpage(course_id, course_slug))
 
 
 class level_add:
@@ -63,12 +63,12 @@ class level_delete:
         )
 
 
-class level_edit:
+class level_get_editpage:
     def GET(self, level_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        return proxied_response(lambda: memrise.level_edit_get(level_id))
+        return proxied_response(lambda: memrise.level_get_editpage(level_id))
 
 
 """
@@ -87,7 +87,7 @@ class level_getcell:
 """
 
 
-class level_addrow:
+class level_thing_add:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -113,7 +113,7 @@ class level_addrow:
         )
 
 
-class level_editcell:
+class level_thing_update:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -134,7 +134,7 @@ class level_editcell:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_thing_edit(
+            lambda: memrise.level_thing_update(
                 thing_id,
                 data["cell_id"],
                 data["cell_value"],
@@ -143,7 +143,7 @@ class level_editcell:
         )
 
 
-class level_uploadfile:
+class level_thing_file_upload:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -166,7 +166,7 @@ class level_uploadfile:
             data=values,
         )
         return proxied_response(
-            lambda: memrise.level_thing_upload(
+            lambda: memrise.level_thing_file_upload(
                 thing_id,
                 data["cell_id"],
                 data["file"],
@@ -175,7 +175,7 @@ class level_uploadfile:
         )
 
 
-class level_uploadfile_compat:
+class level_thing_file_upload_compat:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -204,7 +204,7 @@ class level_uploadfile_compat:
         )
 
         return proxied_response(
-            lambda: memrise.level_thing_upload(
+            lambda: memrise.level_thing_file_upload(
                 data["thing_id"],
                 data["cell_id"],
                 data["f"],
@@ -214,7 +214,7 @@ class level_uploadfile_compat:
         )
 
 
-class level_removefile:
+class level_thing_file_delete:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -235,7 +235,7 @@ class level_removefile:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_thing_upload_remove(
+            lambda: memrise.level_thing_file_delete(
                 thing_id,
                 data["cell_id"],
                 data["file_id"],
@@ -244,7 +244,7 @@ class level_removefile:
         )
 
 
-class level_alt:
+class level_thing_alt:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -266,7 +266,7 @@ class level_alt:
         )
 
 
-class level_editalt:
+class level_thing_alt_update:
     def POST(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -287,7 +287,7 @@ class level_editalt:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_thing_alt_edit(
+            lambda: memrise.level_thing_alt_update(
                 thing_id,
                 data["alts"],
                 data["cell_id"],
@@ -296,7 +296,7 @@ class level_editalt:
         )
 
 
-class level_editmultimedia:
+class level_multimedia_update:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -320,7 +320,7 @@ class level_editmultimedia:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_multimedia_edit(
+            lambda: memrise.level_multimedia_update(
                 level_id,
                 data["txt"],
                 referer=data["referer"],
@@ -330,7 +330,7 @@ class level_editmultimedia:
         )
 
 
-class level_removerow:
+class level_thing_delete:
     def POST(self, level_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -348,7 +348,7 @@ class level_removerow:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_thing_remove(
+            lambda: memrise.level_thing_delete(
                 level_id,
                 data["thing_id"],
                 referer=data["referer"],

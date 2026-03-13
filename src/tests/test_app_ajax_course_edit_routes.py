@@ -59,7 +59,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         response = self.client.request("/ajax/level/1", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 200)
 
-    def test_level_alts(self):
+    def test_level_thing_alt(self):
         response = self.client.request("/ajax/level/1/alt", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -67,7 +67,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         response = self.client.request("/ajax/level/1/alt", method="POST", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 200)
 
-    def test_level_alts_edit(self):
+    def test_level_thing_alt_update(self):
         response = self.client.request("/ajax/level/1/alt_edit", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -106,7 +106,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_thing_edit(self):
+    def test_level_thing_update(self):
         response = self.client.request("/ajax/level/1/edit", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -125,7 +125,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_thing_remove(self):
+    def test_level_thing_delete(self):
         response = self.client.request("/ajax/level/1/remove", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -145,7 +145,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_media_edit(self):
+    def test_level_multimedia_update(self):
         response = self.client.request("/ajax/level/1/edit_multimedia", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -167,7 +167,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_uploadfile(self):
+    def test_level_thing_file_upload(self):
         response = self.client.request("/ajax/level/1/upload", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -190,7 +190,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_uploadfile_v2(self):
+    def test_level_thing_file_upload_v2(self):
         response = self.client.request("/ajax/thing/cell/upload_file", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -213,7 +213,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_removefile(self):
+    def test_level_thing_file_delete(self):
         response = self.client.request("/ajax/level/1/upload_remove", method="POST")
         self.assertEqual(response.status_code, 401)
 

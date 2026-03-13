@@ -18,7 +18,7 @@ urls = (
     r"/(\d+)/(.*)/garden", "learn_fromform",
     r"/(\d+)/(.*)/garden/(preview|learn|review|classic_review|speed_review)", "learn",
     r"/(\d+)/(.*)/leaderboard", "leaderboard",
-    r"/(\d+)/([^/]*)/edit", "edit_course",
+    r"/(\d+)/([^/]*)/edit", "course_get_editpage",
     r"/(\d+)/(.*)", "course",
     #r"/(\d+)", "course",
 )
@@ -217,7 +217,7 @@ class leaderboard:
         return web.config.template.render.course_leaderboard(course, _GET.period, leaderboard)
 
 
-class edit_course:
+class course_get_editpage:
     def GET(self, course_id, path):
         course_slug = path.split("/", 2)[0]
 
@@ -225,7 +225,7 @@ class edit_course:
             raise web.Unauthorized()
 
         try:
-            course = memrise.course_edit_get(course_id, course_slug=course_slug)
+            course = memrise.course_get_editpage(course_id, course_slug=course_slug)
         except HTTPError as e:
             print(e)
             return web.config.template.prender._404()

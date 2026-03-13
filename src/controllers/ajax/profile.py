@@ -70,7 +70,7 @@ class user_leaderboard:
         return proxied_response(lambda: memrise.my_leaderboard(_GET.period))
 
 
-class user_sync:
+class reload_user:
     def GET(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()

@@ -405,7 +405,7 @@ class Scraper:
     # +-----------------------------------------------------
     # | COURSE EDIT
     # +-----------------------------------------------------
-    def course_edit_get(self, data_pointer, html):
+    def course_get_editpage(self, data_pointer, html):
         assert len(html) > 0
 
         data = data_pointer

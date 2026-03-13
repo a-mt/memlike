@@ -20,7 +20,7 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         html = response.data
         self.assertIsNotNone(html)
 
-    def test_edit_course(self):
+    def test_course_editpage(self):
         response = self.client.request("/course/1/my-course/edit")
         self.assertEqual(response.status_code, 401)
 

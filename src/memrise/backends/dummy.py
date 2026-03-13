@@ -713,7 +713,7 @@ class DummyMemrise(Memrise):
             "success": True,
         }
 
-    def level_edit_get(self, level_id, **kwargs):
+    def level_get_editpage(self, level_id, **kwargs):
         # Type things
         return {
             "success": True,
@@ -783,24 +783,24 @@ class DummyMemrise(Memrise):
             "rendered_thing": "\n\n<tr class=\"thing\" data-thing-id=\"477757811\">\n    <td>\n        <div class=\"thing__actions\">\n            <i class=\"ico ico-light-blue ico-re-order sortable-handle\" title=\"Wort verschieben\"></i>\n            <i class=\"ico ico-close\" data-role=\"remove\" title=\"Wort entfernen\"></i>\n        </div>\n    </td>\n    \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"1\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">a</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"2\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">b</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n\n                \n            \n        \n            \n                \n                    \n\n<td class=\"cell text column\"\n    data-key=\"4\"\n    data-cell-type=\"column\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n                <button class=\"edit-alts btn btn-small btn-icos-active\">\n                    Alts\n                    <i class=\"ico ico-s ico-edit\"></i>\n                </button>\n            \n\n            \n            <div class=\"text\">plural</div>\n        </div>\n    \n</td>\n\n                \n            \n        \n    \n    \n        \n            \n                \n\n<td class=\"cell text attribute\"\n    data-key=\"2\"\n    data-cell-type=\"attribute\">\n    \n        \n        <div class=\"wrapper\">\n            \n            \n\n            \n            <div class=\"text\"></div>\n        </div>\n    \n</td>\n\n            \n        \n    \n</tr>\n"
         }
 
-    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
+    def level_thing_update(self, thing_id, cell_id, cell_value, **kwargs):
         return {
             "success": None,
         }
 
-    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
+    def level_thing_file_upload(self, thing_id, cell_id, file, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle \" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \n                            \n                                1 Datei\n                            \n                        \n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n    <div class=\"dropdown-row\" data-file-id=\"1\">\n        <i class=\"ico ico-trash ico-active-states pull-right\"  title=\"Audiodatei l\u00f6schen\"></i>\n        <a class=\"audio-player audio-player-hover url\" href=\"#\" data-url=\"https://static.memrise.com/uploads/things/audio/477757811_260208_1842_02.mp3\"></a>\n    </div>\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
+    def level_thing_file_delete(self, thing_id, cell_id, file_id, **kwargs):
         return {
             "success": True,
             "rendered": "\n\n<td class=\"cell audio column\"\n    data-key=\"3\"\n    data-cell-type=\"column\">\n    \n        \n            <div class=\"btn-group\">\n                <div class=\"btn btn-mini files-add\">\n                    Hochladen <input type=\"file\" name=\"f\" class=\"add_thing_file\" />\n                </div>\n                \n                    <div class=\"btn btn-mini open-recorder\">Aufnehmen</div>\n                \n\n                <button class=\"btn btn-mini dropdown-toggle disabled\" data-toggle=\"dropdown\" data-role=\"load-media\" style=\"overflow:hidden;\">\n                    \n                        \nkeine audio Datei\n                    \n                    <i class=\"ico ico-s ico-arr-down\"></i>\n                </button>\n\n                \n\n<div class=\"dropdown-menu audios\">\n\n</div>\n\n            </div>\n        \n    \n</td>\n"
         }
 
-    def level_thing_remove(self, level_id, thing_id, **kwargs):
+    def level_thing_delete(self, level_id, thing_id, **kwargs):
         return {
             "success": True,
         }
@@ -895,18 +895,18 @@ class DummyMemrise(Memrise):
             },
         }
 
-    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
+    def level_thing_alt_update(self, thing_id, alts, column_key, **kwargs):
         return {
             "success": None,
         }
 
-    def level_multimedia_edit(self, level_id, txt, **kwargs):
+    def level_multimedia_update(self, level_id, txt, **kwargs):
         return {
             "success": True,
             "multimedia": r"<b>img:http://cdni.wired.co.uk/620x413/a_c/ALEX_LAKE.jpg</b>.\n\n<br />\n2. F\u00fcr Youtube-Videos, schreibe \"embed:\" vor die URL, z.B.\n\n<br /><b>embed:https://www.youtube.com/watch?v=P5f1Y3CWTc0</b>.\n\n<br />\n3. Um deinen Text fett erscheinen zu lassen, klammer ihn mit \"**\" ein, z.B.\n\n<br /><b>\"spiel **nicht** mit dem Feuer\"</b>.\n\" name=\"new_val\">",
         }
 
-    def course_edit_get(self, course_id, course_slug, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
         """
         Testset: tests/testset/course_get_edit.html
         """
@@ -940,12 +940,12 @@ class DummyEditMixin:
     # Return data directly without attempting to read testset files
     level_add = DummyMemrise.__dict__["level_add"]
     level_delete = DummyMemrise.__dict__["level_delete"]
-    level_edit_get = DummyMemrise.__dict__["level_edit_get"]
+    level_get_editpage = DummyMemrise.__dict__["level_get_editpage"]
     level_thing_add = DummyMemrise.__dict__["level_thing_add"]
-    level_thing_edit = DummyMemrise.__dict__["level_thing_edit"]
-    level_thing_upload = DummyMemrise.__dict__["level_thing_upload"]
-    level_thing_upload_remove = DummyMemrise.__dict__["level_thing_upload_remove"]
-    level_thing_remove = DummyMemrise.__dict__["level_thing_remove"]
+    level_thing_update = DummyMemrise.__dict__["level_thing_update"]
+    level_thing_file_upload = DummyMemrise.__dict__["level_thing_file_upload"]
+    level_thing_file_delete = DummyMemrise.__dict__["level_thing_file_delete"]
+    level_thing_delete = DummyMemrise.__dict__["level_thing_delete"]
     level_thing_get = DummyMemrise.__dict__["level_thing_get"]
-    level_thing_alt_edit = DummyMemrise.__dict__["level_thing_alt_edit"]
-    level_multimedia_edit = DummyMemrise.__dict__["level_multimedia_edit"]
+    level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
+    level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]

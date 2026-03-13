@@ -289,7 +289,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_delete() method")
 
-    def level_edit_get(self, level_id, **kwargs):
+    def level_get_editpage(self, level_id, **kwargs):
         """
         Retrieve the content of a level for the edit page
         May be multimedia or list of things
@@ -298,7 +298,7 @@ class Memrise:
         @param string level_id
         @return dict - {success, rendered}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_edit_get() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_get_editpage() method")
 
     def level_thing_add(self, level_id, data, **kwargs):
         """
@@ -313,7 +313,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_add() method")
 
-    def level_thing_edit(self, thing_id, cell_id, cell_value, **kwargs):
+    def level_thing_update(self, thing_id, cell_id, cell_value, **kwargs):
         """
         Edit the value of a thing
 
@@ -325,9 +325,9 @@ class Memrise:
         @param string cell_value - "b2"
         @return dict - {success}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_thing_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_thing_update() method")
 
-    def level_thing_upload(self, thing_id, cell_id, file, **kwargs):
+    def level_thing_file_upload(self, thing_id, cell_id, file, **kwargs):
         """
         Upload a file in the given thing
 
@@ -339,9 +339,9 @@ class Memrise:
         @param file file - <filename value>
         @return dict - {success, rendered}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_thing_file_upload() method")
 
-    def level_thing_upload_remove(self, thing_id, cell_id, file_id, **kwargs):
+    def level_thing_file_delete(self, thing_id, cell_id, file_id, **kwargs):
         """
         Removes an uploaded file from the given thing
 
@@ -354,9 +354,9 @@ class Memrise:
         @param string file_id - "1"
         @return dict - {success, rendered}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_thing_upload_remove() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_thing_file_delete() method")
 
-    def level_thing_remove(self, level_id, thing_id, **kwargs):
+    def level_thing_delete(self, level_id, thing_id, **kwargs):
         """
         Removes the given thing
 
@@ -367,7 +367,7 @@ class Memrise:
         @param string thing_id - "477757811"
         @return dict - {success}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_thing_remove() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_thing_delete() method")
 
     def level_thing_get(self, thing_id, **kwargs):
         """
@@ -380,7 +380,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_thing_get() method")
 
-    def level_thing_alt_edit(self, thing_id, alts, column_key, **kwargs):
+    def level_thing_alt_update(self, thing_id, alts, column_key, **kwargs):
         """
         Edit the alternative answers of the given column for the given thing
 
@@ -392,9 +392,9 @@ class Memrise:
         @param string column_key - "2"
         @return dict - {success}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_thing_alt_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_thing_alt_update() method")
 
-    def level_multimedia_edit(self, level_id, txt, **kwargs):
+    def level_multimedia_update(self, level_id, txt, **kwargs):
         """
         Edit the content of the given multimedia level
 
@@ -405,9 +405,9 @@ class Memrise:
         @param string txt - "img:http://cdni.wired.co.uk/620x413..."
         @return dict - {success, multimedia}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_multimedia_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_multimedia_update() method")
 
-    def course_edit_get(self, course_id, course_slug, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
         """
         Retrieve the content of a course for the edit page
 
@@ -416,4 +416,4 @@ class Memrise:
         @param string course_id - "1892646"
         @param string course_slug - "grammaire-le-groupe-nominal"
         """
-        raise NotImplementedError("subclasses of Memrise must provide a course_edit_get() method")
+        raise NotImplementedError("subclasses of Memrise must provide a course_get_editpage() method")

@@ -145,7 +145,7 @@ class ApiRequestor:
         response = requests.get(url, cookies=cookies, headers=headers)
         response.raise_for_status()
 
-        data["sessionid"] = response.cookies["sessionid_2"]  # j74y9ut8nwrw4wqomtvqmyt5k9g4gvwng
+        data["sessionid"] = response.cookies["sessionid_2"]
         data["csrftoken"] = response.cookies["csrftoken"]
 
         return data
@@ -478,7 +478,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_edit_get(self, level_id, sessionid=None, csrftoken=None, **kwargs):
+    def level_get_editpage(self, level_id, sessionid=None, csrftoken=None, **kwargs):
         request_msg = f"Level edition: get things / multimedia [level_id={level_id}]"
 
         url = f"{HOST}/ajax/level/editing_html/?level_id={level_id}&_=" + get_time()
@@ -508,7 +508,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_edit(self, thing_id, cell_id, cell_value, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_update(self, thing_id, cell_id, cell_value, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edition: edit thing [thing_id={thing_id},cell_id={cell_id}]"
 
         url = f"{HOST}/ajax/thing/cell/update/"
@@ -527,7 +527,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload(self, thing_id, cell_id, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_file_upload(self, thing_id, cell_id, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edition: upload file to thing [thing_id={thing_id},cell_id={cell_id}]"
 
         url = f"{HOST}/ajax/thing/cell/upload_file/"
@@ -559,7 +559,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_upload_remove(
+    def level_thing_file_delete(
         self, thing_id, cell_id, file_id, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         request_msg = f"Level edition: delete file from thing [thing_id={thing_id},cell_id={cell_id},file_id={file_id}]"
@@ -580,7 +580,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_remove(self, level_id, thing_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_delete(self, level_id, thing_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edition: delete thing [level_id={level_id},thing_id={thing_id}]"
 
         url = f"{HOST}/ajax/level/thing_remove/"
@@ -610,7 +610,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_alt_edit(self, thing_id, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_alt_update(self, thing_id, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edition: edit thing alternative values [thing_id={thing_id},column={column_key}]"
 
         url = f"{HOST}/ajax/thing/column/update_alts/"
@@ -628,7 +628,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_multimedia_edit(self, level_id, txt, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_multimedia_update(self, level_id, txt, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edition: update multimedia [level_id={level_id}]"
 
         url = f"{HOST}/ajax/level/set_multimedia/"
@@ -645,7 +645,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def course_edit_get(self, course_id, course_slug, sessionid=None, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, sessionid=None, **kwargs):
         request_msg = f"Course edition: get levels [course_id={course_id}]"
 
         url = f"{HOST}/course/{course_id}/{course_slug}/edit/"
