@@ -4,7 +4,6 @@ import web
 
 
 def beautify_pattern(pattern, fn):
-
     # Retrieve the function's signature
     # example: "(self, course_id, course_slug, level_index)"
     args = str(inspect.signature(fn))[1:-1].split(", ")
@@ -24,7 +23,6 @@ def beautify_pattern(pattern, fn):
 
 
 def autodetect_urls(app, prefix="", res={}):
-
     # For each route in the app mapping
     for i, (pattern, handler) in enumerate(app.mapping):
         f = None

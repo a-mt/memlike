@@ -218,7 +218,7 @@ class ApiRequestor:
             url,
             json=data,
             headers={**request_kwargs.pop("headers", {}), **{"Content-Type": "application/json"}},
-            **request_kwargs
+            **request_kwargs,
         )
         self.raise_for_status(response)
         return response.json()
@@ -233,7 +233,7 @@ class ApiRequestor:
             url,
             json=data,
             headers={**request_kwargs.pop("headers", {}), **{"Content-Type": "application/json"}},
-            **request_kwargs
+            **request_kwargs,
         )
         self.raise_for_status(response)
         return response.json()
