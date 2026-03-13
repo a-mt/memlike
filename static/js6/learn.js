@@ -518,8 +518,8 @@ const GameDataBuilder = {
     GameDataBuilder.sessionType = sessionType;
     GameDataBuilder.learnablesMap = learnablesMap;
 
-    GameScreenBuilder.definitions = null;
-    GameProgressHandler.events = [];
+    GameScreenBuilder.reset();
+    GameProgressHandler.reset();
 
     return {
       screens,
@@ -536,6 +536,10 @@ const GameDataBuilder = {
  */
 const GameScreenBuilder = {
   definitions: null,
+
+  reset: function() {
+    GameScreenBuilder.definitions = null;
+  },
 
   getDefinitions: function() {
     var learnables = Object.values(GameDataBuilder.learnablesMap);
@@ -758,6 +762,12 @@ const GameScreenBuilder = {
 
 const GameProgressHandler = {
   events: [],
+  is_saving: false,
+
+  reset: function() {
+    GameProgressHandler.events = [];
+    GameProgressHandler.is_saving = false;
+  },
 
   /**
    * Compute the next growh level for the given progress,
@@ -1022,6 +1032,8 @@ const GameProgressHandler = {
   },
 
   registerSessionEnd(data) {
+    GameProgressHandler.is_saving = true;
+
     var events = [...GameProgressHandler.events];
     var requests = [];
 
@@ -1050,6 +1062,7 @@ const GameProgressHandler = {
     // Send each request one after the other
     function executeRequestsQueue() {
       if(!requests.length) {
+        GameProgressHandler.is_saving = false;
         return;
       }
       var request = requests.shift();
@@ -1353,7 +1366,7 @@ class Learn extends Component {
           console.error(xhr.status + ' ' + xhr.statusText);
           this.setState({error: 500});
         }
-      }.bind(this)
+      }.bind(this),
     });
   }
 
@@ -1363,7 +1376,7 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if(this.state.meta_screen == 'summary' || this.state.error) return;
+    if(this.state.meta_screen == 'summary' && !GameProgressHandler.is_saving || this.state.error) return;
     var msg = 'Your changes will be lost.';
 
     e = e || window.event;

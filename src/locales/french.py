@@ -30,7 +30,7 @@ misc = {
     "learn_settings_disable_multimedia": "Désactiver les multimédias",
     "learn_settings_reverse_prompt_and_answer": "Inverser les tests (prompt sur la réponse, test sur la définition)",
     "learn_settings_save_progress": "Envoyer les résultats à Memrise",
-    "learn_is_anonymous": "Vous jouez anonymement",
+    "learn_is_anonymous": "Vous jouez anonymement: votre progrès ne sera pas sauvegardé",
     "learn": "Apprendre",
     "preview": "Visualiser",
     "memorize": "Mémoriser",

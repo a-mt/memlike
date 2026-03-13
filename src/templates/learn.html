@@ -34,7 +34,7 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
 </script>
 
 <main id="body">
-  $if not session["loggedin"]:
+  $if session_type != "preview" and not session["loggedin"]:
     <div class="alert alert-danger">$(I18N.misc['learn_is_anonymous'])</div>
 
   <div id="learn-container" class="inner"></div>
