@@ -1,6 +1,6 @@
 import web
 from memrise import memrise
-from utils.ajax import proxied_response
+from utils.webapi import proxied_response
 from utils import validator
 
 
@@ -156,7 +156,7 @@ class level_uploadfile:
                     validator.schema.int_schema(),
                 ),
                 "file": validator.field(
-                    validator.is_file_schema(),
+                    validator.file_schema(),
                 ),
                 "referer": validator.field(
                     validator.schema.str_schema(),
@@ -189,7 +189,7 @@ class level_uploadfile_compat:
                     validator.schema.int_schema(),
                 ),
                 "f": validator.field(
-                    validator.is_file_schema(),
+                    validator.file_schema(),
                 ),
                 "referer": validator.field(
                     validator.schema.str_schema(),

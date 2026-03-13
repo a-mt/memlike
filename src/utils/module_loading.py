@@ -17,6 +17,8 @@ def import_string(dotted_path):
     """
     Import a dotted module path and return the attribute/class designated by
     the last name in the path. Raise ImportError if the import failed.
+
+    Example: umport_string("memrise.backends.CachedApiMemrise")
     """
     try:
         module_path, class_name = dotted_path.rsplit(".", 1)
@@ -32,6 +34,9 @@ def import_string(dotted_path):
 def load_source(modname, filename):
     """
     Replaces imp.load_source with importlib logic
+
+    Exemple: load_source("french", "/srv/locales/french.py")
+    to import french.py as the module "french"
     """
     loader = importlib.machinery.SourceFileLoader(modname, filename)
     spec = importlib.util.spec_from_file_location(modname, filename, loader=loader)

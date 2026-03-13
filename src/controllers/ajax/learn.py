@@ -1,7 +1,6 @@
 import web
 from memrise import memrise
-from utils.ajax import proxied_response
-from utils.webapi import jsoninput
+from utils.webapi import proxied_response, jsoninput
 from utils import validator
 
 

@@ -2,7 +2,7 @@ import settings
 import web
 from memrise import memrise
 from requests.exceptions import HTTPError
-from utils.ajax import proxied_response, error_response
+from utils.webapi import proxied_response, error_response
 from utils import validator
 from variables import languages
 from pydantic_core import PydanticCustomError

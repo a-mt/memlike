@@ -103,11 +103,11 @@ session = session.Session(app=None, store=store, initializer=settings.DEFAULT_SE
 def session_load():
     """
     Prerequisite:
-    At this point the session processor should habe been called
+    At this point the session processor should have been called
     (cookies have been read and the associated data has been loaded)
 
     Note:
-    We create one session store per app, which fetch the sessions
+    We create one session store per app, which fetch the sessions from the database
     The sessions are cleaned from the store at the beginning of each request
     (if session._last_cleanup_time < session_parameters.timeout)
 
@@ -141,7 +141,7 @@ app.add_processor(lang._processor)
 # ---
 # Flash messages processor
 def flash_load():
-    # Redirect HTTP ot HTTPS
+    # Redirect HTTP to HTTPS
     if web.ctx.environ.get("HTTP_X_FORWARDED_PROTO") == "http":
         raise web.seeother(web.ctx.home.replace("http://", "https://").replace(":80", "") + web.ctx.fullpath)
 
@@ -233,6 +233,6 @@ if __name__ == "__main__" and not settings.IS_TEST:
     except Exception as e:
         print("ERR:", e)
 
-    # Start the runner
+    # Start the app
     print("Running...")
     app.run()

@@ -128,6 +128,7 @@ Course with
 
 ## Login
 
+```
 GET https://app.memrise.com/v1.17/web/ensure_csrf
 Request Header
     Cookie
@@ -221,6 +222,7 @@ Request Header
     	sessionid_2=zwrpo2uktmjzby5fla2wl23nlm0vcuto4;
     	I18Next=fr;
     	ajs_user_id=34497740
+```
 
 ## Signin JSON
 
