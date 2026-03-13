@@ -26,9 +26,6 @@ class ApiMemrise(Memrise):
     def get_saved_login(self):
         return web.ctx.get("session", {}).get("loggedin", None)
 
-        # csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN"),
-        # referer=web.ctx.env.get("HTTP_X_REFERER"),
-
     def set_default_kwargs(self, kwargs):
         session = self.get_saved_login() or {}
         kwargs.setdefault("sessionid", session.get("sessionid", None))
