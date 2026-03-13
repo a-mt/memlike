@@ -1816,7 +1816,7 @@ table.learn {
   position: relative;
   table-layout: fixed;
 }
-table.learn:not(.recap) td:last-child {
+table.learn:not(.summary) td:last-child {
   width: 100%;
 }
 .learn .label {
@@ -2073,10 +2073,10 @@ table.learn:not(.recap) td:last-child {
   background-color: PaleGreen;
 }
 
-.recap {
+.summary {
   padding: 0;
 }
-.recap td {
+.summary td {
   border-bottom: 1px solid #e4e4e4;
   padding: 10px 15px;
 }
@@ -2100,6 +2100,7 @@ table.learn:not(.recap) td:last-child {
   padding: 5px;
   background: wheat;
   list-style: none;
+  bottom: 0;
 }
 #debug-screen li {
   cursor: pointer;

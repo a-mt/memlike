@@ -22,14 +22,14 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
   window.MEMLIKE = window.MEMLIKE || {};
   window.MEMLIKE.course = $:(json(course));
   window.MEMLIKE.garden = {
-    levels_indexes: $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
     session_type: "$(session_type)",
     session_origin_url: "$(url)",
-    preview_thing_id: $(thing_id if thing_id else 0),
-    save_progress: $(int(save_progress) if session["loggedin"] else 0),
-    reverse_prompt_and_answer: $(int(reverse_prompt_and_answer)),
-    session_is_anonymous: $(1 if session["loggedin"] else 0),
     session_id: "$(session['session_id'])",
+    session_is_anonymous: $(1 if session["loggedin"] else 0),
+    session_settings_save_progress: $(int(save_progress) if session["loggedin"] else 0),
+    session_settings_reverse_prompt_and_answer: $(int(reverse_prompt_and_answer)),
+    preview_thing_id: $(thing_id if thing_id else 0),
+    levels_index: $:(level_index if level_index else "'" + ",".join(sorted(course['levels'].keys(), key=int)) + "'"),
   };
 </script>
 
