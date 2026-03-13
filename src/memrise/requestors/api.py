@@ -666,3 +666,20 @@ class ApiRequestor:
             "referer": url,
             "html": html,
         }
+
+    def course_delete(self, course_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Course delete [course_id={course_id}]"
+
+        url = f"{HOST}/ajax/course/delete/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "course_id": course_id,
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+

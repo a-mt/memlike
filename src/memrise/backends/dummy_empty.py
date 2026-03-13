@@ -175,3 +175,6 @@ class DummyEmptyMemrise(DummyMemrise):
             "levels": [],
             "last_pool_id": None,
         }
+
+    def course_delete(self, course_id, **kwargs):
+        return None

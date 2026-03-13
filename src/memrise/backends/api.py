@@ -423,6 +423,16 @@ class ApiMemrise(Memrise):
 
         return data
 
+    def course_delete(self, course_id, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.course_delete(
+            course_id,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+            referer=referer,
+        )
+
 
 class DummyApiMemrise(DummyLoginMixin, DummyEditMixin, ApiMemrise):
     def create_requestor(self):

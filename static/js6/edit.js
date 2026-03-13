@@ -26,6 +26,75 @@ $(document).ready(function(){
 //| Render Levels
 //+--------------------------------------------------------
 
+class CourseSettingsModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.closeModal = this.closeModal.bind(this);
+    this.deleteCourse = this.deleteCourse.bind(this);
+    this.updateInput = this.updateInput.bind(this);
+  }
+
+  closeModal() {
+    window.modal.close();
+  }
+
+  updateInput(e) {
+    this.confirmDelCourse = e.target.value;
+  }
+
+  deleteCourse() {
+    if (this.confirmDelCourse != this.props.course.title) {
+      alert(window.I18N.warn_del_course);
+      return;
+    }
+
+    $.ajax({
+      url: '/ajax/course/remove',
+      method: 'POST',
+      data: {
+        course_id: this.props.course.id,
+      },
+      headers: {
+        'X-CSRFToken': window.MEMLIKE.course.csrftoken,
+        'X-Referer': window.MEMLIKE.course.referer,
+      },
+      success: function(){
+        window.location.href = '/';
+      },
+      error: function(xhr) {
+        alert('Something went wrong');
+
+        console.error(xhr);
+      },
+    });
+  }
+
+  render() {
+    return <div className="settings course-settings">
+      <h3>
+        {this.props.course.title}
+      </h3>
+      <div className="form">
+        <div class="danger-zone alert alert-danger">
+          <div>
+            <h4>{window.I18N.delete_course_title}</h4>
+            <p>{window.I18N.confirm_del_course}</p>
+            <input type="text" onChange={this.updateInput} autoComplete="off" />
+          </div>
+          <button class="btn danger" type="button" onClick={this.deleteCourse}>
+            {window.I18N.delete_course}
+          </button>
+        </div>
+      </div>
+      {/*<div className="btn-group">
+        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
+        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+      </div>*/}
+    </div>
+  }
+}
+
 class EditCourseActions extends Component {
   constructor(props) {
     super(props);
@@ -34,20 +103,21 @@ class EditCourseActions extends Component {
     this.state = {
       isLoading: false,
     };
+    this.showSettings = false;
+    this.onCloseModal = this.onCloseModal.bind(this);
+    this.toggleSettings = this.toggleSettings.bind(this);
   }
 
   addLevel(kind) {
     this.setState({isLoading: true});
 
-    var pool_id = null;
-    if (kind == 'things') {
-      pool_id = this.props.course.last_pool_id;
-    }
     var data = {
       course_id: this.props.course.id,
-      pool_id: pool_id,
       kind: kind,
     };
+    if (kind == 'things') {
+      data.pool_id = this.props.course.last_pool_id;
+    }
     $.ajax({
       url: '/ajax/level/add',
       method: 'POST',
@@ -65,14 +135,41 @@ class EditCourseActions extends Component {
     });
   }
 
+  onCloseModal() {
+    window.modal.onclose('course-settings', null);
+
+    if(!this.showSettings) {
+      return;
+    }
+    this.showSettings = false;
+  }
+
+  toggleSettings() {
+    this.showSettings = !this.showSettings;
+    if(!this.showSettings) {
+      return;
+    }
+    var div = window.modal.getContainer().get(0).querySelector('.modal');
+    div.innerHTML = '';
+
+    render(<CourseSettingsModal course={this.props.course} />, div);
+    window.modal.reopen();
+    window.modal.onclose('course-settings', this.onCloseModal);
+  }
+
   render() {
     return (
       <div className="edit-course-actions clearfix">
         <div className="actions actions-right">
           {this.state.isLoading && <span className="loading-spinner left"></span>}
 
-          <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>Add multimedia</button>
-          <button type="button" className="btn green" onClick={() => this.addLevel('things')}>Add level</button>
+          <button class="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+            <span className="ico ico-settings ico-l ico-grey"></span>
+          </button>
+          <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>
+            {window.I18N.add_level_multimedia}</button>
+          <button type="button" className="btn green" onClick={() => this.addLevel('things')}>
+            {window.I18N.add_level_things}</button>
         </div>
       </div>
     );

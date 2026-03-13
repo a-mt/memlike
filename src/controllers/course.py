@@ -109,7 +109,7 @@ class level:
         )
         raise web.seeother(f"/community/course/{course_id}/{course_slug}/", absolute=True)
 
-    def GET(self, course_id, course_slug, level_index, path2=""):
+    def GET(self, course_id, course_slug, level_index, path=""):
         course_slug = course_slug.split("/", 2)[0]
         try:
             course = memrise.course(course_id, course_slug)

@@ -37,6 +37,7 @@ from .edit import (
     level_thing_file_upload_compat,
     level_thing_file_delete,
     level_multimedia_update,
+    course_delete,
 )
 from .progress import my_progress
 
@@ -63,6 +64,7 @@ urls_thing = (
 
 # /ajax/course/...
 urls_course = (
+    r"/remove", course_delete,
     r"/(\d+)/([^/]+)/edit", course_get_editpage,
     r"/(\d+)/([^/]+)/(\d+)/media", course_level_multimedia,
     r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", course_level,

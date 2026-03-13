@@ -147,7 +147,7 @@ class LearnSettingsModal extends Component {
   }
 
   render() {
-    return <div className="learn-settings">
+    return <div className="settings learn-settings">
       <div className="form">
         <div>
           <input
@@ -245,7 +245,7 @@ class LearnSettingsBtn extends Component {
       return null;
     }
     return (
-      <button type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+      <button class="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
         <span className="ico ico-settings ico-l ico-grey"></span>
       </button>
     );

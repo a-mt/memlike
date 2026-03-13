@@ -354,3 +354,26 @@ class level_thing_delete:
                 referer=data["referer"],
             )
         )
+
+
+class course_delete:
+    def POST(self, *args, **kwargs):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "course_id": validator.field(
+                    validator.schema.int_schema(),
+                ),
+            },
+            data=web.input(),
+        )
+
+        return proxied_response(
+            lambda: memrise.course_delete(
+                course_id=data["course_id"],
+                csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN", None),
+                referer=web.ctx.env.get("HTTP_X_REFERER", None),
+            )
+        )

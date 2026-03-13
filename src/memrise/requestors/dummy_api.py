@@ -101,3 +101,7 @@ class DummyApiRequestor:
             "referer": "",
             "html": html,
         }
+
+    def course_delete(self, course_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        return None
+

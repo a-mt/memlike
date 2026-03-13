@@ -927,6 +927,9 @@ class DummyMemrise(Memrise):
             "last_pool_id": "7758772",
         }
 
+    def course_delete(self, course_id, **kwargs):
+        return None
+
 
 class DummyLoginMixin:
     login = DummyMemrise.__dict__["login"]
@@ -949,3 +952,4 @@ class DummyEditMixin:
     level_thing_get = DummyMemrise.__dict__["level_thing_get"]
     level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
     level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]
+    course_delete = DummyMemrise.__dict__["course_delete"]

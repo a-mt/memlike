@@ -417,3 +417,9 @@ class Memrise:
         @param string course_slug - "grammaire-le-groupe-nominal"
         """
         raise NotImplementedError("subclasses of Memrise must provide a course_get_editpage() method")
+
+    def course_delete(self, course_id, **kwargs):
+        """
+        Delete a course
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a course_delete() method")
