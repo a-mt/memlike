@@ -703,7 +703,7 @@ class DummyMemrise(Memrise):
     def level_add(self, course_id, pool_id=None, **kwargs):
         return {
             "success": True,
-            "redirect_url": "/community/course/6719284/test/edit/#l_16273536",
+            "redirect_url": "/course/6719284/test/edit/#l_16273536",
             "id": 16180581,
             "pool_id": pool_id,
         }
@@ -913,7 +913,7 @@ class DummyMemrise(Memrise):
         return {
             "id": course_id,
             "csrftoken": "",
-            "referer": "https://app.memrise.com/community/course/" + course_id + "/" + course_slug + "/edit/",
+            "referer": "https://community-courses.memrise.com/course/" + course_id + "/" + course_slug + "/edit/",
             "url": "/community/course/6698294/german-vocab/",
             "title": "German vocab",
             "levels": [

@@ -694,7 +694,7 @@ class ApiRequestor:
         log_session = self.buildCookiesLog(sessionid)
         logger.debug(f"Requestor:Course edition: get levels [course_id={course_id}] ({log_session})")
 
-        url = f"{HOST}/community/course/{course_id}/{course_slug}/edit/"
+        url = f"{HOST}/course/{course_id}/{course_slug}/edit/"
 
         response = requests.get(url, cookies=self.buildCookies(sessionid))
         self.raise_for_status(response)

@@ -35,10 +35,10 @@ class DummyEmptyMemrise(DummyMemrise):
     def categories(self, lang_slug, **kwargs):
         return {}
 
-    def course(self, course_id, course_slug="example", **kwargs):
+    def course(self, course_id, course_slug="course", **kwargs):
         return {
             "id": course_id,
-            "title": "Example",
+            "title": "Course",
             "url": f"/community/course/{course_id}/{course_slug}/",
             "author": "",
             "description": "",
@@ -54,8 +54,8 @@ class DummyEmptyMemrise(DummyMemrise):
             "session_source_info": {
                 "source_id": course_id,
                 "source_type": "course_id_and_level_index",
-                "name": "Example",
-                "translated_name": "Example",
+                "name": "Course",
+                "translated_name": "Course",
                 "learnable_ids_to_course_ids": {},
                 "nb_due_for_review": 0,
                 "level_id": None,
