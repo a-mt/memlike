@@ -73,9 +73,12 @@ class Lang(object):
             lang_slug = lang_slug or DEFAULT_LANG_SLUG
 
         mod = self.get_module(lang_slug=lang_slug)
+        lang_code = lang_slug[:2]
+
         web.ctx.i18n = mod
-        web.ctx.lang_code = lang_slug[:2]
+        web.ctx.lang_code = lang_code
 
         # Make it accessible in templates
         web.config.template["I18N"] = mod
+        web.config.template["LANG"] = lang_code
         return mod

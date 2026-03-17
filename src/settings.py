@@ -124,6 +124,8 @@ if web.config.get("template", None) is None:
     template["LOCALES"] = LOCALES
     template["ENV"] = {"GITHUB_REPO": environ.get("GITHUB_REPO")}
     template["MENU"] = MENU
+    template["LANG"] = ""
+    template["I18N"] = {}
 
     web.config.template = template
 
