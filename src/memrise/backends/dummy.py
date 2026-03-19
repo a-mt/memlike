@@ -713,6 +713,11 @@ class DummyMemrise(Memrise):
             "success": True,
         }
 
+    def level_title_edit(self, level_id, title, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        return {
+            "success": True,
+        }
+
     def level_get_editpage(self, level_id, **kwargs):
         # Type things
         return {

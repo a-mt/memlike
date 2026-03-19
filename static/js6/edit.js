@@ -91,10 +91,9 @@ class CourseSettingsModal extends Component {
           </button>
         </div>
       </div>
-      {/*<div className="btn-group">
+      <div className="btn-group">
         <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
-        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
-      </div>*/}
+      </div>*
     </div>
   }
 }
@@ -171,9 +170,11 @@ class EditCourseActions extends Component {
             <span className="ico ico-settings ico-l ico-grey"></span>
           </button>
           <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>
-            {window.I18N.add_level_multimedia}</button>
+            {window.I18N.add_level_multimedia}
+          </button>
           <button type="button" className="btn green" onClick={() => this.addLevel('things')}>
-            {window.I18N.add_level_things}</button>
+            {window.I18N.add_level_things}
+          </button>
         </div>
       </div>
     );
@@ -249,6 +250,77 @@ class Edit extends Component {
   }
 }
 
+class LevelSettingsModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.closeModal = this.closeModal.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
+    this.state = {
+      'title': props.level.name,
+    }
+  }
+
+  closeModal() {
+    window.modal.close();
+  }
+
+  handleChange(id, e) {
+    this.setState({
+      [id]: e.target.value,
+    });
+  }
+
+  updateSettings(e) {
+    const title = this.state.title;
+    if (title == this.props.level.name) {
+      return this.closeModal();
+    }
+    var $btn = $(e.target);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-after loading-spinner-m');
+
+    $.ajax({
+      url: '/ajax/level/edit_title',
+      method: 'POST',
+      data: {
+        title,
+        level_id: this.props.level.id,
+      },
+      error: function() {
+        alert('Something went wrong when trying to update the level');
+      },
+      success: function() {
+        this.props.updateTitle && this.props.updateTitle(title);
+        this.closeModal();
+      }.bind(this),
+      complete: function(){
+        $btn.removeAttr('disabled').removeClass('loading-spinner-after loading-spinner-m');
+      }
+    });
+  }
+
+  render() {
+    return <div className="settings learn-settings">
+      <div className="form">
+        <div>
+          <label htmlFor="title">{window.I18N['edit_level_title']}:&emsp;</label>
+          <input
+            id="title"
+            type="text"
+            defaultValue={this.props.level.name}
+            onChange={this.handleChange.bind(this, 'title')}
+            autoComplete="off"
+          />
+        </div>
+      </div>
+      <div className="btn-group">
+        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
+        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+      </div>
+    </div>
+  }
+}
+
 class EditLevel extends Component {
   constructor(props) {
     super(props);
@@ -257,8 +329,15 @@ class EditLevel extends Component {
       show: false,
       isLoading: false,
       content: '',
+      isDeleted: false,
+      name: props.level.name,
     };
-    this.toggle = this.toggle.bind(this);
+    this.toggleContent = this.toggleContent.bind(this);
+    this.deleteLevel = this.deleteLevel.bind(this);
+    this.toggleEditTitle = this.toggleEditTitle.bind(this);
+    this.onCloseEditTitle = this.onCloseEditTitle.bind(this);
+    this.updateTitle = this.updateTitle.bind(this);
+    this.showEditTtitle = false;
   }
 
   componentDidMount() {
@@ -267,7 +346,7 @@ class EditLevel extends Component {
     }
   }
 
-  toggle() {
+  toggleContent() {
     if(!this.state.show && !this.data) {
       this.getData();
 
@@ -334,7 +413,63 @@ class EditLevel extends Component {
     });
   }
 
+  deleteLevel(e) {
+    if(!confirm(window.I18N.confirm_del_level)) {
+      return;
+    }
+    var $btn = $(e.target);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner loading-spinner-m');
+
+    $.ajax({
+      url: '/ajax/level/delete',
+      method: 'POST',
+      data: {
+        course_id: window.MEMLIKE.course.id,
+        level_id: this.props.level.id,
+      },
+      headers: {
+        'X-CSRFToken': window.MEMLIKE.course.csrftoken,
+        'X-Referer': window.MEMLIKE.course.referer,
+      },
+      error: function() {
+        alert('Something went wrong when trying to delete the level');
+      },
+      complete: function(){
+        $btn.removeAttr('disabled').removeClass('loading-spinner loading-spinner-m');
+      }
+    });
+  }
+
+  onCloseEditTitle() {
+    window.modal.onclose('level-title', null);
+
+    if(!this.showEditTtitle) {
+      return;
+    }
+    this.showEditTtitle = false;
+  }
+
+  updateTitle(name) {
+    this.setState({name});
+  }
+
+  toggleEditTitle() {
+    this.showEditTtitle = !this.showEditTtitle;
+    if(!this.showEditTtitle) {
+      return;
+    }
+    var div = window.modal.getContainer().get(0).querySelector('.modal');
+    div.innerHTML = '';
+
+    render(<LevelSettingsModal level={this.props.level} updateTitle={this.updateTitle} />, div);
+    window.modal.reopen();
+    window.modal.onclose('level-title', this.onCloseEditTitle);
+  }
+
   render() {
+    if (this.state.isDeleted) {
+      return null;
+    }
     var level = this.props.level;
 
     return <div
@@ -348,7 +483,12 @@ class EditLevel extends Component {
         {this.state.show && (
           <div className="edit-level-actions-group">
             <div className="btn-group">
-              <button className="delete-level btn action" title={window.I18N.delete_level}>
+
+              <button className="edit-title btn action" title={window.I18N.edit_level_title} onClick={this.toggleEditTitle}>
+                <i className="ico ico-grey ico-edit"></i>
+              </button>
+
+              <button className="delete-level btn action" title={window.I18N.delete_level} onClick={this.deleteLevel}>
                 <i className="ico ico-grey ico-trash"></i>
               </button>
             </div>
@@ -376,13 +516,13 @@ class EditLevel extends Component {
             </div>
           </div>
         )}
-        <label className="toggle action" onClick={this.toggle}>
+        <label className="toggle action" onClick={this.toggleContent}>
           <span className="ico ico-grey ico-arr-down"></span>
         </label>
       </div>
 
       <div className="edit-level-label">
-        <label>{level.name}</label>
+        <label>{this.state.name}</label>
         {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 
@@ -443,10 +583,7 @@ function bindEditEvents(tpl) {
     // Import/export
     .on('click', '.export-level', click_exportLevel)
     .on('change', '.import-level input', send_importLevel)
-    .on('click', '.generate-audio', AudioUploader.click_generateAudio)
-
-    // Delete level
-    .on('click', '.delete-level', click_deleteLevel);
+    .on('click', '.generate-audio', AudioUploader.click_generateAudio);
   }
 
   //+---------------------------------------------------------------------------
@@ -892,41 +1029,6 @@ function bindEditEvents(tpl) {
       $preview.addClass('hide');
       $textarea.removeClass('hide');
     }
-  }
-
-  //+---------------------------------------------------------------------------
-  function click_deleteLevel() {
-    if(!confirm(window.I18N.confirm_del_level)) {
-      return;
-    }
-
-    var $btn = $(this);
-    $btn.attr('disabled', 'disabled').addClass('loading-spinner loading-spinner-m');
-
-    var $level = $btn.closest('.edit-level');
-    var levelId = $level.data('level-id');
-
-    $.ajax({
-      url: '/ajax/level/delete',
-      method: 'POST',
-      data: {
-        course_id: window.MEMLIKE.course.id,
-        level_id: levelId,
-      },
-      headers: {
-        'X-CSRFToken': window.MEMLIKE.course.csrftoken,
-        'X-Referer': window.MEMLIKE.course.referer,
-      },
-      error: function() {
-        alert('Something went wrong when trying to delete the level');
-      },
-      success: function() {
-        $level.addClass('hide');
-      },
-      complete: function(){
-        $btn.removeAttr('disabled').removeClass('loading-spinner loading-spinner-m');
-      }
-    });
   }
 
   //+---------------------------------------------------------------------------

@@ -427,7 +427,7 @@ const GameDataBuilder = {
             let max = screens.length;
             let isPresentation = false;
 
-            if (idx) {
+            if (idx != -1) {
               min = idx;
               isPresentation = idx in screens && screens[idx].template == 'presentation';
             }
@@ -1376,7 +1376,11 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if(this.state.meta_screen == 'summary' && !GameProgressHandler.is_saving || this.state.error) return;
+    if(GameProgressHandler.is_saving) {
+      // pass
+    } else if(this.state.meta_screen == 'summary' || this.state.error) {
+      return;
+    }
     var msg = 'Your changes will be lost.';
 
     e = e || window.event;

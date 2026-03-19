@@ -369,6 +369,16 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
+    def level_title_edit(self, level_id, title, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_title_edit(
+            level_id,
+            title,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     def level_get_editpage(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 

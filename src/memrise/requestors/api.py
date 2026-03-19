@@ -478,6 +478,23 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def level_title_edit(self, level_id, title, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Level edit title [level_id={level_id}]"
+
+        url = f"{HOST}/ajax/level/set_title/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "level_id": level_id,
+                "new_val": title,
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def level_get_editpage(self, level_id, sessionid=None, csrftoken=None, **kwargs):
         request_msg = f"Level edition: get things / multimedia [level_id={level_id}]"
 

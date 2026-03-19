@@ -114,7 +114,8 @@ misc = {
     "add_course": "Add a course",
     "course_name": "Name",
     "course_category": "Category",
-    "course_language": "Written in"
+    "course_language": "Written in",
+    "edit_level_title": "Edit the title",
 }
 
 menu = {

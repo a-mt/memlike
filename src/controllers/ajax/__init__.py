@@ -28,6 +28,7 @@ from .edit import (
     level_add,
     level_delete,
     level_get_editpage,
+    level_title_edit,
     level_thing_alt,
     level_thing_alt_update,
     level_thing_add,
@@ -47,6 +48,7 @@ from .progress import my_progress
 urls_level = (
     r"/add", level_add,
     r"/delete", level_delete,
+    r"/edit_title", level_title_edit,
     r"/(\d+)", level_get_editpage,
     r"/(\d+)/alt", level_thing_alt,
     r"/(\d+)/alt_edit", level_thing_alt_update,

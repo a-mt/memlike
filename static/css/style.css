@@ -424,6 +424,12 @@ header .header-nav {
   white-space: nowrap;
   flex-grow: 1;
   text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+.actions-right > * {
+  margin-bottom: 5px;
 }
 #choose-lang {
   list-style: none;
@@ -669,6 +675,11 @@ footer .active a {
 .ico-play.ico-l {
   background-position:-64px -288px;
 }
+.ico-edit { background-position:-90px -90px; }
+.ico-edit.ico-s { background-position:-60px -60px; }
+.ico-edit.ico-m { background-position:-130px -130px; }
+.ico-edit.ico-l { background-position:-160px -160px; }
+.ico-edit.ico-xl { background-position:-240px -240px; }
 
 a > .expand-icon { /* ico-s icon-arr-right */
   background-position: -36px -12px;
@@ -2318,6 +2329,9 @@ form .error {
   font-size: 1.3em;
   padding: 5px;
 }
+.edit-level-label .action {
+  margin-left: 20px;
+}
 
 /* Actions */
 .edit-level-actions {
@@ -2332,9 +2346,11 @@ form .error {
 .edit-level-actions-group {
   display: flex;
   margin-right: 20px;
+  flex-wrap: wrap;
+  justify-content: end;
 }
 .edit-level-actions-group .btn-group {
-  margin: 0 0 0 5px;
+  margin: 0 0 5px 5px;
 }
 .edit-level-actions .loading-spinner .ico {
   opacity: 0;
