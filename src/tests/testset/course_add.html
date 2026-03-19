@@ -1,0 +1,3099 @@
+<!doctype html>
+
+<!--[if IE 9]>    <html class="lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html lang="en"> <!--<![endif]-->
+
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#"><title>Create a Course - Memrise</title><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta property="fb:app_id" content="143688012353890" /><meta property="fb:page_id" content="149149908445051" /><meta name="theme-color" content="#28A0ED" /><meta name="apple-mobile-web-app-capable" content="yes"><meta property="og:site_name" content="Memrise" /><link href="https://plus.google.com/113645013176360560927/" rel="publisher" /><!-- App store banner --><meta name="apple-itunes-app" content="app-id=635966718"><link href="https://plus.google.com/113645013176360560927/" rel="publisher" /><link rel="icon" type="image/png" href="https://static.memrise.com/dist/img/favicon-32x32-4b55b2cbec13.png" /><link rel="shortcut icon" href="https://static.memrise.com/img/favicon.ico" /><link rel="apple-touch-icon" sizes="180x180" href="https://static.memrise.com/dist/img/apple-touch-new-logo-icon-0b5d79fcb713.png" /><link rel="icon" type="image/png" sizes="512x512"  href="https://static.memrise.com/dist/img/android-chrome-512x512-ea3b5d046e13.png"><link rel="icon" type="image/png" sizes="192x192" href="https://static.memrise.com/dist/img/android-chrome-192x192-0e3d590fcd13.png"><link rel="icon" type="image/png" sizes="32x32" href="https://static.memrise.com/dist/img/favicon-32x32-4b55b2cbec13.png"><link rel="icon" type="image/png" sizes="16x16" href="https://static.memrise.com/dist/img/favicon-16x16-2561f293d813.png"><link rel="manifest" href="/manifest.json"><link rel="image_src" href="https://static.memrise.com/dist/img/logo/facebook-memrise-new-54190bd64a13.png"><link rel="stylesheet" type="text/css" href="https://static.memrise.com/dist/css/extern/bootstrap-0d50780aba13.css"><link rel="stylesheet" type="text/css" href="https://static.memrise.com/dist/css/web-4fb446ca6513.css"><link rel="stylesheet" type="text/css" href="https://static.memrise.com/dist/css/icons-abe05a7d9413.css"><link rel="stylesheet" type="text/css" href="https://static.memrise.com/dist/css/rebrand-60bdf9623813.css"><link rel="stylesheet" type="text/css" href="https://static.memrise.com/editing/dist/css/editing-e556a0863d13.css" /><link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700" as="style" /><!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="https://static.memrise.com/dist/css/ie-b99bce0c6d13.css" /><![endif]--></head>
+
+<body class="rebrand  memrise" >
+    
+
+    <div class='full-height-container'>
+
+    
+        
+
+  <div id="header">
+    <div class="rebrand-header-root">
+      <div class="rebrand-header-container">
+        <a href="/dashboard" title="Home">
+          <img src="https://static.memrise.com/dist/img/header/logo-c3ae0edc1913.svg" alt="Memrise logo"/>
+        </a>
+
+        
+
+        <ul class="header-nav ">
+
+          
+
+            <li class="header-nav-item plain ">
+              <a href="/dashboard" class="nav-item-btn">
+                <span class="nav-item-btn-text">Home</span>
+              </a>
+            </li>
+
+          
+
+          <li class="header-nav-item plain ">
+            <a href="/community/courses/" class="nav-item-btn">
+              <span class="nav-item-btn-text">Courses</span>
+            </a>
+          </li>
+
+           
+
+            
+              <li class="header-nav-item plain create ">
+                <a href="/groups/" class="nav-item-btn">
+                  <span class="nav-item-btn-text">Groups</span>
+                </a>
+              </li>
+
+             
+
+            <li class="header-profile-wrapper">
+              <span class="header-info-card js-info-toggle sel-info-toggle">
+                <span class="info-card-inner" accesskey="h">
+                  <span class="info-card-picture">
+                    <img class="profile-avatar" src="https://static.memrise.com/img/100sqf/from/uploads/profiles/amistri_140708_0656_52.jpg" alt=""/>
+                  </span>
+                </span>
+              </span>
+              <span class="header-dropdown-arrow js-info-toggle"></span>
+              
+<div class="header-profile-inner">
+    <div class="profile-row profile-details">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="profile-row profile-links">
+        <a href="/user/4v15721/" class="profile-link">
+            <i class="profile-link-icon link-icon-1"></i>
+            <span class="profile-link-text">My profile</span>
+        </a>
+        <a href="/settings/" class="profile-link">
+            <i class="profile-link-icon link-icon-2"></i>
+            <span class="profile-link-text">Settings</span>
+        </a>
+        <a href="/signout" class="profile-link js-logout sel-logout" data-testid="logout-btn">
+            <i class="profile-link-icon link-icon-3"></i>
+            <span class="profile-link-text">Log out</span>
+        </a>
+    </div>
+</div>
+
+            </li>
+
+           
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+
+        <div id="page-head" class="">
+            <div class="inner">
+                
+    <h1>
+        Create a Course
+    </h1>
+
+            </div>
+        </div>
+    
+
+    
+
+    
+        <div id="content" class="">
+            <div class="container container-main">
+                
+
+<div class="row">
+    <div class="span8">
+        <div class="whitebox spaced">
+            <form action="" method="POST" class="form-horizontal">
+
+                <input type="hidden" name="csrfmiddlewaretoken" value="iAo2tLmgnl60KFdvGR8D8frF6VE4rKiNNHy34cTEbThgEqVKsHH2fUpaOMSRxqfR">
+
+                <br>
+
+                <div class="control-group">
+                    <label for="id_name" class="control-label">
+                        <strong>Name</strong>
+                    </label>
+                    <div class="controls">
+                        <input type="text" name="name" class="input-xlarge" maxlength="50" required aria-invalid="true" aria-describedby="id_name_error" id="id_name">
+                        <ul class="errorlist" id="id_name_error"><li>Your course needs a name.</li></ul>
+                        <span class="help-block">
+                            Naming your course well will help other learners find it.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="id_target" class="control-label">
+                        <strong>Teaching</strong>
+                    </label>
+                    <div class="controls">
+                        
+<select name="target">
+    <option value="">Please select one...</option>
+    
+        <option value="569"
+                disabled='disabled'
+                >
+        
+        
+            Languages
+        
+        </option>
+    
+        <option value="578"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            European
+        
+        </option>
+    
+        <option value="6"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            English (UK)
+        
+        </option>
+    
+        <option value="964"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Spanish (Mexico)
+        
+        </option>
+    
+        <option value="3"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Spanish (Spain)
+        
+        </option>
+    
+        <option value="2"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            French
+        
+        </option>
+    
+        <option value="879"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            German
+        
+        </option>
+    
+        <option value="4"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            German
+        
+        </option>
+    
+        <option value="842"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Small German Dialects
+        
+        </option>
+    
+        <option value="428"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Swiss German
+        
+        </option>
+    
+        <option value="688"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Portuguese (Brazil)
+        
+        </option>
+    
+        <option value="5"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Italian
+        
+        </option>
+    
+        <option value="9"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Portuguese (Portugal)
+        
+        </option>
+    
+        <option value="53"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Dutch
+        
+        </option>
+    
+        <option value="19"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Finnish
+        
+        </option>
+    
+        <option value="17"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Danish
+        
+        </option>
+    
+        <option value="20"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Greek
+        
+        </option>
+    
+        <option value="27"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Norwegian
+        
+        </option>
+    
+        <option value="11"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Swedish
+        
+        </option>
+    
+        <option value="67"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Albanian
+        
+        </option>
+    
+        <option value="79"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Armenian
+        
+        </option>
+    
+        <option value="926"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Eastern Armenian
+        
+        </option>
+    
+        <option value="927"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Western Armenian
+        
+        </option>
+    
+        <option value="32"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Basque
+        
+        </option>
+    
+        <option value="114"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Breton
+        
+        </option>
+    
+        <option value="15"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Catalan
+        
+        </option>
+    
+        <option value="139"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Cornish
+        
+        </option>
+    
+        <option value="963"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            English (US)
+        
+        </option>
+    
+        <option value="18"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Estonian
+        
+        </option>
+    
+        <option value="173"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Faroese
+        
+        </option>
+    
+        <option value="767"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Flemish
+        
+        </option>
+    
+        <option value="190"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Georgian
+        
+        </option>
+    
+        <option value="950"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Gothic
+        
+        </option>
+    
+        <option value="23"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hungarian
+        
+        </option>
+    
+        <option value="24"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Icelandic
+        
+        </option>
+    
+        <option value="26"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Irish
+        
+        </option>
+    
+        <option value="268"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ladin
+        
+        </option>
+    
+        <option value="269"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ladino
+        
+        </option>
+    
+        <option value="274"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Latvian
+        
+        </option>
+    
+        <option value="35"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Lithuanian
+        
+        </option>
+    
+        <option value="290"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Luxembourgish
+        
+        </option>
+    
+        <option value="299"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Maltese
+        
+        </option>
+    
+        <option value="305"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Manx
+        
+        </option>
+    
+        <option value="353"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Occitan 
+        
+        </option>
+    
+        <option value="383"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Romanian
+        
+        </option>
+    
+        <option value="389"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Sami Languages
+        
+        </option>
+    
+        <option value="286"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Lule Sami
+        
+        </option>
+    
+        <option value="346"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Northern Sami
+        
+        </option>
+    
+        <option value="421"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Southern Sami
+        
+        </option>
+    
+        <option value="918"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ume Sami
+        
+        </option>
+    
+        <option value="39"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Scots
+        
+        </option>
+    
+        <option value="183"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Scottish Gaelic
+        
+        </option>
+    
+        <option value="40"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Welsh
+        
+        </option>
+    
+        <option value="612"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Chinese
+        
+        </option>
+    
+        <option value="547"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Chinese (Simplified)
+        
+        </option>
+    
+        <option value="550"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Chinese (Traditional)
+        
+        </option>
+    
+        <option value="549"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Mandarin Spoken Only
+        
+        </option>
+    
+        <option value="548"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Cantonese
+        
+        </option>
+    
+        <option value="553"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Cantonese Jyutping
+        
+        </option>
+    
+        <option value="552"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ningbo Dialect
+        
+        </option>
+    
+        <option value="551"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Taishanese
+        
+        </option>
+    
+        <option value="919"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hakka
+        
+        </option>
+    
+        <option value="613"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Japanese
+        
+        </option>
+    
+        <option value="665"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Japanese
+        
+        </option>
+    
+        <option value="666"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kanji
+        
+        </option>
+    
+        <option value="668"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Japanese (no script)
+        
+        </option>
+    
+        <option value="582"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Indian
+        
+        </option>
+    
+        <option value="103"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Bengali
+        
+        </option>
+    
+        <option value="201"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Gujarati
+        
+        </option>
+    
+        <option value="22"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hindi
+        
+        </option>
+    
+        <option value="438"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Telugu
+        
+        </option>
+    
+        <option value="470"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Urdu
+        
+        </option>
+    
+        <option value="36"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Marathi
+        
+        </option>
+    
+        <option value="240"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kannada
+        
+        </option>
+    
+        <option value="298"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Malayalam
+        
+        </option>
+    
+        <option value="363"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Pali
+        
+        </option>
+    
+        <option value="376"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Punjabi
+        
+        </option>
+    
+        <option value="393"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Sanskrit
+        
+        </option>
+    
+        <option value="434"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Tamang
+        
+        </option>
+    
+        <option value="436"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Tamil
+        
+        </option>
+    
+        <option value="614"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Asian and Pacific
+        
+        </option>
+    
+        <option value="25"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Indonesian
+        
+        </option>
+    
+        <option value="8"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Korean
+        
+        </option>
+    
+        <option value="441"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Thai
+        
+        </option>
+    
+        <option value="474"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Vietnamese
+        
+        </option>
+    
+        <option value="322"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Mongolian
+        
+        </option>
+    
+        <option value="42"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Azerbaijani
+        
+        </option>
+    
+        <option value="49"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hawaiian
+        
+        </option>
+    
+        <option value="50"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kazakh
+        
+        </option>
+    
+        <option value="64"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ainu
+        
+        </option>
+    
+        <option value="965"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Australian 
+        
+        </option>
+    
+        <option value="117"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Burmese
+        
+        </option>
+    
+        <option value="119"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Cebuano
+        
+        </option>
+    
+        <option value="954"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Dzongkha
+        
+        </option>
+    
+        <option value="955"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Javanese
+        
+        </option>
+    
+        <option value="245"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Karen languages
+        
+        </option>
+    
+        <option value="122"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Khmer
+        
+        </option>
+    
+        <option value="267"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kyrgyz
+        
+        </option>
+    
+        <option value="923"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Laz
+        
+        </option>
+    
+        <option value="915"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Lu Mien
+        
+        </option>
+    
+        <option value="297"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Malay
+        
+        </option>
+    
+        <option value="306"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Maori
+        
+        </option>
+    
+        <option value="309"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Marshallese
+        
+        </option>
+    
+        <option value="336"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Nepali
+        
+        </option>
+    
+        <option value="430"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Tagalog
+        
+        </option>
+    
+        <option value="54"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Tibetan
+        
+        </option>
+    
+        <option value="583"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Middle Eastern
+        
+        </option>
+    
+        <option value="52"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Arabic
+        
+        </option>
+    
+        <option value="679"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Arabic
+        
+        </option>
+    
+        <option value="677"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Arabic Alphabet
+        
+        </option>
+    
+        <option value="680"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Classical Quranic Arabic
+        
+        </option>
+    
+        <option value="681"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Egyptian Arabic
+        
+        </option>
+    
+        <option value="682"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Gulf Khaliji Arabic
+        
+        </option>
+    
+        <option value="683"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Iraqi Arabic
+        
+        </option>
+    
+        <option value="684"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Levantine Arabic
+        
+        </option>
+    
+        <option value="678"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Modern Standard Arabic - roman alph
+        
+        </option>
+    
+        <option value="685"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            North African Maghrebi Arabic
+        
+        </option>
+    
+        <option value="21"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hebrew
+        
+        </option>
+    
+        <option value="31"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Turkish
+        
+        </option>
+    
+        <option value="388"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Aramaic
+        
+        </option>
+    
+        <option value="264"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kurdish
+        
+        </option>
+    
+        <option value="706"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Persian
+        
+        </option>
+    
+        <option value="488"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Yiddish
+        
+        </option>
+    
+        <option value="584"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Slavic
+        
+        </option>
+    
+        <option value="10"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Russian
+        
+        </option>
+    
+        <option value="46"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Bosnian
+        
+        </option>
+    
+        <option value="16"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Croatian
+        
+        </option>
+    
+        <option value="13"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Czech
+        
+        </option>
+    
+        <option value="14"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Polish
+        
+        </option>
+    
+        <option value="51"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Serbian
+        
+        </option>
+    
+        <option value="12"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Bulgarian
+        
+        </option>
+    
+        <option value="29"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Slovak
+        
+        </option>
+    
+        <option value="30"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Slovenian
+        
+        </option>
+    
+        <option value="43"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ukrainian
+        
+        </option>
+    
+        <option value="45"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Belarusian
+        
+        </option>
+    
+        <option value="958"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Circassian 
+        
+        </option>
+    
+        <option value="291"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Macedonian
+        
+        </option>
+    
+        <option value="935"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ossetic
+        
+        </option>
+    
+        <option value="959"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other Slavic
+        
+        </option>
+    
+        <option value="585"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            African
+        
+        </option>
+    
+        <option value="489"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Yoruba
+        
+        </option>
+    
+        <option value="33"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Coptic
+        
+        </option>
+    
+        <option value="41"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Swahili
+        
+        </option>
+    
+        <option value="62"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Afrikaans
+        
+        </option>
+    
+        <option value="920"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Akan-Twi
+        
+        </option>
+    
+        <option value="72"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Amharic
+        
+        </option>
+    
+        <option value="205"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hausa
+        
+        </option>
+    
+        <option value="916"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kaonde
+        
+        </option>
+    
+        <option value="254"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Kinyarwanda
+        
+        </option>
+    
+        <option value="921"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Luganda
+        
+        </option>
+    
+        <option value="296"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Malagasy
+        
+        </option>
+    
+        <option value="922"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Mandinka
+        
+        </option>
+    
+        <option value="934"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Nyanja
+        
+        </option>
+    
+        <option value="414"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Somali
+        
+        </option>
+    
+        <option value="416"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Soninke
+        
+        </option>
+    
+        <option value="483"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Wolof
+        
+        </option>
+    
+        <option value="496"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Zulu
+        
+        </option>
+    
+        <option value="675"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Native American
+        
+        </option>
+    
+        <option value="48"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Cherokee
+        
+        </option>
+    
+        <option value="69"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Algonquian languages
+        
+        </option>
+    
+        <option value="953"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Alutiiq
+        
+        </option>
+    
+        <option value="132"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Choctaw
+        
+        </option>
+    
+        <option value="925"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Citizen Potawatomi
+        
+        </option>
+    
+        <option value="933"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Greenlandic
+        
+        </option>
+    
+        <option value="199"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Guarani
+        
+        </option>
+    
+        <option value="224"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Inuktitut
+        
+        </option>
+    
+        <option value="917"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Lakota
+        
+        </option>
+    
+        <option value="328"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Nahuatl languages
+        
+        </option>
+    
+        <option value="961"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other Native American Languages
+        
+        </option>
+    
+        <option value="378"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Quechua
+        
+        </option>
+    
+        <option value="615"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Classics
+        
+        </option>
+    
+        <option value="273"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Latin
+        
+        </option>
+    
+        <option value="73"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Ancient Greek
+        
+        </option>
+    
+        <option value="586"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Constructed Languages
+        
+        </option>
+    
+        <option value="34"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Esperanto
+        
+        </option>
+    
+        <option value="222"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Interlingua (International Auxiliar
+        
+        </option>
+    
+        <option value="37"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Klingon
+        
+        </option>
+    
+        <option value="279"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Lojban
+        
+        </option>
+    
+        <option value="722"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Morse Code
+        
+        </option>
+    
+        <option value="759"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Na&#x27;vi
+        
+        </option>
+    
+        <option value="957"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Quenya
+        
+        </option>
+    
+        <option value="751"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Sign Languages
+        
+        </option>
+    
+        <option value="940"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            American Sign Language (ASL)
+        
+        </option>
+    
+        <option value="946"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Argentinian Sign Language
+        
+        </option>
+    
+        <option value="942"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Australian Sign Language (Auslan)
+        
+        </option>
+    
+        <option value="943"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            British Sign Language (BSL)
+        
+        </option>
+    
+        <option value="945"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            French Sign Language (LSF)
+        
+        </option>
+    
+        <option value="944"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Korean Sign Language
+        
+        </option>
+    
+        <option value="937"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Swedish Sign Language
+        
+        </option>
+    
+        <option value="587"
+                disabled='disabled'
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other
+        
+        </option>
+    
+        <option value="185"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Galician
+        
+        </option>
+    
+        <option value="204"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Haitian
+        
+        </option>
+    
+        <option value="220"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Indo-European languages
+        
+        </option>
+    
+        <option value="676"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other Language
+        
+        </option>
+    
+        <option value="604"
+                disabled='disabled'
+                >
+        
+        
+            Arts &amp; Literature
+        
+        </option>
+    
+        <option value="622"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Architecture
+        
+        </option>
+    
+        <option value="617"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Art
+        
+        </option>
+    
+        <option value="623"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Design
+        
+        </option>
+    
+        <option value="621"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Fashion
+        
+        </option>
+    
+        <option value="620"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Film
+        
+        </option>
+    
+        <option value="618"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Literature
+        
+        </option>
+    
+        <option value="616"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Music
+        
+        </option>
+    
+        <option value="619"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Theatre
+        
+        </option>
+    
+        <option value="769"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Philosophy
+        
+        </option>
+    
+        <option value="605"
+                disabled='disabled'
+                >
+        
+        
+            Maths &amp; Science
+        
+        </option>
+    
+        <option value="624"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Biology
+        
+        </option>
+    
+        <option value="625"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Chemistry
+        
+        </option>
+    
+        <option value="630"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Earth Sciences
+        
+        </option>
+    
+        <option value="627"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Economics
+        
+        </option>
+    
+        <option value="629"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Engineering
+        
+        </option>
+    
+        <option value="631"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Health Sciences
+        
+        </option>
+    
+        <option value="628"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Maths
+        
+        </option>
+    
+        <option value="626"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Physics
+        
+        </option>
+    
+        <option value="760"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Psychology
+        
+        </option>
+    
+        <option value="606"
+                disabled='disabled'
+                >
+        
+        
+            The Natural World
+        
+        </option>
+    
+        <option value="632"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Animals
+        
+        </option>
+    
+        <option value="634"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Astronomy
+        
+        </option>
+    
+        <option value="635"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other
+        
+        </option>
+    
+        <option value="633"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Plants, trees and fruits
+        
+        </option>
+    
+        <option value="770"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Stars
+        
+        </option>
+    
+        <option value="607"
+                disabled='disabled'
+                >
+        
+        
+            History &amp; Geography
+        
+        </option>
+    
+        <option value="637"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Anthropology
+        
+        </option>
+    
+        <option value="638"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Capitals
+        
+        </option>
+    
+        <option value="642"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Civics
+        
+        </option>
+    
+        <option value="636"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            History
+        
+        </option>
+    
+        <option value="639"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Maps
+        
+        </option>
+    
+        <option value="643"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other
+        
+        </option>
+    
+        <option value="640"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Places
+        
+        </option>
+    
+        <option value="641"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Religion
+        
+        </option>
+    
+        <option value="564"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Flags
+        
+        </option>
+    
+        <option value="686"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Politics
+        
+        </option>
+    
+        <option value="608"
+                disabled='disabled'
+                >
+        
+        
+            Memory training
+        
+        </option>
+    
+        <option value="646"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Memory Palaces
+        
+        </option>
+    
+        <option value="644"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Number Systems
+        
+        </option>
+    
+        <option value="645"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Playing Card Systems
+        
+        </option>
+    
+        <option value="609"
+                disabled='disabled'
+                >
+        
+        
+            Professional and Careers
+        
+        </option>
+    
+        <option value="649"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Business &amp; Finance
+        
+        </option>
+    
+        <option value="650"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Computers &amp; Engineering
+        
+        </option>
+    
+        <option value="648"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Law
+        
+        </option>
+    
+        <option value="647"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Medicine &amp; Healthcare
+        
+        </option>
+    
+        <option value="651"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other
+        
+        </option>
+    
+        <option value="610"
+                disabled='disabled'
+                >
+        
+        
+            Standardised tests
+        
+        </option>
+    
+        <option value="654"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Advanced Placement
+        
+        </option>
+    
+        <option value="652"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            College Admissions
+        
+        </option>
+    
+        <option value="653"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Graduate School 
+        
+        </option>
+    
+        <option value="656"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Other Standardized Tests
+        
+        </option>
+    
+        <option value="611"
+                disabled='disabled'
+                >
+        
+        
+            Trivia
+        
+        </option>
+    
+        <option value="660"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Art, Music &amp; Literature
+        
+        </option>
+    
+        <option value="659"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Geography
+        
+        </option>
+    
+        <option value="658"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            History
+        
+        </option>
+    
+        <option value="661"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Science and Nature
+        
+        </option>
+    
+        <option value="662"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Sports and Leisure
+        
+        </option>
+    
+        <option value="766"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Food
+        
+        </option>
+    
+        <option value="765"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Hobo Symbols
+        
+        </option>
+    
+        <option value="763"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Miscellaneous 
+        
+        </option>
+    
+        <option value="762"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            People
+        
+        </option>
+    
+        <option value="932"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Sociology
+        
+        </option>
+    
+        <option value="657"
+                disabled='disabled'
+                >
+        
+        
+            Entertainment
+        
+        </option>
+    
+        <option value="761"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Board Games
+        
+        </option>
+    
+        <option value="511"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Pokémon
+        
+        </option>
+    
+        <option value="771"
+                
+                >
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        
+            Yoga
+        
+        </option>
+    
+</select>
+
+                        <ul class="errorlist" id="id_target_error"><li>Please select one.</li></ul>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="id_source" class="control-label">
+                        <strong>For</strong>
+                    </label>
+                    <div class="controls">
+                        <select name="source" id="id_source">
+                            
+                            <option value="62" >
+                                Afrikaans
+                            </option>
+                            
+                            <option value="67" >
+                                Albanian
+                            </option>
+                            
+                            <option value="940" >
+                                American Sign Language (ASL)
+                            </option>
+                            
+                            <option value="73" >
+                                Ancient Greek
+                            </option>
+                            
+                            <option value="52" >
+                                Arabic
+                            </option>
+                            
+                            <option value="79" >
+                                Armenian
+                            </option>
+                            
+                            <option value="42" >
+                                Azerbaijani
+                            </option>
+                            
+                            <option value="32" >
+                                Basque
+                            </option>
+                            
+                            <option value="45" >
+                                Belarusian
+                            </option>
+                            
+                            <option value="103" >
+                                Bengali
+                            </option>
+                            
+                            <option value="46" >
+                                Bosnian
+                            </option>
+                            
+                            <option value="12" >
+                                Bulgarian
+                            </option>
+                            
+                            <option value="117" >
+                                Burmese
+                            </option>
+                            
+                            <option value="548" >
+                                Cantonese
+                            </option>
+                            
+                            <option value="553" >
+                                Cantonese Jyutping
+                            </option>
+                            
+                            <option value="15" >
+                                Catalan
+                            </option>
+                            
+                            <option value="547" >
+                                Chinese (Simplified)
+                            </option>
+                            
+                            <option value="550" >
+                                Chinese (Traditional)
+                            </option>
+                            
+                            <option value="16" >
+                                Croatian
+                            </option>
+                            
+                            <option value="13" >
+                                Czech
+                            </option>
+                            
+                            <option value="17" >
+                                Danish
+                            </option>
+                            
+                            <option value="53" >
+                                Dutch
+                            </option>
+                            
+                            <option value="6" >
+                                English (UK)
+                            </option>
+                            
+                            <option value="963" >
+                                English (US)
+                            </option>
+                            
+                            <option value="34" >
+                                Esperanto
+                            </option>
+                            
+                            <option value="18" >
+                                Estonian
+                            </option>
+                            
+                            <option value="173" >
+                                Faroese
+                            </option>
+                            
+                            <option value="19" >
+                                Finnish
+                            </option>
+                            
+                            <option value="767" >
+                                Flemish
+                            </option>
+                            
+                            <option value="2" >
+                                French
+                            </option>
+                            
+                            <option value="945" >
+                                French Sign Language (LSF)
+                            </option>
+                            
+                            <option value="185" >
+                                Galician
+                            </option>
+                            
+                            <option value="190" >
+                                Georgian
+                            </option>
+                            
+                            <option value="879" >
+                                German
+                            </option>
+                            
+                            <option value="20" >
+                                Greek
+                            </option>
+                            
+                            <option value="933" >
+                                Greenlandic
+                            </option>
+                            
+                            <option value="919" >
+                                Hakka
+                            </option>
+                            
+                            <option value="21" >
+                                Hebrew
+                            </option>
+                            
+                            <option value="22" >
+                                Hindi
+                            </option>
+                            
+                            <option value="23" >
+                                Hungarian
+                            </option>
+                            
+                            <option value="24" >
+                                Icelandic
+                            </option>
+                            
+                            <option value="25" >
+                                Indonesian
+                            </option>
+                            
+                            <option value="26" >
+                                Irish
+                            </option>
+                            
+                            <option value="5" >
+                                Italian
+                            </option>
+                            
+                            <option value="665" >
+                                Japanese
+                            </option>
+                            
+                            <option value="668" >
+                                Japanese (no script)
+                            </option>
+                            
+                            <option value="666" >
+                                Kanji
+                            </option>
+                            
+                            <option value="50" >
+                                Kazakh
+                            </option>
+                            
+                            <option value="122" >
+                                Khmer
+                            </option>
+                            
+                            <option value="8" >
+                                Korean
+                            </option>
+                            
+                            <option value="264" >
+                                Kurdish
+                            </option>
+                            
+                            <option value="267" >
+                                Kyrgyz
+                            </option>
+                            
+                            <option value="268" >
+                                Ladin
+                            </option>
+                            
+                            <option value="273" >
+                                Latin
+                            </option>
+                            
+                            <option value="274" >
+                                Latvian
+                            </option>
+                            
+                            <option value="35" >
+                                Lithuanian
+                            </option>
+                            
+                            <option value="290" >
+                                Luxembourgish
+                            </option>
+                            
+                            <option value="291" >
+                                Macedonian
+                            </option>
+                            
+                            <option value="297" >
+                                Malay
+                            </option>
+                            
+                            <option value="298" >
+                                Malayalam
+                            </option>
+                            
+                            <option value="299" >
+                                Maltese
+                            </option>
+                            
+                            <option value="549" >
+                                Mandarin Spoken Only
+                            </option>
+                            
+                            <option value="306" >
+                                Maori
+                            </option>
+                            
+                            <option value="36" >
+                                Marathi
+                            </option>
+                            
+                            <option value="322" >
+                                Mongolian
+                            </option>
+                            
+                            <option value="336" >
+                                Nepali
+                            </option>
+                            
+                            <option value="27" >
+                                Norwegian
+                            </option>
+                            
+                            <option value="353" >
+                                Occitan 
+                            </option>
+                            
+                            <option value="676" >
+                                Other Language
+                            </option>
+                            
+                            <option value="706" >
+                                Persian
+                            </option>
+                            
+                            <option value="14" >
+                                Polish
+                            </option>
+                            
+                            <option value="688" >
+                                Portuguese (Brazil)
+                            </option>
+                            
+                            <option value="9" >
+                                Portuguese (Portugal)
+                            </option>
+                            
+                            <option value="376" >
+                                Punjabi
+                            </option>
+                            
+                            <option value="383" >
+                                Romanian
+                            </option>
+                            
+                            <option value="10" >
+                                Russian
+                            </option>
+                            
+                            <option value="393" >
+                                Sanskrit
+                            </option>
+                            
+                            <option value="39" >
+                                Scots
+                            </option>
+                            
+                            <option value="51" >
+                                Serbian
+                            </option>
+                            
+                            <option value="29" >
+                                Slovak
+                            </option>
+                            
+                            <option value="30" >
+                                Slovenian
+                            </option>
+                            
+                            <option value="414" >
+                                Somali
+                            </option>
+                            
+                            <option value="964" >
+                                Spanish (Mexico)
+                            </option>
+                            
+                            <option value="3" >
+                                Spanish (Spain)
+                            </option>
+                            
+                            <option value="41" >
+                                Swahili
+                            </option>
+                            
+                            <option value="11" >
+                                Swedish
+                            </option>
+                            
+                            <option value="430" >
+                                Tagalog
+                            </option>
+                            
+                            <option value="436" >
+                                Tamil
+                            </option>
+                            
+                            <option value="441" >
+                                Thai
+                            </option>
+                            
+                            <option value="31" >
+                                Turkish
+                            </option>
+                            
+                            <option value="43" >
+                                Ukrainian
+                            </option>
+                            
+                            <option value="470" >
+                                Urdu
+                            </option>
+                            
+                            <option value="474" >
+                                Vietnamese
+                            </option>
+                            
+                            <option value="40" >
+                                Welsh
+                            </option>
+                            
+                            <option value="489" >
+                                Yoruba
+                            </option>
+                            
+                            <option value="496" >
+                                Zulu
+                            </option>
+                            
+                        </select>
+                        &nbsp; <strong>speakers</strong>
+                        <ul class="errorlist" id="id_source_error"><li>Please select one.</li></ul>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="id_tags" class="control-label">
+                        <strong>Tags</strong>
+                    </label>
+                    <div class="controls">
+                        <input type="text" name="tags" maxlength="500" id="id_tags">
+                        <span class="help-block">
+                            E.g. Spanish vocabulary, learn spanish online, spanish grammar
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="id_description" class="control-label">
+                        <strong>Description</strong>
+                    </label>
+                    <div class="controls">
+                        <textarea name="description" cols="40" rows="10" id="id_description">
+</textarea>
+                        <span class="help-block">
+                            Keep the description of the course in the language of what the learners speak.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="id_sdescription" class="control-label">
+                        <strong>Short description</strong>
+                    </label>
+                    <div class="controls">
+                        <input type="text" name="short_description" maxlength="140" id="id_short_description">
+                        <span class="help-block">
+                            A short description for our apps.
+                        </span>
+                    </div>
+                </div>
+
+                <hr class="dashed">
+
+                <div class="center">
+                    <input type="submit" class="btn btn-primary" value="Create Course" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="span4">
+        <div class="whitebox spaced">
+            <h3>Why create a course?</h3>
+
+            <ul>
+                <li>A quick list of personal facts to remember</li>
+                <li>Share common content with your classmates/colleagues</li>
+                <li>Share awesome teaching materials with the community!</li>
+            </ul>
+
+            <h3>Need more help?</h3>
+
+            
+            <p>
+                
+                    Check out the 
+                <a href="https://memrise.zendesk.com/hc/en-us/categories/360003072498-Course-Creation" target="_blank">
+             Course Creation knowledge base</a>.
+                
+            </p>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+
+    
+
+    
+        
+
+<div class="footer-root">
+  <div class="footer-swoosh">
+    <img src="https://static.memrise.com/dist/img/footer/swoosh-f90e07ebfb13.svg" alt=""/>
+  </div>
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-links-container">
+        <a class="footer-link" href="https://www.memrise.com/about">About Us</a>
+        <a class="footer-link" href="https://www.memrise.com/team">Team</a>
+        <a class="footer-link" href="https://www.memrise.com/jobs">Jobs</a>
+      </div>
+
+      <div class="footer-links-container">
+        <a class="footer-link" href="https://blog.memrise.com">Memrise Blog</a>
+        <a class="footer-link" href="https://engineering.memrise.com/">Engineering Blog</a>
+        <a class="footer-link" href="https://www.memrise.com/press">Press</a>
+      </div>
+
+      <div class="footer-links-container">
+        <a class="footer-link" href="https://www.memrise.com/contact">Contact Us</a>
+        <a class="footer-link" href="https://memrise.zendesk.com/hc/">FAQ &amp; Help</a>
+        </ul>
+      </div>
+
+      <div class="footer-links-container">
+        <a class="footer-link" href="https://www.memrise.com/dictionary">Phrasebooks</a>
+        </ul>
+      </div>
+
+      <div class="footer-links-sub">
+        <a class="footer-link" href="https://www.memrise.com/terms">Terms of Use</a>
+        <a class="footer-link" href="https://www.memrise.com/privacy">Privacy Policy</a>
+        <a class="footer-link" href="https://www.memrise.com/cookies">Cookie Policy</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-logo-container">
+        <img src="https://static.memrise.com/dist/img/footer/logo-997c4d62a113.svg" alt="Memrise logo"/>
+      </div>
+      
+      <div class="footer-social-links">
+        <a class="footer-social-link" href="https://www.facebook.com/memrise" target="_blank">
+          <img src="https://static.memrise.com/dist/img/footer/facebook-92317b7cfd13.svg" alt=""/>
+        </a>
+        <a class="footer-social-link" href="https://twitter.com/memrise" target="_blank">
+          <img src="https://static.memrise.com/dist/img/footer/twitter-2ca5e163d013.svg" alt=""/>
+        </a>
+
+        <a class="footer-social-link" href="https://www.youtube.com/channel/UC4Ywz0GYzq7nlPtKCMQ8m0w" target="_blank">
+          <img src="https://static.memrise.com/dist/img/footer/youtube-41dd4e237d13.svg" alt=""/>
+        </a>
+        <a class="footer-social-link" href="https://www.instagram.com/memrise" target="_blank">
+          <img src="https://static.memrise.com/dist/img/footer/instagram-8842365eb713.svg" alt=""/>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+    
+
+    </div> 
+
+    
+
+    
+
+
+
+
+
+<script type="text/javascript">
+
+    MEMRISE = {
+        DEBUG: false, 
+        STATIC_URL: 'https://static.memrise.com/',
+        REST_API_URL: '/v1.25',
+        DOMAIN: 'https://community-courses.memrise.com',
+        LANG: 'en',
+        csrftoken: "iAo2tLmgnl60KFdvGR8D8frF6VE4rKiNNHy34cTEbThgEqVKsHH2fUpaOMSRxqfR",
+        ugc_only_site: true,
+        
+        user: {
+            is_authenticated: true
+            
+                ,
+                id: 5892033,
+                username: '4v15721',
+                email: 'amistri@live.fr',
+                profile: {
+                    settings: {},
+                },
+                is_premium: false,
+            
+        },
+        trans: {
+            quitCourse: '\u000A    Quitting will not wipe your learning history, but will remove it entirely from your dashboard. You can re\u002Djoin the course to restore your progress at any point, but you will need to find it again in \u0022Courses\u0022. Are you sure you would like to quit?\u000A'
+        },
+        
+        urls: {
+            locale: 'dist/locales/en/translation-82d5139afb13.json',
+        },
+        
+    };
+</script>
+
+    <script src="https://static.memrise.com/dist/js/libs-345b4eb72313.js"></script>
+    <script src="https://static.memrise.com/dist/js/templates-6fb813771c13.js"></script>
+    <script src="https://static.memrise.com/dist/js/memrise-bundle-527c178f3813.js"></script>
+    
+    
+    <script type="text/javascript">
+        MEMRISE.renderer.ready(function () {
+            $('input:visible:first').focus();
+        });
+    </script>
+
+
+</body>
+</html>

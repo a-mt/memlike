@@ -930,6 +930,16 @@ class DummyMemrise(Memrise):
     def course_delete(self, course_id, **kwargs):
         return None
 
+    def course_add(self, data, **kwargs):
+        if data.get("name", ""):
+            return "/course/6722621/exemple/edit/", None
+
+        return [
+            {"id": "id_name", "message": "Your course needs a name."},
+            {"id": "id_target", "message": "Please select one."},
+            {"id": "id_source", "message": "Please select one."},
+        ]
+
 
 class DummyLoginMixin:
     login = DummyMemrise.__dict__["login"]
@@ -953,3 +963,5 @@ class DummyEditMixin:
     level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
     level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]
     course_delete = DummyMemrise.__dict__["course_delete"]
+
+

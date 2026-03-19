@@ -84,6 +84,7 @@ import datetime
 import pprint
 import re
 import json
+from unidecode import unidecode
 
 if web.config.get("template", None) is None:
     from variables import MENU, LOCALES
@@ -111,6 +112,7 @@ if web.config.get("template", None) is None:
     template["flash"] = web.storage({})
 
     template["sorted"] = sorted
+    template["unidecode"] = unidecode
     template["str"] = str
     template["ceil"] = ceil
     template["now"] = lambda: datetime.datetime.now()

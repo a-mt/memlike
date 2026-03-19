@@ -27,7 +27,7 @@ class ApiRequestor:
     The result might still need to be scraped to conform to our Memrise interface
     """
 
-    def raise_for_status(self, response):
+    def raise_for_status(self, response, raise_for_redirect=True):
         if response.status_code == 302:
             if response.headers["Location"].startswith("/signin"):
                 raise SessionExpired()
@@ -47,7 +47,7 @@ class ApiRequestor:
 
         # might redirect to canonical URL
         # which isn't supposed to happen if we have the correct slug
-        if 300 <= response.status_code < 400:
+        if raise_for_redirect and 300 <= response.status_code < 400:
             loc = response.headers.get("Location", "")
 
             http_error_msg = (
@@ -683,3 +683,30 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def course_add(self, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Course add [name={data.get('name', '')}]"
+
+        url = f"{HOST}/course/create/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data=data,
+            allow_redirects=False,
+            **request_kwargs,
+        )
+        self.raise_for_status(response, raise_for_redirect=False)
+
+        if response.status_code >= 300:
+            url = response.headers["Location"]
+
+            # Remove the HOST part
+            if url.startswith("http"):
+                parts = url[8:].split("/", 1)
+
+                if len(parts) == 2:
+                    url = "/" + url[1]
+
+            return url.rstrip("/") + "#i_1", None
+        else:
+            return None, response.text.encode("utf-8").strip()

@@ -696,7 +696,11 @@ var Dashboard = {
                     parts.pop();
 
                     for(var i=0; i<=n; i++) {
-                      var data = JSON.parse(parts[i] + '}');
+                      var part = parts[i];
+                      if(!part || part[0] != '{') {
+                        continue;
+                      }
+                      var data = JSON.parse(part.replace('\n', '\\n') + '}');
 
                       if (data.content) {
                         Dashboard.container.append(data.content);

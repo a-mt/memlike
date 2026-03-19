@@ -1,7 +1,11 @@
 import web
+import settings
 from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
+from variables import categories, categories_code, languages
+from pydantic_core import PydanticCustomError, ValidationError
+
 
 # fmt: off
 urls = (
@@ -20,6 +24,7 @@ urls = (
     r"/(\d+)/(.*)/leaderboard", "leaderboard",
     r"/(\d+)/([^/]*)/edit", "course_get_editpage",
     r"/(\d+)/(.*)", "course",
+    r"/add", "course_add",
     #r"/(\d+)", "course",
 )
 # fmt: on
@@ -169,13 +174,17 @@ class course:
         try:
             course = memrise.course(course_id, course_slug)
 
+        except HTTPError as e:
+            print(e)
+            return web.config.template.prender._404()
+
+        try:
             # Course without any level ?
             if len(course["levels"]) == 0:
                 items = memrise.level(course_id, course_slug, "1", "preview")
 
         except HTTPError as e:
             print(e)
-            return web.config.template.prender._404()
 
         if items:
             return web.config.template.render.course_level(
@@ -259,6 +268,77 @@ class reset_progress_level:
                 print(e)
 
         raise web.seeother(f"/community/course/{course_id}/{path}/{level_index}", absolute=True)
+
+
+class course_add:
+    def GET(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = web.ctx.flash.get('data', {})
+
+        if 'language' not in data and web.ctx.get("session", {}):
+            data['language'] = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
+
+        return web.config.template.render.course_add(categories, languages, data=data)
+
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+        def is_valid_lang(value):
+            if value not in languages or value not in categories_code:
+                raise PydanticCustomError(
+                    "invalid",
+                    "Expected a valid language, got '{wrong_value}'",
+                    {"wrong_value": value},
+                )
+            return categories_code[value]
+
+        try:
+            data = web.input()
+            input_data = validator.validate(
+                fields={
+                    "name": validator.field(
+                        validator.schema.str_schema(min_length=1),
+                    ),
+                    "category": validator.field(
+                        validator.schema.int_schema(),
+                    ),
+                    "language": validator.field(
+                        validator.schema.str_schema(),
+                        validator=is_valid_lang,
+                    ),
+                    "tags": validator.field(
+                        validator.schema.str_schema(),
+                        default="",
+                    ),
+                    "description": validator.field(
+                        validator.schema.str_schema(),
+                        default="",
+                    ),
+                    "short_description": validator.field(
+                        validator.schema.str_schema(),
+                        default="",
+                    ),
+                },
+                data=data,
+            )
+        except ValidationError as e:
+            web.ctx.session.flash = {"err": {".".join(x["loc"]): x for x in e.errors()}, "data": data}
+
+            web.ctx.status = "400 Bad Request"
+
+            return course_add().GET()
+
+        success, errors = memrise.course_add(input_data)
+        if success:
+            # f"/community/course/{course_id}/{course_slug}/"
+            raise web.seeother(success, absolute=True)
+
+        if errors:
+            web.ctx.session.flash = {"err": errors, "data": data}
+
+        raise web.seeother("add", absolute=False)
 
 
 app = web.application(urls, locals(), autoreload=False)

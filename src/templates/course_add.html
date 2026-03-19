@@ -1,0 +1,76 @@
+$def with (categories, languages, data)
+$var currentPage: courses
+
+$ errors = flash.get('err', {})
+
+<div class="page-banner small">
+  <div class="inner">
+    <h1>
+      $(I18N.misc['add_course'])
+    </h1>
+  </div>
+</div>
+
+<main>
+  <form method="POST" class="container">
+    <div class="inner">
+
+      <div class="form-controls">
+        <label for="name">$(I18N.misc['course_name'])</label>
+        <input id="name" name="name" type="text" value="$(data.get('name', ''))" required>
+      </div>
+      $if 'name' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
+      $def tree(list, selected, prefix=""):
+        $for item in list:
+          $ id   = item['id']
+          $ code = item['code']
+          $ name = I18N.categories[id]
+          $ isSelected = "selected" if id == selected else ""
+
+          <option value="$(id)" $isSelected>
+            $(prefix) $:(name)
+          </option>
+          $if "children" in item and len(item["children"]) > 0:
+            $:tree(item["children"], selected, prefix + " ")
+
+      <!-- What to learn -->
+      <div class="form-controls">
+        <label for="category">$(I18N.misc['course_category'])</label>
+        $ category = data.get('category', '')
+
+        <select id="category" name="category" required>
+          <option value=""></option>
+          $:tree(categories, category, "")
+        </select>
+      </div>
+      $if 'category' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
+      <!-- For people that speak -->
+      <div class="form-controls">
+        <label for="language">$(I18N.misc['course_language'])</label>
+        <select id="language" name="language" required>
+          <option value=""></option>
+
+          $for lang, item in sorted(languages.items(), key=lambda x: unidecode(I18N.languages[x[0]])):
+            $ isSelected = "selected" if data.get('language', '') == lang else ""
+
+            <option value="$(lang)" $isSelected>
+              $(I18N.languages[lang])
+            </option>
+        </select>
+      </div>
+      $if 'language' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
+      <div class="form-controls">
+        <button class="btn green" type="submit">
+          $(I18N.misc['submit'])
+        </button>
+      </div>
+
+    </div>
+  </form>
+</main>

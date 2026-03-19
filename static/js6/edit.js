@@ -43,11 +43,13 @@ class CourseSettingsModal extends Component {
     this.confirmDelCourse = e.target.value;
   }
 
-  deleteCourse() {
+  deleteCourse(e) {
     if (this.confirmDelCourse != this.props.course.title) {
       alert(window.I18N.warn_del_course);
       return;
     }
+    var $btn = $(e.target);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-before loading-spinner-m');
 
     $.ajax({
       url: '/ajax/course/remove',
@@ -63,6 +65,8 @@ class CourseSettingsModal extends Component {
         window.location.href = '/';
       },
       error: function(xhr) {
+        $btn.removeAttr('disabled').removeClass('loading-spinner-before loading-spinner-m');
+
         alert('Something went wrong');
 
         console.error(xhr);

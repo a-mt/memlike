@@ -2758,3 +2758,19 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
   height: 10px;
   display: inline-block;
 }
+
+/*-------------------------------------------------------
+ * FORM
+ *-------------------------------------------------------*/
+
+.form-controls {
+  margin-top: 20px;
+}
+
+.form-controls label {
+  display: block;
+}
+
+.form-controls input {
+  width: 280px;
+}

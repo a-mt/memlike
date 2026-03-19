@@ -433,6 +433,49 @@ class ApiMemrise(Memrise):
             referer=referer,
         )
 
+    def course_add(self, data, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        success_url, error_page = self.requestor.course_add(
+            data={
+                "name": data.get("name", ""),
+                "tags": data.get("tags", ""),
+                "description": data.get("description", ""),
+                "short_description": data.get("short_description", ""),
+                "csrfmiddlewaretoken": data.get("csrfmiddlewaretoken", ""),
+                "target": data.get("category", ""),
+                "source": data.get("language", ""),
+            },
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+            referer=referer,
+        )
+        if error_page:
+            errors = {}
+
+            id_mapping = {
+                "id_name": "name",
+                "id_target": "category",
+                "id_source": "language",
+                "id_tags": "tags",
+                "id_description": "description",
+                "id_sdescription": "short_description",
+            }
+            for error in self.scraper.course_add(error_page):
+                k = error["id"]
+                name = id_mapping.get(k, None)
+                if name is None:
+                    name = "base." + k
+
+                errors[name] = {
+                    "msg": error["message"],
+                    "type": "upstream",
+                    "loc": (k,),
+                }
+            return None, errors
+
+        return success_url, None
+
 
 class DummyApiMemrise(DummyLoginMixin, DummyEditMixin, ApiMemrise):
     def create_requestor(self):

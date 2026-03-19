@@ -21,6 +21,8 @@ $var title: $(I18N.menu["index"])
         $else:
           <a href="$(url)" class="pill">$:icon $(I18N.misc[name])</a>
 
+      <a href="/course/add" class="pill">$(I18N.misc['add_course'])</a>
+
       <!-- Sort by -->
       $if currentTab == "courses":
         <div id="dashboard-sort" class="filter-source" style="display: none">

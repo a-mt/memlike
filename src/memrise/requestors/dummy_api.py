@@ -105,3 +105,5 @@ class DummyApiRequestor:
     def course_delete(self, course_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         return None
 
+    def course_add(self, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        return None, self.get_testset_text("course_add.html")

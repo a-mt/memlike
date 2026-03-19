@@ -108,6 +108,12 @@ misc = {
     "close": "Fermer",
     "cancel": "Annuler",
     "save": "Sauvegarder",
+    "submit": "Envoyer",
+    "invalid_value": "Cette valeur est invalide",
+    "add_course": "Ajouter un cours",
+    "course_name": "Nom",
+    "course_category": "Catégorie",
+    "course_language": "Écrit en"
 }
 
 menu = {

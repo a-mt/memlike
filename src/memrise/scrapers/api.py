@@ -448,3 +448,28 @@ class Scraper:
 
         data["last_pool_id"] = last_pool_id
         return data
+
+    def course_add(self, html):
+        DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
+
+        div = DOM.find("form")
+        errors = []
+
+        if not div:
+            return errors
+
+        for child in div.find_all("div", {"class": "control-group"}, recursive=False):
+            error = child.find("ul", {"class": "errorlist"})
+
+            if not error:
+                continue
+
+            label = child.find("label")
+            if not label:
+                continue
+
+            errors.append({
+                "id": label.attrs["for"],
+                "message": error.text.strip(),
+            })
+        return errors
