@@ -495,6 +495,24 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def level_columns_edit(self, level_id, column_a, column_b, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Level edit columns [level_id={level_id}]"
+
+        url = f"{HOST}/ajax/level/set_columns/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "level_id": level_id,
+                "column_a": column_a,
+                "column_b": column_b,
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def level_get_editpage(self, level_id, sessionid=None, csrftoken=None, **kwargs):
         request_msg = f"Level edition: get things / multimedia [level_id={level_id}]"
 

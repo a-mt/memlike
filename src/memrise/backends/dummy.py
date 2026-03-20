@@ -718,6 +718,11 @@ class DummyMemrise(Memrise):
             "success": True,
         }
 
+    def level_columns_edit(self, level_id, column_a, column_b, **kwargs):
+        return {
+            "success": True,
+        }
+
     def level_get_editpage(self, level_id, **kwargs):
         # Type things
         return {
@@ -967,6 +972,6 @@ class DummyEditMixin:
     level_thing_get = DummyMemrise.__dict__["level_thing_get"]
     level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
     level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]
+    level_columns_edit = DummyMemrise.__dict__["level_columns_edit"]
+    level_title_edit = DummyMemrise.__dict__["level_title_edit"]
     course_delete = DummyMemrise.__dict__["course_delete"]
-
-

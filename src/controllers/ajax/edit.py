@@ -90,6 +90,32 @@ class level_title_edit:
         return proxied_response(lambda: memrise.level_title_edit(data["level_id"], data["title"]))
 
 
+class level_columns_edit:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "level_id": validator.field(
+                    validator.schema.int_schema(),
+                ),
+                "column_a": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "column_b": validator.field(
+                    validator.schema.str_schema(),
+                ),
+            },
+            data=web.input(),
+        )
+        return proxied_response(lambda: memrise.level_columns_edit(
+            data["level_id"],
+            data["column_a"],
+            data["column_b"],
+        ))
+
+
 """
 class level_getcell:
     def GET(self, thing_id):

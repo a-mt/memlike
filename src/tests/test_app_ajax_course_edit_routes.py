@@ -35,6 +35,45 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_level_edit_title(self):
+        response = self.client.request("/ajax/level/edit_title", method="POST")
+        self.assertEqual(response.status_code, 401)
+
+        cookies = self.get_auth_cookies()
+        response = self.client.request("/ajax/level/edit_title", method="POST", headers={"Cookie": cookies.simple_output()})
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.request(
+            "/ajax/level/edit_title",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "level_id": 1,
+                "title": "example",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_level_edit_columns(self):
+        response = self.client.request("/ajax/level/edit_columns", method="POST")
+        self.assertEqual(response.status_code, 401)
+
+        cookies = self.get_auth_cookies()
+        response = self.client.request("/ajax/level/edit_columns", method="POST", headers={"Cookie": cookies.simple_output()})
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.request(
+            "/ajax/level/edit_columns",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "level_id": 1,
+                "column_a": "1",
+                "column_b": "2",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
     def test_level_delete(self):
         response = self.client.request("/ajax/level/delete", method="POST")
         self.assertEqual(response.status_code, 401)

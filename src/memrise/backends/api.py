@@ -379,6 +379,17 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
+    def level_columns_edit(self, level_id, column_a, column_b, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_columns_edit(
+            level_id,
+            column_a,
+            column_b,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     def level_get_editpage(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
 
