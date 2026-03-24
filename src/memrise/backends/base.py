@@ -439,4 +439,3 @@ class Memrise:
         Add a course
         """
         raise NotImplementedError("subclasses of Memrise must provide a course_add() method")
-

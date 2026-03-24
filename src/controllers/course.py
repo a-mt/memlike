@@ -275,16 +275,17 @@ class course_add:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        data = web.ctx.flash.get('data', {})
+        data = web.ctx.flash.get("data", {})
 
-        if 'language' not in data and web.ctx.get("session", {}):
-            data['language'] = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
+        if "language" not in data and web.ctx.get("session", {}):
+            data["language"] = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
 
         return web.config.template.render.course_add(categories, languages, data=data)
 
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
+
         def is_valid_lang(value):
             if value not in languages or value not in categories_code:
                 raise PydanticCustomError(

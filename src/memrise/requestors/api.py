@@ -645,7 +645,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_thing_alt_update(self, thing_id, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_thing_alt_update(
+        self, thing_id, alts, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
         request_msg = f"Level edition: edit thing alternative values [thing_id={thing_id},column={column_key}]"
 
         url = f"{HOST}/ajax/thing/column/update_alts/"

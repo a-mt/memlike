@@ -40,7 +40,9 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/level/edit_title", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request(
+            "/ajax/level/edit_title", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
@@ -59,7 +61,9 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/level/edit_columns", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request(
+            "/ajax/level/edit_columns", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
@@ -280,7 +284,9 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/course/1/example/remove", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request(
+            "/ajax/course/1/example/remove", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
         self.assertEqual(response.status_code, 200)
 
     def test_course_add(self):
@@ -297,9 +303,14 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         response = self.client.request("/course/add", method="POST", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 400)
 
-        response = self.client.request("/course/add", method="POST", headers={"Cookie": cookies.simple_output()}, data={
-            "name": "Example",
-            "category": "2",
-            "language": "english",
-        })
+        response = self.client.request(
+            "/course/add",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "name": "Example",
+                "category": "2",
+                "language": "english",
+            },
+        )
         self.assertEqual(response.status_code, 303)

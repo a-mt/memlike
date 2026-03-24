@@ -70,10 +70,10 @@ class ApplicationCourseRoutesTest(SimpleTestCase):
         response = self.client.request("/course/1/my-course/999/my-level")
         self.assertEqual(response.status_code, 303)
 
-        url = response.headers['Location']
-        host, path = url.replace('http://', '').split('/', 1)
+        url = response.headers["Location"]
+        host, path = url.replace("http://", "").split("/", 1)
 
-        response = self.client.request('/' + path)
+        response = self.client.request("/" + path)
         self.assertEqual(response.status_code, 200)
 
         html = response.data

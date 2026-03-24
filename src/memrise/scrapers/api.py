@@ -470,8 +470,10 @@ class Scraper:
             if not label:
                 continue
 
-            errors.append({
-                "id": label.attrs["for"],
-                "message": error.text.strip(),
-            })
+            errors.append(
+                {
+                    "id": label.attrs["for"],
+                    "message": error.text.strip(),
+                }
+            )
         return errors

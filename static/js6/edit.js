@@ -232,7 +232,7 @@ class EditCourseActions extends Component {
         <div className="actions actions-right">
           {this.state.isLoading && <span className="loading-spinner left"></span>}
 
-          <button class="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+          <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
             <span className="ico ico-settings ico-l ico-grey"></span>
           </button>
           <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>

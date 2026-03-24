@@ -245,7 +245,7 @@ class LearnSettingsBtn extends Component {
       return null;
     }
     return (
-      <button class="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+      <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
         <span className="ico ico-settings ico-l ico-grey"></span>
       </button>
     );
@@ -386,7 +386,7 @@ const GameDataBuilder = {
         let testsToAdd = [];
 
         for (let learnable of learnables) {
-          const learnableID = "" + learnable.id;
+          const learnableID = '' + learnable.id;
           const learnableProgress = progressMap[learnableID];
 
           if (GameDataBuilder.shouldDisplayPresentation(learnableProgress)) {
@@ -454,7 +454,7 @@ const GameDataBuilder = {
       case 'classic_review':
         for (let learnable of learnables) {
           screens.push({
-            learnableID: "" + learnable.id,
+            learnableID: '' + learnable.id,
             template: 'sentinel',
             learningGrowthLevel: 0,
           });
@@ -466,7 +466,7 @@ const GameDataBuilder = {
       default:
         for (let learnable of learnables) {
           screens.push({
-            learnableID: "" + learnable.id,
+            learnableID: '' + learnable.id,
             template: 'presentation',
             learningGrowthLevel: 0,
           });
@@ -498,14 +498,14 @@ const GameDataBuilder = {
         let screen = learnable.screens[screenID];
         screens[screen.template] = [screen];
       }
-      screensTemplateMap["" + learnable.id] = screens;
-      learnablesMap["" + learnable.id] = learnable;
+      screensTemplateMap['' + learnable.id] = screens;
+      learnablesMap['' + learnable.id] = learnable;
     }
 
     // Build progressMap {learnableID: {growth_level, current_streak, correct, attempts, is_difficult}}
     const progressMap = {};
     for (let item of data.progress) {
-      progressMap["" + item.learnable_id] = Object.assign(item, {
+      progressMap['' + item.learnable_id] = Object.assign(item, {
         created_date: decodeDateString(item.created_date),
         next_date: decodeDateString(item.next_date),
         last_date: decodeDateString(item.last_date),
@@ -961,7 +961,7 @@ const GameProgressHandler = {
    */
   getProgress: function(learnableID, savedProgress, score) {
     var progress = {
-        learnable_id  : "" + learnableID,
+        learnable_id  : '' + learnableID,
         starred       : savedProgress.starred || false,
         ignored       : savedProgress.ignored || false,
         not_difficult : savedProgress.not_difficult || false,
@@ -2189,7 +2189,7 @@ class Learn extends Component {
     if(this.props.session_type == 'preview') {
       if(this.level_data) {
         for(var i=0; i<this.level_data.screens.length; i++) {
-          var id = "" + this.level_data.screens[i].learnableID;
+          var id = '' + this.level_data.screens[i].learnableID;
 
           items.push(this.level_data.screensTemplateMap[id].presentation[0]);
         }

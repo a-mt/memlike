@@ -109,11 +109,13 @@ class level_columns_edit:
             },
             data=web.input(),
         )
-        return proxied_response(lambda: memrise.level_columns_edit(
-            data["level_id"],
-            data["column_a"],
-            data["column_b"],
-        ))
+        return proxied_response(
+            lambda: memrise.level_columns_edit(
+                data["level_id"],
+                data["column_a"],
+                data["column_b"],
+            )
+        )
 
 
 """
