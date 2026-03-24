@@ -12,6 +12,14 @@ class course_get_editpage:
         return proxied_response(lambda: memrise.course_get_editpage(course_id, course_slug))
 
 
+class course_get_editdetails:
+    def GET(self, course_id, course_slug):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        return proxied_response(lambda: memrise.course_get_editdetails(course_id, course_slug))
+
+
 class level_add:
     def POST(self, *args, **kwargs):
         if not web.ctx.session.get("loggedin", False):

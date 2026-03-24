@@ -178,3 +178,6 @@ class DummyEmptyMemrise(DummyMemrise):
 
     def course_delete(self, course_id, **kwargs):
         return None
+
+    def course_get_editdetails(self, course_id, course_slug, **kwargs):
+        return {}

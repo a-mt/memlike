@@ -451,6 +451,55 @@ class Scraper:
         data["last_pool_id"] = last_pool_id
         return data
 
+    def _get_form_iteminput_value(self, node):
+        nodeType = node.attrs.get("type", "text")
+
+        match nodeType:
+            case 'hidden':
+                return node.attrs.get("value", "")
+            case 'text':
+                return node.attrs.get("value", "")
+            case 'checkbox':
+                return node.attrs.get("checked", None) is not None
+            case _:
+                raise NotImplementedError(f"inputs of type {nodeType} aren't handled")
+
+    def _get_form_item_value(self, node):
+        match node.name:
+            case 'input':
+                return self._get_form_iteminput_value(node)
+            case 'textarea':
+                return node.text.strip()
+            case 'select':
+                opt = node.find("option", attrs={"selected": True})
+                if opt is not None:
+                    return opt.attrs.get("value", "")
+            case _:
+                raise NotImplementedError(f"items of type {node.name} aren't handled")
+
+    def course_get_editdetails(self, html):
+        assert len(html) > 0
+
+        DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
+        div = DOM.find(id="content")
+
+        data = {}
+        course_details = div.find(attrs={"class": "course-details-form"})
+        if course_details is not None:
+            items = course_details.find_all(attrs={"name": True})
+
+            for item in items:
+                data[item.attrs["name"]] = self._get_form_item_value(item)
+
+        course_photo = div.find(attrs={"class": "course-photo-form"})
+        if course_photo is not None:
+            img = course_photo.find("img")
+
+            if img is not None:
+                data["photo"] = img.attrs["src"]
+
+        return data
+
     def course_add(self, html):
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
 

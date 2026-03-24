@@ -704,6 +704,19 @@ class ApiRequestor:
             "html": html,
         }
 
+    def course_get_editdetails(self, course_id, course_slug, sessionid=None, **kwargs):
+        request_msg = f"Course edition: get details [course_id={course_id}]"
+
+        url = f"{HOST}/course/{course_id}/{course_slug}/edit/details/"
+
+        request_kwargs = self.get_request_kwargs("GET", request_msg, sessionid)
+        response = requests.get(
+            url,
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.text.encode("utf-8").strip()
+
     def course_delete(self, course_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Course delete [course_id={course_id}]"
 

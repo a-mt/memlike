@@ -67,6 +67,25 @@ class MemriseDummyEditTest(SimpleTestCase):
         self.assertIsNotNone(level.get("pool_id", None))
         self.assertIsNotNone(level.get("name", None))
 
+    def test_memrise_course_get_editdetails(self):
+        result = self.memrise.course_get_editdetails(
+            course_id=COURSE_ID,
+            course_slug=COURSE_SLUG,
+            sessionid=self.session["session_id"],
+        )
+
+        self.assertIs(type(result), dict)
+        self.assertIsNotNone(result.get("csrfmiddlewaretoken", None))
+        self.assertIsNotNone(result.get("course_status", None))
+        self.assertIsNotNone(result.get("name", None))
+        self.assertIsNotNone(result.get("tags", None))
+        self.assertIsNotNone(result.get("description", None))
+        self.assertIsNotNone(result.get("short_description", None))
+        self.assertIsNotNone(result.get("target", None))
+        self.assertIsNotNone(result.get("source", None))
+        self.assertIsNotNone(result.get("audio_mode", None))
+        self.assertIsNotNone(result.get("photo", None))
+
     def test_memrise_level_get_editpage(self):
         result = self.memrise.level_get_editpage(level_id=LEVEL_ID, sessionid=self.session["session_id"])
 

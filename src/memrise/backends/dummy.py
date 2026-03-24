@@ -937,6 +937,23 @@ class DummyMemrise(Memrise):
             "last_pool_id": "7758772",
         }
 
+    def course_get_editdetails(self, course_id, course_slug, **kwargs):
+        """
+        Testset: tests/testset/course-6720820_editdetails.html
+        """
+        return {
+          "csrfmiddlewaretoken": "Gd09qs7723562dwZCNWvAPAubcSPZcmAIW5FGrDf0wLYIaVgIWHk4a9SzdWNWtQH",
+          "course_status": "1",
+          "name": "German vocab",
+          "tags": "tag1,tag2",
+          "description": "this is my description",
+          "short_description": "this is my short description",
+          "target": "4",
+          "source": "2",
+          "audio_mode": True,
+          "photo": "https://static.memrise.com/img/400sqf/from/uploads/course_photos/5892033000260324190811.png"
+        }
+
     def course_delete(self, course_id, **kwargs):
         return None
 

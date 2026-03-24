@@ -102,6 +102,9 @@ class DummyApiRequestor:
             "html": html,
         }
 
+    def course_get_editdetails(self, course_id, course_slug, **kwargs):
+        return self.get_testset_text("course-6720820_editdetails.html")
+
     def course_delete(self, course_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         return None
 

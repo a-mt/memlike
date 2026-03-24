@@ -435,6 +435,13 @@ class ApiMemrise(Memrise):
 
         return self.requestor.level_multimedia_update(*args, **kwargs)
 
+    def course_get_editdetails(self, course_id, course_slug, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        html = self.requestor.course_get_editdetails(course_id, course_slug, sessionid=kwargs["sessionid"])
+
+        return self.scraper.course_get_editdetails(html)
+
     def course_get_editpage(self, course_id, course_slug, **kwargs):
         self.set_default_kwargs(kwargs)
 

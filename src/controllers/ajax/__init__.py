@@ -25,6 +25,7 @@ from .learn import (
 )
 from .edit import (
     course_get_editpage,
+    course_get_editdetails,
     level_add,
     level_delete,
     level_get_editpage,
@@ -72,6 +73,7 @@ urls_course = (
     r"/(\d+)/([^/]+)/remove", course_delete,
     r"/(\d+)/([^/]+)/picture_upload", course_picture_upload,
     r"/(\d+)/([^/]+)/edit", course_get_editpage,
+    r"/(\d+)/([^/]+)/edit_details", course_get_editdetails,
     r"/(\d+)/([^/]+)/(\d+)/media", course_level_multimedia,
     r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", course_level,
     r"/(\d+)/([^/]+)/leaderboard", course_leaderboard,
