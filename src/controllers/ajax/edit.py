@@ -98,7 +98,7 @@ class level_title_edit:
         return proxied_response(lambda: memrise.level_title_edit(data["level_id"], data["title"]))
 
 
-class level_columns_edit:
+class level_columns_direction_edit:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -118,10 +118,66 @@ class level_columns_edit:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_columns_edit(
+            lambda: memrise.level_columns_direction_edit(
                 data["level_id"],
                 data["column_a"],
                 data["column_b"],
+            )
+        )
+
+
+class level_column_edit:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "pool_id": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "column_key": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "label": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "show_at_tests": validator.field(
+                    validator.schema.bool_schema(),
+                ),
+            },
+            data=web.input(),
+        )
+        return proxied_response(
+            lambda: memrise.level_column_edit(
+                data["pool_id"], 
+                data["column_key"], 
+                data["label"], 
+                data["show_at_tests"],
+            )
+        )
+
+
+class level_column_delete:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "pool_id": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "column_key": validator.field(
+                    validator.schema.str_schema(),
+                ),
+            },
+            data=web.input(),
+        )
+        return proxied_response(
+            lambda: memrise.level_column_delete(
+                data["pool_id"],
+                data["column_key"],
             )
         )
 

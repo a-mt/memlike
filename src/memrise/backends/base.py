@@ -299,6 +299,29 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_title_edit() method")
 
+    def level_column_edit(self, pool_id, column_key, label, show_at_tests):
+        """
+        Set which columns are acting as question and answer
+
+        @param string pool_id
+        @param string column_key
+        @param string label
+        @param boolean show_at_tests
+        @return dict - {saved}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a level_column_edit() method")
+
+    def level_columns_direction_edit(self, level_id, column_a, column_b):
+        """
+        Set which columns are acting as question and answer
+
+        @param string level_id
+        @param string column_a - 1 Which column is the learning_element
+        @param string column_b - 2 Which column is the definition_element
+        @return dict - {success}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a level_columns_direction_edit() method")
+
     def level_get_editpage(self, level_id, **kwargs):
         """
         Retrieve the content of a level for the edit page

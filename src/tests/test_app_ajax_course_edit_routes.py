@@ -36,17 +36,17 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_level_edit_title(self):
-        response = self.client.request("/ajax/level/edit_title", method="POST")
+        response = self.client.request("/ajax/level/title_edit", method="POST")
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
         response = self.client.request(
-            "/ajax/level/edit_title", method="POST", headers={"Cookie": cookies.simple_output()}
+            "/ajax/level/title_edit", method="POST", headers={"Cookie": cookies.simple_output()}
         )
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
-            "/ajax/level/edit_title",
+            "/ajax/level/title_edit",
             method="POST",
             headers={"Cookie": cookies.simple_output()},
             data={
@@ -57,23 +57,67 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_level_edit_columns(self):
-        response = self.client.request("/ajax/level/edit_columns", method="POST")
+        response = self.client.request("/ajax/level/columns_edit", method="POST")
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
         response = self.client.request(
-            "/ajax/level/edit_columns", method="POST", headers={"Cookie": cookies.simple_output()}
+            "/ajax/level/columns_edit", method="POST", headers={"Cookie": cookies.simple_output()}
         )
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
-            "/ajax/level/edit_columns",
+            "/ajax/level/columns_edit",
             method="POST",
             headers={"Cookie": cookies.simple_output()},
             data={
                 "level_id": 1,
                 "column_a": "1",
                 "column_b": "2",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_level_column_edit(self):
+        response = self.client.request("/ajax/level/column_edit", method="POST")
+        self.assertEqual(response.status_code, 401)
+
+        cookies = self.get_auth_cookies()
+        response = self.client.request(
+            "/ajax/level/column_edit", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.request(
+            "/ajax/level/column_edit",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "pool_id": 1,
+                "column_key": "1",
+                "label": "Part of Speach",
+                "show_at_tests": "true",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def test_level_column_remove(self):
+        response = self.client.request("/ajax/level/column_remove", method="POST")
+        self.assertEqual(response.status_code, 401)
+
+        cookies = self.get_auth_cookies()
+        response = self.client.request(
+            "/ajax/level/column_remove", method="POST", headers={"Cookie": cookies.simple_output()}
+        )
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.request(
+            "/ajax/level/column_remove",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
+                "pool_id": 1,
+                "column_key": "1",
             },
         )
         self.assertEqual(response.status_code, 200)

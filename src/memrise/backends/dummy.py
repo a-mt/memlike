@@ -718,7 +718,7 @@ class DummyMemrise(Memrise):
             "success": True,
         }
 
-    def level_columns_edit(self, level_id, column_a, column_b, **kwargs):
+    def level_columns_direction_edit(self, level_id, column_a, column_b, **kwargs):
         return {
             "success": True,
         }
@@ -974,6 +974,14 @@ class DummyMemrise(Memrise):
             {"id": "id_source", "message": "Please select one."},
         ]
 
+    def level_column_edit(self, pool_id, column_key, label, show_at_tests, **kwargs):
+        return {
+            "saved": None,
+        }
+
+    def level_column_delete(self, pool_id, column_key, **kwargs):
+        return None
+
 
 class DummyLoginMixin:
     login = DummyMemrise.__dict__["login"]
@@ -996,6 +1004,8 @@ class DummyEditMixin:
     level_thing_get = DummyMemrise.__dict__["level_thing_get"]
     level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
     level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]
-    level_columns_edit = DummyMemrise.__dict__["level_columns_edit"]
+    level_columns_direction_edit = DummyMemrise.__dict__["level_columns_direction_edit"]
+    level_column_edit = DummyMemrise.__dict__["level_column_edit"]
+    level_column_delete = DummyMemrise.__dict__["level_column_delete"]
     level_title_edit = DummyMemrise.__dict__["level_title_edit"]
     course_delete = DummyMemrise.__dict__["course_delete"]

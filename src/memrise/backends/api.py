@@ -379,10 +379,32 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_columns_edit(self, level_id, column_a, column_b, **kwargs):
+    def level_column_edit(self, pool_id, column_key, label, show_at_tests, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_columns_edit(
+        return self.requestor.level_column_edit(
+            pool_id,
+            column_key,
+            label,
+            show_at_tests,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
+    def level_column_delete(self, pool_id, column_key, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_column_delete(
+            pool_id,
+            column_key,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
+    def level_columns_direction_edit(self, level_id, column_a, column_b, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_columns_direction_edit(
             level_id,
             column_a,
             column_b,

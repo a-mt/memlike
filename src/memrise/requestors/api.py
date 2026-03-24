@@ -495,7 +495,44 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_columns_edit(self, level_id, column_a, column_b, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_column_edit(self, pool_id, column_key, label, show_at_tests, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Level edit column"
+
+        url = f"{HOST}/ajax/pool/attributes/set/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "attribute_key": column_key,
+                "pool_id": pool_id,
+                "label": label,
+                "show_at_tests": "true" if show_at_tests else "false",
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
+    def level_column_delete(self, pool_id, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Level delete column"
+
+        url = f"{HOST}/ajax/pool/attributes/set/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "key": column_key,
+                "structure": "attribute",
+                "pool_id": pool_id,
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
+    def level_columns_direction_edit(self, level_id, column_a, column_b, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = f"Level edit columns [level_id={level_id}]"
 
         url = f"{HOST}/ajax/level/set_columns/"
