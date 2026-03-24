@@ -745,3 +745,23 @@ class ApiRequestor:
             return url.rstrip("/") + "#i_1", None
         else:
             return None, response.text.encode("utf-8").strip()
+
+    def course_picture_upload(self, course_id, file, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Course edition: upload picture [course_id={course_id}]"
+
+        url = f"{HOST}/ajax/course/picture/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "course_id": course_id,
+                "csrfmiddlewaretoken": request_kwargs.pop("csrftoken", ""),
+            },
+            files={
+                "image_file": (file.filename, file.raw),
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()

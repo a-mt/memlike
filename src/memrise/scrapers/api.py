@@ -405,6 +405,7 @@ class Scraper:
     # +-----------------------------------------------------
     # | COURSE EDIT
     # +-----------------------------------------------------
+
     def course_get_editpage(self, data_pointer, html):
         assert len(html) > 0
 
@@ -417,6 +418,7 @@ class Scraper:
             item = div.find("div", {"class": "course-details"})
             if item is not None:
                 data["url"] = item.a.attrs["href"]
+                data["slug"] = data["url"].strip("/").split("/")[-1]
                 data["title"] = item.text.strip()
 
         # Levels

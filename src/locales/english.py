@@ -116,6 +116,8 @@ misc = {
     "course_category": "Category",
     "course_language": "Written in",
     "edit_level_title": "Edit the title",
+    "course_picture": "Image",
+    "course_picture_upload": "Upload a new image",
 }
 
 menu = {

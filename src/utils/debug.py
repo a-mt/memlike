@@ -46,6 +46,9 @@ def autodetect_urls(app, prefix="", res={}):
             f = handler
             handler = handler.__name__
 
+        else:
+            print('Unhandled handler', handler, 'for route', pattern)
+
         if f:
             if handler in res:
                 continue

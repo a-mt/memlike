@@ -40,6 +40,7 @@ from .edit import (
     level_thing_file_delete,
     level_multimedia_update,
     course_delete,
+    course_picture_upload,
 )
 from .progress import my_progress
 
@@ -68,7 +69,8 @@ urls_thing = (
 
 # /ajax/course/...
 urls_course = (
-    r"/remove", course_delete,
+    r"/(\d+)/([^/]+)/remove", course_delete,
+    r"/(\d+)/([^/]+)/picture_upload", course_picture_upload,
     r"/(\d+)/([^/]+)/edit", course_get_editpage,
     r"/(\d+)/([^/]+)/(\d+)/media", course_level_multimedia,
     r"/(\d+)/([^/]+)/(\d+|all)/(preview|learn|classic_review|speed_review)", course_level,
@@ -138,7 +140,7 @@ class index:
 
         autodetect_urls(app, prefix="/ajax", res=patterns)
 
-        return json.dumps(patterns)
+        return json.dumps({k: patterns[k] for k in sorted(patterns.keys())})
 
 
 class debug_session:

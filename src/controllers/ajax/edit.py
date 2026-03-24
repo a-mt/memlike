@@ -402,23 +402,42 @@ class level_thing_delete:
 
 
 class course_delete:
-    def POST(self, *args, **kwargs):
+    def POST(self, course_id, course_slug, **kwargs):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        data = validator.validate(
-            fields={
-                "course_id": validator.field(
-                    validator.schema.int_schema(),
-                ),
-            },
-            data=web.input(),
-        )
-
         return proxied_response(
             lambda: memrise.course_delete(
-                course_id=data["course_id"],
+                course_id=course_id,
                 csrftoken=web.ctx.env.get("HTTP_X_CSRFTOKEN", None),
                 referer=web.ctx.env.get("HTTP_X_REFERER", None),
+            )
+        )
+
+
+class course_picture_upload:
+    def POST(self, course_id, course_slug, **kwargs):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        values = web.input(image_file={})
+
+        data = validator.validate(
+            fields={
+                "image_file": validator.field(
+                    validator.file_schema(),
+                ),
+                "csrfmiddlewaretoken": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+            },
+            data=values,
+        )
+        return proxied_response(
+            lambda: memrise.course_picture_upload(
+                course_id=course_id,
+                file=data["image_file"],
+                csrftoken=data.get("csrfmiddlewaretoken", ""),
             )
         )

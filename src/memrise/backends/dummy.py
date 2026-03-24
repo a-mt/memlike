@@ -940,6 +940,13 @@ class DummyMemrise(Memrise):
     def course_delete(self, course_id, **kwargs):
         return None
 
+    def course_picture_upload(self, course_id, file, **kwargs):
+        return {
+            "success": True,
+            "filename": None,
+            "image_url": "https://static.memrise.com/img/400sqf/from/uploads/course_photos/5892033000260320091534.png",
+        }
+
     def course_add(self, data, **kwargs):
         if data.get("name", ""):
             return "/course/6722621/exemple/edit/", None

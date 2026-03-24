@@ -454,6 +454,16 @@ class ApiMemrise(Memrise):
             referer=referer,
         )
 
+    def course_picture_upload(self, course_id, file, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.course_picture_upload(
+            course_id,
+            file,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     def course_add(self, data, referer=None, **kwargs):
         self.set_default_kwargs(kwargs)
 

@@ -48,7 +48,7 @@ misc = {
     "alltime": "Général",
     "username": "Nom d'utilisateur",
     "password": "Mot de passe",
-    "login": "Login",
+    "login": "S'identifier",
     "course_complete": "Complété",
     "course_learners": "% personnes apprennent ce cours",
     "course_duration": "Ce cours prend à peu près %",
@@ -115,6 +115,8 @@ misc = {
     "course_category": "Catégorie",
     "course_language": "Écrit en",
     "edit_level_title": "Éditer le titre",
+    "course_picture": "Image",
+    "course_picture_upload": "Envoyer une nouvelle image",
 }
 
 menu = {

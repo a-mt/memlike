@@ -276,16 +276,11 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_course_delete(self):
-        response = self.client.request("/ajax/course/remove", method="POST")
+        response = self.client.request("/ajax/course/1/example/remove", method="POST")
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/ajax/course/remove", method="POST", headers={"Cookie": cookies.simple_output()})
-        self.assertEqual(response.status_code, 400)
-
-        response = self.client.request("/ajax/course/remove", method="POST", headers={"Cookie": cookies.simple_output()}, data={
-            "course_id": 1,
-            })
+        response = self.client.request("/ajax/course/1/example/remove", method="POST", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 200)
 
     def test_course_add(self):

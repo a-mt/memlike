@@ -33,6 +33,12 @@ class CourseSettingsModal extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
     this.updateInput = this.updateInput.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+
+    this.state = {
+      confirmDelete: false,
+      image_url: 'https://static.memrise.com/img/400sqf/from/uploads/course_photos/5892033000260320091534.png',
+    };
   }
 
   closeModal() {
@@ -44,6 +50,11 @@ class CourseSettingsModal extends Component {
   }
 
   deleteCourse(e) {
+    if (!this.state.confirmDelete) {
+      return this.setState({
+        confirmDelete: true,
+      });
+    }
     if (this.confirmDelCourse != this.props.course.title) {
       alert(window.I18N.warn_del_course);
       return;
@@ -71,6 +82,49 @@ class CourseSettingsModal extends Component {
 
         console.error(xhr);
       },
+      complete: function() {
+        this.setState({confirmDelete: false});
+      }.bind(this),
+    });
+  }
+
+  uploadImage(e) {
+    var $btn = $(e.target.parentNode);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-after loading-spinner-m');
+
+    var files = e.target.files;
+    if (!files.length) {
+      return;
+    }
+
+    var fd = new FormData();
+    fd.append('image_file', files[0]);
+    fd.append('csrfmiddlewaretoken', window.MEMLIKE.course.csrftoken)
+
+    $.ajax({
+      url: '/ajax/course/' + this.props.course.id + '/' + this.props.course.slug + '/picture_upload',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function(data){
+        if(data.message) {
+          alert(data.message);
+        }
+        if(!data.success || !data.image_url) {
+          alert('Something went wrong')
+        }
+        this.setState({
+          image_url: data.image_url,
+        });
+      }.bind(this),
+      error: function(xhr){
+        console.error(xhr);
+        alert('Someting went wrong');
+      },
+      complete: function() {
+        $btn.removeAttr('disabled').removeClass('loading-spinner-after loading-spinner-m');
+      },
     });
   }
 
@@ -80,20 +134,32 @@ class CourseSettingsModal extends Component {
         {this.props.course.title}
       </h3>
       <div className="form">
-        <div class="danger-zone alert alert-danger">
+        <div className="nicebox">
+          <h4>{window.I18N.course_picture}</h4>
+          <div className="picture">
+            {this.state.image_url && <img src={this.state.image_url} alt="" />}
+          </div>
+          <label className="btn" htmlFor="upload-course">
+            <input type="file" id="upload-course" onChange={this.uploadImage} />
+            {window.I18N.course_picture_upload}
+          </label>
+        </div>
+        <div className="danger-zone alert alert-danger">
           <div>
             <h4>{window.I18N.delete_course_title}</h4>
-            <p>{window.I18N.confirm_del_course}</p>
-            <input type="text" onChange={this.updateInput} autoComplete="off" />
+            {this.state.confirmDelete && <div>
+              <p>{window.I18N.confirm_del_course}</p>
+              <input type="text" onChange={this.updateInput} autoComplete="off" />
+            </div>}
           </div>
-          <button class="btn danger" type="button" onClick={this.deleteCourse}>
+          <button className="btn danger" type="button" onClick={this.deleteCourse}>
             {window.I18N.delete_course}
           </button>
         </div>
       </div>
       <div className="btn-group">
         <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
-      </div>*
+      </div>
     </div>
   }
 }
