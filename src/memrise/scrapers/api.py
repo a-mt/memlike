@@ -455,22 +455,22 @@ class Scraper:
         nodeType = node.attrs.get("type", "text")
 
         match nodeType:
-            case 'hidden':
+            case "hidden":
                 return node.attrs.get("value", "")
-            case 'text':
+            case "text":
                 return node.attrs.get("value", "")
-            case 'checkbox':
+            case "checkbox":
                 return node.attrs.get("checked", None) is not None
             case _:
                 raise NotImplementedError(f"inputs of type {nodeType} aren't handled")
 
     def _get_form_item_value(self, node):
         match node.name:
-            case 'input':
+            case "input":
                 return self._get_form_iteminput_value(node)
-            case 'textarea':
+            case "textarea":
                 return node.text.strip()
-            case 'select':
+            case "select":
                 opt = node.find("option", attrs={"selected": True})
                 if opt is not None:
                     return opt.attrs.get("value", "")

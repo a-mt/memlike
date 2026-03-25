@@ -1378,12 +1378,12 @@ code.header {
   color: #aaa;
   font-size: 12px;
 }
-.go-learn {
+.purple {
   background: #8177A2;
   color: white;
   cursor: pointer;
 }
-.pill.go-learn:hover {
+.purple:not(.active):hover {
   background: #574A83;
 }
 

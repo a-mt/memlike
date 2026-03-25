@@ -454,11 +454,15 @@ class Memrise:
     def course_delete(self, course_id, **kwargs):
         """
         Delete a course
+
+        @param string course_id
         """
         raise NotImplementedError("subclasses of Memrise must provide a course_delete() method")
 
     def course_add(self, data, **kwargs):
         """
         Add a course
+
+        @param dict data - {name, tags, description, short_description, csrfmiddlewaretoken, category, language}
         """
         raise NotImplementedError("subclasses of Memrise must provide a course_add() method")

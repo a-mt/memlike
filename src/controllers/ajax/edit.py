@@ -150,9 +150,9 @@ class level_column_edit:
         )
         return proxied_response(
             lambda: memrise.level_column_edit(
-                data["pool_id"], 
-                data["column_key"], 
-                data["label"], 
+                data["pool_id"],
+                data["column_key"],
+                data["label"],
                 data["show_at_tests"],
             )
         )

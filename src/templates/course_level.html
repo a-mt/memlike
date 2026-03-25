@@ -31,7 +31,7 @@ $:(prender.inc_course_banner(course))
 
     <!-- Links to garden learn / preview -->
     $if level['type'] != 2:
-      <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(I18N.misc['learn_level'])</button>
+      <button class="purple pill" data-toggle="#mode-selector" aria-expanded="false">$(I18N.misc['learn_level'])</button>
 
     $if session.loggedin and session.loggedin['username'] == course['author']:
       <a href="$(course['url'])edit#i_$(level['index'])" class="pill edit">$:(I18N.misc['edit_level'])</a>

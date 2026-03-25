@@ -20,7 +20,7 @@ $:(prender.inc_course_banner(course))
     </a>
 
     <!-- Links to garden learn / preview -->
-    <button class="go-learn pill" data-toggle="#mode-selector" aria-expanded="false">$(I18N.misc['learn_course'])</button>
+    <button class="purple pill" data-toggle="#mode-selector" aria-expanded="false">$(I18N.misc['learn_course'])</button>
 
     $if session.loggedin and session.loggedin['username'] == course['author']:
       <a href="$(course['url'])edit" class="pill edit">$:(I18N.misc['edit_course'])</a>

@@ -767,6 +767,7 @@ const GameProgressHandler = {
   reset: function() {
     GameProgressHandler.events = [];
     GameProgressHandler.is_saving = false;
+    $('#learn-settings-btn').removeClass('loading-spinner-before');
   },
 
   /**
@@ -988,11 +989,11 @@ const GameProgressHandler = {
   },
 
   // Send progress to memrise
-  registerEvent: function(courseID, learnableProgress, event) {
-    var learnable = GameDataBuilder.learnablesMap[learnableProgress.learnable_id] || {};
+  registerEvent: function(courseID, learnableID, event) {
+    var learnable = GameDataBuilder.learnablesMap[learnableID] || {};
 
-    if (String(learnable.id) !== learnableProgress.learnable_id) {
-      console.error('Couldnt find learnable related to event', learnable, learnableProgress, event);
+    if (String(learnable.id) !== learnableID) {
+      console.error('Couldnt find learnable related to event', learnable, event);
       return;
     }
 
@@ -1007,14 +1008,14 @@ const GameProgressHandler = {
       );
     }
 
-    // Fluff up our event with the progress data
-    // and other info required by memrise
-    var item = {
+    // Fluff up our event with required info
+    var item = event;
+
+    Object.assign(item, {
       course_id          : parseInt(courseID),
       learning_element   : learnable.learning_element,
       definition_element : learnable.definition_element,
-    };
-    Object.assign(item, learnableProgress, event);
+    });
 
     if(item.created_date) {
       item.created_date = (item.created_date.getTime() / 1000) | 0;
@@ -1033,6 +1034,7 @@ const GameProgressHandler = {
 
   registerSessionEnd(data) {
     GameProgressHandler.is_saving = true;
+    $('#learn-settings-btn').addClass('loading-spinner-before');
 
     var events = [...GameProgressHandler.events];
     var requests = [];
@@ -1064,6 +1066,7 @@ const GameProgressHandler = {
     function executeRequestsQueue() {
       if(!requests.length) {
         GameProgressHandler.is_saving = false;
+        $('#learn-settings-btn').removeClass('loading-spinner-before');
         return;
       }
       var request = requests.shift();
@@ -1391,6 +1394,15 @@ class Learn extends Component {
     return msg;
   }
 
+  expectedSubmit() {
+    var expectChoice = this.expectChoice;
+    if (expectChoice === null) {
+      return false;
+    }
+    this.expectChoice = null;
+    return expectChoice;
+  }
+
   // Listen to keyboard inputs: next screen, multiple choice answer
   keyup(e) {
     var key = e.which;
@@ -1403,30 +1415,36 @@ class Learn extends Component {
         }
         return;
       }
-      this.handle_submit(e);
+      var expectChoice = this.expectedSubmit();
+      if (expectChoice === null) {
+        return;
+      }
+      return this.handle_submit(e, expectChoice);
+    }
 
     // Multiplice choice: press a number
-    } else if(this.expectChoice == 'numeric' && key > 96 && key <= 105) {
+    if(this.expectChoice == 'numeric' && key > 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
-      if(char <= this.choices.length) {
-        this.multiple_choice(char);
+      if(char > this.choices.length || this.expectedSubmit() === null) {
+        return;
       }
+      this.multiple_choice(char);
     }
   }
 
-  handle_submit(e) {
+  handle_submit(e, expectChoice) {
 
     // Presentation
-    if(!this.expectChoice) {
+    if(!expectChoice) {
       this.getNext();
 
     // Typing
-    } else if(this.expectChoice == 'text') {
+    } else if(expectChoice == 'text') {
       this.choice($('.typing input').val() || '');
 
     // Tapping
-    } else if(this.expectChoice == 'tapping') {
+    } else if(expectChoice == 'tapping') {
       var chosen = [];
       $('.tapping .input button').each(function(){
         chosen.push(this.innerHTML);
@@ -1435,7 +1453,7 @@ class Learn extends Component {
 
     // Numeric
     } else {
-      console.info('Skipping', this.expectChoice);
+      console.info('Skipping', expectChoice);
       this.skip_choice();
     }
   }
@@ -1534,15 +1552,14 @@ class Learn extends Component {
     if(!this.level_data) {
       return;
     }
-    var learnableID   = this.level_data.screens[this.state.screen_i].learnableID,
-        progress = this.level_data.progressMap[learnableID] || {};
+    var learnableID = this.level_data.screens[this.state.screen_i].learnableID;
 
     // Update the streak status and next review data
     // Values from this object are incremented each time this learnable is learned
     // and retrieved from the backend at the beginning of the learning session
-    GameProgressHandler.getProgress(
+    var progress = GameProgressHandler.getProgress(
       learnableID,
-      progress,
+      this.level_data.progressMap[learnableID] || {},
       input.score,
     );
     this.level_data.progressMap[learnableID] = progress;
@@ -1578,7 +1595,11 @@ class Learn extends Component {
         points       : points,
         bonus_points : 0,
     };
-    this.session_settings.save_progress && GameProgressHandler.registerEvent(this.props.course.id, progress, event);
+    this.session_settings.save_progress && GameProgressHandler.registerEvent(
+      this.props.course.id,
+      learnableID,
+      Object.assign(event, progress),
+    );
 
     // Count right and wrong answers
     this.level_summary_data.nb_scheduled += 1;
@@ -1616,8 +1637,6 @@ class Learn extends Component {
 
         return;
       }
-      this.expectChoice = false;
-      this.choices      = false;
 
       // We intentionally don't update the state, so that componentDidUpdate isn't called
       this.state.points += event.points;
@@ -1636,8 +1655,6 @@ class Learn extends Component {
         debug_screen: false,
         points: this.state.points + event.points,
       });
-      this.expectChoice  = false;
-      this.choices       = false;
     }
   }
 
@@ -1703,6 +1720,11 @@ class Learn extends Component {
   //+--------------------------------------------------------
   //| RENDERING
   //+--------------------------------------------------------
+
+  resetChoices() {
+    this.expectChoice  = false;
+    this.choices       = false;
+  }
 
   setChoices(choices, type, is_strict) {
     this.expectChoice = type; // numeric | text | tapping
@@ -1843,6 +1865,8 @@ class Learn extends Component {
   }
 
   screen() {
+    this.resetChoices();
+
     if(!this.level_data) {
       return null;
     }
@@ -2865,23 +2889,63 @@ const highlightDiff = (function(){
     return getChanges(cd.del, cd.ins, cd.mtc, p);
   }
 
-  function diff(txt1, txt2, p){
-    p = p || 2; // p -> precision factor
+  class Diff {
+    count = 0
+    p = 2  // p -> precision factor
 
-    var cd       = getChanges(txt1,txt2,'',p),
-        nextTxt2 = txt2.slice(cd.mtc.length + cd.ins.length + cd.sbs.length), // remaining part of "txt2"
-        nextTxt1 = txt1.slice(cd.mtc.length + cd.del.length + cd.sbs.length), // remaining part of "txt1"
-        result   = '';                                                        // the glorious result
-
-    cd.del.length > 0 && (cd.del = '<span class = "deleted">'  + cd.del + '</span>');
-    cd.ins.length > 0 && (cd.ins = '<span class = "inserted">' + cd.ins + '</span>');
-    result = cd.mtc + cd.del + cd.ins + cd.sbs;
-
-    if(nextTxt1 !== '' || nextTxt2 !== '') {
-      result += diff(nextTxt1,nextTxt2,p);
+    constructor(p) {
+      this.p = p || 2;
     }
-    return result;
+    addCount(txt) {
+      this.count += txt.length;
+      return txt;
+    }
+
+    highlight(txt1, txt2){
+      var cd       = getChanges(txt1,txt2,'',this.p),
+          nextTxt2 = txt2.slice(cd.mtc.length + cd.ins.length + cd.sbs.length), // remaining part of "txt2"
+          nextTxt1 = txt1.slice(cd.mtc.length + cd.del.length + cd.sbs.length), // remaining part of "txt1"
+          result   = '';                                                        // the glorious result
+
+      cd.del.length > 0 && (cd.del = '<span class="deleted">'  + this.addCount(cd.del) + '</span>');
+      cd.ins.length > 0 && (cd.ins = '<span class="inserted">' + this.addCount(cd.ins) + '</span>');
+      result = cd.mtc + cd.del + cd.ins + cd.sbs;
+
+      if(nextTxt1 !== '' || nextTxt2 !== '') {
+        result += this.highlight(nextTxt1,nextTxt2);
+      }
+      return result;
+    }
+
+    highlightTokens(txt1, txt2) {
+      this.count = 0;
+
+      var cmp = this.highlight(txt1, txt2),
+          count_highlight = this.count;
+
+      // Attempt comparison through tokenization
+      var tokens1 = txt1.split(' '),
+          tokens2 = txt2.split(' ');
+
+      if (tokens1.length != tokens2.length) {
+        return cmp;
+      }
+      this.count = 0;
+
+      var cmp_tokens = [];
+      for(let i=0; i<tokens1.length; i++) {
+        cmp_tokens.push(this.highlight(tokens1[i], tokens2[i]));
+      }
+
+      if (this.count < count_highlight) {
+        return cmp_tokens.join(' ');
+      }
+      return cmp;
+    }
   }
 
+  function diff(txt1, txt2, p) {
+    return new Diff(p).highlightTokens(txt1, txt2);
+  }
   return diff;
 })();

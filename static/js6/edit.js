@@ -346,7 +346,7 @@ class LevelSettingsModal extends Component {
     $btn.attr('disabled', 'disabled').addClass('loading-spinner-after loading-spinner-m');
 
     $.ajax({
-      url: '/ajax/level/edit_title',
+      url: '/ajax/level/title_edit',
       method: 'POST',
       data: {
         title,
