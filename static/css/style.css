@@ -2751,6 +2751,7 @@ tr.disabled {
   fill: #1f2328;
   padding: .125em .5em .125em 0;
   position: relative;
+  overflow-x: clip;
 }
 tbody .ContributionCalendar-label span[aria-hidden] { /*day of the week*/
   position: absolute;

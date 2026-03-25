@@ -1415,36 +1415,32 @@ class Learn extends Component {
         }
         return;
       }
-      var expectChoice = this.expectedSubmit();
-      if (expectChoice === null) {
-        return;
-      }
-      return this.handle_submit(e, expectChoice);
+      return this.handle_submit(e);
     }
 
     // Multiplice choice: press a number
     if(this.expectChoice == 'numeric' && key > 96 && key <= 105) {
       var char = parseInt(fromKeyCode(key));
 
-      if(char > this.choices.length || this.expectedSubmit() === null) {
+      if(char > this.choices.length) {
         return;
       }
       this.multiple_choice(char);
     }
   }
 
-  handle_submit(e, expectChoice) {
+  handle_submit(e) {
 
     // Presentation
-    if(!expectChoice) {
+    if(!this.expectChoice) {
       this.getNext();
 
     // Typing
-    } else if(expectChoice == 'text') {
+    } else if(this.expectChoice == 'text') {
       this.choice($('.typing input').val() || '');
 
     // Tapping
-    } else if(expectChoice == 'tapping') {
+    } else if(this.expectChoice == 'tapping') {
       var chosen = [];
       $('.tapping .input button').each(function(){
         chosen.push(this.innerHTML);
@@ -1453,7 +1449,7 @@ class Learn extends Component {
 
     // Numeric
     } else {
-      console.info('Skipping', expectChoice);
+      console.info('Skipping', this.expectChoice);
       this.skip_choice();
     }
   }
