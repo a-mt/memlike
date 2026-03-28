@@ -22,10 +22,10 @@ class LangTest(unittest.TestCase):
 
     def assert_module_vars(self, I18N, PREV_I18N):
         for name, var in vars(I18N).items():
-            if name.startswith('__'):
+            if name.startswith("__"):
                 continue
 
-            msg = PREV_I18N.__name__ + ' is missing ' + name
+            msg = PREV_I18N.__name__ + " is missing " + name
             self.assertTrue(hasattr(PREV_I18N, name), msg)
 
             if type(var) is dict:

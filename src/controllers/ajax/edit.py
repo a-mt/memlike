@@ -2,8 +2,8 @@ import web
 from memrise import memrise
 from utils.webapi import proxied_response
 from utils import validator
-from variables import categories, categories_code, languages
-from pydantic_core import PydanticCustomError, ValidationError
+from variables import categories_code, languages
+from pydantic_core import PydanticCustomError
 
 
 def is_valid_lang(value):

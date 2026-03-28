@@ -138,8 +138,8 @@ class CourseSettingsModal extends Component {
           if (!error.loc) {
             return;
           }
-          var k = error.loc.join(".");
-          errors[k in this.state.details ? k : "base." + k] = error.msg;
+          var k = error.loc.join('.');
+          errors[k in this.state.details ? k : 'base.' + k] = error.msg;
         });
         this.setState({
           errors,
@@ -245,11 +245,11 @@ class CourseSettingsModal extends Component {
           </div>
         ) : (
           <div>
-            {this.state.success && <div class="alert alert-success">{window.I18N['save_success']}</div>}
-            {this.state.errors && <div class="alert alert-danger">{window.I18N['error_400']}</div>}
+            {this.state.success && <div className="alert alert-success">{window.I18N['save_success']}</div>}
+            {this.state.errors && <div className="alert alert-danger">{window.I18N['error_400']}</div>}
             <form className="nicebox clearfix form" onSubmit={this.submit}>
               <div className="form-controls">
-                <label for="name">Name</label>
+                <label htmlFor="name">Name</label>
                 <input
                   id="name"
                   name="name"
@@ -259,10 +259,10 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.name && (
-                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label for="tags">Tags</label>
+                <label htmlFor="tags">Tags</label>
                 <input
                   id="tags"
                   name="tags"
@@ -272,10 +272,10 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.tags && (
-                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label for="description">Description</label>
+                <label htmlFor="description">Description</label>
                 <textarea
                   id="description"
                   name="description"
@@ -286,10 +286,10 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.description && (
-                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label for="short_description">Short description</label>
+                <label htmlFor="short_description">Short description</label>
                 <input
                   id="short_description"
                   name="short_description"
@@ -299,12 +299,12 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.short_description && (
-                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <input
                 name="audio_mode"
                 type="hidden"
-                value={this.state.details.audio_mode ? "1" : "0"}
+                value={this.state.details.audio_mode ? '1' : '0'}
               />
               <input
                 name="course_status"

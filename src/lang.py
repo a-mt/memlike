@@ -21,10 +21,7 @@ class Lang(object):
             app.add_processor(self._processor)
 
     def get_locales(self):
-        return [
-            item.stem for item in Path(f"{ROOTDIR}/locales").glob("*.py")
-            if item.stem[0] != '_'
-        ]
+        return [item.stem for item in Path(f"{ROOTDIR}/locales").glob("*.py") if item.stem[0] != "_"]
 
     def get_locale_path(self, lang_slug):
         """

@@ -572,13 +572,17 @@ class ApiMemrise(Memrise):
         invalid = data.pop("aria_invalid", {})
         if len(invalid.keys()):
             raise ValidationError.from_exception_data(
-                "invalid", [{
-                    "msg": "this value is invalid",
-                    "type": "json_invalid",
-                    "loc": (k,),
-                    "input": data.get(k, ""),
-                    "ctx": {"error": invalid[k]},
-                } for k in invalid.keys()]
+                "invalid",
+                [
+                    {
+                        "msg": "this value is invalid",
+                        "type": "json_invalid",
+                        "loc": (k,),
+                        "input": data.get(k, ""),
+                        "ctx": {"error": invalid[k]},
+                    }
+                    for k in invalid.keys()
+                ],
             )
 
         return data
