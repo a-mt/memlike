@@ -968,11 +968,15 @@ class DummyMemrise(Memrise):
         if data.get("name", ""):
             return "/course/6722621/exemple/edit/", None
 
-        return [
-            {"id": "id_name", "message": "Your course needs a name."},
-            {"id": "id_target", "message": "Please select one."},
-            {"id": "id_source", "message": "Please select one."},
-        ]
+        return {
+            "name": {
+                "msg": "this value is invalid",
+                "type": "json_invalid",
+                "loc": ("name",),
+                "input": "",
+                "ctx": {"error": "this value is required"},
+            }
+        }
 
     def level_column_edit(self, pool_id, column_key, label, show_at_tests, **kwargs):
         return {

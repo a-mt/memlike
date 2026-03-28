@@ -1157,6 +1157,8 @@ class Learn extends Component {
 
     // Submit
     $('main').on('click', '.submit', function(e){
+      e.target.classList.add('disabled');
+
       this.handle_submit(e);
     }.bind(this));
 
@@ -1212,6 +1214,13 @@ class Learn extends Component {
       this.init = true;
     }
     $('input[autofocus]').focus();
+
+    var $submit = $('.btn.submit');
+    $submit.addClass('disabled');
+
+    setTimeout(() => {
+      $submit.removeClass('disabled');
+    }, 500);
 
     // Reset image zoom and audio player
     window.imgZoom     && window.imgZoom.reset();
@@ -1780,7 +1789,7 @@ class Learn extends Component {
         ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
         : this.screen()}
 
-      <span className="btn submit" tabIndex="0">{window.I18N.next}</span>
+      <span className="btn submit disabled" tabIndex="0">{window.I18N.next}</span>
     </div>;
   }
 

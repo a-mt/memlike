@@ -228,13 +228,17 @@ select {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+textarea {
   box-sizing: border-box;
   border-radius: 6.2px;
   padding: 8px 15px;
   border: 1px solid #e4e4e4;
   font-size: 14px;
   height: 38px;
+}
+textarea {
+  height: auto;
 }
 input:invalid {
   border: 1px solid #ff756b;
@@ -1283,6 +1287,10 @@ button.audio-player {
 .audio-player.active {
   opacity: 1;
 }
+.choice-box.audio button {
+  pointer-events: none;
+}
+
 .text-image {
   max-height: 100px;
   max-width: 100px;
@@ -1749,10 +1757,10 @@ code.header {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 20px;
+  top: 0;
+  margin: 20px;
   min-width: 200px;
-  min-height: 200px;
-  max-height: calc(100% - 20px);
+  max-height: calc(100% - 40px);
   padding: 10px;
   overflow: auto;
   background: white;
@@ -1760,9 +1768,16 @@ code.header {
   box-shadow: rgba(0,0,0,0.08) 0 1px 2px;
   border: 1px solid #e4e4e4;
 
+  /* Ensure the content is centered */
+  /*justify-content: center;*/
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
+  flex: 0 1 auto;
+}
+.modal .center {
+  margin: auto;
+  display: flex;
   flex-direction: column;
 }
 .modal-close-link {

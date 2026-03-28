@@ -2,6 +2,8 @@
 # coding=utf-8
 misc = {
     "error": "Something went wrong. Please try again later",
+    "error_400": "Some values are invalid",
+    "save_success": "The data has been successfully saved",
     "page": "Page %",
     "all": "All",
     "search": "Search",

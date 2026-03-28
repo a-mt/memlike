@@ -2,6 +2,8 @@
 # coding=utf-8
 misc = {
     "error": "Une erreur s'est produite. Merci de réessayer plus tard",
+    "error_400": "Certaines valeurs sont invalides",
+    "save_success": "Les données ont été enregistrées avec succès",
     "page": "Page %",
     "all": "Tout",
     "search": "Rechercher",
@@ -16,6 +18,7 @@ misc = {
     "words": "Mots",
     "points": "Points",
     "stats": "Stats",
+    "level_progress": "Niveau",
     "level_current": "Niveau actuel",
     "level_next": "Prochain niveau",
     "following_none": "% ne suis personne",

@@ -5,6 +5,7 @@ import web
 
 from memrise.scrapers import Scraper
 from memrise.requestors import ApiRequestor, DummyApiRequestor
+from pydantic_core import ValidationError
 from .dummy import DummyLoginMixin, DummyEditMixin
 from .base import Memrise
 
@@ -528,13 +529,59 @@ class ApiMemrise(Memrise):
                     name = "base." + k
 
                 errors[name] = {
-                    "msg": error["message"],
-                    "type": "upstream",
+                    "msg": "this value is invalid",
+                    "type": "json_invalid",
                     "loc": (k,),
+                    "input": data.get(name, ""),
+                    "ctx": {"error": error["message"]},
                 }
-            return None, errors
+            if errors:
+                raise ValidationError.from_exception_data("invalid", list(errors.values()))
 
-        return success_url, None
+        return {
+            "success": True,
+            "url": success_url,
+        }
+
+    def course_editdetails(self, course_id, course_slug, data, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        post_data = {
+            "name": data.get("name", ""),
+            "tags": data.get("tags", ""),
+            "description": data.get("description", ""),
+            "short_description": data.get("short_description", ""),
+            "csrfmiddlewaretoken": data.get("csrfmiddlewaretoken", ""),
+            "target": data.get("target", ""),
+            "source": data.get("source", ""),
+            "course_status": data.get("course_status", ""),
+        }
+        if data.get("audio_mode", ""):
+            post_data["audio_mode"] = "on"
+
+        html = self.requestor.course_editdetails(
+            course_id,
+            course_slug,
+            post_data,
+            sessionid=kwargs["sessionid"],
+            csrftoken=post_data["csrfmiddlewaretoken"],
+            referer=referer,
+        )
+        data = self.scraper.course_get_editdetails(html)
+
+        invalid = data.pop("aria_invalid", {})
+        if len(invalid.keys()):
+            raise ValidationError.from_exception_data(
+                "invalid", [{
+                    "msg": "this value is invalid",
+                    "type": "json_invalid",
+                    "loc": (k,),
+                    "input": data.get(k, ""),
+                    "ctx": {"error": invalid[k]},
+                } for k in invalid.keys()]
+            )
+
+        return data
 
 
 class DummyApiMemrise(DummyLoginMixin, DummyEditMixin, ApiMemrise):

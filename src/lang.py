@@ -3,6 +3,7 @@ from settings import DEFAULT_LANG_SLUG, ROOTDIR
 from utils.module_loading import load_source
 import web
 import logging
+from pathlib import Path
 
 
 logger = logging.getLogger(__name__)
@@ -18,6 +19,12 @@ class Lang(object):
 
         if app:
             app.add_processor(self._processor)
+
+    def get_locales(self):
+        return [
+            item.stem for item in Path(f"{ROOTDIR}/locales").glob("*.py")
+            if item.stem[0] != '_'
+        ]
 
     def get_locale_path(self, lang_slug):
         """

@@ -483,14 +483,28 @@ class Scraper:
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
         div = DOM.find(id="content")
 
-        data = {}
+        aria_invalid = {}
+        data = {
+            "aria_invalid": aria_invalid,
+        }
+
+        # All form elements
         course_details = div.find(attrs={"class": "course-details-form"})
         if course_details is not None:
             items = course_details.find_all(attrs={"name": True})
 
             for item in items:
-                data[item.attrs["name"]] = self._get_form_item_value(item)
+                name = item.attrs["name"]
+                data[name] = self._get_form_item_value(item)
 
+                # Check if there's an associated error
+                is_invalid = item.attrs.get("aria-invalid", None)
+                if is_invalid:
+                    error = item.find_next_sibling("ul", {"class": "errorlist"})
+
+                    aria_invalid[name] = error.text.strip() if error else ""
+
+        # Photo
         course_photo = div.find(attrs={"class": "course-photo-form"})
         if course_photo is not None:
             img = course_photo.find("img")

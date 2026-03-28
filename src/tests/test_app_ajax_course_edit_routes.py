@@ -334,21 +334,15 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_course_add(self):
-        response = self.client.request("/course/add")
+        response = self.client.request("/ajax/course/add", method="POST")
         self.assertEqual(response.status_code, 401)
 
         cookies = self.get_auth_cookies()
-        response = self.client.request("/course/add", method="GET", headers={"Cookie": cookies.simple_output()})
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.request("/course/add", method="POST")
-        self.assertEqual(response.status_code, 401)
-
-        response = self.client.request("/course/add", method="POST", headers={"Cookie": cookies.simple_output()})
+        response = self.client.request("/ajax/course/add", method="POST", headers={"Cookie": cookies.simple_output()})
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
-            "/course/add",
+            "/ajax/course/add",
             method="POST",
             headers={"Cookie": cookies.simple_output()},
             data={
@@ -357,4 +351,5 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
                 "language": "english",
             },
         )
-        self.assertEqual(response.status_code, 303)
+        print(response.data)
+        self.assertEqual(response.status_code, 200)

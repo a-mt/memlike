@@ -109,4 +109,10 @@ class DummyApiRequestor:
         return None
 
     def course_add(self, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        if data.get("name", ""):
+            return "/course/1/example", None
+
         return None, self.get_testset_text("course_add.html")
+
+    def course_editdetails(self, course_id, course_slug, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        return self.get_testset_text("course-6720820_editdetails2.html")

@@ -821,3 +821,18 @@ class ApiRequestor:
         )
         self.raise_for_status(response)
         return response.json()
+
+    def course_editdetails(self, course_id, course_slug, data, sessionid=None, csrftoken=None, referer=None, **kwargs):
+        request_msg = f"Course edit [course_id={course_id}]"
+
+        url = f"{HOST}/course/{course_id}/{course_slug}/edit/details/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data=data,
+            allow_redirects=False,
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.text.encode("utf-8").strip()

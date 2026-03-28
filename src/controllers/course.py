@@ -324,20 +324,17 @@ class course_add:
                 },
                 data=data,
             )
+            data = memrise.course_add(input_data)
+
+            # f"/community/course/{course_id}/{course_slug}/"
+            raise web.seeother(data["url"], absolute=True)
+
         except ValidationError as e:
             web.ctx.session.flash = {"err": {".".join(x["loc"]): x for x in e.errors()}, "data": data}
 
             web.ctx.status = "400 Bad Request"
 
             return course_add().GET()
-
-        success, errors = memrise.course_add(input_data)
-        if success:
-            # f"/community/course/{course_id}/{course_slug}/"
-            raise web.seeother(success, absolute=True)
-
-        if errors:
-            web.ctx.session.flash = {"err": errors, "data": data}
 
         raise web.seeother("add", absolute=False)
 

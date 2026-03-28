@@ -2,9 +2,57 @@ import web
 from memrise import memrise
 from utils.webapi import proxied_response
 from utils import validator
+from variables import categories, categories_code, languages
+from pydantic_core import PydanticCustomError, ValidationError
 
 
-class course_get_editpage:
+def is_valid_lang(value):
+    if value not in languages or value not in categories_code:
+        raise PydanticCustomError(
+            "invalid",
+            "Expected a valid language, got '{wrong_value}'",
+            {"wrong_value": value},
+        )
+    return categories_code[value]
+
+
+class course_add:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = web.input()
+        input_data = validator.validate(
+            fields={
+                "name": validator.field(
+                    validator.schema.str_schema(min_length=1),
+                ),
+                "category": validator.field(
+                    validator.schema.int_schema(),
+                ),
+                "language": validator.field(
+                    validator.schema.str_schema(),
+                    validator=is_valid_lang,
+                ),
+                "tags": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+                "description": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+                "short_description": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+            },
+            data=data,
+        )
+        return proxied_response(lambda: memrise.course_add(input_data))
+
+
+class course_editpage:
     def GET(self, course_id, course_slug):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -12,12 +60,54 @@ class course_get_editpage:
         return proxied_response(lambda: memrise.course_get_editpage(course_id, course_slug))
 
 
-class course_get_editdetails:
+class course_editdetails:
     def GET(self, course_id, course_slug):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
         return proxied_response(lambda: memrise.course_get_editdetails(course_id, course_slug))
+
+    def POST(self, course_id, course_slug):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "name": validator.field(
+                    validator.schema.str_schema(min_length=1),
+                ),
+                "course_status": validator.field(
+                    validator.schema.int_schema(),
+                ),
+                "target": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "source": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "tags": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+                "description": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+                "short_description": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+                "audio_mode": validator.field(
+                    validator.schema.bool_schema(),
+                ),
+                "csrfmiddlewaretoken": validator.field(
+                    validator.schema.str_schema(),
+                    default="",
+                ),
+            },
+            data=web.input(),
+        )
+        return proxied_response(lambda: memrise.course_editdetails(course_id, course_slug, data))
 
 
 class level_add:

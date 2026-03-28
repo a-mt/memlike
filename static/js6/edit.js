@@ -32,21 +32,126 @@ class CourseSettingsModal extends Component {
 
     this.closeModal = this.closeModal.bind(this);
     this.deleteCourse = this.deleteCourse.bind(this);
-    this.updateInput = this.updateInput.bind(this);
+    this.confirmDelete = this.confirmDelete.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
+    this.submit = this.submit.bind(this);
 
     this.state = {
       confirmDelete: false,
-      image_url: 'https://static.memrise.com/img/400sqf/from/uploads/course_photos/5892033000260320091534.png',
+      isLoading: true,
+      isSubmitting: false,
+      details: {
+        photo: 'https://static.memrise.com/img/400sqf/from/uploads/course_photos/5892033000260320091534.png',
+      },
+      errors: false,
+      success: false,
     };
+    if (window.MEMLIKE.course_details) {
+      this.state.isLoading = false;
+      this.state.details = window.MEMLIKE.course_details;
+    }
+  }
+
+  componentDidMount() {
+    this.getData();
+  }
+
+  getData() {
+    if (!this.state.isLoading) {
+      return;
+    }
+
+    $.ajax({
+      url: '/ajax/course/' + this.props.course.id + '/' + this.props.course.slug + '/details_edit',
+      type: 'GET',
+      success: function(data){
+        window.MEMLIKE.course_details = data;
+
+        this.setState({
+          isLoading: false,
+          details: data,
+        });
+      }.bind(this),
+
+      error: function(xhr){
+        console.error(xhr);
+
+        this.setState({
+          isLoading: false,
+        });
+        alert(window.I18N['error']);
+      }.bind(this),
+    });
   }
 
   closeModal() {
     window.modal.close();
   }
 
-  updateInput(e) {
+  confirmDelete(e) {
     this.confirmDelCourse = e.target.value;
+  }
+
+  handleChange(id, e) {
+    this.setState({
+      details: {
+        ...this.state.details,
+        [id]: e.target.value,
+      }
+    });
+  }
+
+  submit(e) {
+    e.preventDefault();
+
+    this.setState({
+      isSubmitting: true,
+      success: false,
+    });
+
+    var fd = new FormData(e.target);
+    //fd.append('csrfmiddlewaretoken', window.MEMLIKE.course.csrftoken)
+
+    $.ajax({
+      url: '/ajax/course/' + this.props.course.id + '/' + this.props.course.slug + '/details_edit',
+      data: fd,
+      processData: false,
+      contentType: false,
+      type: 'POST',
+      success: function(data){
+        this.setState({
+          errors: false,
+          success: true,
+          details: {...this.state.details, ...data},
+        });
+      }.bind(this),
+
+      error: function(xhr){
+        console.error(xhr);
+
+        if (xhr.status != 400 || !xhr.responseJSON) {
+          alert(window.I18N['error']);
+          return;
+        }
+        var errors = {};
+        xhr.responseJSON.forEach((error) => {
+          if (!error.loc) {
+            return;
+          }
+          var k = error.loc.join(".");
+          errors[k in this.state.details ? k : "base." + k] = error.msg;
+        });
+        this.setState({
+          errors,
+        });
+      }.bind(this),
+
+      complete: function() {
+        this.setState({
+          isSubmitting: false,
+        });
+      }.bind(this),
+    });
   }
 
   deleteCourse(e) {
@@ -78,7 +183,7 @@ class CourseSettingsModal extends Component {
       error: function(xhr) {
         $btn.removeAttr('disabled').removeClass('loading-spinner-before loading-spinner-m');
 
-        alert('Something went wrong');
+        alert(window.I18N['error']);
 
         console.error(xhr);
       },
@@ -112,15 +217,15 @@ class CourseSettingsModal extends Component {
           alert(data.message);
         }
         if(!data.success || !data.image_url) {
-          alert('Something went wrong')
+          alert(window.I18N['error'])
         }
         this.setState({
-          image_url: data.image_url,
+          details: {...this.state.details, photo: data.image_url},
         });
       }.bind(this),
       error: function(xhr){
         console.error(xhr);
-        alert('Someting went wrong');
+        alert(window.I18N['error']);
       },
       complete: function() {
         $btn.removeAttr('disabled').removeClass('loading-spinner-after loading-spinner-m');
@@ -129,27 +234,124 @@ class CourseSettingsModal extends Component {
   }
 
   render() {
-    return <div className="settings course-settings">
+    return <div className="center settings course-settings">
       <h3>
         {this.props.course.title}
       </h3>
       <div className="form">
-        <div className="nicebox">
-          <h4>{window.I18N.course_picture}</h4>
-          <div className="picture">
-            {this.state.image_url && <img src={this.state.image_url} alt="" />}
+        {this.state.isLoading ? (
+          <div className="nicebox">
+            <span className="loading-spinner"></span>
           </div>
-          <label className="btn" htmlFor="upload-course">
-            <input type="file" id="upload-course" onChange={this.uploadImage} />
-            {window.I18N.course_picture_upload}
-          </label>
-        </div>
+        ) : (
+          <div>
+            {this.state.success && <div class="alert alert-success">{window.I18N['save_success']}</div>}
+            {this.state.errors && <div class="alert alert-danger">{window.I18N['error_400']}</div>}
+            <form className="nicebox clearfix form" onSubmit={this.submit}>
+              <div className="form-controls">
+                <label for="name">Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  value={this.state.details.name}
+                  onChange={this.handleChange.bind(this, 'name')}
+                />
+              </div>
+              {this.state.errors && this.state.errors.name && (
+                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              <div className="form-controls">
+                <label for="tags">Tags</label>
+                <input
+                  id="tags"
+                  name="tags"
+                  type="text"
+                  value={this.state.details.tags}
+                  onChange={this.handleChange.bind(this, 'tags')}
+                />
+              </div>
+              {this.state.errors && this.state.errors.tags && (
+                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              <div className="form-controls">
+                <label for="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  rows="5"
+                  cols="50"
+                  value={this.state.details.description}
+                  onChange={this.handleChange.bind(this, 'description')}
+                />
+              </div>
+              {this.state.errors && this.state.errors.description && (
+                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              <div className="form-controls">
+                <label for="short_description">Short description</label>
+                <input
+                  id="short_description"
+                  name="short_description"
+                  type="text"
+                  value={this.state.details.short_description}
+                  onChange={this.handleChange.bind(this, 'short_description')}
+                />
+              </div>
+              {this.state.errors && this.state.errors.short_description && (
+                <div class="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              <input
+                name="audio_mode"
+                type="hidden"
+                value={this.state.details.audio_mode ? "1" : "0"}
+              />
+              <input
+                name="course_status"
+                type="hidden"
+                value={this.state.details.course_status}
+              />
+              <input
+                name="source"
+                type="hidden"
+                value={this.state.details.source}
+              />
+              <input
+                name="target"
+                type="hidden"
+                value={this.state.details.target}
+              />
+              <input
+                name="csrfmiddlewaretoken"
+                type="hidden"
+                value={this.state.details.csrfmiddlewaretoken}
+              />
+              <div className="btn-group">
+                <button className="btn green" type="submit" disabled={this.state.isSubmitting}>
+                  {window.I18N['save']}
+                </button>
+              </div>
+            </form>
+
+            {/* IMAGE */}
+            <div className="nicebox">
+              <h4>{window.I18N.course_picture}</h4>
+              <div className="picture">
+                {this.state.details.photo && <img src={this.state.details.photo} alt="" />}
+              </div>
+              <label className="btn" htmlFor="upload-course">
+                <input type="file" id="upload-course" onChange={this.uploadImage} />
+                {window.I18N.course_picture_upload}
+              </label>
+            </div>
+          </div>
+        )}
         <div className="danger-zone alert alert-danger">
           <div>
             <h4>{window.I18N.delete_course_title}</h4>
             {this.state.confirmDelete && <div>
               <p>{window.I18N.confirm_del_course}</p>
-              <input type="text" onChange={this.updateInput} autoComplete="off" />
+              <input type="text" onChange={this.confirmDelete} autoComplete="off" />
             </div>}
           </div>
           <button className="btn danger" type="button" onClick={this.deleteCourse}>
@@ -157,6 +359,7 @@ class CourseSettingsModal extends Component {
           </button>
         </div>
       </div>
+
       <div className="btn-group">
         <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
       </div>
@@ -366,7 +569,7 @@ class LevelSettingsModal extends Component {
   }
 
   render() {
-    return <div className="settings learn-settings">
+    return <div className="center settings learn-settings">
       <div className="form">
         <div>
           <label htmlFor="title">{window.I18N['edit_level_title']}:&emsp;</label>
@@ -463,7 +666,7 @@ class EditLevel extends Component {
   }
 
   onGetDataError() {
-    alert('Something went wrong');
+    alert(window.I18N['error']);
   }
 
   getData() {
@@ -497,6 +700,11 @@ class EditLevel extends Component {
         'X-CSRFToken': window.MEMLIKE.course.csrftoken,
         'X-Referer': window.MEMLIKE.course.referer,
       },
+      success: function() {
+        this.setState({
+          isDeleted: true,
+        });
+      }.bind(this),
       error: function() {
         alert('Something went wrong when trying to delete the level');
       },
@@ -720,7 +928,7 @@ function bindEditEvents(tpl) {
         callback && callback('success', levelId, $newTr);
       },
       error: function(xhr){
-        alert('Something went wrong');
+        alert(window.I18N['error']);
 
         console.error(xhr);
         $tr.removeClass('disabled');
