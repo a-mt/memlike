@@ -60,11 +60,7 @@ class learn_fromform:
         if not _GET.session_type:
             raise web.seeother(f"/community/course/{course_id}/{course_slug}/", absolute=True)
 
-        try:
-            course = memrise.course(course_id, course_slug=course_slug)
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+        course = memrise.course(course_id, course_slug=course_slug)
 
         return web.config.template.render.learn(
             course,
@@ -83,11 +79,8 @@ class learn:
         if not session_type:
             session_type = level_index
             level_index = False
-        try:
-            course = memrise.course(course_id, course_slug=course_slug)
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+
+        course = memrise.course(course_id, course_slug=course_slug)
 
         return web.config.template.render.learn(course, session_type, level_index, False, 1, 0)
 
@@ -95,12 +88,7 @@ class learn:
 class thing:
     def GET(self, course_id, path, level_index, thing_id):
         course_slug = path.split("/", 2)[0]
-
-        try:
-            course = memrise.course(course_id, course_slug=course_slug)
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+        course = memrise.course(course_id, course_slug=course_slug)
 
         return web.config.template.render.learn(course, "preview", level_index, thing_id, 0, 0)
 
@@ -171,14 +159,9 @@ class level:
 class course:
     def GET(self, course_id, course_slug=""):
         course_slug = course_slug.split("/", 2)[0]
+        course = memrise.course(course_id, course_slug)
+
         items = False
-        try:
-            course = memrise.course(course_id, course_slug)
-
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
-
         try:
             # Course without any level ?
             if len(course["levels"]) == 0:
@@ -217,12 +200,9 @@ class leaderboard:
         )
 
         _GET = web.storage(input_data)
-        try:
-            course = memrise.course(course_id, course_slug=course_slug)
-            leaderboard = memrise.course_leaderboard(course_id, _GET.period)
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+
+        course = memrise.course(course_id, course_slug=course_slug)
+        leaderboard = memrise.course_leaderboard(course_id, _GET.period)
 
         return web.config.template.render.course_leaderboard(course, _GET.period, leaderboard)
 
@@ -234,11 +214,7 @@ class course_get_editpage:
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        try:
-            course = memrise.course_get_editpage(course_id, course_slug=course_slug)
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+        course = memrise.course_get_editpage(course_id, course_slug=course_slug)
 
         localized_languages = []
         for lang, item in sorted(languages.items(), key=lambda x: unidecode(web.ctx.i18n.languages[x[0]])):

@@ -15,8 +15,13 @@ sys.setrecursionlimit(500)
 import controllers
 import session
 import re
+import logging
 
+from requests.exceptions import HTTPError
 from pydantic_core import ValidationError
+
+
+logger = logging.getLogger(__name__)
 
 
 class logout:
@@ -189,6 +194,13 @@ def catch_generic_exception():
     exc_type, exc_value, tback = sys.exc_info()
     if exc_type is ValidationError:
         return format_badrequest(exc_value)
+
+    if exc_type is HTTPError:
+        if exc_value.response.status_code == 403:
+            return web.Unauthorized()
+        else:
+            logger.warning(exc_value)
+            return web.NotFound()
 
     return base_internal_error()
 

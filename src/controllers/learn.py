@@ -27,13 +27,16 @@ class learn:
         )
 
         _GET = web.storage(input_data)
-        try:
-            course = memrise.course(_GET["course_id"], course_slug="")
-        except HTTPError as e:
-            print(e)
-            return web.config.template.prender._404()
+        course = memrise.course(_GET["course_id"], course_slug="")
 
-        return web.config.template.render.learn(course, session_type, _GET["level_index"], False, 1, 0)
+        return web.config.template.render.learn(
+            course,
+            session_type,
+            _GET["level_index"],
+            False,
+            1,
+            0,
+        )
 
 
 app = web.application(urls, locals(), autoreload=False)
