@@ -124,10 +124,12 @@ class CourseSettingsModal extends Component {
       contentType: false,
       type: 'POST',
       success: function(data){
+        var details = window.MEMLIKE.course_details = {...this.state.details, ...data};
+
         this.setState({
           errors: false,
           success: true,
-          details: {...this.state.details, ...data},
+          details,
         });
       }.bind(this),
 

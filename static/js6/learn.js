@@ -147,7 +147,7 @@ class LearnSettingsModal extends Component {
   }
 
   render() {
-    return <div className="settings learn-settings">
+    return <div className="vcenter settings learn-settings">
       <div className="form">
         <div>
           <input
