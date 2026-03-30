@@ -127,6 +127,7 @@ $ t = time()
         confirm_del_course: "$:(I18N.misc['confirm_del_course'])",
         warn_del_course: "$:(I18N.misc['warn_del_course'])",
         learn_settings: "$:(I18N.misc['learn_settings'])",
+        course_settings: "$:(I18N.misc['course_settings'])",
         learn_settings_disable_typing: "$:(I18N.misc['learn_settings_disable_typing'])",
         learn_settings_disable_tapping: "$:(I18N.misc['learn_settings_disable_tapping'])",
         learn_settings_disable_multimedia: "$:(I18N.misc['learn_settings_disable_multimedia'])",
@@ -136,7 +137,16 @@ $ t = time()
         edit_level_title: "$:(I18N.misc['edit_level_title'])",
         course_picture: "$:(I18N.misc['course_picture'])",
         course_picture_upload: "$:(I18N.misc['course_picture_upload'])",
+        course_name: "$:(I18N.misc['course_name'])",
+        course_category: "$:(I18N.misc['course_category'])",
+        course_language: "$:(I18N.misc['course_language'])",
+        course_tags: "$:(I18N.misc['course_tags'])",
+        course_description: "$:(I18N.misc['course_description'])",
+        course_short_description: "$:(I18N.misc['course_short_description'])",
      };
+     window.I18N.categories = $:json(I18N.categories);
+     window.I18N.languages = $:json(I18N.languages);
+
      window.MEMLIKE = window.MEMLIKE || {};
     </script>
     <script src="/static/js/app.js"></script>

@@ -80,10 +80,10 @@ class course_editdetails:
                     validator.schema.int_schema(),
                 ),
                 "target": validator.field(
-                    validator.schema.str_schema(),
+                    validator.schema.int_schema(),
                 ),
                 "source": validator.field(
-                    validator.schema.str_schema(),
+                    validator.schema.int_schema(),
                 ),
                 "tags": validator.field(
                     validator.schema.str_schema(),

@@ -34,7 +34,7 @@ class ApplicationRenderTest(SimpleTestCase):
 
     def test_course_get_editpage(self):
         course = self.memrise.course_get_editpage(COURSE_ID, course_slug=COURSE_SLUG)
-        html = web.config.template.render.course_edit(course)
+        html = web.config.template.render.course_edit(course, {}, {})
         self.assertIsNotNone(html)
 
     def test_course_leaderboard(self):

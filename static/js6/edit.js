@@ -18,8 +18,13 @@ const build = {
 
 $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
+  Object.freeze(window.MEMLIKE.categories);
+  Object.freeze(window.MEMLIKE.languages);
 
-  render(<Edit course={window.MEMLIKE.course} />, document.getElementById('edit-levels'));
+  render(
+    <Edit course={window.MEMLIKE.course} />,
+    document.getElementById('edit-levels'),
+  );
 });
 
 //+--------------------------------------------------------
@@ -35,6 +40,7 @@ class CourseSettingsModal extends Component {
     this.confirmDelete = this.confirmDelete.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.submit = this.submit.bind(this);
+    this.tree = this.tree.bind(this);
 
     this.state = {
       confirmDelete: false,
@@ -66,7 +72,6 @@ class CourseSettingsModal extends Component {
       type: 'GET',
       success: function(data){
         window.MEMLIKE.course_details = data;
-
         this.setState({
           isLoading: false,
           details: data,
@@ -233,10 +238,31 @@ class CourseSettingsModal extends Component {
     });
   }
 
+  tree(list, selected, prefix="") {
+    let children = [];
+
+    for(let i=0; i<list.length; i++) {
+      let item = list[i];
+      let name = window.I18N.categories[item.id].replace('&amp;', '&');
+
+      children.push(
+        <option value={item.id} selected={item.id == selected}>
+          {prefix} {name}
+        </option>
+      );
+      if (item.children && item.children.length > 0) {
+        let subchildren = this.tree(item.children, selected, prefix + "    ");
+
+        subchildren && children.push(...subchildren);
+      }
+    }
+    return children;
+  }
+
   render() {
-    return <div className="center settings course-settings">
+    return <div className="vcenter settings course-settings">
       <h3>
-        {this.props.course.title}
+        {window.I18N['course_settings']}
       </h3>
       <div className="form">
         {this.state.isLoading ? (
@@ -249,20 +275,45 @@ class CourseSettingsModal extends Component {
             {this.state.errors && <div className="alert alert-danger">{window.I18N['error_400']}</div>}
             <form className="nicebox clearfix form" onSubmit={this.submit}>
               <div className="form-controls">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="name">{window.I18N['course_name']}</label>
                 <input
                   id="name"
                   name="name"
                   type="text"
                   value={this.state.details.name}
                   onChange={this.handleChange.bind(this, 'name')}
+                  required
                 />
               </div>
               {this.state.errors && this.state.errors.name && (
                 <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
+              {/* what to learn */}
               <div className="form-controls">
-                <label htmlFor="tags">Tags</label>
+                <label for="target">{window.I18N['course_category']}</label>
+                <select id="target" name="target" required onChange={this.handleChange.bind(this, 'target')}>
+                  {this.tree(window.MEMLIKE.categories, this.state.details.target, "")}
+                </select>
+              </div>
+              {this.state.errors && this.state.errors.source && (
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              {/* for people that speak */}
+              <div class="form-controls">
+                <label for="source">{window.I18N['course_language']}</label>
+                <select id="source" name="source" required onChange={this.handleChange.bind(this, 'source')}>
+                  {window.MEMLIKE.languages.map((item) => (
+                    <option value={item.category_id} selected={this.state.details.source == item.category_id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {this.state.errors && this.state.errors.source && (
+                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+              )}
+              <div className="form-controls">
+                <label htmlFor="tags">{window.I18N['course_tags']}</label>
                 <input
                   id="tags"
                   name="tags"
@@ -275,7 +326,7 @@ class CourseSettingsModal extends Component {
                 <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label htmlFor="description">Description</label>
+                <label htmlFor="description">{window.I18N['course_description']}</label>
                 <textarea
                   id="description"
                   name="description"
@@ -289,7 +340,7 @@ class CourseSettingsModal extends Component {
                 <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label htmlFor="short_description">Short description</label>
+                <label htmlFor="short_description">{window.I18N['course_short_description']}</label>
                 <input
                   id="short_description"
                   name="short_description"
@@ -312,22 +363,12 @@ class CourseSettingsModal extends Component {
                 value={this.state.details.course_status}
               />
               <input
-                name="source"
-                type="hidden"
-                value={this.state.details.source}
-              />
-              <input
-                name="target"
-                type="hidden"
-                value={this.state.details.target}
-              />
-              <input
                 name="csrfmiddlewaretoken"
                 type="hidden"
                 value={this.state.details.csrfmiddlewaretoken}
               />
               <div className="btn-group">
-                <button className="btn green" type="submit" disabled={this.state.isSubmitting}>
+                <button className={"btn green " + (this.state.isSubmitting ? "loading-spinner-after" : "")} type="submit" disabled={this.state.isSubmitting}>
                   {window.I18N['save']}
                 </button>
               </div>
@@ -435,7 +476,7 @@ class EditCourseActions extends Component {
         <div className="actions actions-right">
           {this.state.isLoading && <span className="loading-spinner left"></span>}
 
-          <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+          <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N['course_settings']}>
             <span className="ico ico-settings ico-l ico-grey"></span>
           </button>
           <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>
@@ -485,7 +526,10 @@ class Edit extends Component {
 
     return <div>
       {this.props.course.last_pool_id && (
-        <EditCourseActions course={this.props.course} onLevelAdded={this.onLevelAdded} />
+        <EditCourseActions
+          course={this.props.course}
+          onLevelAdded={this.onLevelAdded}
+        />
       )}
       {this.props.course.levels.map((level, i) => {
         var show = false;
@@ -569,7 +613,7 @@ class LevelSettingsModal extends Component {
   }
 
   render() {
-    return <div className="center settings learn-settings">
+    return <div className="vcenter settings learn-settings">
       <div className="form">
         <div>
           <label htmlFor="title">{window.I18N['edit_level_title']}:&emsp;</label>
@@ -1018,7 +1062,7 @@ function bindEditEvents(tpl) {
       },
       success: function(data) {
         var alts = data.thing.columns[cellId].alts,
-            html = `<div class="alts">
+            html = `<div class="vcenter alts">
               ${alts.map((alt) => `<div class="alt">
                 <input type="text" name="${alt.id}" value="${alt.val}" />
                 <button type="button" class="alt-action"></button>

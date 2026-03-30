@@ -1775,7 +1775,7 @@ code.header {
   flex-direction: column;
   flex: 0 1 auto;
 }
-.modal .center {
+.modal .vcenter {
   margin: auto;
   display: flex;
   flex-direction: column;

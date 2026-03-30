@@ -65,12 +65,48 @@ $ errors = flash.get('err', {})
       $if 'language' in errors:
         <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
 
+      <div className="form-controls">
+        <label htmlFor="tags">$(I18N.misc['course_tags'])</label>
+        <input
+          id="tags"
+          name="tags"
+          type="text"
+          value="$(data.get('tags', ''))"
+        />
+      </div>
+      $if 'tags' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
+      <div className="form-controls">
+        <label htmlFor="description">$(I18N.misc['course_description'])</label>
+        <textarea
+          id="description"
+          name="description"
+          rows="5"
+          cols="50"
+          value="$(data.get('description', ''))"
+        />
+      </div>
+      $if 'description' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
+      <div className="form-controls">
+        <label htmlFor="short_description">$(I18N.misc['course_short_description'])</label>
+        <input
+          id="short_description"
+          name="short_description"
+          type="text"
+          value="$(data.get('short_description', ''))"
+        />
+      </div>
+      $if 'short_description' in errors:
+        <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
+
       <div class="form-controls">
         <button class="btn green" type="submit">
           $(I18N.misc['submit'])
         </button>
       </div>
-
     </div>
   </form>
 </main>
