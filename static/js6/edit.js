@@ -240,7 +240,7 @@ class CourseSettingsModal extends Component {
     });
   }
 
-  tree(list, selected, prefix="") {
+  tree(list, selected, prefix='') {
     let children = [];
 
     for(let i=0; i<list.length; i++) {
@@ -253,7 +253,7 @@ class CourseSettingsModal extends Component {
         </option>
       );
       if (item.children && item.children.length > 0) {
-        let subchildren = this.tree(item.children, selected, prefix + "    ");
+        let subchildren = this.tree(item.children, selected, prefix + '    ');
 
         subchildren && children.push(...subchildren);
       }
@@ -292,20 +292,24 @@ class CourseSettingsModal extends Component {
               )}
               {/* what to learn */}
               <div className="form-controls">
-                <label for="target">{window.I18N['course_category']}</label>
+                <label htmlFor="target">{window.I18N['course_category']}</label>
                 <select id="target" name="target" required onChange={this.handleChange.bind(this, 'target')}>
-                  {this.tree(window.MEMLIKE.categories, this.state.details.target, "")}
+                  {this.tree(window.MEMLIKE.categories, this.state.details.target, '')}
                 </select>
               </div>
               {this.state.errors && this.state.errors.source && (
                 <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
               )}
               {/* for people that speak */}
-              <div class="form-controls">
-                <label for="source">{window.I18N['course_language']}</label>
+              <div className="form-controls">
+                <label htmlFor="source">{window.I18N['course_language']}</label>
                 <select id="source" name="source" required onChange={this.handleChange.bind(this, 'source')}>
                   {window.MEMLIKE.languages.map((item) => (
-                    <option value={item.category_id} selected={this.state.details.source == item.category_id}>
+                    <option
+                      key={item.category_id}
+                      value={item.category_id}
+                      selected={this.state.details.source == item.category_id}
+                    >
                       {item.name}
                     </option>
                   ))}
@@ -370,7 +374,7 @@ class CourseSettingsModal extends Component {
                 value={this.state.details.csrfmiddlewaretoken}
               />
               <div className="btn-group">
-                <button className={"btn green " + (this.state.isSubmitting ? "loading-spinner-after" : "")} type="submit" disabled={this.state.isSubmitting}>
+                <button className={'btn green ' + (this.state.isSubmitting ? 'loading-spinner-after' : '')} type="submit" disabled={this.state.isSubmitting}>
                   {window.I18N['save']}
                 </button>
               </div>

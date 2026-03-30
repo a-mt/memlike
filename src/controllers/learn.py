@@ -1,7 +1,6 @@
 import web
 from utils import validator
 from memrise import memrise
-from requests.exceptions import HTTPError
 
 # fmt: off
 urls = (

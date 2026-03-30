@@ -218,11 +218,13 @@ class course_get_editpage:
 
         localized_languages = []
         for lang, item in sorted(languages.items(), key=lambda x: unidecode(web.ctx.i18n.languages[x[0]])):
-            localized_languages.append({
-                **item,
-                "category_id": categories_code.get(lang, ""),
-                "name": web.ctx.i18n.languages[lang],
-            })
+            localized_languages.append(
+                {
+                    **item,
+                    "category_id": categories_code.get(lang, ""),
+                    "name": web.ctx.i18n.languages[lang],
+                }
+            )
         return web.config.template.render.course_edit(course, categories, localized_languages)
 
 
