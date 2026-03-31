@@ -77,7 +77,6 @@ urls_thing = (
 
 # /ajax/course/...
 urls_course = (
-    r"/(\d+)/([^/]+)/remove", course_delete,
     r"/(\d+)/([^/]+)/picture_upload", course_picture_upload,
     r"/(\d+)/([^/]+)/edit", course_editpage,
     r"/(\d+)/([^/]+)/details_edit", course_editdetails,
@@ -86,6 +85,7 @@ urls_course = (
     r"/(\d+)/([^/]+)/leaderboard", course_leaderboard,
     r"/(\d+)/([^/]+)", course,
     r"/add", course_add,
+    r"/remove", course_delete,
 )
 
 
