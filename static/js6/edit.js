@@ -846,7 +846,7 @@ class EditLevel extends Component {
       </div>
 
       <div className="edit-level-label">
-        <label>{this.state.name}</label>
+        <label>{this.state.name || "New level"}</label>
         {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 

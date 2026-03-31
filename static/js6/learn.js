@@ -1434,6 +1434,18 @@ class Learn extends Component {
       if(char > this.choices.length) {
         return;
       }
+      if (this.choices[0].attributes.answerType == 'audio') {
+        var btn = document.getElementById(`choice-${char}`);
+
+        if (btn) {
+          [...btn.parentNode.children].forEach((node) => {
+            node == btn ? node.classList.add('active') : node.classList.remove('active')
+          });
+          btn.focus();
+          window.audioPlayer && window.audioPlayer.play.call(btn.querySelector('audio'), e, true);
+        }
+        return;
+      }
       this.multiple_choice(char);
     }
   }
