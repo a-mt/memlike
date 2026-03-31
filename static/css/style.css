@@ -83,6 +83,9 @@ figure, figcaption {
   padding: 8px 20px;
   box-shadow: 0 1px 0 0 rgba(255,255,255,0.2) inset,0 -1px 0 0 rgba(0,0,0,0.05) inset;
 }
+.btn .ico {
+  pointer-events: none;
+}
 .btn-mini {
   padding: 0 5px;
   font-size: 12px;
@@ -593,6 +596,9 @@ footer .active a {
 }
 .ico-grey {
   opacity: .3;
+}
+.danger .ico-white {
+  opacity: 0.9;
 }
 .ico-l {
   background-size: 224px 320px;
@@ -2370,6 +2376,16 @@ form .error {
 }
 .edit-level-label .action {
   margin-left: 20px;
+}
+
+.edit-level-content th[data-key] .ico-edit {
+  float: right;
+  cursor: pointer;
+  opacity: 0;
+  display: block;
+}
+.edit-level-content th[data-key]:hover .ico-edit {
+  opacity: 1;
 }
 
 /* Actions */

@@ -78,7 +78,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         )
         self.assertEqual(response.status_code, 200)
 
-    def test_level_column_edit(self):
+    def test_level_attribute_edit(self):
         response = self.client.request("/ajax/level/column_edit", method="POST")
         self.assertEqual(response.status_code, 401)
 
@@ -96,7 +96,7 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
                 "pool_id": 1,
                 "column_key": "1",
                 "label": "Part of Speach",
-                "show_at_tests": "true",
+                "column_structure": "attribute",
             },
         )
         self.assertEqual(response.status_code, 200)

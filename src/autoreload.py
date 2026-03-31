@@ -561,6 +561,8 @@ class AutoreloadMagics:
         """Cache the modification times of any modules imported in this execution and track imports"""
 
         newly_loaded_modules = set(sys.modules) - self.loaded_modules
+        self._reloader._report(newly_loaded_modules)
+
         for modname in newly_loaded_modules:
             _, pymtime = self._reloader.filename_and_mtime(sys.modules[modname])
             if pymtime is not None:

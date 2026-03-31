@@ -232,18 +232,25 @@ class level_column_edit:
                 "label": validator.field(
                     validator.schema.str_schema(),
                 ),
-                "show_at_tests": validator.field(
-                    validator.schema.bool_schema(),
+                "column_structure": validator.field(
+                    validator.str_choices_schema(["attribute", "column"]),
                 ),
             },
             data=web.input(),
         )
+        if (data["column_structure"] == "attribute"):
+            return proxied_response(
+                lambda: memrise.level_attribute_edit(
+                    data["pool_id"],
+                    data["column_key"],
+                    data["label"],
+                )
+            )
         return proxied_response(
             lambda: memrise.level_column_edit(
                 data["pool_id"],
                 data["column_key"],
                 data["label"],
-                data["show_at_tests"],
             )
         )
 
@@ -261,6 +268,9 @@ class level_column_delete:
                 "column_key": validator.field(
                     validator.schema.str_schema(),
                 ),
+                "column_structure": validator.field(
+                    validator.str_choices_schema(["attribute", "column"]),
+                ),
             },
             data=web.input(),
         )
@@ -268,6 +278,37 @@ class level_column_delete:
             lambda: memrise.level_column_delete(
                 data["pool_id"],
                 data["column_key"],
+                column_structure=data["column_structure"],
+            )
+        )
+
+
+class level_column_add:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "pool_id": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "label": validator.field(
+                    validator.schema.str_schema(),
+                ),
+                "column_kind": validator.field(
+                    validator.str_choices_schema(["text", "image", "audio"]),
+                    default="text",
+                ),
+            },
+            data=web.input(),
+        )
+        return proxied_response(
+            lambda: memrise.level_column_add(
+                data["pool_id"],
+                data["column_kind"],
+                data["label"],
+                column_structure="attribute",
             )
         )
 

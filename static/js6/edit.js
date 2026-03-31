@@ -52,6 +52,8 @@ class CourseSettingsModal extends Component {
       errors: false,
       success: false,
     };
+    this.confirmDelCourse = '';
+
     if (window.MEMLIKE.course_details) {
       this.state.isLoading = false;
       this.state.details = window.MEMLIKE.course_details;
@@ -374,7 +376,11 @@ class CourseSettingsModal extends Component {
                 value={this.state.details.csrfmiddlewaretoken}
               />
               <div className="btn-group">
-                <button className={'btn green ' + (this.state.isSubmitting ? 'loading-spinner-after' : '')} type="submit" disabled={this.state.isSubmitting}>
+                <button
+                  className={'btn green ' + (this.state.isSubmitting ? 'loading-spinner-after' : '')}
+                  type="submit"
+                  disabled={this.state.isSubmitting}
+                >
                   {window.I18N['save']}
                 </button>
               </div>
@@ -482,7 +488,12 @@ class EditCourseActions extends Component {
         <div className="actions actions-right">
           {this.state.isLoading && <span className="loading-spinner left"></span>}
 
-          <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N['course_settings']}>
+          <button
+            className="settings-btn"
+            type="button"
+            onClick={this.toggleSettings}
+            title={window.I18N['course_settings']}
+          >
             <span className="ico ico-settings ico-l ico-grey"></span>
           </button>
           <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>
@@ -855,6 +866,117 @@ class EditLevel extends Component {
   }
 }
 
+class ColumnSettingsModal extends Component {
+  constructor(props) {
+    super(props);
+
+    this.closeModal = this.closeModal.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
+    this.deleteColumn = this.deleteColumn.bind(this);
+    this.state = {
+      label: this.props.label,
+    };
+  }
+
+  closeModal() {
+    window.modal.close();
+  }
+
+  handleChange(id, e) {
+    this.setState({
+      [id]: e.target.value,
+    });
+  }
+
+  updateSettings(e) {
+    const label = this.state.label;
+    if (label == this.props.label) {
+      return this.closeModal();
+    }
+    var $btn = $(e.target);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-after loading-spinner-m');
+
+    $.ajax({
+      url: '/ajax/level/column_edit',
+      method: 'POST',
+      data: {
+        pool_id: this.props.poolID,
+        column_key: this.props.columnKey,
+        label,
+        column_structure: this.props.columnStructure,
+      },
+      error: function() {
+        alert('Something went wrong when trying to update the level');
+      },
+      success: function() {
+        this.props.updateTitle && this.props.updateTitle(label);
+        this.closeModal();
+      }.bind(this),
+      complete: function(){
+        $btn.removeAttr('disabled').removeClass('loading-spinner-after loading-spinner-m');
+      }
+    });
+  }
+
+  deleteColumn(e) {
+    if (!confirm(window.I18N.confirm_del_column)) {
+      return;
+    }
+    var $btn = $(e.target);
+    $btn.attr('disabled', 'disabled').addClass('loading-spinner-before loading-spinner-m');
+
+    $.ajax({
+      url: '/ajax/level/column_remove',
+      method: 'POST',
+      data: {
+        pool_id: this.props.poolID,
+        column_key: this.props.columnKey,
+        column_structure: this.props.columnStructure,
+      },
+      success: function(){
+        this.props.deleteColumn && this.props.deleteColumn();
+        this.closeModal();
+      }.bind(this),
+      error: function(xhr) {
+        $btn.removeAttr('disabled').removeClass('loading-spinner-before loading-spinner-m');
+
+        alert(window.I18N['error']);
+
+        console.error(xhr);
+      },
+      complete: function() {
+        this.setState({confirmDelete: false});
+      }.bind(this),
+    });
+  }
+
+  render() {
+    return <div className="vcenter settings learn-settings">
+      <div className="form">
+        <div>
+          <label htmlFor="label">{window.I18N['edit_level_title']}:&emsp;</label>
+          <input
+            id="label"
+            type="text"
+            defaultValue={this.props.label}
+            onChange={this.handleChange.bind(this, 'label')}
+            autoComplete="off"
+          />
+        </div>
+      </div>
+      <div className="actions">
+        <div className="btn-group">
+          <button className="btn danger" title={window.I18N.delete_course} onClick={this.deleteColumn}>
+            <i className="ico ico-white ico-trash"></i>
+          </button>
+          <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
+          <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+        </div>
+      </div>
+    </div>
+  }
+}
+
 //+--------------------------------------------------------
 //| Events
 //+--------------------------------------------------------
@@ -907,7 +1029,8 @@ function bindEditEvents(tpl) {
     // Import/export
     .on('click', '.export-level', click_exportLevel)
     .on('change', '.import-level input', send_importLevel)
-    .on('click', '.generate-audio', AudioUploader.click_generateAudio);
+    .on('click', '.generate-audio', AudioUploader.click_generateAudio)
+    .on('click', 'th[data-key] .ico-edit', click_editColumn);
   }
 
   //+---------------------------------------------------------------------------
@@ -1361,12 +1484,12 @@ function bindEditEvents(tpl) {
     var $level     = $(this).closest('.edit-level'),
         levelId    = $level.data('level-id'),
         $table     = $level.find('table'),
-        csvContent = export_things($table);
+        csvContent = exportThings($table);
 
     download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
   }
 
-  function export_things($table) {
+  function exportThings($table) {
     var row        = [],
         csvContent = '';
 
@@ -1458,14 +1581,14 @@ function bindEditEvents(tpl) {
         $level = $(this).closest('.edit-level');
     reader.onload = (function(f) {
       return function(e) {
-        import_file($level, e.target.result);
+        importFile($level, e.target.result);
       };
     })(file);
 
     reader.readAsText(file);
   }
 
-  function import_file($level, content) {
+  function importFile($level, content) {
     var data = $.csv.toArrays(content);
     if(!data.length) {
       return;
@@ -1591,10 +1714,10 @@ function bindEditEvents(tpl) {
     }
     data = null;
 
-    import_preview(rows, empty ? false : headers, $adding);
+    importPreview(rows, empty ? false : headers, $adding);
   }
 
-  function import_preview(rows, headers, $adding) {
+  function importPreview(rows, headers, $adding) {
     if(!headers) {
       alert(window.I18N.import_err_empty);
       return;
@@ -1686,7 +1809,7 @@ function bindEditEvents(tpl) {
         let batch = rows.splice(0, 10);
 
         setTimeout(function(){
-          import_rows(batch, $adding);
+          importRows(batch, $adding);
         }, 0);
       }
       rows    = null;
@@ -1698,7 +1821,7 @@ function bindEditEvents(tpl) {
    * List of rows that have been imported,
    * that do have an upload to handle
    */
-  function imported_rows(rows) {
+  function importRowsDone(rows) {
     if (!window.File) {
       return;
     }
@@ -1710,7 +1833,7 @@ function bindEditEvents(tpl) {
     }
   }
 
-  function import_rows(rows, $adding) {
+  function importRows(rows, $adding) {
     var pending = 0;
     var callbackRows = [];
 
@@ -1724,7 +1847,7 @@ function bindEditEvents(tpl) {
         }
         if(pending == 0) {
           setTimeout(function() {
-            imported_rows(callbackRows);
+            importRowsDone(callbackRows);
           }, 0);
         }
       };
@@ -1916,3 +2039,36 @@ var AudioUploader = {
       }); // end fetch
   } // end uploadWord
 };
+
+//+---------------------------------------------------------------------------
+// Rename
+function click_editColumn(e) {
+  var $column = $(e.target).closest('th'),
+      $span = $('span', $column),
+
+      updateTitle = function(title) {
+        $span.html(title);
+      },
+      deleteColumn = function() {
+        let idx = $column.index();
+
+        $column.closest('table').find('tr').each(function() {
+          $(this).find(`td:eq(${idx}),th:eq(${idx})`).remove();
+        });
+      },
+      columnKey = $column.attr('data-key'),
+      columnStructure = $column.hasClass('attribute') ? 'attribute' : 'column';
+
+  var div = window.modal.getContainer().get(0).querySelector('.modal');
+  div.innerHTML = '';
+
+  render(<ColumnSettingsModal
+    poolID={window.MEMLIKE.course.last_pool_id}
+    columnKey={columnKey}
+    columnStructure={columnStructure}
+    updateTitle={updateTitle}
+    deleteColumn={deleteColumn}
+    label={$span.html().trim()}
+  />, div);
+  window.modal.reopen();
+}

@@ -495,10 +495,10 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_column_edit(
-        self, pool_id, column_key, label, show_at_tests, sessionid=None, csrftoken=None, referer=None, **kwargs
+    def level_attribute_edit(
+        self, pool_id, column_key, label, show_at_tests=False, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
-        request_msg = "Level edit column"
+        request_msg = "Level edit attribute"
 
         url = f"{HOST}/ajax/pool/attributes/set/"
 
@@ -516,17 +516,66 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_column_delete(self, pool_id, column_key, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_column_edit(
+        self, pool_id, column_key, label, show_after_tests=False, sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
+        request_msg = "Level edit column"
+
+        url = f"{HOST}/ajax/pool/columns/set/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "column_key": column_key,
+                "pool_id": pool_id,
+                "label": label,
+                "show_after_tests": "true" if show_after_tests else "false",
+                "keyboard": "äéöüß",
+                "show_bigger": "false",
+                "never_italicize": "false",
+                "typing_disabled": "false",
+                "tapping_disabled": "false",
+                "typing_strict": "false",
+                "always_show": "false",
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
+    def level_column_add(
+        self, pool_id, column_kind, label, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
+        request_msg = "Level add column"
+
+        url = f"{HOST}/ajax/pool/structure_add/"
+
+        request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+        response = requests.post(
+            url,
+            data={
+                "kind": column_kind,  # text, image, audio
+                "structure": "attribute" if column_kind !="text" else column_structure,  # attribute, column
+                "pool_id": pool_id,
+                "label": label,
+            },
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return None
+
+    def level_column_delete(self, pool_id, column_key, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = "Level delete column"
 
-        url = f"{HOST}/ajax/pool/attributes/set/"
+        url = f"{HOST}/ajax/pool/structure_delete/"
 
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
         response = requests.post(
             url,
             data={
                 "key": column_key,
-                "structure": "attribute",
+                "structure": column_structure,
                 "pool_id": pool_id,
             },
             **request_kwargs,

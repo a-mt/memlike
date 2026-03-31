@@ -245,7 +245,7 @@ conf = {
             "level": logging.WARNING,
         },
         "autoreload": {
-            "level": logging.WARNING,
+            "level": logging.DEBUG,
         },
         "debug.template": {
             "level": logging.WARNING,

@@ -978,7 +978,12 @@ class DummyMemrise(Memrise):
             }
         }
 
-    def level_column_edit(self, pool_id, column_key, label, show_at_tests, **kwargs):
+    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False, **kwargs):
+        return {
+            "saved": None,
+        }
+
+    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False, **kwargs):
         return {
             "saved": None,
         }
@@ -1011,5 +1016,6 @@ class DummyEditMixin:
     level_columns_direction_edit = DummyMemrise.__dict__["level_columns_direction_edit"]
     level_column_edit = DummyMemrise.__dict__["level_column_edit"]
     level_column_delete = DummyMemrise.__dict__["level_column_delete"]
+    level_attribute_edit = DummyMemrise.__dict__["level_attribute_edit"]
     level_title_edit = DummyMemrise.__dict__["level_title_edit"]
     course_delete = DummyMemrise.__dict__["course_delete"]

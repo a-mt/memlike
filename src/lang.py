@@ -1,9 +1,11 @@
 from os.path import isfile
+from pathlib import Path
 from settings import DEFAULT_LANG_SLUG, ROOTDIR
 from utils.module_loading import load_source
+
+import locales  # noqa F401
 import web
 import logging
-from pathlib import Path
 
 
 logger = logging.getLogger(__name__)

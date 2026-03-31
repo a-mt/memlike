@@ -299,9 +299,9 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_title_edit() method")
 
-    def level_column_edit(self, pool_id, column_key, label, show_at_tests):
+    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False):
         """
-        Set which columns are acting as question and answer
+        Rename a column
 
         @param string pool_id
         @param string column_key
@@ -310,6 +310,18 @@ class Memrise:
         @return dict - {saved}
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_column_edit() method")
+
+    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
+        """
+        Rename an attribute
+
+        @param string pool_id
+        @param string column_key
+        @param string label
+        @param boolean show_at_tests
+        @return dict - {saved}
+        """
+        raise NotImplementedError("subclasses of Memrise must provide a level_attribute_edit() method")
 
     def level_columns_direction_edit(self, level_id, column_a, column_b):
         """
