@@ -13,3 +13,6 @@ from .cached_api import (
     CachedApiMemrise,
     DummyCachedApiMemrise,
 )
+from .postgres_db import (
+    PostgresDB,
+)

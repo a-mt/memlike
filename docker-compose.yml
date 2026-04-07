@@ -2,16 +2,25 @@
 # File to run a "dev" environment locally
 services:
   db:
-    image: postgres:10
+    image: postgres-crypto:14
+    build:
+      context: .
+      dockerfile: docker-postgres.Dockerfile
     restart: unless-stopped
     volumes:
       - ./docker_volumes/postgresql/data:/var/lib/postgresql/data
       - ./docker_volumes/dump_pgsql:/var/dump_pgsql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+      - ./init.sql:/init-db.sql
     environment:
-      POSTGRES_USER: memuser
-      POSTGRES_PASSWORD: mempass
-      POSTGRES_DB: memdb
+      POSTGRES_USER: rootuser
+      POSTGRES_PASSWORD: rootpass
+      POSTGRES_DB: rootdb
+      POSTGRES_HOST_AUTH_METHOD: scram-sha-256
+      POSTGRES_INITDB_ARGS: --auth=scram-sha-256 --auth-host=scram-sha-256 --auth-local=scram-sha-256
+      POSTGRES_API_USER: memuser
+      POSTGRES_API_PASSWORD: mempass
+      POSTGRES_API_DB: memdb
     ports:
       - "5432:5432"
     healthcheck:

@@ -9,3 +9,4 @@ psycopg2-binary
 python_dateutil==2.9.0
 pydantic_core==2.42
 unidecode==1.4
+base58==2.1.1

@@ -994,9 +994,7 @@ class DummyMemrise(Memrise):
 
 class DummyLoginMixin:
     login = DummyMemrise.__dict__["login"]
-
-    def login_as_anonymous(self):
-        return self.login(None, None)
+    login_as_anonymous = Memrise.__dict__["login_as_anonymous"]
 
 
 class DummyEditMixin:

@@ -39,5 +39,8 @@ COPY memcache-start.sh ./memcache-start.sh
 
 EXPOSE 8080
 
+# Add test dependencies
+RUN pip install tox pytest && python -I -m pip install pytest -r /srv/requirements.txt
+
 ENTRYPOINT ["bash", "/srv/docker-entrypoint.sh"]
 CMD ["python", "src/app.py"]

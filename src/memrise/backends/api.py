@@ -24,33 +24,9 @@ class ApiMemrise(Memrise):
     def create_scraper(self):
         return Scraper()
 
-    def get_saved_login(self):
-        return web.ctx.get("session", {}).get("loggedin", None)
-
-    def set_default_kwargs(self, kwargs):
-        session = self.get_saved_login() or {}
-        kwargs.setdefault("sessionid", session.get("sessionid", None))
-        kwargs.setdefault("csrftoken", session.get("csrftoken", None))
-        kwargs.setdefault("is_anon", session.get("is_anon", None))
-
-    def set_kwargs_session(self, kwargs, session):
-        kwargs["sessionid"] = session["sessionid"]
-        kwargs["csrftoken"] = session["csrftoken"]
-        kwargs["is_anon"] = session.get("is_anon", False)
-
     # +-----------------------------------------------------
     # | AUTH
     # +-----------------------------------------------------
-    def login_as_anonymous(self, **kwargs):
-        """
-        Retrieve sessionid to retrieve content (using our own account)
-
-        @return string - sessionid
-        """
-        session = self.login(settings.MEMRISE_ANON_USERNAME, settings.MEMRISE_ANON_PASSWORD)
-        session["is_anon"] = True
-        return session
-
     def login(self, username, password):
         return self.requestor.login(username, password)
 
