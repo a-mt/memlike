@@ -1,3 +1,11 @@
+var process = process || {};
+process.env = process.env || {};
+
+const build = {
+  status: process.env.VAR,
+  date: process.env.BUILD_DATE,
+};
+
 /* global $, window, document, console, setTimeout */
 window.GlobalEventEmitter = {
   _events: {},
@@ -886,3 +894,49 @@ var TTS = {
     // return TTS.host + '?q=' + encodeURIComponent(text) + '&tl=' + lang + '&ttspeed=1&download';
   }
 };
+
+//+--------------------------------------------------------
+//| File download
+//+--------------------------------------------------------
+
+/**
+ * Trigger a file download of the given mimeType
+ * ex: download(csvContent, 'dowload.csv', 'text/csv;encoding:utf-8');
+ *
+ * @param string content
+ * @param string fileName
+ * @param mimeType
+ */
+var download = function(content, fileName, mimeType) {
+  var a = document.createElement('a');
+  mimeType = mimeType || 'application/octet-stream';
+
+  // IE10
+  if(navigator.msSaveBlob) {
+    navigator.msSaveBlob(new Blob([content], {
+      type: mimeType
+    }), fileName);
+
+  //html5 A[download]
+  } else if (URL && 'download' in a) {
+    a.href = URL.createObjectURL(new Blob([content], {
+      type: mimeType
+    }));
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+  } else {
+    window.location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+  }
+};
+
+var getCookies = function() {
+  let cookie = {};
+  document.cookie.split(';').forEach(function(el) {
+    let [k,v] = el.split('=');
+    cookie[k.trim()] = v;
+  })
+  return cookie;
+}

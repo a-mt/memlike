@@ -23,6 +23,7 @@ urls = (
     r"/(\d+)/(.*)/garden", "learn_fromform",
     r"/(\d+)/(.*)/garden/(preview|learn|review|classic_review|speed_review)", "learn",
     r"/(\d+)/(.*)/leaderboard", "leaderboard",
+    r"/(\d+)/(.*)/spreadsheet", "spreadsheet",
     r"/(\d+)/([^/]*)/edit", "course_get_editpage",
     r"/(\d+)/(.*)", "course",
     r"/add", "course_add",
@@ -182,6 +183,21 @@ class course:
             )
 
         return web.config.template.render.course_summary(course)
+
+
+class spreadsheet:
+    def GET(self, course_id, course_slug=""):
+        course_slug = course_slug.split("/", 2)[0]
+        course = memrise.course(course_id, course_slug)
+
+        selectboxes = {"0": "", "1": ""}
+
+        for rank, level in course.get("levels", []).items():
+            k = "1" if level["type"] == 2 else "0"
+
+            selectboxes[k] += f"<option value='{rank}' selected>{rank}. {level["name"]}</option>"
+
+        return web.config.template.render.course_spreadsheet(course, selectboxes)
 
 
 class leaderboard:

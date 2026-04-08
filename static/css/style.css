@@ -2846,3 +2846,89 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
 .form-controls input {
   width: 280px;
 }
+
+/*-------------------------------------------------------
+ * SPREADSHEET
+ *-------------------------------------------------------*/
+
+#spreadsheet_conf legend { font-weight: 600; }
+#spreadsheet_conf :disabled { opacity: 0.5; }
+#spreadsheet_conf td { padding: 5px; }
+
+#spreadsheet_conf .form-inline div { float: right; }
+#spreadsheet_conf .form-check-label,
+#spreadsheet_conf .form-check-input { display: inline-block; }
+#spreadsheet_conf .actions { margin-top: 10px; }
+
+#spreadsheet_conf button.icon {
+    font-size: 2em;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    opacity: 0.5;
+}
+#spreadsheet_conf button.icon:hover {
+    opacity: 1;
+}
+
+#spreadsheet { border-top: 1px solid #e5e5e5; padding-top: 20px; }
+#spreadsheet:empty { border-top-color: transparent; }
+
+#spreadsheet table {
+  background: white;
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+}
+#spreadsheet td,
+#spreadsheet th {
+  border: 1px solid #e4e4e4;
+  padding: 2px 5px;
+  vertical-align: top;
+}
+#spreadsheet .num {
+  background: rgba(0,0,0,0.03);
+  text-align: right;
+  width: 5%;
+}
+#spreadsheet td.num {
+  color: rgba(0,0,0,0.6);
+  white-space: nowrap;
+}
+#spreadsheet td.num.ignored {
+  color: rgba(0,0,0,0);
+}
+#spreadsheet .score.left {
+  border-right-color: transparent;
+  padding-right: 0;
+}
+#spreadsheet .score.right::before {
+  content: "/";
+  color: rgba(0,0,0,0.2);
+}
+#spreadsheet .score.right.ignored::before {
+  content: "-";
+  color: rgba(0,0,0,0.6);
+}
+#spreadsheet .score.right {
+  text-align: left;
+  padding-left: 0;
+}
+#spreadsheet .score.often-missed { color:#ff725b; }
+#spreadsheet .score.sometimes-missed { color:#f08700; }
+
+#spreadsheet .course-title { font-weight: normal; font-size: 22px; }
+#spreadsheet audio, #spreadsheet video { display: block; max-width: 100%; }
+
+#spreadsheet .alt span { color: rgba(0,0,0,0.4); }
+#spreadsheet .alt span::before { content: "- "; }
+
+#spreadsheet .more { margin: 5px 0; }
+#spreadsheet .more + .more { margin-top: 10px; }
+#spreadsheet .more span { padding: 0 5px; line-height: 1em; }
+#spreadsheet .highlight {
+  display: block;
+  border-bottom: 2px solid white;
+  color: rgba(0,0,0,0.4);
+}

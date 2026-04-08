@@ -45,6 +45,7 @@ misc = {
     "near_answer": "Presque",
     "your_answer_was": "Vous avez répondu",
     "your_answer_was_empty": "Vous n'avez pas répondu",
+    "spreadsheet": "Tableur",
     "leaderboard": "Classement",
     "leaderboard_none": "Classement vide",
     "week": "Semaine",

@@ -1,0 +1,101 @@
+$def with (course, selectboxes)
+$var currentPage: courses
+$var title: $(course['title']) - $(I18N.misc['spreadsheet'])
+$var js: /static/js/spreadsheet.js
+
+$:(prender.inc_course_banner(course))
+
+<div class="page-head">
+  <div class="inner clearfix">
+
+    <!-- Levels name -->
+    <a href="$(course['url'])" class="pill">
+      <i class="ico ico-list"></i>
+      $(I18N.misc['levels']) ($(len(course['levels'])))
+    </a>
+
+    <!-- Link to leaderboard -->
+    <a href="$(course['url'])leaderboard" class="pill">
+      <i class="ico ico-trophy"></i>
+      $(I18N.misc['leaderboard'])
+    </a>
+
+    <!-- Link to spreadsheet -->
+    <button type="button" class="pill active">
+      <i class="ico ico-list ico-white"></i>
+      $(I18N.misc['spreadsheet'])
+    </button>
+  </div>
+</div>
+
+<main>
+  <div id="course-container" class="inner">
+
+    <!-- Add the selectboxes of levels / checkbox display alternatives -->
+    <form id="spreadsheet_conf">
+      <legend class="form-label">Spreadsheet should contain ...</legend>
+
+      $if not selectboxes["0"] and not selectboxes["1"]:
+        <input type="hidden" id="export0" value="1">
+
+      <table>
+      $if selectboxes["0"] or selectboxes["1"]:
+        $if selectboxes["0"] and selectboxes["1"]:
+          <tr class="form-group">
+            <td class="form-inline form-ab">
+              <input class="form-input chooseExport" type="radio"
+                     id="chooseExport0" name="chooseExport" value="0" checked>
+              <label class="form-label" for="chooseExport0">Classic levels</label>
+            </td>
+            <td class="form-inline form-ab">
+              <input class="form-input chooseExport" type="radio"
+                     id="chooseExport1" name="chooseExport" value="1">
+              <label class="form-label" for="chooseExport1">Multimedia levels</label>
+            </td>
+          </tr>
+
+        <tr class="form-group">
+          $if selectboxes["0"]:
+           <td class="form-inline form-ab">
+             <select id="export0" multiple>$:(selectboxes["0"])</select>
+           </td>
+          $if selectboxes["1"]:
+           $ isDisabled = "disabled" if selectboxes["0"] else ""
+
+           <td class="form-inline form-ab">
+             <select id="export1" multiple $isDisabled>$:(selectboxes["1"])</select>
+           </td>
+        </tr>
+
+      <tr class="form-group">
+        <td class="form-inline">
+          Display:
+          <div>
+            <input class="form-input" type="checkbox"
+                   id="exportAlt" name="exportAlt" value="1">
+            <label class="form-label" for="exportAlt">Alternative answers</label>
+
+            <br>
+            <input class="form-input" type="checkbox"
+                   id="exportMore" name="exportMore" value="1">
+            <label class="form-label" for="exportMore">Additional informations</label>
+          </div>
+        </td>
+      </tr>
+      </table>
+
+      <div class="actions">
+        <button class="btn" type="submit" name="render">Render</button>
+        <button class="btn" type="submit" name="export">Export CSV</button>
+        <button type="button" id="exportInMemory" style="display: none"
+                class="icon" title="Export CSV using data in memory (rendered below)">&DownArrowBar;</button>
+      </div>
+    </form>
+    <div id="spreadsheet"></div>
+  </div>
+
+  <script>
+    window.MEMLIKE = window.MEMLIKE || {};
+    window.MEMLIKE.course = $:json(course);
+  </script>
+</main>

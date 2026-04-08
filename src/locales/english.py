@@ -45,6 +45,7 @@ misc = {
     "near_answer": "Almost",
     "your_answer_was": "Your answer was",
     "your_answer_was_empty": "You didn't answer",
+    "spreadsheet": "Spreadsheet",
     "leaderboard": "Leaderboard",
     "leaderboard_none": "Empty leaderboard",
     "week": "Week",

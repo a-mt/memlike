@@ -1486,7 +1486,7 @@ function bindEditEvents(tpl) {
         $table     = $level.find('table'),
         csvContent = exportThings($table);
 
-    download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
+    window.download(csvContent, window.MEMLIKE.course.title + '_' + levelId + '.csv', 'text/csv;encoding:utf-8');
   }
 
   function exportThings($table) {
@@ -1886,39 +1886,6 @@ function exportCsv(row) {
   }
   return txt + '\n';
 }
-
-/**
- * Trigger a file download of the given mimeType
- * ex: download(csvContent, 'dowload.csv', 'text/csv;encoding:utf-8');
- *
- * @param string content
- * @param string fileName
- * @param mimeType
- */
-var download = function(content, fileName, mimeType) {
-  var a = document.createElement('a');
-  mimeType = mimeType || 'application/octet-stream';
-
-  // IE10
-  if(navigator.msSaveBlob) {
-    navigator.msSaveBlob(new Blob([content], {
-      type: mimeType
-    }), fileName);
-
-  //html5 A[download]
-  } else if (URL && 'download' in a) {
-    a.href = URL.createObjectURL(new Blob([content], {
-      type: mimeType
-    }));
-    a.setAttribute('download', fileName);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-  } else {
-    window.location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
-  }
-};
 
 //+------------------------------------------------------
 //|
