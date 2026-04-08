@@ -3,7 +3,7 @@ import settings
 from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
-from variables import categories_tree, categories_code, languages
+from variables import categories_tree, categories_slug, languages
 from pydantic_core import PydanticCustomError, ValidationError
 from unidecode import unidecode
 
@@ -237,7 +237,7 @@ class course_get_editpage:
             localized_languages.append(
                 {
                     **item,
-                    "category_id": categories_code.get(lang, ""),
+                    "category_id": categories_slug.get(lang, ""),
                     "localized_name": web.ctx.i18n.languages[lang],
                 }
             )
@@ -289,13 +289,13 @@ class course_add:
             raise web.Unauthorized()
 
         def is_valid_lang(value):
-            if value not in languages or value not in categories_code:
+            if value not in languages or value not in categories_slug:
                 raise PydanticCustomError(
                     "invalid",
                     "Expected a valid language, got '{wrong_value}'",
                     {"wrong_value": value},
                 )
-            return categories_code[value]
+            return categories_slug[value]
 
         try:
             data = web.input()

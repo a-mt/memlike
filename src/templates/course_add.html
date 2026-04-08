@@ -25,7 +25,6 @@ $ errors = flash.get('err', {})
       $def tree(list, selected, prefix=""):
         $for item in list:
           $ id   = item['id']
-          $ code = item['code']
           $ name = I18N.categories[id]
           $ isSelected = "selected" if id == selected else ""
 
@@ -54,11 +53,11 @@ $ errors = flash.get('err', {})
         <select id="language" name="language" required>
           <option value=""></option>
 
-          $for lang, item in sorted(languages.items(), key=lambda x: unidecode(I18N.languages[x[0]])):
-            $ isSelected = "selected" if data.get('language', '') == lang else ""
+          $for k, item in sorted(languages.items(), key=lambda x: unidecode(I18N.languages[x[0]])):
+            $ isSelected = "selected" if data.get('language', '') == k else ""
 
-            <option value="$(lang)" $isSelected>
-              $(I18N.languages[lang])
+            <option value="$(k)" $isSelected>
+              $(I18N.languages[k])
             </option>
         </select>
       </div>

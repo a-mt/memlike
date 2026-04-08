@@ -5,7 +5,7 @@ import json
 import settings
 
 from bs4 import BeautifulSoup
-from variables import categories_code, USER_RANKS
+from variables import categories_slug, USER_RANKS
 from .base import Memrise
 
 
@@ -440,19 +440,19 @@ class DummyMemrise(Memrise):
                 "nb_things": 10,
                 "breadcrumb": [{
                     "id": "62",
-                    "name": "afrikaans"
+                    "slug": "afrikaans",
                 }, {
                     "id": "605",
-                    "name": "maths-science"
+                    "slug": "maths-science",
                 }, {
                     "id": "628",
-                    "name": "maths"
+                    "slug": "maths",
                 }],
                 "source": {
                     "slug": "afrikaans",
                     "photo_url": "/static/img/language_photos/Afrikaans.png",
                     "id": "62",
-                    "language_code": None
+                    "language_code": None,
                 },
                 "target": None,
                 "stats": {
@@ -498,16 +498,16 @@ class DummyMemrise(Memrise):
         }
 
         # Add breadcrumb
-        for cat in [
+        for category_slug in [
             "languages",
             "european",
             "german",
             "german-2",
         ]:
-            if cat in categories_code:
+            if category_slug in categories_slug:
                 course["breadcrumb"].append({
-                    "id"  : categories_code[cat],
-                    "name": cat
+                    "id"  : categories_slug[category_slug],
+                    "slug": category_slug,
                 })
 
         # Add stats

@@ -53,9 +53,9 @@ $ currentLang = page['lang']
     <!-- List of categories -->
     $def tree(list):
       $for item in list:
-        $if "code" in item and item['id'] in categories_to_display:
+        $if item['id'] in categories_to_display:
           $ id   = item['id']
-          $ code = item['code']
+          $ slug = item['slug']
           $ name = I18N.categories[id]
           $ children = []
 
@@ -64,20 +64,20 @@ $ currentLang = page['lang']
 
           <li data-category-id="$(id)">
             $if len(children) > 0:
-              <a href="/community/courses/$(currentLang)/$(code)/" title="$:(name)">
+              <a href="/community/courses/$(currentLang)/$(slug)/" title="$:(name)">
                   <span class="ico expand-icon ico-s"></span>
                   $:(name)
               </a>
               <ul>
                 <li>
-                  <a data-category-leaf="" href="/community/courses/$(currentLang)/$(code)/" class="$('active' if item['id'] == page['catId'] else '')">
+                  <a data-category-leaf="" href="/community/courses/$(currentLang)/$(slug)/" class="$('active' if item['id'] == page['catId'] else '')">
                     $(I18N.misc['all']) $:(name)
                   </a>
                   </li>
                   $:tree(children)
               </ul>
             $else:
-              <a data-category-leaf="" href="/community/courses/$(currentLang)/$(code)/" title="$:(name)" class="$('active' if item['id'] == page['catId'] else '')">
+              <a data-category-leaf="" href="/community/courses/$(currentLang)/$(slug)/" title="$:(name)" class="$('active' if item['id'] == page['catId'] else '')">
                 $:(name)
               </a>
           </li>

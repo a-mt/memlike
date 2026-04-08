@@ -1,7 +1,7 @@
 import re
 
 from bs4 import BeautifulSoup, Tag
-from variables import categories_code, USER_RANKS, languages
+from variables import categories_slug, USER_RANKS, languages
 
 
 class Scraper:
@@ -102,11 +102,11 @@ class Scraper:
                 for child in item.find_all("a"):
                     cat = child.attrs["href"].strip("/").split("/").pop()
 
-                    if cat in categories_code:
+                    if cat in categories_slug:
                         course["breadcrumb"].append(
                             {
-                                "id": categories_code[cat],
-                                "name": cat,
+                                "id": categories_slug[cat],
+                                "slug": cat,
                             }
                         )
 
@@ -114,16 +114,16 @@ class Scraper:
             if len(course["breadcrumb"]) >= 3:
 
                 def add_language(course, category, to_key="source"):
-                    slug = category["name"]
-                    if slug not in languages:
+                    category_slug = category["slug"]
+                    if category_slug not in languages:
                         return False
 
-                    lang = languages[slug]
+                    lang = languages[category_slug]
                     course[to_key] = {
-                        "slug": slug,  # ie portuguese-brazil (lang=pt)
-                        "photo_url": lang["photo_url"],
                         "id": category["id"],
-                        "language_code": lang.get("code", None),
+                        "slug": category_slug,  # ie portuguese-brazil (lang=pt)
+                        "photo_url": lang.get("photo_url", None),
+                        "language_code": lang.get("language_code", None),
                     }
 
                 # Add source language
@@ -132,10 +132,10 @@ class Scraper:
                 add_language(course, to_key="source", category=categories.pop(0))
 
                 # Add target language
-                if categories[0]["name"] == "languages":
+                if categories[0]["slug"] == "languages":
                     categories.pop(0)
 
-                    # Unravel target until we reach a language we known (ie german / german-2)
+                    # Unravel target until we reach a language we know (ie german / german-2)
                     while len(categories):
                         if add_language(course, to_key="target", category=categories.pop(-1)):
                             break

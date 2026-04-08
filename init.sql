@@ -51,8 +51,28 @@ CREATE TABLE courses (
 );
 
 CREATE TEMP TABLE tmp_id AS SELECT id FROM users WHERE username = 'bob';
-INSERT INTO courses (title, slug, user_id, user_username, target, target_breadcrumb) VALUES
-('example!', 'example', (SELECT id FROM tmp_id LIMIT 1), 'bob', 4, '569.578.879.4');
+INSERT INTO courses (title, slug, user_id, user_username, target, target_breadcrumb, description) VALUES
+('Example !', 'example', (SELECT id FROM tmp_id LIMIT 1), 'bob', 4, '569.578.879.4', 'My description'),
+('Empty', 'empty', (SELECT id FROM tmp_id LIMIT 1), 'bob', 6, '569.578.6', '');
+
+DROP TABLE IF EXISTS course_levels;
+
+CREATE TABLE course_levels (
+  id SERIAL,
+  user_id UUID,
+  course_id BIGINT,
+  pool_id BIGINT,
+  created_date TIMESTAMP WITHOUT TIME ZONE DEFAULT now(),
+  title VARCHAR(255),
+  idx SMALLINT DEFAULT 1,
+  type SMALLINT DEFAULT 1,
+  nb_things INTEGER DEFAULT 0
+);
+
+INSERT INTO course_levels (user_id, course_id, pool_id, title, type, idx) VALUES
+((SELECT id FROM tmp_id LIMIT 1), 1, 1, 'About this course', 2, 1),
+((SELECT id FROM tmp_id LIMIT 1), 1, 1, 'Level 1', 1, 2),
+((SELECT id FROM tmp_id LIMIT 1), 1, 1, 'Level 2', 1, 3);
 
 /*
 CREATE FUNCTION add_salt_fct()

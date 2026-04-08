@@ -1,4 +1,5 @@
 import requests
+import itertools
 import logging
 import settings
 import variables
@@ -175,7 +176,7 @@ class PostgresDB(Memrise):
         Testset: browse_cat-languages_scat-french_page-1.json
         @param string lang_slug - english
         @param integer[optional] page - [1]
-        @param string[optional] cat   - [""] category code
+        @param string[optional] cat   - [""] category slug
         @param string[optional] query - [""]
         @return dict - {page, content, has_next}
         """
@@ -184,54 +185,43 @@ class PostgresDB(Memrise):
         where = []
 
         # english -> 6
-        source = variables.categories_code.get(lang_slug, 6)
+        source = variables.categories_slug.get(lang_slug, 6)
         where.append(
             "source = " + web.db.sqlquote(source)
         )
 
-        # german-2 -> 569.578.879.4 / german -> 569.578.879
+        # german-2 -> LIKE 569.578.879.4% / german -> LIKE 569.578.879%
         if cat:
-            catID = variables.categories_code.get(cat, None)
-            if catID is not None:
-                get_parents = lambda x: variables.categories.get(x, {}).get("parents", [])
-
-                # Filter on target or any child (starts with the same breadcrumb)
-                target_breadcrumb = ".".join([
-                    *get_parents(catID),
-                    catID,
-                ])
-                where.append(
-                    "target_breadcrumb LIKE '" + target_breadcrumb + "%'"
-                )
+            condition = self._get_where_breadcrumb_like(cat)
+            if condition is not None:
+                where.append(condition)
             else:
                 where = ["1 = 0"]
 
         store = web.database()
-        qout = store.select(
-            what="id, title AS name, slug, target AS category, user_username AS author, photo_url",
+        query = store.select(
+            what="id, title AS name, slug, target AS category, photo_url",
             where=web.db.SQLQuery.join(where, " AND "),
             tables="courses",
             limit=nbperpage+1,
-            offset=offset,
-            _test=True,
+            offset=offset
         )
 
         has_next = False
         res = []
 
-        cursor = iter(store.query(qout, processed=True))
-        for item in cursor:
-            if cursor._index >= nbperpage:
+        for item in query:
+            if query._index >= nbperpage:
                 has_next = True
                 break
 
-            catID = item["category"]
-            target = variables.categories.get(catID, None)
+            cat_id = item["category"]
+            target = variables.categories.get(cat_id, None)
 
             if target is not None:
                 item["target"] = {
-                    "id": catID,
-                    "slug": target["code"],
+                    "id": cat_id,
+                    "slug": target["slug"],
                     "photo_url": target.get("photo_url", ""),
                 }
 
@@ -256,3 +246,148 @@ class PostgresDB(Memrise):
             "content": content.strip(),
             "has_next": has_next,
         }
+
+    def _get_breadcrumb(self, cat_id):
+        """
+        :param int cat_id
+        :return list(id)
+        """
+        parents = variables.categories.get(cat_id, {}).get("parents", [])
+
+        # Filter on target or any child (starts with the same breadcrumb)
+        return [*parents, cat_id]
+
+    def _get_where_breadcrumb_like(self, category_slug):
+        """
+        Build the where condition to filter on a category, or any child category
+        ie
+            german-2 -> LIKE 569.578.879.4%
+            german -> LIKE 569.578.879%
+
+        :param string category_slug
+        :return string|None condition
+        """
+
+        # Filter on target or any child (starts with the same breadcrumb)
+        cat_id = variables.categories_slug.get(category_slug, None)
+        if cat_id is not None:
+            ids = self._get_breadcrumb(cat_id)
+
+            return "target_breadcrumb LIKE '" + ".".join(ids) + "%'"
+
+    def categories_to_display(self, lang_slug, **kwargs):
+        where = []
+        condition = self._get_where_breadcrumb_like(lang_slug)
+        if condition is not None:
+            where = [condition]
+
+        store = web.database()
+        query = store.select(
+            what="DISTINCT target, target_breadcrumb",
+            where=web.db.SQLQuery.join(where, " AND "),
+            tables="courses",
+        )
+
+        categories = {}
+        for item in query:
+            if item["target"] in categories:
+                continue
+
+            for cat_id in item["target_breadcrumb"].split("."):
+                categories[cat_id] = True
+
+        return categories
+
+    # +-----------------------------------------------------
+    # | COURSE
+    # +-----------------------------------------------------
+    def course(self, course_id, course_slug="", **kwargs):
+        store = web.database()
+        res = store.select(
+            what="id, title, slug, user_username, description, photo_url, source, target",
+            where={
+                "id": course_id,
+            },
+            tables="courses",
+        ).first()
+
+        if res is None:
+            return
+
+        course = {
+            "id": course_id,
+            "title": res["title"],
+            "url": f"/community/course/{res['id']}/{res['slug']}/",
+            "author": res["user_username"],
+            "description": res["description"],
+            "photo": res["photo_url"] or "https://static.memrise.com/garden/img/placeholders/course-4.png",
+            "levels": {},
+            "nb_things": 0,
+            "breadcrumb": [],
+            "source": None,
+            "target": None,
+        }
+
+        # Adding source, target
+        def add_language(course, cat_id, to_key="source"):
+            """
+            Add source / target language to course if the given cat_id is a language
+            ie
+                "source": {
+                    "slug": "afrikaans",
+                    "photo_url": "/static/img/language_photos/Afrikaans.png",
+                    "id": "62",
+                    "language_code": None
+                },
+            """
+            category = variables.categories.get(cat_id, {})
+            category_slug = category.get("slug", None)
+
+            lang = variables.languages.get(category_slug, None)
+            if lang is not None:
+                course[to_key] = {
+                    "id": cat_id,
+                    "slug": category_slug,
+                    "photo_url": lang.get("photo_url", None),
+                    "language_code": lang.get("language_code", None),
+                }
+
+        add_language(course, res["source"], to_key="source")
+        add_language(course, res["target"], to_key="target")
+
+        # Adding breadcrumb
+        for cat_id in itertools.chain(
+            [res["source"]],
+            self._get_breadcrumb(res["target"]),
+        ):
+            course["breadcrumb"].append({
+                "id": cat_id,
+                "slug": variables.categories.get(cat_id, {}).get("slug", ""),
+            })
+
+        # Adding levels
+        query = store.select(
+            what="id, idx, title AS name, pool_id, type, nb_things",
+            where={
+                "course_id": course_id,
+            },
+            tables="course_levels",
+        )
+        for item in query:
+            item.status = "TODO"
+
+            course["levels"][str(item["idx"])] = dict(item)
+            course["nb_things"] += item["nb_things"]
+
+        # Adding stats
+        is_logged_in = kwargs["sessionid"] and not kwargs.get("is_anon", False)
+        if is_logged_in:
+            course["stats"] = {
+                "nb_things": 4,
+                "learned": 3,
+                "review": 2,
+                "ignored": 1,
+                "percent_complete": 99,
+            }
+
+        return course

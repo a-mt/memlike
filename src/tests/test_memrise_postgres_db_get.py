@@ -4,8 +4,9 @@ from .testcases import SimpleTestCase
 import settings
 
 
-COURSE_ID = "1892646"
-COURSE_SLUG = "grammaire-le-groupe-nominal"
+COURSE_ID = "1"
+COURSE_SLUG = "example"
+COURSE_ID_SINGLE = "2"
 
 
 class MemrisePostgresDBGetTest(SimpleTestCase):
@@ -100,3 +101,93 @@ class MemrisePostgresDBGetTest(SimpleTestCase):
         # Offset > size
         result = self.memrise.courses(lang_slug="english", page=2)
         self.assertEqual(len(result.get("content", None)), 0)
+
+    def test_memrise_categories(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        lang_slug = "german"
+        lang_id = "879"
+
+        result = self.memrise.categories_to_display(lang_slug, sessionid=self.session["session_id"])
+
+        self.assertIs(type(result), dict)
+        self.assertTrue(lang_id in result)
+        self.assertTrue(result[lang_id])
+
+        # at least the "french" category should have coursess - so {"2": True} is included in result
+        self.assertTrue({lang_id: True}.items() <= result.items())
+
+    def test_memrise_course(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        result = self.memrise.course(
+            COURSE_ID,
+            COURSE_SLUG,
+            sessionid=self.session["session_id"],
+            csrftoken=self.session["csrftoken"],
+        )
+
+        self.assertIs(type(result), dict)
+        self.assertEqual(result.get("id", None), COURSE_ID)
+        self.assertNotEqual(result.get("title", ""), "")
+        self.assertNotEqual(result.get("description", ""), "")
+        self.assertNotEqual(result.get("author", ""), "")
+        self.assertNotEqual(result.get("photo", ""), "")
+        self.assertNotEqual(result.get("url", ""), "")
+        self.assertIsNotNone(result.get("levels", None))
+        self.assertIsNotNone(result.get("breadcrumb", None))
+
+        self.assertIs(type(result["breadcrumb"]), list)
+        self.assertTrue(len(result["breadcrumb"]) > 0)
+        self.assertIsNotNone(result["breadcrumb"][0].get("slug", None))
+
+        self.assertIs(type(result["levels"]), dict)
+        self.assertTrue(len(result["levels"]) > 0)
+        level = result["levels"]["1"]
+        self.assertIsNotNone(level.get("name", None))
+        self.assertIsNotNone(level.get("type", None))
+        self.assertTrue(level.get("type", None) in (1, 2))
+        self.assertIsNotNone(level.get("status", None))
+        # <span class="ico ico-complete ico-correct ico-m ico-green"></span>
+
+        self.assertIsNotNone(result.get("stats", None))
+        self.assertEqual(result["stats"].get("ignored", None), 1)
+        self.assertEqual(result["stats"].get("learned", None), 3)
+        self.assertEqual(result["stats"].get("review", None), 2)
+        self.assertEqual(result["stats"].get("nb_things", None), 4)
+        self.assertEqual(result["stats"].get("percent_complete", None), 99)
+
+    def test_memrise_course_single_level(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        result = self.memrise.course(
+            COURSE_ID_SINGLE,
+            "",
+            sessionid=self.session["session_id"],
+            csrftoken=self.session["csrftoken"],
+        )
+
+        self.assertIs(type(result), dict)
+        self.assertIsNotNone(result.get("id", None))
+        self.assertIsNotNone(result.get("title", None))
+        self.assertIsNotNone(result.get("description", None))
+        self.assertIsNotNone(result.get("author", None))
+        self.assertIsNotNone(result.get("photo", None))
+        self.assertIsNotNone(result.get("url", None))
+        self.assertIsNotNone(result.get("levels", None))
+        self.assertIsNotNone(result.get("breadcrumb", None))
+
+        self.assertIs(type(result["breadcrumb"]), list)
+        self.assertTrue(len(result["breadcrumb"]) > 0)
+        self.assertIsNotNone(result["breadcrumb"][0].get("slug", None))
+
+        self.assertIs(type(result["levels"]), dict)
+        self.assertEqual(len(result["levels"]), 0)
+        self.assertIsNotNone(result.get("nb_things", None))
+
+        self.assertIsNotNone(result.get("stats", None))
+        self.assertIsNotNone(result["stats"].get("ignored", None))
+        self.assertIsNotNone(result["stats"].get("learned", None))
+        self.assertIsNotNone(result["stats"].get("percent_complete", None))
+        self.assertIsNotNone(result["stats"].get("review", None))
+        self.assertIsNotNone(result["stats"].get("nb_things", None))

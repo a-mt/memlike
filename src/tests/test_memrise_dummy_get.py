@@ -194,7 +194,7 @@ class MemriseDummyGetTest(SimpleTestCase):
 
         self.assertIs(type(result["breadcrumb"]), list)
         self.assertTrue(len(result["breadcrumb"]) > 0)
-        self.assertIsNotNone(result["breadcrumb"][0].get("name", None))
+        self.assertIsNotNone(result["breadcrumb"][0].get("slug", None))
 
         self.assertIs(type(result["levels"]), dict)
         self.assertTrue(len(result["levels"]) > 0)
@@ -234,7 +234,7 @@ class MemriseDummyGetTest(SimpleTestCase):
 
         self.assertIs(type(result["breadcrumb"]), list)
         self.assertTrue(len(result["breadcrumb"]) > 0)
-        self.assertIsNotNone(result["breadcrumb"][0].get("name", None))
+        self.assertIsNotNone(result["breadcrumb"][0].get("slug", None))
 
         self.assertIs(type(result["levels"]), dict)
         self.assertEqual(len(result["levels"]), 0)

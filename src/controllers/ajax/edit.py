@@ -2,18 +2,18 @@ import web
 from memrise import memrise
 from utils.webapi import proxied_response
 from utils import validator
-from variables import categories_code, languages
+from variables import categories_slug, languages
 from pydantic_core import PydanticCustomError
 
 
 def is_valid_lang(value):
-    if value not in languages or value not in categories_code:
+    if value not in languages or value not in categories_slug:
         raise PydanticCustomError(
             "invalid",
             "Expected a valid language, got '{wrong_value}'",
             {"wrong_value": value},
         )
-    return categories_code[value]
+    return categories_slug[value]
 
 
 class course_add:

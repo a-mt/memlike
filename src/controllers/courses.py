@@ -39,9 +39,9 @@ class courses:
             lang_slug = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
 
         # Filter courses in a given category
-        if len(parts) > 1 and parts[1] in variables.categories_code:
+        if len(parts) > 1 and parts[1] in variables.categories_slug:
             cat = parts[1]
-            catId = variables.categories_code[cat]
+            catId = variables.categories_slug[cat]
 
         # Retrieve list of categories that have a course
         categories_to_display = memrise.categories_to_display(lang_slug)

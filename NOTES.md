@@ -63,7 +63,7 @@ Retrieve categories' codes:
 // https://www.memrise.com/community/courses/french/
 
 var list  = document.querySelectorAll('li[data-category-id]'),
-    categories_code = {};
+    categories_slug = {};
 
 for(var i=0; i<list.length; i++) {
     var li   = list[i],
@@ -71,16 +71,16 @@ for(var i=0; i<list.length; i++) {
         code = li.firstElementChild.getAttribute("href")
                  .replace(/\/$/, '').split('/').pop();
 
-    categories_code[code] = id;
+    categories_slug[code] = id;
 }
-copy(categories_code);
+copy(categories_slug);
 ```
 
 Add code to categories:
 
 ``` js
-var id2code = Object.keys(categories_code).reduce(function(obj,key){
-   obj[ categories_code[key] ] = key;
+var id2code = Object.keys(categories_slug).reduce(function(obj,key){
+   obj[ categories_slug[key] ] = key;
    return obj;
 },{});
 
