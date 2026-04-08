@@ -252,7 +252,7 @@ class DummyMemrise(Memrise):
     #+-----------------------------------------------------
     #| CATEGORIES
     #+-----------------------------------------------------
-    def categories(self, lang_slug, **kwargs):
+    def categories_to_display(self, lang_slug, **kwargs):
         return {
             "569": True,
             "578": True,

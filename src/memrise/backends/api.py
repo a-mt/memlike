@@ -153,7 +153,7 @@ class ApiMemrise(Memrise):
 
         return self.requestor.courses(lang_slug=lang_slug, page=page, cat=cat, query=query)
 
-    def categories(self, lang_slug, **kwargs):
+    def categories_to_display(self, lang_slug, **kwargs):
         self.set_default_kwargs(kwargs)
         self.set_kwargs_session(kwargs, session=self.login_as_anonymous())
 
@@ -162,7 +162,7 @@ class ApiMemrise(Memrise):
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
         )
-        return self.scraper.categories(html)
+        return self.scraper.categories_to_display(html)
 
     # +-----------------------------------------------------
     # | COURSE

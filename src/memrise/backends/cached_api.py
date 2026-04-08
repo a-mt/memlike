@@ -105,7 +105,7 @@ class CachedApiMemrise(ApiMemrise):
 
             return courses
 
-    def categories(self, lang_slug, **kwargs):
+    def categories_to_display(self, lang_slug, **kwargs):
         """
         Retrieve categories
         Is cached via memcached for 1day
@@ -115,7 +115,7 @@ class CachedApiMemrise(ApiMemrise):
 
             if categories is None:
                 categories = helper.update(
-                    data=super().categories(lang_slug, **kwargs),
+                    data=super().categories_to_display(lang_slug, **kwargs),
                 )
 
             return categories

@@ -102,8 +102,6 @@ class ApplicationRenderTest(SimpleTestCase):
     def test_courses(self):
         lang_slug = "french"
 
-        # Retrieve list of categories that have a course
-        has_courses = self.memrise.categories(lang_slug)
         html = web.config.template.render.courses(
             {
                 "lang": lang_slug,
@@ -112,8 +110,8 @@ class ApplicationRenderTest(SimpleTestCase):
                 "q": "",
             },
             variables.languages,
-            variables.categories,
-            has_courses,
+            variables.categories_tree,
+            categories_to_display=self.memrise.categories_to_display(lang_slug),
         )
         self.assertIsNotNone(html)
 

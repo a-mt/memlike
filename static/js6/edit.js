@@ -18,7 +18,7 @@ const build = {
 
 $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
-  Object.freeze(window.MEMLIKE.categories);
+  Object.freeze(window.MEMLIKE.categories_tree);
   Object.freeze(window.MEMLIKE.languages);
 
   render(
@@ -296,7 +296,7 @@ class CourseSettingsModal extends Component {
               <div className="form-controls">
                 <label htmlFor="target">{window.I18N['course_category']}</label>
                 <select id="target" name="target" required onChange={this.handleChange.bind(this, 'target')}>
-                  {this.tree(window.MEMLIKE.categories, this.state.details.target, '')}
+                  {this.tree(window.MEMLIKE.categories_tree, this.state.details.target, '')}
                 </select>
               </div>
               {this.state.errors && this.state.errors.source && (
@@ -312,7 +312,7 @@ class CourseSettingsModal extends Component {
                       value={item.category_id}
                       selected={this.state.details.source == item.category_id}
                     >
-                      {item.name}
+                      {item.localized_name}
                     </option>
                   ))}
                 </select>

@@ -168,7 +168,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a courses() method")
 
-    def categories(self, lang_slug, **kwargs):
+    def categories_to_display(self, lang_slug, **kwargs):
         """
         Retrieve the list of categories that have courses for the given language
         That is: for users that speak [LANG],

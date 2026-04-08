@@ -32,7 +32,7 @@ class DummyEmptyMemrise(DummyMemrise):
             "has_next": False,
         }
 
-    def categories(self, lang_slug, **kwargs):
+    def categories_to_display(self, lang_slug, **kwargs):
         return {}
 
     def course(self, course_id, course_slug="course", **kwargs):

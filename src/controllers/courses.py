@@ -44,7 +44,7 @@ class courses:
             catId = variables.categories_code[cat]
 
         # Retrieve list of categories that have a course
-        has_courses = memrise.categories(lang_slug)
+        categories_to_display = memrise.categories_to_display(lang_slug)
         return web.config.template.render.courses(
             {
                 "lang": lang_slug,
@@ -53,8 +53,8 @@ class courses:
                 "q": _GET.q,
             },
             variables.languages,
-            variables.categories,
-            has_courses,
+            variables.categories_tree,
+            categories_to_display,
         )
 
 

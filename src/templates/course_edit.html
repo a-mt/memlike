@@ -1,4 +1,4 @@
-$def with (course, categories, localized_languages)
+$def with (course, categories_tree, localized_languages)
 $var currentPage: courses
 $var js: /static/js/preact.min.js, /static/js/jquery.csv.min.js, /static/js/markdown.min.js, /static/js/edit.js
 
@@ -15,7 +15,7 @@ $var js: /static/js/preact.min.js, /static/js/jquery.csv.min.js, /static/js/mark
   <script>
     window.MEMLIKE = window.MEMLIKE || {};
     window.MEMLIKE.course = $:json(course);
-    window.MEMLIKE.categories = $:json(categories);
+    window.MEMLIKE.categories_tree = $:json(categories_tree);
     window.MEMLIKE.languages = $:json(localized_languages);
   </script>
 </main>

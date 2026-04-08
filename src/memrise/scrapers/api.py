@@ -31,7 +31,7 @@ class Scraper:
     # +-----------------------------------------------------
     # | COURSES
     # +-----------------------------------------------------
-    def categories(self, html):
+    def categories_to_display(self, html):
         assert len(html) > 0
 
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
@@ -121,7 +121,7 @@ class Scraper:
                     lang = languages[slug]
                     course[to_key] = {
                         "slug": slug,  # ie portuguese-brazil (lang=pt)
-                        "photo_url": lang["url"],
+                        "photo_url": lang["photo_url"],
                         "id": category["id"],
                         "language_code": lang.get("code", None),
                     }

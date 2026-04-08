@@ -1,4 +1,4 @@
-$def with (page, languages, categories, catHaveCourse)
+$def with (page, languages, categories_tree, categories_to_display)
 $var currentPage: courses
 $var title: $(I18N.menu["courses"])
 
@@ -20,8 +20,8 @@ $ currentLang = page['lang']
 
       <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
         $if currentLang in languages:
-          $if "url" in languages[currentLang]:
-            <img class="flag-circle" src="$(languages[currentLang]['url'])" alt="">
+          $if "photo_url" in languages[currentLang]:
+            <img class="flag-circle" src="$(languages[currentLang]['photo_url'])" alt="">
           $(I18N.languages[currentLang])
         <span class="caret"></span>
       </button>
@@ -30,8 +30,8 @@ $ currentLang = page['lang']
         $for lang, item in sorted(languages.items(), key=lambda x: I18N.languages[x[0]]):
          <li>
            <a href="/community/courses/$(lang)/">
-            $if "url" in item:
-              <img class="flag-circle" src="$(item['url'])" alt="">
+            $if "photo_url" in item:
+              <img class="flag-circle" src="$(item['photo_url'])" alt="">
             $(I18N.languages[lang])
            </a>
          </li>
@@ -53,14 +53,14 @@ $ currentLang = page['lang']
     <!-- List of categories -->
     $def tree(list):
       $for item in list:
-        $if "code" in item and item['id'] in catHaveCourse:
+        $if "code" in item and item['id'] in categories_to_display:
           $ id   = item['id']
           $ code = item['code']
           $ name = I18N.categories[id]
           $ children = []
 
           $if "children" in item:
-            $ children = [x for x in item["children"] if x['id'] in catHaveCourse]
+            $ children = [x for x in item["children"] if x['id'] in categories_to_display]
 
           <li data-category-id="$(id)">
             $if len(children) > 0:
@@ -83,7 +83,7 @@ $ currentLang = page['lang']
           </li>
 
     <div class="slider hide filter-category">
-      <ul class="categories-list" data-role="tree-navigation">$:tree(categories)</ul>
+      <ul class="categories-list" data-role="tree-navigation">$:tree(categories_tree)</ul>
     </div>
 
   </div>

@@ -3,7 +3,7 @@ import settings
 from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
-from variables import categories, categories_code, languages
+from variables import categories_tree, categories_code, languages
 from pydantic_core import PydanticCustomError, ValidationError
 from unidecode import unidecode
 
@@ -222,10 +222,10 @@ class course_get_editpage:
                 {
                     **item,
                     "category_id": categories_code.get(lang, ""),
-                    "name": web.ctx.i18n.languages[lang],
+                    "localized_name": web.ctx.i18n.languages[lang],
                 }
             )
-        return web.config.template.render.course_edit(course, categories, localized_languages)
+        return web.config.template.render.course_edit(course, categories_tree, localized_languages)
 
 
 class reset_progress_level:
@@ -266,7 +266,7 @@ class course_add:
         if "language" not in data and web.ctx.get("session", {}):
             data["language"] = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
 
-        return web.config.template.render.course_add(categories, languages, data=data)
+        return web.config.template.render.course_add(categories_tree, languages, data=data)
 
     def POST(self):
         if not web.ctx.session.get("loggedin", False):

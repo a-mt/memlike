@@ -108,7 +108,7 @@ class MemriseDummyGetTest(SimpleTestCase):
         lang_slug = "french"
         lang_id = "2"
 
-        result = self.memrise.categories(lang_slug, sessionid=self.session["session_id"])
+        result = self.memrise.categories_to_display(lang_slug, sessionid=self.session["session_id"])
 
         self.assertIs(type(result), dict)
         self.assertTrue(lang_id in result)

@@ -1,4 +1,4 @@
-$def with (categories, languages, data)
+$def with (categories_tree, languages, data)
 $var currentPage: courses
 
 $ errors = flash.get('err', {})
@@ -42,7 +42,7 @@ $ errors = flash.get('err', {})
 
         <select id="category" name="category" required>
           <option value=""></option>
-          $:tree(categories, category, "")
+          $:tree(categories_tree, category, "")
         </select>
       </div>
       $if 'category' in errors:
