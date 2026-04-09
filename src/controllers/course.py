@@ -1,9 +1,11 @@
 import web
 import settings
+import variables
+from lang import get_localized_languages
+from utils.webapi import add_flash_message
 from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
-from variables import categories_tree, categories_slug, languages
 from pydantic_core import PydanticCustomError, ValidationError
 from unidecode import unidecode
 
@@ -98,7 +100,7 @@ class level:
     def gotoCourse(self, course_id, course_slug, level_index):
         course_slug = course_slug.split("/", 2)[0]
 
-        web.add_flash_message(
+        add_flash_message(
             f"Could not retrieve the requested level ({level_index})",
             level=web.config.FLASH_MESSAGES_TAGS.ERROR,
         )
@@ -232,16 +234,7 @@ class course_get_editpage:
 
         course = memrise.course_get_editpage(course_id, course_slug=course_slug)
 
-        localized_languages = []
-        for lang, item in sorted(languages.items(), key=lambda x: unidecode(web.ctx.i18n.languages[x[0]])):
-            localized_languages.append(
-                {
-                    **item,
-                    "category_id": categories_slug.get(lang, ""),
-                    "localized_name": web.ctx.i18n.languages[lang],
-                }
-            )
-        return web.config.template.render.course_edit(course, categories_tree, localized_languages)
+        return web.config.template.render.course_edit(course, variables.categories_tree, get_localized_languages())
 
 
 class reset_progress_level:
@@ -282,20 +275,20 @@ class course_add:
         if "language" not in data and web.ctx.get("session", {}):
             data["language"] = web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG)
 
-        return web.config.template.render.course_add(categories_tree, languages, data=data)
+        return web.config.template.render.course_add(variables.categories_tree, get_localized_languages(), data=data)
 
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
 
-        def is_valid_lang(value):
-            if value not in languages or value not in categories_slug:
+        def check_lang_category_id(value):
+            if value not in variables.source_languages or value not in variables.categories_slug:
                 raise PydanticCustomError(
                     "invalid",
                     "Expected a valid language, got '{wrong_value}'",
                     {"wrong_value": value},
                 )
-            return categories_slug[value]
+            return variables.categories_slug[value]["id"]
 
         try:
             data = web.input()
@@ -309,7 +302,7 @@ class course_add:
                     ),
                     "language": validator.field(
                         validator.schema.str_schema(),
-                        validator=is_valid_lang,
+                        validator=check_lang_category_id,
                     ),
                     "tags": validator.field(
                         validator.schema.str_schema(),

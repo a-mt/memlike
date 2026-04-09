@@ -47,3 +47,29 @@ class LangTest(unittest.TestCase):
 
         if FIRST_I18N and PREV_I18N:
             self.assert_module_vars(FIRST_I18N, PREV_I18N)
+
+    def test_localized_languages_fr(self):
+        """
+        localized_languages is a dict(slug: {localized_name, ...}) ordered by localized_name (french)
+        """
+        I18N = lang.get_module("french")
+        languages = lang.get_localized_languages(I18N)
+
+        self.assertEqual(languages['dutch']['localized_name'], 'Néerlandais')
+        self.assertEqual(languages['french']['localized_name'], 'Français')
+
+        keys = list(languages.keys())
+        self.assertGreater(keys.index('dutch'), keys.index('french'))
+
+    def test_localized_languages_en(self):
+        """
+        localized_languages is a dict(slug: {localized_name, ...}) ordered by localized_name (french)
+        """
+        I18N = lang.get_module("english")
+        languages = lang.get_localized_languages(I18N)
+
+        self.assertEqual(languages['dutch']['localized_name'], 'Dutch')
+        self.assertEqual(languages['french']['localized_name'], 'French')
+
+        keys = list(languages.keys())
+        self.assertLess(keys.index('dutch'), keys.index('french'))

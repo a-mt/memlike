@@ -16,6 +16,6 @@ $var js: /static/js/preact.min.js, /static/js/jquery.csv.min.js, /static/js/mark
     window.MEMLIKE = window.MEMLIKE || {};
     window.MEMLIKE.course = $:json(course);
     window.MEMLIKE.categories_tree = $:json(categories_tree);
-    window.MEMLIKE.languages = $:json(localized_languages);
+    window.MEMLIKE.localized_languages = $:json(list(localized_languages.values()));
   </script>
 </main>

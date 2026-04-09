@@ -1,4 +1,4 @@
-$def with (page, languages, categories_tree, categories_to_display)
+$def with (page, localized_languages, categories_tree, categories_to_display)
 $var currentPage: courses
 $var title: $(I18N.menu["courses"])
 
@@ -19,20 +19,21 @@ $ currentLang = page['lang']
     <div class="btn-group filter-source dropdown">
 
       <button class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        $if currentLang in languages:
-          $if "photo_url" in languages[currentLang]:
-            <img class="flag-circle" src="$(languages[currentLang]['photo_url'])" alt="">
-          $(I18N.languages[currentLang])
+        $if currentLang in localized_languages:
+          $ item = localized_languages[currentLang]
+          $if "photo_url" in item:
+            <img class="flag-circle" src="$(item['photo_url'])" alt="">
+          $(item["localized_name"])
         <span class="caret"></span>
       </button>
 
       <ul class="dropdown-menu">
-        $for lang, item in sorted(languages.items(), key=lambda x: I18N.languages[x[0]]):
+        $for slug, item in localized_languages.items():
          <li>
-           <a href="/community/courses/$(lang)/">
+           <a href="/community/courses/$(slug)/">
             $if "photo_url" in item:
               <img class="flag-circle" src="$(item['photo_url'])" alt="">
-            $(I18N.languages[lang])
+            $(item["localized_name"])
            </a>
          </li>
       </ul>

@@ -1,9 +1,10 @@
+
 var process = process || {};
 process.env = process.env || {};
 
-const build = {
-  status: process.env.VAR,
-  date: process.env.BUILD_DATE,
+window.MEMLIKE = window.MEMLIKE || {};
+window.MEMLIKE.js_app = {
+  build_date: process.env.BUILD_DATE,
 };
 
 /* global $, window, document, console, setTimeout */
@@ -783,7 +784,7 @@ var TTS = {
     'am': 'Amharic',
     'ar': 'Arabic',
     'hy': 'Armenian',
-    'az': 'Azeerbaijani',
+    'az': 'Azerbaijani',
     'eu': 'Basque',
     'be': 'Belarusian',
     'bn': 'Bengali',

@@ -1,4 +1,4 @@
-$def with (categories_tree, languages, data)
+$def with (categories_tree, localized_languages, data)
 $var currentPage: courses
 
 $ errors = flash.get('err', {})
@@ -53,11 +53,11 @@ $ errors = flash.get('err', {})
         <select id="language" name="language" required>
           <option value=""></option>
 
-          $for k, item in sorted(languages.items(), key=lambda x: unidecode(I18N.languages[x[0]])):
-            $ isSelected = "selected" if data.get('language', '') == k else ""
+          $for slug, item in localized_languages.items():
+            $ isSelected = "selected" if data.get('language', '') == slug else ""
 
-            <option value="$(k)" $isSelected>
-              $(I18N.languages[k])
+            <option value="$(slug)" $isSelected>
+              $(item["localized_name"])
             </option>
         </select>
       </div>

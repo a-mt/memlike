@@ -1,4 +1,12 @@
 
+var process = process || {};
+process.env = process.env || {};
+
+window.MEMLIKE = window.MEMLIKE || {};
+window.MEMLIKE.js_spreadsheet = {
+  build_date: process.env.BUILD_DATE,
+};
+
 $(document).ready(function(){
   bindSpreadsheetEvents();
 });

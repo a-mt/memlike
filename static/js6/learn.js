@@ -7,9 +7,9 @@ const {h, Component, render} = window.preact;
 var process = process || {};
 process.env = process.env || {};
 
-const build = {
-  status: process.env.VAR,
-  date: process.env.BUILD_DATE,
+window.MEMLIKE = window.MEMLIKE || {};
+window.MEMLIKE.js_learn = {
+  build_date: process.env.BUILD_DATE,
 };
 
 /* global $, window, document, console */

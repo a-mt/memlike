@@ -142,21 +142,6 @@ if web.config.get("template", None) is None:
         }
     )
 
-    def add_flash_message(message, level=web.config.FLASH_MESSAGES_TAGS.INFO):
-        web.ctx.session = web.ctx.get("session", None) or web.storage({})
-
-        web.ctx.session.flash = web.ctx.session.get("flash", None) or web.storage({})
-
-        web.ctx.session.flash.messages = web.ctx.session.flash.get("messages", None) or []
-
-        web.ctx.session.flash.messages.append(
-            {
-                "message": message,
-                "level": level,
-            }
-        )
-
-    setattr(web, "add_flash_message", add_flash_message)
 
 # ---
 # Configure logging

@@ -2,20 +2,39 @@ from os.path import isfile
 from pathlib import Path
 from settings import DEFAULT_LANG_SLUG, ROOTDIR
 from utils.module_loading import load_source
+from unidecode import unidecode
 
 import locales  # noqa F401
 import web
 import logging
+import variables
 
 
 logger = logging.getLogger(__name__)
+
+
+def get_localized_languages(I18N=None):
+    if I18N is None:
+        I18N = web.ctx.get('i18n', None) or web.config.lang.switch_lang()
+
+    res = []
+    for slug in variables.source_languages:
+        category = variables.categories_slug.get(slug, None)
+        if category is None:
+            continue
+
+        item = category
+        item["localized_name"] = I18N.languages.get(slug, slug)
+
+        res.append((slug, item))
+
+    return dict(sorted(res, key=lambda x: unidecode(x[1]["localized_name"])))
 
 
 class Lang(object):
     """
     Translations management for web.py
     """
-
     def __init__(self, app=None):
         self.locales = {}
 
@@ -88,3 +107,7 @@ class Lang(object):
         web.config.template["I18N"] = mod
         web.config.template["LANG"] = lang_code
         return mod
+
+    def get_localized_languages(self, I18N=None):
+        return get_localized_languages(I18N)
+

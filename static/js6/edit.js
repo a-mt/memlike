@@ -2,14 +2,12 @@
 'use strict';
 const {h, Component, render} = window.preact;
 
-// Incorrectly configured build doesn't replace in-place process.env:
-// ensure the js still works
 var process = process || {};
 process.env = process.env || {};
 
-const build = {
-  status: process.env.VAR,
-  date: process.env.BUILD_DATE,
+window.MEMLIKE = window.MEMLIKE || {};
+window.MEMLIKE.js_edit = {
+  build_date: process.env.BUILD_DATE,
 };
 
 /* global $, window, document, console */
@@ -19,7 +17,7 @@ const build = {
 $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
   Object.freeze(window.MEMLIKE.categories_tree);
-  Object.freeze(window.MEMLIKE.languages);
+  Object.freeze(window.MEMLIKE.localized_languages);
 
   render(
     <Edit course={window.MEMLIKE.course} />,
@@ -306,7 +304,7 @@ class CourseSettingsModal extends Component {
               <div className="form-controls">
                 <label htmlFor="source">{window.I18N['course_language']}</label>
                 <select id="source" name="source" required onChange={this.handleChange.bind(this, 'source')}>
-                  {window.MEMLIKE.languages.map((item) => (
+                  {window.MEMLIKE.localized_languages.map((item) => (
                     <option
                       key={item.category_id}
                       value={item.category_id}

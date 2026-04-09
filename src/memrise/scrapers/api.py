@@ -1,7 +1,7 @@
 import re
+import variables
 
 from bs4 import BeautifulSoup, Tag
-from variables import categories_slug, USER_RANKS, languages
 
 
 class Scraper:
@@ -100,13 +100,13 @@ class Scraper:
             item = div.find("div", {"class", "course-breadcrumb"})
             if item is not None:
                 for child in item.find_all("a"):
-                    cat = child.attrs["href"].strip("/").split("/").pop()
+                    cat_slug = child.attrs["href"].strip("/").split("/").pop()
 
-                    if cat in categories_slug:
+                    if cat_slug in variables.categories_slug:
                         course["breadcrumb"].append(
                             {
-                                "id": categories_slug[cat],
-                                "slug": cat,
+                                "id": variables.categories_slug[cat_slug]["id"],
+                                "slug": cat_slug,
                             }
                         )
 
@@ -115,16 +115,14 @@ class Scraper:
 
                 def add_language(course, category, to_key="source"):
                     category_slug = category["slug"]
-                    if category_slug not in languages:
+                    if category_slug not in variables.source_languages:
                         return False
 
-                    lang = languages[category_slug]
-                    course[to_key] = {
-                        "id": category["id"],
-                        "slug": category_slug,  # ie portuguese-brazil (lang=pt)
-                        "photo_url": lang.get("photo_url", None),
-                        "language_code": lang.get("language_code", None),
-                    }
+                    caregory = variables.categories_slug.get(category_slug, None)
+                    if caregory is None:
+                        return
+
+                    course[to_key] = category
 
                 # Add source language
                 categories = course["breadcrumb"].copy()
@@ -303,7 +301,7 @@ class Scraper:
             points = int(user["stats"]["points"].replace(",", ""))
             rank = 0
 
-            for i, threshold in enumerate(USER_RANKS):
+            for i, threshold in enumerate(variables.USER_RANKS):
                 if threshold < points:
                     rank = i
                 else:

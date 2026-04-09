@@ -1,19 +1,25 @@
 import web
+import variables
 from memrise import memrise
 from utils.webapi import proxied_response, jsoninput
 from utils import validator
-from variables import categories_slug, languages
 from pydantic_core import PydanticCustomError
 
 
-def is_valid_lang(value):
-    if value not in languages or value not in categories_slug:
+def check_lang_category_id(value):
+    """
+    Check if value is a valid source_language category slug
+
+    :param string value
+    :return string - category id
+    """
+    if value not in variables.source_languages or value not in variables.categories_slug:
         raise PydanticCustomError(
             "invalid",
             "Expected a valid language, got '{wrong_value}'",
             {"wrong_value": value},
         )
-    return categories_slug[value]
+    return variables.categories_slug[value]["id"]
 
 
 class course_add:
@@ -32,7 +38,7 @@ class course_add:
                 ),
                 "language": validator.field(
                     validator.schema.str_schema(),
-                    validator=is_valid_lang,
+                    validator=check_lang_category_id,
                 ),
                 "tags": validator.field(
                     validator.schema.str_schema(),

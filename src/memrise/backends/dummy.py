@@ -506,7 +506,7 @@ class DummyMemrise(Memrise):
         ]:
             if category_slug in categories_slug:
                 course["breadcrumb"].append({
-                    "id"  : categories_slug[category_slug],
+                    "id"  : categories_slug[category_slug]["id"],
                     "slug": category_slug,
                 })
 

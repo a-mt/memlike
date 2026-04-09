@@ -1,17 +1,17 @@
 import settings
 import web
+import variables
 from memrise import memrise
 from requests.exceptions import HTTPError
 from utils.webapi import proxied_response, error_response
 from utils import validator
-from variables import languages
 from pydantic_core import PydanticCustomError
 
 
 class courses:
     def GET(self):
-        def is_valid_lang(value):
-            if value not in languages:
+        def check_lang_slug(value):
+            if value not in variables.source_languages:
                 raise PydanticCustomError(
                     "invalid",
                     "Expected a valid language, got '{wrong_value}'",
@@ -23,7 +23,7 @@ class courses:
             fields={
                 "lang": validator.field(
                     validator.schema.str_schema(),
-                    validator=is_valid_lang,
+                    validator=check_lang_slug,
                     default=web.ctx.session.get("lang_slug", settings.DEFAULT_LANG_SLUG),
                 ),
                 "cat": validator.field(

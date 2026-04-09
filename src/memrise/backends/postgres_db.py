@@ -185,7 +185,7 @@ class PostgresDB(Memrise):
         where = []
 
         # english -> 6
-        source = variables.categories_slug.get(lang_slug, 6)
+        source = variables.categories_slug.get(lang_slug, {}).get("id", 6)
         where.append(
             "source = " + web.db.sqlquote(source)
         )
@@ -216,7 +216,7 @@ class PostgresDB(Memrise):
                 break
 
             cat_id = item["category"]
-            target = variables.categories.get(cat_id, None)
+            target = variables.categories_id.get(cat_id, None)
 
             if target is not None:
                 item["target"] = {
@@ -252,7 +252,7 @@ class PostgresDB(Memrise):
         :param int cat_id
         :return list(id)
         """
-        parents = variables.categories.get(cat_id, {}).get("parents", [])
+        parents = variables.categories_id.get(cat_id, {}).get("parents", [])
 
         # Filter on target or any child (starts with the same breadcrumb)
         return [*parents, cat_id]
@@ -269,9 +269,9 @@ class PostgresDB(Memrise):
         """
 
         # Filter on target or any child (starts with the same breadcrumb)
-        cat_id = variables.categories_slug.get(category_slug, None)
-        if cat_id is not None:
-            ids = self._get_breadcrumb(cat_id)
+        category = variables.categories_slug.get(category_slug, None)
+        if category is not None:
+            ids = self._get_breadcrumb(category["id"])
 
             return "target_breadcrumb LIKE '" + ".".join(ids) + "%'"
 
@@ -340,10 +340,10 @@ class PostgresDB(Memrise):
                     "language_code": None
                 },
             """
-            category = variables.categories.get(cat_id, {})
+            category = variables.categories_id.get(cat_id, {})
             category_slug = category.get("slug", None)
 
-            lang = variables.languages.get(category_slug, None)
+            lang = variables.categories_slug.get(category_slug, None)
             if lang is not None:
                 course[to_key] = {
                     "id": cat_id,
@@ -362,7 +362,7 @@ class PostgresDB(Memrise):
         ):
             course["breadcrumb"].append({
                 "id": cat_id,
-                "slug": variables.categories.get(cat_id, {}).get("slug", ""),
+                "slug": variables.categories_id.get(cat_id, {}).get("slug", ""),
             })
 
         # Adding levels
@@ -374,7 +374,7 @@ class PostgresDB(Memrise):
             tables="course_levels",
         )
         for item in query:
-            item.status = "TODO"
+            item.status = "TODO"  #  Bereit zum lernen / Bereit zum Wiederholen 
 
             course["levels"][str(item["idx"])] = dict(item)
             course["nb_things"] += item["nb_things"]

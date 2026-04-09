@@ -5,6 +5,7 @@ from memrise import load_memrise
 import settings
 import variables
 import web
+from lang import get_localized_languages
 
 
 COURSE_ID = "6717861"
@@ -109,7 +110,7 @@ class ApplicationRenderTest(SimpleTestCase):
                 "catId": "",
                 "q": "",
             },
-            variables.languages,
+            get_localized_languages(),
             variables.categories_tree,
             categories_to_display=self.memrise.categories_to_display(lang_slug),
         )

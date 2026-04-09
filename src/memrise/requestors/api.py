@@ -9,7 +9,7 @@ from exceptions import SessionExpired
 OAUTH_CLIENT_ID = "1e739f5e77704b57a703"
 USER_AGENT      = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:147.0) Gecko/20100101 Firefox/147.0"
 HOST            = "https://community-courses.memrise.com"
-API_VERSION     = "v1.25"
+REST_API_URL    = "/v1.25"
 ACCEPT_LANGUAGE = "fr;q=0.8,en-US;q=0.5,en;q=0.3"
 # fmt: on
 
@@ -109,7 +109,7 @@ class ApiRequestor:
             "Referer": f"{HOST}/signin",
             "User-Agent": USER_AGENT,
         }
-        url = f"{HOST}/{API_VERSION}/web/ensure_csrf"
+        url = f"{HOST}{REST_API_URL}/web/ensure_csrf"
         response = requests.get(url)
         response.raise_for_status()
 
@@ -128,7 +128,7 @@ class ApiRequestor:
             "username": username.strip(),
             "password": password.strip(),
         }
-        url = f"{HOST}/{API_VERSION}/auth/access_token/"
+        url = f"{HOST}{REST_API_URL}/auth/access_token/"
         response = requests.post(url, cookies=cookies, headers=headers, data=data)
         response.raise_for_status()
 
@@ -141,7 +141,7 @@ class ApiRequestor:
         del headers["X-CSRFToken"]
 
         token = json["access_token"]["access_token"]
-        url = f"{HOST}/{API_VERSION}/auth/web/?invalidate_token_after=true&token={token}"
+        url = f"{HOST}{REST_API_URL}/auth/web/?invalidate_token_after=true&token={token}"
         response = requests.get(url, cookies=cookies, headers=headers)
         response.raise_for_status()
 
@@ -169,7 +169,7 @@ class ApiRequestor:
     def whatistudy(self, offset, nbperpage, sessionid=None):
         request_msg = f"What I study [offset={offset}]"
 
-        url = f"{HOST}/{API_VERSION}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
+        url = f"{HOST}{REST_API_URL}/dashboard/courses/?filter=recent&offset={offset}&limit={nbperpage}"
 
         request_kwargs = self.get_request_kwargs("GET", request_msg, sessionid)
         response = requests.get(
@@ -195,7 +195,7 @@ class ApiRequestor:
     def my_progress(self, sync_token=0, sessionid=None):
         request_msg = f"My progress [sync_token={sync_token}]"
 
-        url = f"{HOST}/{API_VERSION}/progress/?sync_token={sync_token}"
+        url = f"{HOST}{REST_API_URL}/progress/?sync_token={sync_token}"
 
         request_kwargs = self.get_request_kwargs("GET", request_msg, sessionid)
         response = requests.get(
@@ -211,7 +211,7 @@ class ApiRequestor:
     def learning_session_register_end(self, data, sessionid=None, csrftoken=None, referer=None):
         request_msg = "Learning session register end"
 
-        url = f"{HOST}/{API_VERSION}/learning_sessions/end/"
+        url = f"{HOST}{REST_API_URL}/learning_sessions/end/"
 
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
         response = requests.post(
@@ -246,7 +246,7 @@ class ApiRequestor:
         data["limit"] = 0
 
         # referer = "https://community-courses.memrise.com/aprender/review?course_id=6698294"
-        url = f"{HOST}/{API_VERSION}/progress/register/"
+        url = f"{HOST}{REST_API_URL}/progress/register/"
 
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
         response = requests.post(
@@ -337,7 +337,7 @@ class ApiRequestor:
     def level(self, course_id, level_index, session_type="preview", sessionid=None, csrftoken=None):
         request_msg = f"Level [id_course={course_id},level={level_index}]"
 
-        url = f"{HOST}/{API_VERSION}/learning_sessions/{session_type}/"
+        url = f"{HOST}{REST_API_URL}/learning_sessions/{session_type}/"
         referer = f"{HOST}/aprender/preview?course_id=${course_id}"
         data = {
             "session_source_id": course_id,
