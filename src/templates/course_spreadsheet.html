@@ -32,7 +32,7 @@ $:(prender.inc_course_banner(course))
   <div id="course-container" class="inner">
 
     <!-- Add the selectboxes of levels / checkbox display alternatives -->
-    <form id="spreadsheet_conf">
+    <form class="nicebox" id="spreadsheet_conf">
       <legend class="form-label">Spreadsheet should contain ...</legend>
 
       $if not selectboxes["0"] and not selectboxes["1"]:
@@ -52,6 +52,7 @@ $:(prender.inc_course_banner(course))
                      id="chooseExport1" name="chooseExport" value="1">
               <label class="form-label" for="chooseExport1">Multimedia levels</label>
             </td>
+            <td class="form-inline form-ab">Options</td>
           </tr>
 
         <tr class="form-group">
@@ -65,23 +66,19 @@ $:(prender.inc_course_banner(course))
            <td class="form-inline form-ab">
              <select id="export1" multiple $isDisabled>$:(selectboxes["1"])</select>
            </td>
+          <td class="form-inline" valign="top">
+            <div>
+              <input class="form-input" type="checkbox"
+                     id="exportAlt" name="exportAlt" value="1">
+              <label class="form-label" for="exportAlt">Alternative answers</label>
+
+              <br>
+              <input class="form-input" type="checkbox"
+                     id="exportMore" name="exportMore" value="1">
+              <label class="form-label" for="exportMore">Additional informations</label>
+            </div>
+          </td>
         </tr>
-
-      <tr class="form-group">
-        <td class="form-inline">
-          Display:
-          <div>
-            <input class="form-input" type="checkbox"
-                   id="exportAlt" name="exportAlt" value="1">
-            <label class="form-label" for="exportAlt">Alternative answers</label>
-
-            <br>
-            <input class="form-input" type="checkbox"
-                   id="exportMore" name="exportMore" value="1">
-            <label class="form-label" for="exportMore">Additional informations</label>
-          </div>
-        </td>
-      </tr>
       </table>
 
       <div class="actions">

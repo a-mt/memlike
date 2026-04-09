@@ -2867,6 +2867,7 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
     box-shadow: none;
     padding: 0;
     opacity: 0.5;
+    vertical-align: bottom;
 }
 #spreadsheet_conf button.icon:hover {
     opacity: 1;
