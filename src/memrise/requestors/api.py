@@ -495,6 +495,22 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
+    def level_get(
+        self, pool_id, sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
+        request_msg = "Level get"
+
+        url = f"{HOST}/ajax/pool/get/?pool_id={pool_id}&_=" + get_time()
+
+        # https://community-courses.memrise.com/ajax/pool/get/?pool_id=7781860&_=1775718018581
+        request_kwargs = self.get_request_kwargs("GET", request_msg, sessionid, csrftoken, referer)
+        response = requests.get(
+            url,
+            **request_kwargs,
+        )
+        self.raise_for_status(response)
+        return response.json()
+
     def level_attribute_edit(
         self, pool_id, column_key, label, show_at_tests=False, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):

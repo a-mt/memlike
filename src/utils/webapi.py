@@ -1,7 +1,8 @@
-from requests.exceptions import HTTPError
 import json
 import logging
 import web
+from pydantic_core import ValidationError
+from requests.exceptions import HTTPError
 
 
 logger = logging.getLogger(__name__)
@@ -14,8 +15,21 @@ def jsoninput():
     if web.ctx.env.get("CONTENT_TYPE", "").lower() != "application/json":
         return
 
-    text = web.data()
-    return json.loads(text)
+    try:
+        text = web.data()
+        return json.loads(text)
+
+    except json.decoder.JSONDecodeError as e:
+        raise ValidationError.from_exception_data(
+            "invalid",
+            [{
+                "msg": "Input data could not be decoded",
+                "type": "json_invalid",
+                #"loc": [],
+                #"input": None,
+                "ctx": {"error": str(e)},
+            }],
+        )
 
 
 def error_response(e):

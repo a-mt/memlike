@@ -1,6 +1,6 @@
 import web
 from memrise import memrise
-from utils.webapi import proxied_response
+from utils.webapi import proxied_response, jsoninput
 from utils import validator
 from variables import categories_slug, languages
 from pydantic_core import PydanticCustomError
@@ -136,6 +136,22 @@ class level_add:
                 referer=web.ctx.env.get("HTTP_X_REFERER", None),
             )
         )
+
+
+class level_get:
+    def POST(self):
+        if not web.ctx.session.get("loggedin", False):
+            raise web.Unauthorized()
+
+        data = validator.validate(
+            fields={
+                "pool_id": validator.field(
+                    validator.schema.int_schema(),
+                ),
+            },
+            data=jsoninput() or web.input(),
+        )
+        return proxied_response(lambda: memrise.level_get(data["pool_id"]))
 
 
 class level_delete:

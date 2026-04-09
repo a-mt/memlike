@@ -28,6 +28,7 @@ from .edit import (
     course_editpage,
     course_editdetails,
     level_add,
+    level_get,
     level_delete,
     level_get_editpage,
     level_title_edit,
@@ -54,6 +55,7 @@ from .progress import my_progress
 # /ajax/level/...
 urls_level = (
     r"/add", level_add,
+    r"/get", level_get,
     r"/delete", level_delete,
     r"/title_edit", level_title_edit,
     r"/columns_edit", level_columns_direction_edit,

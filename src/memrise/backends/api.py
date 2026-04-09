@@ -179,7 +179,9 @@ class ApiMemrise(Memrise):
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
         )
-        return self.scraper.course(course_id, html, is_logged_in=kwargs["sessionid"])
+        is_logged_in = kwargs["sessionid"] and not kwargs.get("is_anon", False)
+
+        return self.scraper.course(course_id, html, is_logged_in)
 
     def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
         self.set_default_kwargs(kwargs)
@@ -337,6 +339,15 @@ class ApiMemrise(Memrise):
 
         return result
 
+    def level_get(self, pool_id, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        return self.requestor.level_get(
+            pool_id,
+            sessionid=kwargs["sessionid"],
+            csrftoken=kwargs["csrftoken"],
+        )
+
     def level_delete(self, level_id, **kwargs):
         self.set_default_kwargs(kwargs)
 
@@ -400,10 +411,10 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_get_editpage(self, *args, **kwargs):
+    def level_get_editpage(self, level_id, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_get_editpage(*args, **kwargs)
+        return self.requestor.level_get_editpage(level_id, **kwargs)
 
     def level_thing_add(self, *args, **kwargs):
         self.set_default_kwargs(kwargs)
