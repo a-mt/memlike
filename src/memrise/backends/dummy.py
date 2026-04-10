@@ -43,7 +43,7 @@ class DummyMemrise(Memrise):
             "name": "German vocab",
             "slug": "german-vocab",
             "is_official": False,
-            "photo_url": "https://static.memrise.com/garden/img/placeholders/course-4.png",
+            "photo_url": "/static/img/course-4.png",
             "next_session": {
                 "single_continue": {
                     "session_type": "learn",

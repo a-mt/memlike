@@ -9,6 +9,7 @@ from memrise.scrapers import Scraper
 from memrise.requestors import ApiRequestor, DummyApiRequestor
 from pydantic_core import ValidationError
 from utils.crypto import gen_csrftoken
+from utils.string import slugify
 from .dummy import DummyLoginMixin, DummyEditMixin
 from .base import Memrise
 
@@ -17,6 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 class PostgresDB(Memrise):
+    def reset_db(self):
+        store = web.database()
+        dbname = store.keywords.get('database', 'postgres')
+
+        assert dbname.endswith('_test'), 'Reset can only be executed on the test database (got "%s")' % dbname
+
+        q = web.db.SQLQuery("CALL init_testset()")
+        store.query(q, processed=True)
 
     # +-----------------------------------------------------
     # | AUTH
@@ -152,7 +161,7 @@ class PostgresDB(Memrise):
             }
 
             if not item["photo_url"]:
-                item["photo_url"] = "https://static.memrise.com/garden/img/placeholders/course-4.png"
+                item["photo_url"] = "/static/img/course-4.png"
 
             res.append(item)
 
@@ -301,6 +310,9 @@ class PostgresDB(Memrise):
     # +-----------------------------------------------------
     # | COURSE
     # +-----------------------------------------------------
+    def _get_course_url(self, course_id, course_slug):
+        return f"/community/course/{course_id}/{course_slug}/"
+
     def course(self, course_id, course_slug="", **kwargs):
         store = web.database()
         res = store.select(
@@ -317,10 +329,10 @@ class PostgresDB(Memrise):
         course = {
             "id": course_id,
             "title": res["title"],
-            "url": f"/community/course/{res['id']}/{res['slug']}/",
+            "url": self._get_course_url(res['id'], res['slug']),
             "author": res["user_username"],
             "description": res["description"],
-            "photo": res["photo_url"] or "https://static.memrise.com/garden/img/placeholders/course-4.png",
+            "photo": res["photo_url"] or "/static/img/course-4.png",
             "levels": {},
             "nb_things": 0,
             "breadcrumb": [],
@@ -391,3 +403,84 @@ class PostgresDB(Memrise):
             }
 
         return course
+
+    # +-----------------------------------------------------
+    # | EDIT COURSE
+    # +-----------------------------------------------------
+    def course_add(self, data, referer=None, **kwargs):
+        self.set_default_kwargs(kwargs)
+
+        title = data.get("name", "")
+        slug = slugify(title)
+
+        source = data.get("language", "")
+        target = data.get("category", "")
+        target_breadcrumb = ".".join(self._get_breadcrumb(target))
+
+        store = web.database()
+        course_id = store.insert(
+            tablename="courses",
+            title=title,
+            slug=slug,
+            user_id=kwargs["sessionid"],
+            target=target,
+            target_breadcrumb=target_breadcrumb,
+            source=source,
+            description=data.get("description", ""),
+            short_description=data.get("short_description", ""),
+            tags=data.get("tags", ""),
+        )
+        # TODO handle errors?
+
+        return {
+            "success": True,
+            "url": self._get_course_url(course_id, slug),
+        }
+
+    def course_delete(self, course_id, **kwargs):
+        store = web.database()
+        rowcount = store.delete(
+            table="courses",
+            where={
+                "id": course_id,
+                "user_id": kwargs["sessionid"],
+            },
+        )
+
+        # TODO rowcount != 1?
+
+    """
+    def my_leaderboard(self, period, **kwargs):
+    def my_progress_summary(self, sync_token=0, **kwargs):
+    def my_progress(self, sync_token=0, **kwargs):
+    def learning_session_register_progress(self, data, referer=None, **kwargs):
+    def learning_session_register_end(self, data, referer=None, **kwargs):
+    def reset_progress_level(self, data, **kwargs):
+    def level(self, course_id, course_slug, level_index, session_type="preview", **kwargs):
+    def level_multimedia(self, course_id, course_slug, level_index, **kwargs):
+    def course_leaderboard(self, course_id, period, **kwargs):
+    def user(self, username, **kwargs):
+    def user_followers(self, username, page=1, **kwargs):
+    def user_following(self, username, page=1, **kwargs):
+    def user_mempals(self, tab, username, page=1, **kwargs):
+    def user_teaching(self, username, **kwargs):
+    def user_learning(self, username, **kwargs):
+    def user_courses(self, tab, username, **kwargs):
+    def level_add(self, course_id, pool_id=None, *args, **kwargs):
+    def level_delete(self, level_id, *args, **kwargs):
+    def level_title_edit(self, level_id, title, **kwargs):
+    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False):
+    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
+    def level_columns_direction_edit(self, level_id, column_a, column_b):
+    def level_get_editpage(self, level_id, **kwargs):
+    def level_thing_add(self, level_id, data, **kwargs):
+    def level_thing_update(self, thing_id, cell_id, cell_value, **kwargs):
+    def level_thing_file_upload(self, thing_id, cell_id, file, **kwargs):
+    def level_thing_file_delete(self, thing_id, cell_id, file_id, **kwargs):
+    def level_thing_delete(self, level_id, thing_id, **kwargs):
+    def level_thing_get(self, thing_id, **kwargs):
+    def level_thing_alt_update(self, thing_id, alts, column_key, **kwargs):
+    def level_multimedia_update(self, level_id, txt, **kwargs):
+    def course_get_editpage(self, course_id, course_slug, **kwargs):
+    def course_delete(self, course_id, **kwargs):
+    """

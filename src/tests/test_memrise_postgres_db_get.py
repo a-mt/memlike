@@ -4,12 +4,7 @@ from .testcases import SimpleTestCase
 import settings
 
 
-COURSE_ID = "1"
-COURSE_SLUG = "example"
-COURSE_ID_SINGLE = "2"
-
-
-class MemrisePostgresDBGetTest(SimpleTestCase):
+class MemrisePostgresDBTest(SimpleTestCase):
     session = {}
     memrise = load_memrise("memrise.backends.PostgresDB")
 
@@ -26,6 +21,8 @@ class MemrisePostgresDBGetTest(SimpleTestCase):
         """
         response = self.client.request("/")
         self.assertEqual(response.status_code, 200)
+
+        self.memrise.reset_db()
 
     def init_memrise_login(self):
         username = "bob"
@@ -121,14 +118,14 @@ class MemrisePostgresDBGetTest(SimpleTestCase):
         self.assertIsNotNone(self.session["session_id"])
 
         result = self.memrise.course(
-            COURSE_ID,
-            COURSE_SLUG,
+            1,
+            "example",
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
         )
 
         self.assertIs(type(result), dict)
-        self.assertEqual(result.get("id", None), COURSE_ID)
+        self.assertEqual(result.get("id", None), 1)
         self.assertNotEqual(result.get("title", ""), "")
         self.assertNotEqual(result.get("description", ""), "")
         self.assertNotEqual(result.get("author", ""), "")
@@ -161,7 +158,7 @@ class MemrisePostgresDBGetTest(SimpleTestCase):
         self.assertIsNotNone(self.session["session_id"])
 
         result = self.memrise.course(
-            COURSE_ID_SINGLE,
+            2,
             "",
             sessionid=self.session["session_id"],
             csrftoken=self.session["csrftoken"],
@@ -191,3 +188,27 @@ class MemrisePostgresDBGetTest(SimpleTestCase):
         self.assertIsNotNone(result["stats"].get("percent_complete", None))
         self.assertIsNotNone(result["stats"].get("review", None))
         self.assertIsNotNone(result["stats"].get("nb_things", None))
+
+    def test_course_add(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        result = self.memrise.course_add(
+            data={
+                "name": "New",
+                "category": "2",
+                "language": "6",
+            },
+            sessionid=self.session["session_id"],
+            csrftoken=self.session["csrftoken"],
+        )
+        self.assertIs(type(result), dict)
+
+    def test_course_delete(self):
+        self.assertIsNotNone(self.session["session_id"])
+
+        result = self.memrise.course_delete(
+            3,
+            sessionid=self.session["session_id"],
+            csrftoken=self.session["csrftoken"],
+        )
+        self.assertIsNone(result)
