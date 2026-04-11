@@ -85,7 +85,7 @@ $#  </div>
             </div>
 
           $if stats['review']:
-            $ percentReview = int(float(points - stats['review']) / maxPoints * 100)
+            $ percentReview = min(100, int(float(points - stats['review']) / maxPoints * 100))
             <div class="progress-bar-active blue" style="clip-path: polygon(${percentReview}% 0, ${percent}% 0, ${percent}% 100%, ${percentReview}% 100%);">
               <div class="counter">$(counter)</div>
             </div>

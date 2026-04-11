@@ -83,7 +83,7 @@ $:(prender.inc_course_banner(course))
         $ points    = learned
         $ maxPoints = nb_things - ignored
         $ counter   = str(points) + "/" + str(maxPoints)
-        $ percent   = int(float(points) / maxPoints * 100) if maxPoints > 0 else 100
+        $ percent   = min(100, int(float(points) / maxPoints * 100) if maxPoints > 0 else 100)
 
         <!-- Text -->
         <ul class="numbers-summary">

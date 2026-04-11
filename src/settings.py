@@ -115,6 +115,8 @@ if web.config.get("template", None) is None:
     template["unidecode"] = unidecode
     template["str"] = str
     template["ceil"] = ceil
+    template["min"] = min
+    template["max"] = max
     template["now"] = lambda: datetime.datetime.now()
     template["time"] = lambda: int(datetime.datetime.now().timestamp())
     template["date"] = lambda x: datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ")

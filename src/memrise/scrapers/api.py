@@ -212,13 +212,14 @@ class Scraper:
                     stats["nb_things"] += int(res.group(1))
 
             # Percentage complete
+            # Note that if things have been deleted, we could have learned > nb_things
             if stats["learned"] > 0:
                 if stats["nb_things"] == 0:
                     stats["percent_complete"] = 100
                 else:
                     percent = float(stats["learned"])
                     percent /= float(stats["nb_things"]) - float(stats["ignored"])
-                    stats["percent_complete"] = int(percent * 100)
+                    stats["percent_complete"] = min(100, int(percent * 100))
 
         # Review
         item = div.find("div", {"class": "actions-right"})
