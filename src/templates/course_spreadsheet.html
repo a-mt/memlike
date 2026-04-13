@@ -1,7 +1,7 @@
 $def with (course, selectboxes)
 $var currentPage: courses
 $var title: $(course['title']) - $(I18N.misc['spreadsheet'])
-$var js: /static/js/spreadsheet.js
+$var js: /static/js/markdown.min.js, /static/js/spreadsheet.js
 
 $:(prender.inc_course_banner(course))
 
@@ -33,7 +33,7 @@ $:(prender.inc_course_banner(course))
 
     <!-- Add the selectboxes of levels / checkbox display alternatives -->
     <form class="nicebox" id="spreadsheet_conf">
-      <legend class="form-label">Spreadsheet should contain ...</legend>
+      <legend class="form-label">$:(I18N.misc['export'])</legend>
 
       $if not selectboxes["0"] and not selectboxes["1"]:
         <input type="hidden" id="export0" value="1">
@@ -45,12 +45,12 @@ $:(prender.inc_course_banner(course))
             <td class="form-inline form-ab">
               <input class="form-input chooseExport" type="radio"
                      id="chooseExport0" name="chooseExport" value="0" checked>
-              <label class="form-label" for="chooseExport0">Classic levels</label>
+              <label class="form-label" for="chooseExport0">$:(I18N.misc['spreadsheet_things'])</label>
             </td>
             <td class="form-inline form-ab">
               <input class="form-input chooseExport" type="radio"
                      id="chooseExport1" name="chooseExport" value="1">
-              <label class="form-label" for="chooseExport1">Multimedia levels</label>
+              <label class="form-label" for="chooseExport1">$:(I18N.misc['spreadsheet_multimedia'])</label>
             </td>
             <td class="form-inline form-ab">Options</td>
           </tr>
@@ -70,22 +70,22 @@ $:(prender.inc_course_banner(course))
             <div>
               <input class="form-input" type="checkbox"
                      id="exportAlt" name="exportAlt" value="1">
-              <label class="form-label" for="exportAlt">Alternative answers</label>
+              <label class="form-label" for="exportAlt">$:(I18N.misc['export_opt_alternatives'])</label>
 
               <br>
               <input class="form-input" type="checkbox"
                      id="exportMore" name="exportMore" value="1">
-              <label class="form-label" for="exportMore">Additional informations</label>
+              <label class="form-label" for="exportMore">$:(I18N.misc['export_opt_more'])</label>
             </div>
           </td>
         </tr>
       </table>
 
       <div class="actions">
-        <button class="btn" type="submit" name="render">Render</button>
-        <button class="btn" type="submit" name="export">Export CSV</button>
+        <button class="btn" type="submit" name="render">$:(I18N.misc['export_render'])</button>
+        <button class="btn" type="submit" name="export">$:(I18N.misc['export_csv'])</button>
         <button type="button" id="exportInMemory" style="display: none"
-                class="icon" title="Export CSV using data in memory (rendered below)">&DownArrowBar;</button>
+                class="icon" title="$:(I18N.misc['export_csv_memory'])">&DownArrowBar;</button>
       </div>
     </form>
     <div id="spreadsheet"></div>

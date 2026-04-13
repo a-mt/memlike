@@ -154,12 +154,12 @@ class SpreadSheet {
     container.appendChild(table);
 
     table.innerHTML = `<thead><tr>
-      <th class="lvl-idx num">Level</th>
+      <th class="lvl-idx num">${window.I18N['export_column_level']}</th>
       <th class="item-idx num">#</th>
-      <th class="item-label">Label</th>
-      <th class="item-definition">Definition</th>
-      <th class="score num" colspan="2">Score</th>
-      ${this.exportMore ? `<th class="item-more">More</th>` : ``}
+      <th class="item-label">${window.I18N['export_column_label']}</th>
+      <th class="item-definition">${window.I18N['export_column_definition']}</th>
+      <th class="score num" colspan="2">${window.I18N['export_column_score']}</th>
+      ${this.exportMore ? `<th class="item-more">${window.I18N['export_column_more']}</th>` : ``}
       </tr></thead>
       <tbody></tbody>`;
 
@@ -216,10 +216,10 @@ class SpreadSheet {
 
       }).catch((e) => {
         hasErr = true;
-        unsafeWindow.console.error(e);
+        console.error(e);
 
         loading.setAttribute('class', 'alert alert-danger');
-        loading.innerHTML = `Something went wrong. Please contact the developer of this script if the error persists.`;
+        loading.innerHTML = window.I18N['error'];
       });
 
       if(hasErr) {
@@ -249,6 +249,9 @@ class SpreadSheet {
 
     if(this.exportMore) {
       html += `<td class="item-more">`;
+      if (data.audio) {
+        html += [data.audio].map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
+      }
       html += data.visible_info.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
       html += data.hidden_info.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
       html += data.attributes.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> <span>${escapeHTML(it.value)}</span></div>`;}).join('');
@@ -463,8 +466,8 @@ class SpreadSheetMultimedia {
     container.appendChild(table);
 
     table.innerHTML = `<thead><tr>
-      <th class="lvl-idx num">Level</th>
-      <th class="item-definition">Content</th>
+      <th class="lvl-idx num">${window.I18N['export_column_level']}</th>
+      <th class="item-definition">${window.I18N['export_column_content']}</th>
       </tr></thead>
       <tbody></tbody>`;
 
@@ -495,10 +498,10 @@ class SpreadSheetMultimedia {
 
       }).catch((e) => {
         hasErr = true;
-        unsafeWindow.console.error(e);
+        console.error(e);
 
         loading.setAttribute('class', 'alert alert-danger');
-        loading.innerHTML = `Something went wrong. Please contact the developer of this script if the error persists.`;
+        loading.innerHTML = window.I18N['error'];
       });
 
       if(hasErr) {
@@ -534,7 +537,6 @@ class SpreadSheetMultimedia {
 
     tr.innerHTML = html;
     this.body.appendChild(tr);
-    unsafeWindow.MEMRISE.renderer.do_embeds(unsafeWindow.$(tr));
   }
 
   /**
@@ -543,7 +545,7 @@ class SpreadSheetMultimedia {
    * @return string
    */
   parseMarkdown(txt) {
-    return unsafeWindow.MEMRISE.renderer.rich_format(txt);
+    return window.markdown.toHTML(txt);
   }
 
   /**
@@ -634,6 +636,7 @@ class Export extends SpreadSheet {
     if(this.exportMore) {
       var arr = [];
 
+      data.audio && this.getExtraColumns(arr, [data.audio]);
       this.getExtraColumns(arr, data.visible_info);
       this.getExtraColumns(arr, data.hidden_info);
       this.getExtraColumns(arr, data.attributes);
@@ -742,7 +745,15 @@ class Export extends SpreadSheet {
    * @return string
    */
   getHeaders() {
-    var headers = 'Level,#,Label,Definition,Correct,Attempts,Score %';
+    var headers = [
+      window.I18N['export_column_level'],
+      '#',
+      window.I18N['export_column_label'],
+      window.I18N['export_column_definition'],
+      window.I18N['export_column_score_correct'],
+      window.I18N['export_column_score_attempts'],
+      window.I18N['export_column_score_percent'],
+    ].join(',');
 
     if(!this.exportMore) {
       return headers;
@@ -786,7 +797,11 @@ class ExportMultimedia extends SpreadSheetMultimedia {
    * @return DOMElement
    */
   createBody(container) {
-    this.body = 'Level,Title,Content\n';
+    this.body = [
+      window.I18N['export_column_level'],
+      window.I18N['export_column_label'],
+      window.I18N['export_column_content'],
+    ].join(',') + '\n';
   }
   
   /**
@@ -845,17 +860,24 @@ class ExportInMemory {
   getHeaders(_headers, extraHeaders) {
     var headers = [..._headers];
 
-    var k = headers.indexOf('Score');
+    var k = headers.indexOf(window.I18N['export_column_score']);
     if(k != -1) {
-      headers.splice(k, 1, ...['Correct', 'Attempts', 'Score %']);
+      headers.splice(k, 1, ...[
+        window.I18N['export_column_score_correct'],
+        window.I18N['export_column_score_attempts'],
+        window.I18N['export_column_score_percent'],
+      ]);
     }
-    k = headers.indexOf('More');
+    k = headers.indexOf(window.I18N['export_column_more']);
     if(k != -1) {
       headers.splice(k, 1, ...extraHeaders);
     }
-    k = headers.indexOf('Content');
+    k = headers.indexOf(window.I18N['export_column_content']);
     if(k != -1) {
-      headers.splice(k, 1, ...['Title', 'Content']);
+      headers.splice(k, 1, ...[
+        window.I18N['export_column_label'],
+        window.I18N['export_column_content'],
+      ]);
     }
     return headers.map(label => escapeCSV(label)).join(',');
   }
@@ -889,12 +911,12 @@ class ExportInMemory {
             td    = tr.children[k];
 
         switch(label) {
-           case 'Level':
+           case window.I18N['export_column_level']:
            case '#':
              csv += td.innerText + ',';
              break;
 
-           case 'Score':
+           case window.I18N['export_column_score']:
              if(!td.hasAttribute('colspan')) {
                 let correct = parseInt(td.innerText, 10),
                     attempt = parseInt(tr.children[k+1].innerText, 10);
@@ -909,7 +931,7 @@ class ExportInMemory {
 
               break;
 
-            case 'More':
+            case window.I18N['export_column_more']:
               let more  = td.querySelectorAll('.more'),
                   extra = {};
 
@@ -930,8 +952,7 @@ class ExportInMemory {
               break;
 
           // Multimedia
-          case 'Content':
-
+          case window.I18N['export_column_content']:
             csv += escapeCSV(td.children[0].innerText.trim()) + ',';
             csv += escapeCSV(td.children[1].innerText.trim());
             break;

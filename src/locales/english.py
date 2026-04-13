@@ -127,6 +127,22 @@ misc = {
     "edit_level_title": "Edit the title",
     "course_picture": "Image",
     "course_picture_upload": "Upload a new image",
+    "spreadsheet_things": "Classic levels",
+    "spreadsheet_multimedia": "Multimedia levels",
+    "export_render": "Render",
+    "export_csv": "Export as CSV",
+    "export_csv_memory": "Export as CSV using in-memory data (rendered below)",
+    "export_opt_alternatives": "Alternative answers",
+    "export_opt_more": "Additional informations",
+    "export_column_level": "Level",
+    "export_column_label": "Label",
+    "export_column_definition": "Definition",
+    "export_column_score": "Score",
+    "export_column_score_correct": "Correct",
+    "export_column_score_attempts": "Attempts",
+    "export_column_score_percent": "Score %",
+    "export_column_more": "More",
+    "export_column_content": "Content",
 }
 
 menu = {
