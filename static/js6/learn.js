@@ -1926,7 +1926,7 @@ class Learn extends Component {
         case 1:
             return this.render_tpl({
               template: 'multiple_choice',
-              nChoices: 4
+              nChoices: 4,
             });
 
         case 2:
@@ -1934,40 +1934,40 @@ class Learn extends Component {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
-              promptWith: 'video'
+              promptWith: 'video',
             });
           }
           if(screens.audio_multiple_choice && Math.random() > .5 && !this.session_settings.disable_multimedia) {
             return this.render_tpl({
-              template: 'audio_multiple_choice'
+              template: 'audio_multiple_choice',
             });
           }
           if(screens.tapping && !this.session_settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
-              difficulty: 0
+              difficulty: 0,
             });
           }
           return this.render_tpl({
             template: 'reversed_multiple_choice',
-            nChoices: 4
+            nChoices: 4,
           });
 
         case 3:
           if(screens.tapping && !this.session_settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
-              difficulty: .5
+              difficulty: .5,
             });
           }
           if(screens.typing && !this.session_settings.disable_typing) {
             return this.render_tpl({
-              template: 'typing'
+              template: 'typing',
             });
           }
           return this.render_tpl({
             template: 'multiple_choice',
-            nChoices: 9
+            nChoices: 9,
           });
 
         case 4:
@@ -1975,7 +1975,7 @@ class Learn extends Component {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
-              promptWith: 'video'
+              promptWith: 'video',
             });
           }
           if(Math.random() > .5 && !this.session_settings.disable_multimedia) {
@@ -1983,14 +1983,14 @@ class Learn extends Component {
             if(screens.typing.audio && !this.session_settings.disable_typing) {
               s.push({
                 template: 'typing',
-                promptWith: 'audio'
+                promptWith: 'audio',
               });
             }
             if(screens.reversed_multiple_choice.audio && !this.session_settings.disable_multimedia) {
               s.push({
                 template: 'reversed_multiple_choice',
                 nChoices: 4,
-                promptWith: 'audio'
+                promptWith: 'audio',
               });
             }
             if(s.length > 0) {
@@ -1999,30 +1999,30 @@ class Learn extends Component {
           }
           return this.render_tpl({
             template: 'reversed_multiple_choice',
-            nChoices: [4, 6].random()
+            nChoices: [4, 6].random(),
           });
 
         case 5:
           if(screens.taping && !this.session_settings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
-              difficulty: .5
+              difficulty: .5,
             });
           }
           return this.render_tpl({
             template: 'multiple_choice',
-            nChoices: [6, 9].random()
+            nChoices: [6, 9].random(),
           });
 
         default:
           if(screens.typing && !this.session_settings.disable_typing) {
             return this.render_tpl({
-              template: 'typing'
+              template: 'typing',
             });
           }
           return {
             template: 'multiple_choice',
-            nChoices: 9
+            nChoices: 9,
           };
       }
     }
@@ -2031,12 +2031,12 @@ class Learn extends Component {
       if(this.session_settings.reverse_prompt_and_answer && screens.reversed_multiple_choice) {
         return this.render_tpl({
           template: 'reversed_multiple_choice',
-          nChoices: 4
+          nChoices: 4,
         });
       }
       return this.render_tpl({
         template: 'multiple_choice',
-        nChoices: 4
+        nChoices: 4,
       });
     }
 
@@ -2054,7 +2054,7 @@ class Learn extends Component {
         }
         return this.render_tpl({
             template: (GameScreenBuilder.buildScreen_reversed_multiple_choice(screens), 'reversed_multiple_choice2'),
-            nChoices: 9
+            nChoices: 9,
         });
       }
 
@@ -2065,12 +2065,12 @@ class Learn extends Component {
       }
       if(screens.audio_multiple_choice && Math.random() > .5 && !this.session_settings.disable_multimedia) {
         return this.render_tpl({
-          template: 'audio_multiple_choice'
+          template: 'audio_multiple_choice',
         });
       }
       return this.render_tpl({
           template: 'multiple_choice',
-          nChoices: 9
+          nChoices: 9,
       });
     }
 
@@ -2453,8 +2453,8 @@ const MultipleChoice = function(props) {
 
   // Display 9 choices max
   if(n > props.nChoices) {
-    n = props.nChoices;
-    choicesRnd = choicesRnd.slice(0, n);
+    choicesRnd = choicesRnd.slice(0, props.nChoices);
+    n = choicesRnd.length;
 
   } else if(n < props.nChoices) {
     for (let i=n; i<props.nChoices; i++) {
@@ -2463,7 +2463,7 @@ const MultipleChoice = function(props) {
   }
 
   // Place the right answer somewhere in it
-  var rnd  = (Math.random() * n - 1) | 0,
+  var rnd  = randrange(0, n - 1),
      isArr = $.isArray(item.answer.value);
   console.log('choices', n, rnd);
 
@@ -2572,8 +2572,8 @@ const Tapping = function(props) {
     if(!remains.length) {
       break;
     }
-    var rnd = Math.floor(Math.random() * remains.length),
-        it  = remains.splice(rnd,1);
+    var rnd = randrange(0, remains.length - 1),
+        it  = remains.splice(rnd, 1);
     choices.push(...it);
   }
   i = 0;
