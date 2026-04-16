@@ -1318,6 +1318,9 @@ function bindEditEvents(tpl) {
 
   // POST new cell value
   function updateCell(thingId, cellId, txt) {
+    if (!txt) {
+      txt = ' ';
+    }
     $.ajax({
       url: '/ajax/level/' + thingId + '/edit',
       method: 'POST',

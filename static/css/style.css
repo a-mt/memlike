@@ -2524,6 +2524,9 @@ tr.thing td:nth-child(2) .wrapper::before {
 .things td:nth-child(2).text {
   padding-left: 12px;
 }
+.things div.text {
+  min-height: 1em;
+}
 .things .text .wide {
   position: absolute;
   left: -2px;
