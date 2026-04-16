@@ -335,9 +335,12 @@ class ApplicationAjaxCourseEditRoutesTest(SimpleTestCase):
         self.assertEqual(response.status_code, 400)
 
         response = self.client.request(
-            "/ajax/course/remove", method="POST", headers={"Cookie": cookies.simple_output()}, data={
+            "/ajax/course/remove",
+            method="POST",
+            headers={"Cookie": cookies.simple_output()},
+            data={
                 "course_id": 1,
-            }
+            },
         )
         self.assertEqual(response.status_code, 200)
 

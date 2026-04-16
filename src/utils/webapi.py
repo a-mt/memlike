@@ -1,7 +1,6 @@
 import json
 import logging
 import web
-import variables
 from pydantic_core import ValidationError
 from requests.exceptions import HTTPError
 
@@ -23,13 +22,15 @@ def jsoninput():
     except json.decoder.JSONDecodeError as e:
         raise ValidationError.from_exception_data(
             "invalid",
-            [{
-                "msg": "Input data could not be decoded",
-                "type": "json_invalid",
-                #"loc": [],
-                #"input": None,
-                "ctx": {"error": str(e)},
-            }],
+            [
+                {
+                    "msg": "Input data could not be decoded",
+                    "type": "json_invalid",
+                    # "loc": [],
+                    # "input": None,
+                    "ctx": {"error": str(e)},
+                }
+            ],
         )
 
 

@@ -1,7 +1,6 @@
 from memrise import load_memrise
 from inspect import isgenerator
 from .testcases import SimpleTestCase
-import settings
 
 
 class MemrisePostgresDBTest(SimpleTestCase):

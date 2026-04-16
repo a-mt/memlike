@@ -7,7 +7,6 @@ from utils import validator
 from memrise import memrise
 from requests.exceptions import HTTPError
 from pydantic_core import PydanticCustomError, ValidationError
-from unidecode import unidecode
 
 
 # fmt: off
@@ -197,7 +196,7 @@ class spreadsheet:
         for rank, level in course.get("levels", []).items():
             k = "1" if level["type"] == 2 else "0"
 
-            selectboxes[k] += f"<option value='{rank}' selected>{rank}. {level["name"]}</option>"
+            selectboxes[k] += f"<option value='{rank}' selected>{rank}. {level['name']}</option>"
 
         return web.config.template.render.course_spreadsheet(course, selectboxes)
 

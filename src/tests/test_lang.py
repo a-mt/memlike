@@ -55,11 +55,11 @@ class LangTest(unittest.TestCase):
         I18N = lang.get_module("french")
         languages = lang.get_localized_languages(I18N)
 
-        self.assertEqual(languages['dutch']['localized_name'], 'Néerlandais')
-        self.assertEqual(languages['french']['localized_name'], 'Français')
+        self.assertEqual(languages["dutch"]["localized_name"], "Néerlandais")
+        self.assertEqual(languages["french"]["localized_name"], "Français")
 
         keys = list(languages.keys())
-        self.assertGreater(keys.index('dutch'), keys.index('french'))
+        self.assertGreater(keys.index("dutch"), keys.index("french"))
 
     def test_localized_languages_en(self):
         """
@@ -68,8 +68,8 @@ class LangTest(unittest.TestCase):
         I18N = lang.get_module("english")
         languages = lang.get_localized_languages(I18N)
 
-        self.assertEqual(languages['dutch']['localized_name'], 'Dutch')
-        self.assertEqual(languages['french']['localized_name'], 'French')
+        self.assertEqual(languages["dutch"]["localized_name"], "Dutch")
+        self.assertEqual(languages["french"]["localized_name"], "French")
 
         keys = list(languages.keys())
-        self.assertLess(keys.index('dutch'), keys.index('french'))
+        self.assertLess(keys.index("dutch"), keys.index("french"))

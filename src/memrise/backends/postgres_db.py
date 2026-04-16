@@ -1,16 +1,10 @@
-import requests
 import itertools
 import logging
-import settings
 import variables
 import web
 
-from memrise.scrapers import Scraper
-from memrise.requestors import ApiRequestor, DummyApiRequestor
-from pydantic_core import ValidationError
 from utils.crypto import gen_csrftoken
 from utils.string import slugify
-from .dummy import DummyLoginMixin, DummyEditMixin
 from .base import Memrise
 
 
@@ -20,9 +14,9 @@ logger = logging.getLogger(__name__)
 class PostgresDB(Memrise):
     def reset_db(self):
         store = web.database()
-        dbname = store.keywords.get('database', 'postgres')
+        dbname = store.keywords.get("database", "postgres")
 
-        assert dbname.endswith('_test'), 'Reset can only be executed on the test database (got "%s")' % dbname
+        assert dbname.endswith("_test"), 'Reset can only be executed on the test database (got "%s")' % dbname
 
         q = web.db.SQLQuery("CALL init_testset()")
         store.query(q, processed=True)
@@ -43,12 +37,18 @@ class PostgresDB(Memrise):
         store = web.database()
 
         # with x as (select username, salt, password from users where username = 'bob') select username from x where crypt('pass', salt) = password;
-        qout = web.db.SQLQuery([
-            "WITH x AS (SELECT id, username, salt, password FROM users WHERE username = ", web.db.SQLParam(username), ")",
-            "SELECT id, username FROM x WHERE crypt(", web.db.SQLParam(password), ", salt) = password"
-        ])
+        qout = web.db.SQLQuery(
+            [
+                "WITH x AS (SELECT id, username, salt, password FROM users WHERE username = ",
+                web.db.SQLParam(username),
+                ")",
+                "SELECT id, username FROM x WHERE crypt(",
+                web.db.SQLParam(password),
+                ", salt) = password",
+            ]
+        )
 
-        res  = store.query(qout, processed=True).first()
+        res = store.query(qout, processed=True).first()
         if res is None:
             return None
 
@@ -66,9 +66,13 @@ class PostgresDB(Memrise):
         self.set_default_kwargs(kwargs)
 
         store = web.database()
-        res = store.select(what="id AS sessionid, username, photo", tables="users", where={
-            "id": kwargs["sessionid"],
-        }).first()
+        res = store.select(
+            what="id AS sessionid, username, photo",
+            tables="users",
+            where={
+                "id": kwargs["sessionid"],
+            },
+        ).first()
 
         if not res.get("photo", ""):
             res["photo"] = "/static/img/empty-avatar-1.png"
@@ -83,7 +87,7 @@ class PostgresDB(Memrise):
         cursor = store.select(
             what="id, title AS name, slug, photo_url",
             tables="courses",
-            limit=nbperpage+1,
+            limit=nbperpage + 1,
             offset=offset,
         )
         res = []
@@ -100,7 +104,7 @@ class PostgresDB(Memrise):
                     "is_pro_mode": False,
                     "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
                     "unlocked_state": "always_unlocked",
-                    "badge_count": None
+                    "badge_count": None,
                 },
                 "mode_selector": {
                     "learn": {
@@ -108,44 +112,44 @@ class PostgresDB(Memrise):
                         "url": "/aprender/learn?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
                         "badge_count": 0,
                         "is_enabled": True,
-                        "unlocked_state": "always_unlocked"
+                        "unlocked_state": "always_unlocked",
                     },
                     "classic_review": {
                         "is_pro_mode": False,
                         "url": "/aprender/review?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
                         "badge_count": 0,
                         "is_enabled": True,
-                        "unlocked_state": "always_unlocked"
+                        "unlocked_state": "always_unlocked",
                     },
                     "speed_review": {
                         "is_pro_mode": False,
                         "url": "/aprender/speed?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
                         "badge_count": 0,
                         "is_enabled": True,
-                        "unlocked_state": "always_unlocked"
+                        "unlocked_state": "always_unlocked",
                     },
                     "difficult_words": {
                         "is_pro_mode": True,
                         "url": "/aprender/difficult?course_id=6698294?recommendation_id=c8252e77-3fdf-4718-b8de-17581adc1b93",
                         "badge_count": 4,
                         "is_enabled": True,
-                        "unlocked_state": "locked"
+                        "unlocked_state": "locked",
                     },
                     "listening_skills": {
                         "is_pro_mode": True,
                         "url": None,
                         "badge_count": 0,
                         "is_enabled": False,
-                        "unlocked_state": "locked"
+                        "unlocked_state": "locked",
                     },
                     "video": {
                         "is_pro_mode": True,
                         "url": None,
                         "badge_count": 0,
                         "is_enabled": False,
-                        "unlocked_state": "locked"
-                    }
-                }
+                        "unlocked_state": "locked",
+                    },
+                },
             }
             item["goal"] = None
             item["progress"] = {
@@ -157,7 +161,7 @@ class PostgresDB(Memrise):
                 "ignored": 0,
                 "difficult": 4,
                 "completed_this_session": False,
-                "percent_complete": 18
+                "percent_complete": 18,
             }
 
             if not item["photo_url"]:
@@ -190,14 +194,12 @@ class PostgresDB(Memrise):
         @return dict - {page, content, has_next}
         """
         nbperpage = 12
-        offset = (page-1)*nbperpage
+        offset = (page - 1) * nbperpage
         where = []
 
         # english -> 6
         source = variables.categories_slug.get(lang_slug, {}).get("id", 6)
-        where.append(
-            "source = " + web.db.sqlquote(source)
-        )
+        where.append("source = " + web.db.sqlquote(source))
 
         # german-2 -> LIKE 569.578.879.4% / german -> LIKE 569.578.879%
         if cat:
@@ -212,8 +214,8 @@ class PostgresDB(Memrise):
             what="id, title AS name, slug, target AS category, photo_url",
             where=web.db.SQLQuery.join(where, " AND "),
             tables="courses",
-            limit=nbperpage+1,
-            offset=offset
+            limit=nbperpage + 1,
+            offset=offset,
         )
 
         has_next = False
@@ -244,7 +246,7 @@ class PostgresDB(Memrise):
                 "ignored": 0,
                 "difficult": 4,
                 "completed_this_session": False,
-                "percent_complete": 18
+                "percent_complete": 18,
             }
             res.append(item)
 
@@ -329,7 +331,7 @@ class PostgresDB(Memrise):
         course = {
             "id": course_id,
             "title": res["title"],
-            "url": self._get_course_url(res['id'], res['slug']),
+            "url": self._get_course_url(res["id"], res["slug"]),
             "author": res["user_username"],
             "description": res["description"],
             "photo": res["photo_url"] or "/static/img/course-4.png",
@@ -372,10 +374,12 @@ class PostgresDB(Memrise):
             [res["source"]],
             self._get_breadcrumb(res["target"]),
         ):
-            course["breadcrumb"].append({
-                "id": cat_id,
-                "slug": variables.categories_id.get(cat_id, {}).get("slug", ""),
-            })
+            course["breadcrumb"].append(
+                {
+                    "id": cat_id,
+                    "slug": variables.categories_id.get(cat_id, {}).get("slug", ""),
+                }
+            )
 
         # Adding levels
         query = store.select(
@@ -386,7 +390,7 @@ class PostgresDB(Memrise):
             tables="course_levels",
         )
         for item in query:
-            item.status = "TODO"  #  Bereit zum lernen / Bereit zum Wiederholen 
+            item.status = "TODO"  #  Bereit zum lernen / Bereit zum Wiederholen
 
             course["levels"][str(item["idx"])] = dict(item)
             course["nb_things"] += item["nb_things"]

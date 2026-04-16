@@ -239,7 +239,7 @@ class Scraper:
         DOM = BeautifulSoup(html, "html5lib", from_encoding="utf-8")
 
         # Default for Empty level (ex: /course/50121/flags-of-the-world/9/)
-        data = ''
+        data = ""
 
         # Look for value of js variable "level_multimedia"
         VAR_MULTIMEDIA = "var level_multimedia = "

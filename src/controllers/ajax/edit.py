@@ -260,7 +260,7 @@ class level_column_edit:
             },
             data=web.input(),
         )
-        if (data["column_structure"] == "attribute"):
+        if data["column_structure"] == "attribute":
             return proxied_response(
                 lambda: memrise.level_attribute_edit(
                     data["pool_id"],

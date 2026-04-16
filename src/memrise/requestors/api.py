@@ -495,9 +495,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_get(
-        self, pool_id, sessionid=None, csrftoken=None, referer=None, **kwargs
-    ):
+    def level_get(self, pool_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = "Level get"
 
         url = f"{HOST}/ajax/pool/get/?pool_id={pool_id}&_=" + get_time()
@@ -561,7 +559,15 @@ class ApiRequestor:
         return response.json()
 
     def level_column_add(
-        self, pool_id, column_kind, label, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs
+        self,
+        pool_id,
+        column_kind,
+        label,
+        column_structure="attribute",
+        sessionid=None,
+        csrftoken=None,
+        referer=None,
+        **kwargs,
     ):
         request_msg = "Level add column"
 
@@ -572,7 +578,7 @@ class ApiRequestor:
             url,
             data={
                 "kind": column_kind,  # text, image, audio
-                "structure": "attribute" if column_kind !="text" else column_structure,  # attribute, column
+                "structure": "attribute" if column_kind != "text" else column_structure,  # attribute, column
                 "pool_id": pool_id,
                 "label": label,
             },
@@ -581,7 +587,9 @@ class ApiRequestor:
         self.raise_for_status(response)
         return None
 
-    def level_column_delete(self, pool_id, column_key, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def level_column_delete(
+        self, pool_id, column_key, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs
+    ):
         request_msg = "Level delete column"
 
         url = f"{HOST}/ajax/pool/structure_delete/"

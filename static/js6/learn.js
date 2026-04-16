@@ -2465,6 +2465,7 @@ const MultipleChoice = function(props) {
   // Place the right answer somewhere in it
   var rnd  = (Math.random() * n - 1) | 0,
      isArr = $.isArray(item.answer.value);
+  console.log('choices', n, rnd);
 
   if(isArr) {
     var choice = item.answer.value.random();

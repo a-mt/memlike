@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def get_localized_languages(I18N=None):
     if I18N is None:
-        I18N = web.ctx.get('i18n', None) or web.config.lang.switch_lang()
+        I18N = web.ctx.get("i18n", None) or web.config.lang.switch_lang()
 
     res = []
     for slug in variables.source_languages:
@@ -35,6 +35,7 @@ class Lang(object):
     """
     Translations management for web.py
     """
+
     def __init__(self, app=None):
         self.locales = {}
 
@@ -110,4 +111,3 @@ class Lang(object):
 
     def get_localized_languages(self, I18N=None):
         return get_localized_languages(I18N)
-

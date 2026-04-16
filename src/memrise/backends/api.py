@@ -1,7 +1,5 @@
 import requests
 import logging
-import settings
-import web
 
 from memrise.scrapers import Scraper
 from memrise.requestors import ApiRequestor, DummyApiRequestor

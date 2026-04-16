@@ -7,7 +7,8 @@ window.MEMLIKE.js_app = {
   build_date: process.env.BUILD_DATE,
 };
 
-/* global $, window, document, console, setTimeout */
+/* global $, window, document, console, navigator */
+/* global setTimeout, URL, Blob */
 window.GlobalEventEmitter = {
   _events: {},
   dispatch: function (eventName, data) {

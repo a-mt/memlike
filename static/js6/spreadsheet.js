@@ -7,6 +7,8 @@ window.MEMLIKE.js_spreadsheet = {
   build_date: process.env.BUILD_DATE,
 };
 
+/* global $, window, document, console */
+/* global fetch */
 $(document).ready(function(){
   bindSpreadsheetEvents();
 });
@@ -357,7 +359,7 @@ class SpreadSheet {
     return `<td class="score left num ${className}" title="${successRate}">${this.truncateNum(""+score.correct)}</td>
             <td class="score right num ${className}" title="${successRate}">${this.truncateNum(""+score.attempts)}</td>`;
   }
-  
+
   /**
    * Make sure the number isn't longer than length, or truncate the left (1012, 3 => 12)
    * @param string str
@@ -422,7 +424,7 @@ class SpreadSheetMultimedia {
   // DOMElement this.body
   // string     this.urlCourse
   // array      this.levels
-  
+
   /**
    * @param string urlCourse
    * @param array levels
@@ -601,7 +603,7 @@ class Export extends SpreadSheet {
     }
     return loading;
   }
-  
+
   /**
    * Init the content of the CSV
    * @return DOMElement
@@ -791,7 +793,7 @@ class ExportMultimedia extends SpreadSheetMultimedia {
     }
     return loading;
   }
-  
+
   /**
    * Init the content of the CSV
    * @return DOMElement
@@ -803,7 +805,7 @@ class ExportMultimedia extends SpreadSheetMultimedia {
       window.I18N['export_column_content'],
     ].join(',') + '\n';
   }
-  
+
   /**
    * Create a new row
    * @param object data

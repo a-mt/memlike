@@ -121,7 +121,11 @@ categories_tree = [
                 "children": [
                     {"id": "6", "slug": "english", "photo_url": "/static/img/language_photos/en.png"},
                     {"id": "964", "slug": "spanish-mexico", "photo_url": "/static/img/language_photos/MEX.png"},
-                    {"id": "3", "slug": "spanish-spain", "photo_url": "/static/img/language_photos/DemoFlags-03_copy.png"},
+                    {
+                        "id": "3",
+                        "slug": "spanish-spain",
+                        "photo_url": "/static/img/language_photos/DemoFlags-03_copy.png",
+                    },
                     {"id": "2", "slug": "french", "photo_url": "/static/img/language_photos/DemoFlags-02_copy.png"},
                     {
                         "id": "879",
@@ -130,12 +134,20 @@ categories_tree = [
                         "children": [
                             {"id": "4", "slug": "german-2", "photo_url": "/static/img/category_photos/german.png"},
                             {"id": "842", "slug": "small-german-dialects"},
-                            {"id": "428", "slug": "swiss-german", "photo_url": "/static/img/category_photos/swiss-german.png"},
+                            {
+                                "id": "428",
+                                "slug": "swiss-german",
+                                "photo_url": "/static/img/category_photos/swiss-german.png",
+                            },
                         ],
                     },
                     {"id": "688", "slug": "portuguese-brazil", "photo_url": "/static/img/language_photos/pt-br.png"},
                     {"id": "5", "slug": "italian", "photo_url": "/static/img/language_photos/DemoFlags-06_copy.png"},
-                    {"id": "9", "slug": "portuguese-portugal-2", "photo_url": "/static/img/language_photos/DemoFlags-31_copy.png"},
+                    {
+                        "id": "9",
+                        "slug": "portuguese-portugal-2",
+                        "photo_url": "/static/img/language_photos/DemoFlags-31_copy.png",
+                    },
                     {"id": "53", "slug": "dutch", "photo_url": "/static/img/language_photos/Flags_Dutch_copy.png"},
                     {"id": "19", "slug": "finnish", "photo_url": "/static/img/language_photos/DemoFlags-22_copy.png"},
                     {"id": "17", "slug": "danish", "photo_url": "/static/img/language_photos/DemoFlags-25_copy.png"},
@@ -148,8 +160,16 @@ categories_tree = [
                         "slug": "armenian",
                         "photo_url": "/static/img/language_photos/armenian.png",
                         "children": [
-                            {"id": "926", "slug": "eastern-armenian", "photo_url": "/static/img/category_photos/armenian.png"},
-                            {"id": "927", "slug": "western-armenian", "photo_url": "/static/img/category_photos/armenian.png"},
+                            {
+                                "id": "926",
+                                "slug": "eastern-armenian",
+                                "photo_url": "/static/img/category_photos/armenian.png",
+                            },
+                            {
+                                "id": "927",
+                                "slug": "western-armenian",
+                                "photo_url": "/static/img/category_photos/armenian.png",
+                            },
                         ],
                     },
                     {"id": "32", "slug": "basque", "photo_url": "/static/img/language_photos/DemoFlags-38_copy.png"},
@@ -158,7 +178,11 @@ categories_tree = [
                     {"id": "139", "slug": "cornish", "photo_url": "/static/img/category_photos/Flags_Cornish_copy.png"},
                     {"id": "963", "slug": "english-us", "photo_url": "/static/img/language_photos/us_flag.png"},
                     {"id": "18", "slug": "estonian", "photo_url": "/static/img/language_photos/DemoFlags-32_copy.png"},
-                    {"id": "173", "slug": "faroese", "photo_url": "/static/img/language_photos/Flags_BenExtras_Faroese.png"},
+                    {
+                        "id": "173",
+                        "slug": "faroese",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Faroese.png",
+                    },
                     {"id": "767", "slug": "flemish", "photo_url": "/static/img/language_photos/flemish.png"},
                     {"id": "190", "slug": "georgian", "photo_url": "/static/img/language_photos/georgian.png"},
                     {"id": "950", "slug": "gothic-2"},
@@ -167,9 +191,21 @@ categories_tree = [
                     {"id": "26", "slug": "irish", "photo_url": "/static/img/language_photos/DemoFlags-12_copy.png"},
                     {"id": "268", "slug": "ladin", "photo_url": "/static/img/language_photos/ladin.png"},
                     {"id": "269", "slug": "ladino"},
-                    {"id": "274", "slug": "latvian", "photo_url": "/static/img/language_photos/Flags_BenExtras_Latvian.png"},
-                    {"id": "35", "slug": "lithuanian", "photo_url": "/static/img/language_photos/DemoFlags-37_copy.png"},
-                    {"id": "290", "slug": "luxembourgish", "photo_url": "/static/img/language_photos/Flags_BenExtras_Luxembourgish.png"},
+                    {
+                        "id": "274",
+                        "slug": "latvian",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Latvian.png",
+                    },
+                    {
+                        "id": "35",
+                        "slug": "lithuanian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-37_copy.png",
+                    },
+                    {
+                        "id": "290",
+                        "slug": "luxembourgish",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Luxembourgish.png",
+                    },
                     {"id": "299", "slug": "maltese", "photo_url": "/static/img/language_photos/maltese-flag1.png"},
                     {"id": "305", "slug": "manx", "photo_url": "/static/img/category_photos/Flags_BenExtras_Manx.png"},
                     {"id": "353", "slug": "occitan", "photo_url": "/static/img/language_photos/occitan_flag.png"},
@@ -185,7 +221,11 @@ categories_tree = [
                         "slug": "sami-languages",
                     },
                     {"id": "39", "slug": "scots", "photo_url": "/static/img/language_photos/DemoFlags-36_copy.png"},
-                    {"id": "183", "slug": "scottish-gaelic", "photo_url": "/static/img/category_photos/scottish-gaelic.png"},
+                    {
+                        "id": "183",
+                        "slug": "scottish-gaelic",
+                        "photo_url": "/static/img/category_photos/scottish-gaelic.png",
+                    },
                     {"id": "40", "slug": "welsh", "photo_url": "/static/img/language_photos/Flags_Welsh_copy.png"},
                 ],
             },
@@ -193,12 +233,32 @@ categories_tree = [
                 "id": "612",
                 "slug": "chinese",
                 "children": [
-                    {"id": "547", "slug": "chinese-simplified", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
-                    {"id": "550", "slug": "chinese-traditional", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
-                    {"id": "549", "slug": "mandarin-spoken-only", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
+                    {
+                        "id": "547",
+                        "slug": "chinese-simplified",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                    },
+                    {
+                        "id": "550",
+                        "slug": "chinese-traditional",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                    },
+                    {
+                        "id": "549",
+                        "slug": "mandarin-spoken-only",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                    },
                     {"id": "548", "slug": "cantonese", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
-                    {"id": "553", "slug": "cantonese-jyutping", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
-                    {"id": "552", "slug": "ningbo-dialect", "photo_url": "/static/img/category_photos/DemoFlags-01.png"},
+                    {
+                        "id": "553",
+                        "slug": "cantonese-jyutping",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                    },
+                    {
+                        "id": "552",
+                        "slug": "ningbo-dialect",
+                        "photo_url": "/static/img/category_photos/DemoFlags-01.png",
+                    },
                     {"id": "551", "slug": "taishanese", "photo_url": "/static/img/category_photos/DemoFlags-01.png"},
                     {"id": "919", "slug": "hakka", "photo_url": "/static/img/language_photos/hakka.png"},
                 ],
@@ -207,9 +267,17 @@ categories_tree = [
                 "id": "613",
                 "slug": "japanese",
                 "children": [
-                    {"id": "665", "slug": "japanese-4", "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png"},
+                    {
+                        "id": "665",
+                        "slug": "japanese-4",
+                        "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png",
+                    },
                     {"id": "666", "slug": "kanji", "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png"},
-                    {"id": "668", "slug": "japanese-no-script", "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png"},
+                    {
+                        "id": "668",
+                        "slug": "japanese-no-script",
+                        "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png",
+                    },
                 ],
             },
             {
@@ -235,11 +303,19 @@ categories_tree = [
                 "id": "614",
                 "slug": "asian-and-pacific",
                 "children": [
-                    {"id": "25", "slug": "indonesian", "photo_url": "/static/img/language_photos/DemoFlags-64_copy.png"},
+                    {
+                        "id": "25",
+                        "slug": "indonesian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-64_copy.png",
+                    },
                     {"id": "8", "slug": "korean", "photo_url": "/static/img/language_photos/korean-flag.png"},
                     {"id": "441", "slug": "thai", "photo_url": "/static/img/language_photos/DemoFlags-47_copy.png"},
                     {"id": "474", "slug": "vietnamese", "photo_url": "/static/img/language_photos/vietnamese.png"},
-                    {"id": "322", "slug": "mongolian", "photo_url": "/static/img/language_photos/Flags_BenExtras_Mongolian.png"},
+                    {
+                        "id": "322",
+                        "slug": "mongolian",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Mongolian.png",
+                    },
                     {"id": "42", "slug": "azerbaijani", "photo_url": "/static/img/language_photos/azerbaijini.png"},
                     {"id": "49", "slug": "hawaiian", "photo_url": "/static/img/category_photos/DemoFlags-72_copy.png"},
                     {"id": "50", "slug": "kazakh", "photo_url": "/static/img/language_photos/DemoFlags-62_copy.png"},
@@ -249,7 +325,11 @@ categories_tree = [
                     {"id": "119", "slug": "cebuano", "photo_url": "/static/img/category_photos/Vlag_Fil_Cebu.gif"},
                     {"id": "954", "slug": "dzongkha-2", "photo_url": "/static/img/category_photos/bhutan.png"},
                     {"id": "955", "slug": "javanese-2", "photo_url": "/static/img/category_photos/java.jpeg"},
-                    {"id": "245", "slug": "karen-languages", "photo_url": "/static/img/category_photos/DemoFlags-54_copy.png"},
+                    {
+                        "id": "245",
+                        "slug": "karen-languages",
+                        "photo_url": "/static/img/category_photos/DemoFlags-54_copy.png",
+                    },
                     {"id": "122", "slug": "khmer", "photo_url": "/static/img/language_photos/khmer.png"},
                     {"id": "267", "slug": "kyrgyz", "photo_url": "/static/img/language_photos/kyrgyz.png"},
                     {"id": "923", "slug": "laz"},
@@ -259,7 +339,11 @@ categories_tree = [
                     {"id": "309", "slug": "marshallese", "photo_url": "/static/img/category_photos/marshallese.png"},
                     {"id": "336", "slug": "nepali", "photo_url": "/static/img/language_photos/Nepalese.png"},
                     {"id": "430", "slug": "tagalog", "photo_url": "/static/img/language_photos/Tagalog.png"},
-                    {"id": "54", "slug": "tibetan", "photo_url": "/static/img/category_photos/Flags_BenExtras_Tibetan.png"},
+                    {
+                        "id": "54",
+                        "slug": "tibetan",
+                        "photo_url": "/static/img/category_photos/Flags_BenExtras_Tibetan.png",
+                    },
                 ],
             },
             {
@@ -306,7 +390,11 @@ categories_tree = [
                     {"id": "43", "slug": "ukrainian", "photo_url": "/static/img/language_photos/DemoFlags-49_copy.png"},
                     {"id": "45", "slug": "belarusian", "photo_url": "/static/img/language_photos/belarus.png"},
                     {"id": "958", "slug": "circassian", "photo_url": "/static/img/category_photos/Circassian_.png"},
-                    {"id": "291", "slug": "macedonian", "photo_url": "/static/img/language_photos/Flags_BenExtras_Macedonian.png"},
+                    {
+                        "id": "291",
+                        "slug": "macedonian",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Macedonian.png",
+                    },
                     {"id": "935", "slug": "ossetic", "photo_url": "/static/img/category_photos/ossetic.png"},
                     {"id": "959", "slug": "other-slavic"},
                 ],
@@ -364,7 +452,11 @@ categories_tree = [
                 "slug": "constructed-languages",
                 "children": [
                     {"id": "34", "slug": "esperanto", "photo_url": "/static/img/language_photos/DemoFlags-34_copy.png"},
-                    {"id": "222", "slug": "interlingua-international-auxiliar", "photo_url": "/static/img/category_photos/interlingua.png"},
+                    {
+                        "id": "222",
+                        "slug": "interlingua-international-auxiliar",
+                        "photo_url": "/static/img/category_photos/interlingua.png",
+                    },
                     {"id": "37", "slug": "klingon", "photo_url": "/static/img/category_photos/DemoFlags-40_copy.png"},
                     {"id": "279", "slug": "lojban", "photo_url": "/static/img/category_photos/lojban.png"},
                     {"id": "722", "slug": "morse-code", "photo_url": "/static/img/category_photos/morse-code.png"},
@@ -376,11 +468,19 @@ categories_tree = [
                 "id": "751",
                 "slug": "sign-languages",
                 "children": [
-                    {"id": "940", "slug": "american-sign-language-asl", "photo_url": "/static/img/category_photos/sign-american.png"},
+                    {
+                        "id": "940",
+                        "slug": "american-sign-language-asl",
+                        "photo_url": "/static/img/category_photos/sign-american.png",
+                    },
                     {"id": "946", "slug": "argentinian-sign-language"},
                     {"id": "942", "slug": "australian-sign-language-auslan"},
                     {"id": "943", "slug": "british-sign-language-bsl"},
-                    {"id": "945", "slug": "french-sign-language-lsf", "photo_url": "/static/img/language_photos/sign-french.png"},
+                    {
+                        "id": "945",
+                        "slug": "french-sign-language-lsf",
+                        "photo_url": "/static/img/language_photos/sign-french.png",
+                    },
                     {"id": "944", "slug": "korean-sign-language"},
                     {"id": "937", "slug": "swedish-sign-language"},
                 ],
@@ -392,7 +492,11 @@ categories_tree = [
                     {"id": "185", "slug": "galician", "photo_url": "/static/img/language_photos/galician-flag.png"},
                     {"id": "204", "slug": "haitian"},
                     {"id": "220", "slug": "indo-european-languages"},
-                    {"id": "676", "slug": "other-language", "photo_url": "/static/img/language_photos/other-languages.png"},
+                    {
+                        "id": "676",
+                        "slug": "other-language",
+                        "photo_url": "/static/img/language_photos/other-languages.png",
+                    },
                 ],
             },
         ],
@@ -465,7 +569,11 @@ categories_tree = [
         "children": [
             {"id": "646", "slug": "memory-palaces", "photo_url": "/static/img/category_photos/memory-palaces.png"},
             {"id": "644", "slug": "number-systems", "photo_url": "/static/img/category_photos/number-systems.png"},
-            {"id": "645", "slug": "playing-card-systems", "photo_url": "/static/img/category_photos/playing-card-systems.png"},
+            {
+                "id": "645",
+                "slug": "playing-card-systems",
+                "photo_url": "/static/img/category_photos/playing-card-systems.png",
+            },
         ],
     },
     {
@@ -474,7 +582,11 @@ categories_tree = [
         "photo_url": "/static/img/category_photos/icon006.png",
         "children": [
             {"id": "649", "slug": "business-finance"},
-            {"id": "650", "slug": "computers-engineering", "photo_url": "/static/img/category_photos/computers-engineering.png"},
+            {
+                "id": "650",
+                "slug": "computers-engineering",
+                "photo_url": "/static/img/category_photos/computers-engineering.png",
+            },
             {"id": "648", "slug": "law"},
             {"id": "647", "slug": "medicine-healthcare"},
             {"id": "651", "slug": "other-4"},
@@ -520,6 +632,7 @@ categories_tree = [
     },
 ]
 
+
 def flatten_tree(categories_tree, ids={}, slugs={}, parents=[]):
     for cat in categories_tree:
         catID = cat["id"]
@@ -536,6 +649,7 @@ def flatten_tree(categories_tree, ids={}, slugs={}, parents=[]):
 
         if len(item["children"]):
             flatten_tree(cat["children"], ids, slugs, [*parents, catID])
+
 
 # ID: {id, slug, children, parents}
 categories_id = {}
