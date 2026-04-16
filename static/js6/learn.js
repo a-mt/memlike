@@ -2442,6 +2442,33 @@ function getPromptType(prompt) {
   if(prompt.video) return 'video';
 }
 
+var RandomGenerator = {
+  it: {},
+
+  newIterator: function(n) {
+    return randomize(Array.from({length: n}).map((x, i) => i)).values();
+  },
+
+  getIterator: function(n) {
+    if (!(n in RandomGenerator.it)) {
+      RandomGenerator.it[n.toString()] = RandomGenerator.newIterator(n);
+    }
+    return RandomGenerator.it[n.toString()];
+  },
+
+  getNextRand: function(n) {
+    var it = RandomGenerator.getIterator(n);
+    var rnd = it.next();
+
+    if (rnd.done) {
+      it = RandomGenerator.it[n.toString()] = RandomGenerator.newIterator(n);
+      rnd = it.next();
+    }
+    return rnd.value;
+  },
+};
+
+
 const MultipleChoice = function(props) {
   var item       = props.item,
       itemType   = props.promptWith || getPromptType(item.prompt),
@@ -2463,9 +2490,8 @@ const MultipleChoice = function(props) {
   }
 
   // Place the right answer somewhere in it
-  var rnd  = randrange(0, n - 1),
+  var rnd  = n == 4 ? RandomGenerator.getNextRand(4) : randrange(0, n - 1),
      isArr = $.isArray(item.answer.value);
-  console.log('choices', n, rnd);
 
   if(isArr) {
     var choice = item.answer.value.random();
