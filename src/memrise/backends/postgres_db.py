@@ -482,5 +482,4 @@ class PostgresDB(Memrise):
     def level_thing_alt_update(self, thing_id, alts, column_key, **kwargs):
     def level_multimedia_update(self, level_id, txt, **kwargs):
     def course_get_editpage(self, course_id, course_slug, **kwargs):
-    def course_delete(self, course_id, **kwargs):
     """

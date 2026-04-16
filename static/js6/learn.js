@@ -2220,7 +2220,7 @@ class Learn extends Component {
         correct={correct}
         langCodeTarget={this.props.course.target ? this.props.course.target.language_code : null}
         langCodeSource={this.props.course.source ? this.props.course.source.language_code : null}
-        disableMultimedia={this.session_settings.disable_multimedia}
+        disableMultimedia={false}
       />
     );
   }
