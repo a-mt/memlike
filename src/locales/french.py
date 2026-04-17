@@ -135,6 +135,7 @@ misc = {
     "export_opt_alternatives": "Réponses alternatives",
     "export_opt_more": "Informations additionnelles",
     "export_column_level": "Niveau",
+    "export_column_index": "#",
     "export_column_label": "Label",
     "export_column_definition": "Définition",
     "export_column_score": "Score",

@@ -2894,7 +2894,10 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
 #spreadsheet .num {
   background: rgba(0,0,0,0.03);
   text-align: right;
-  width: 5%;
+  width: 75px;
+}
+#spreadsheet th {
+  white-space: nowrap;
 }
 #spreadsheet td.num {
   color: rgba(0,0,0,0.6);
@@ -2935,4 +2938,14 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
   display: block;
   border-bottom: 2px solid white;
   color: rgba(0,0,0,0.4);
+}
+#spreadsheet button.sort {
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: rgba(0,0,0,0.2);
+}
+#spreadsheet th:hover button.sort,
+#spreadsheet button.sort:focus {
+  color: inherit;
 }
