@@ -338,12 +338,12 @@ class ApiRequestor:
         request_msg = f"Level [id_course={course_id},level={level_index}]"
 
         url = f"{HOST}{REST_API_URL}/learning_sessions/{session_type}/"
-        referer = f"{HOST}/aprender/preview?course_id=${course_id}"
+        referer = f"{HOST}/aprender/preview?course_id={course_id}"
         data = {
             "session_source_id": course_id,
         }
         if level_index and level_index != "all":
-            referer += f"&level_index=${level_index}"
+            referer += f"&level_index={level_index}"
             data["session_source_sub_index"] = level_index
             data["session_source_type"] = "course_id_and_level_index"
 
