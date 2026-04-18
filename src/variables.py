@@ -114,47 +114,117 @@ categories_tree = [
         "id": "569",
         "slug": "languages",
         "photo_url": "/static/img/category_photos/placeholder@2x.png",
-        "children": [
-            {
+        "children": [{
                 "id": "578",
                 "slug": "european",
                 "children": [
-                    {"id": "6", "slug": "english", "photo_url": "/static/img/language_photos/en.png"},
-                    {"id": "964", "slug": "spanish-mexico", "photo_url": "/static/img/language_photos/MEX.png"},
+                    {
+                        "id": "6",
+                        "slug": "english",
+                        "photo_url": "/static/img/language_photos/en.png",
+                        "language_code": "en"
+                    },
+                    {
+                        "id": "964",
+                        "slug": "spanish-mexico",
+                        "photo_url": "/static/img/language_photos/MEX.png",
+                        "language_code": "es"
+                    },
                     {
                         "id": "3",
                         "slug": "spanish-spain",
                         "photo_url": "/static/img/language_photos/DemoFlags-03_copy.png",
+                        "language_code": "es"
                     },
-                    {"id": "2", "slug": "french", "photo_url": "/static/img/language_photos/DemoFlags-02_copy.png"},
+                    {
+                        "id": "2",
+                        "slug": "french",
+                        "photo_url": "/static/img/language_photos/DemoFlags-02_copy.png",
+                        "language_code": "fr"
+                    },
                     {
                         "id": "879",
                         "slug": "german",
                         "photo_url": "/static/img/language_photos/german.png",
                         "children": [
-                            {"id": "4", "slug": "german-2", "photo_url": "/static/img/category_photos/german.png"},
-                            {"id": "842", "slug": "small-german-dialects"},
+                            {
+                                "id": "4",
+                                "slug": "german-2",
+                                "photo_url": "/static/img/category_photos/german.png",
+                                "language_code": "de"
+                            },
+                            {
+                                "id": "842",
+                                "slug": "small-german-dialects"
+                            },
                             {
                                 "id": "428",
                                 "slug": "swiss-german",
-                                "photo_url": "/static/img/category_photos/swiss-german.png",
-                            },
+                                "photo_url": "/static/img/category_photos/swiss-german.png"
+                            }
                         ],
+                        "language_code": "de"
                     },
-                    {"id": "688", "slug": "portuguese-brazil", "photo_url": "/static/img/language_photos/pt-br.png"},
-                    {"id": "5", "slug": "italian", "photo_url": "/static/img/language_photos/DemoFlags-06_copy.png"},
+                    {
+                        "id": "688",
+                        "slug": "portuguese-brazil",
+                        "photo_url": "/static/img/language_photos/pt-br.png",
+                        "language_code": "pt"
+                    },
+                    {
+                        "id": "5",
+                        "slug": "italian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-06_copy.png",
+                        "language_code": "it"
+                    },
                     {
                         "id": "9",
                         "slug": "portuguese-portugal-2",
                         "photo_url": "/static/img/language_photos/DemoFlags-31_copy.png",
+                        "language_code": "pt"
                     },
-                    {"id": "53", "slug": "dutch", "photo_url": "/static/img/language_photos/Flags_Dutch_copy.png"},
-                    {"id": "19", "slug": "finnish", "photo_url": "/static/img/language_photos/DemoFlags-22_copy.png"},
-                    {"id": "17", "slug": "danish", "photo_url": "/static/img/language_photos/DemoFlags-25_copy.png"},
-                    {"id": "20", "slug": "greek", "photo_url": "/static/img/language_photos/DemoFlags-26_copy.png"},
-                    {"id": "27", "slug": "norwegian", "photo_url": "/static/img/language_photos/DemoFlags-23_copy.png"},
-                    {"id": "11", "slug": "swedish", "photo_url": "/static/img/language_photos/DemoFlags-18_copy.png"},
-                    {"id": "67", "slug": "albanian", "photo_url": "/static/img/language_photos/albanian.png"},
+                    {
+                        "id": "53",
+                        "slug": "dutch",
+                        "photo_url": "/static/img/language_photos/Flags_Dutch_copy.png",
+                        "language_code": "nl"
+                    },
+                    {
+                        "id": "19",
+                        "slug": "finnish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-22_copy.png",
+                        "language_code": "fi"
+                    },
+                    {
+                        "id": "17",
+                        "slug": "danish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-25_copy.png",
+                        "language_code": "da"
+                    },
+                    {
+                        "id": "20",
+                        "slug": "greek",
+                        "photo_url": "/static/img/language_photos/DemoFlags-26_copy.png",
+                        "language_code": "el"
+                    },
+                    {
+                        "id": "27",
+                        "slug": "norwegian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-23_copy.png",
+                        "language_code": "no"
+                    },
+                    {
+                        "id": "11",
+                        "slug": "swedish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-18_copy.png",
+                        "language_code": "sv"
+                    },
+                    {
+                        "id": "67",
+                        "slug": "albanian",
+                        "photo_url": "/static/img/language_photos/albanian.png",
+                        "language_code": "sq"
+                    },
                     {
                         "id": "79",
                         "slug": "armenian",
@@ -163,71 +233,182 @@ categories_tree = [
                             {
                                 "id": "926",
                                 "slug": "eastern-armenian",
-                                "photo_url": "/static/img/category_photos/armenian.png",
+                                "photo_url": "/static/img/category_photos/armenian.png"
                             },
                             {
                                 "id": "927",
                                 "slug": "western-armenian",
-                                "photo_url": "/static/img/category_photos/armenian.png",
-                            },
+                                "photo_url": "/static/img/category_photos/armenian.png"
+                            }
                         ],
+                        "language_code": "hy"
                     },
-                    {"id": "32", "slug": "basque", "photo_url": "/static/img/language_photos/DemoFlags-38_copy.png"},
-                    {"id": "114", "slug": "breton", "photo_url": "/static/img/category_photos/Breton-flag.png"},
-                    {"id": "15", "slug": "catalan", "photo_url": "/static/img/language_photos/DemoFlags-29_copy.png"},
-                    {"id": "139", "slug": "cornish", "photo_url": "/static/img/category_photos/Flags_Cornish_copy.png"},
-                    {"id": "963", "slug": "english-us", "photo_url": "/static/img/language_photos/us_flag.png"},
-                    {"id": "18", "slug": "estonian", "photo_url": "/static/img/language_photos/DemoFlags-32_copy.png"},
+                    {
+                        "id": "32",
+                        "slug": "basque",
+                        "photo_url": "/static/img/language_photos/DemoFlags-38_copy.png",
+                        "language_code": "eu"
+                    },
+                    {
+                        "id": "114",
+                        "slug": "breton",
+                        "photo_url": "/static/img/category_photos/Breton-flag.png"
+                    },
+                    {
+                        "id": "15",
+                        "slug": "catalan",
+                        "photo_url": "/static/img/language_photos/DemoFlags-29_copy.png",
+                        "language_code": "ca"
+                    },
+                    {
+                        "id": "139",
+                        "slug": "cornish",
+                        "photo_url": "/static/img/category_photos/Flags_Cornish_copy.png"
+                    },
+                    {
+                        "id": "963",
+                        "slug": "english-us",
+                        "photo_url": "/static/img/language_photos/us_flag.png",
+                        "language_code": "en-US"
+                    },
+                    {
+                        "id": "18",
+                        "slug": "estonian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-32_copy.png",
+                        "language_code": "et"
+                    },
                     {
                         "id": "173",
                         "slug": "faroese",
-                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Faroese.png",
+                        "photo_url": "/static/img/language_photos/Flags_BenExtras_Faroese.png"
                     },
-                    {"id": "767", "slug": "flemish", "photo_url": "/static/img/language_photos/flemish.png"},
-                    {"id": "190", "slug": "georgian", "photo_url": "/static/img/language_photos/georgian.png"},
-                    {"id": "950", "slug": "gothic-2"},
-                    {"id": "23", "slug": "hungarian", "photo_url": "/static/img/language_photos/DemoFlags-21_copy.png"},
-                    {"id": "24", "slug": "icelandic", "photo_url": "/static/img/language_photos/DemoFlags-35_copy.png"},
-                    {"id": "26", "slug": "irish", "photo_url": "/static/img/language_photos/DemoFlags-12_copy.png"},
-                    {"id": "268", "slug": "ladin", "photo_url": "/static/img/language_photos/ladin.png"},
-                    {"id": "269", "slug": "ladino"},
+                    {
+                        "id": "767",
+                        "slug": "flemish",
+                        "photo_url": "/static/img/language_photos/flemish.png"
+                    },
+                    {
+                        "id": "190",
+                        "slug": "georgian",
+                        "photo_url": "/static/img/language_photos/georgian.png",
+                        "language_code": "ka"
+                    },
+                    {
+                        "id": "950",
+                        "slug": "gothic-2"
+                    },
+                    {
+                        "id": "23",
+                        "slug": "hungarian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-21_copy.png",
+                        "language_code": "hu"
+                    },
+                    {
+                        "id": "24",
+                        "slug": "icelandic",
+                        "photo_url": "/static/img/language_photos/DemoFlags-35_copy.png",
+                        "language_code": "is"
+                    },
+                    {
+                        "id": "26",
+                        "slug": "irish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-12_copy.png",
+                        "language_code": "ga"
+                    },
+                    {
+                        "id": "268",
+                        "slug": "ladin",
+                        "photo_url": "/static/img/language_photos/ladin.png"
+                    },
+                    {
+                        "id": "269",
+                        "slug": "ladino"
+                    },
                     {
                         "id": "274",
                         "slug": "latvian",
                         "photo_url": "/static/img/language_photos/Flags_BenExtras_Latvian.png",
+                        "language_code": "lv"
                     },
                     {
                         "id": "35",
                         "slug": "lithuanian",
                         "photo_url": "/static/img/language_photos/DemoFlags-37_copy.png",
+                        "language_code": "lt"
                     },
                     {
                         "id": "290",
                         "slug": "luxembourgish",
                         "photo_url": "/static/img/language_photos/Flags_BenExtras_Luxembourgish.png",
+                        "language_code": "lb"
                     },
-                    {"id": "299", "slug": "maltese", "photo_url": "/static/img/language_photos/maltese-flag1.png"},
-                    {"id": "305", "slug": "manx", "photo_url": "/static/img/category_photos/Flags_BenExtras_Manx.png"},
-                    {"id": "353", "slug": "occitan", "photo_url": "/static/img/language_photos/occitan_flag.png"},
-                    {"id": "383", "slug": "romanian", "photo_url": "/static/img/language_photos/Romanian.png"},
+                    {
+                        "id": "299",
+                        "slug": "maltese",
+                        "photo_url": "/static/img/language_photos/maltese-flag1.png",
+                        "language_code": "mt"
+                    },
+                    {
+                        "id": "305",
+                        "slug": "manx",
+                        "photo_url": "/static/img/category_photos/Flags_BenExtras_Manx.png"
+                    },
+                    {
+                        "id": "353",
+                        "slug": "occitan",
+                        "photo_url": "/static/img/language_photos/occitan_flag.png"
+                    },
+                    {
+                        "id": "383",
+                        "slug": "romanian",
+                        "photo_url": "/static/img/language_photos/Romanian.png",
+                        "language_code": "ro"
+                    },
                     {
                         "id": "389",
                         "children": [
-                            {"id": "286", "slug": "lule-sami", "photo_url": "/static/img/category_photos/sami.png"},
-                            {"id": "346", "slug": "northern-sami", "photo_url": "/static/img/category_photos/sami.png"},
-                            {"id": "421", "slug": "southern-sami", "photo_url": "/static/img/category_photos/sami.png"},
-                            {"id": "918", "slug": "ume-sami", "photo_url": "/static/img/category_photos/sami.png"},
+                            {
+                                "id": "286",
+                                "slug": "lule-sami",
+                                "photo_url": "/static/img/category_photos/sami.png"
+                            },
+                            {
+                                "id": "346",
+                                "slug": "northern-sami",
+                                "photo_url": "/static/img/category_photos/sami.png"
+                            },
+                            {
+                                "id": "421",
+                                "slug": "southern-sami",
+                                "photo_url": "/static/img/category_photos/sami.png"
+                            },
+                            {
+                                "id": "918",
+                                "slug": "ume-sami",
+                                "photo_url": "/static/img/category_photos/sami.png"
+                            }
                         ],
-                        "slug": "sami-languages",
+                        "slug": "sami-languages"
                     },
-                    {"id": "39", "slug": "scots", "photo_url": "/static/img/language_photos/DemoFlags-36_copy.png"},
+                    {
+                        "id": "39",
+                        "slug": "scots",
+                        "photo_url": "/static/img/language_photos/DemoFlags-36_copy.png",
+                        "language_code": "gd"
+                    },
                     {
                         "id": "183",
                         "slug": "scottish-gaelic",
                         "photo_url": "/static/img/category_photos/scottish-gaelic.png",
+                        "language_code": "gd"
                     },
-                    {"id": "40", "slug": "welsh", "photo_url": "/static/img/language_photos/Flags_Welsh_copy.png"},
-                ],
+                    {
+                        "id": "40",
+                        "slug": "welsh",
+                        "photo_url": "/static/img/language_photos/Flags_Welsh_copy.png",
+                        "language_code": "cy"
+                    }
+                ]
             },
             {
                 "id": "612",
@@ -237,31 +418,48 @@ categories_tree = [
                         "id": "547",
                         "slug": "chinese-simplified",
                         "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                        "language_code": "zh-cn"
                     },
                     {
                         "id": "550",
                         "slug": "chinese-traditional",
                         "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                        "language_code": "zh-tw"
                     },
                     {
                         "id": "549",
                         "slug": "mandarin-spoken-only",
-                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png"
                     },
-                    {"id": "548", "slug": "cantonese", "photo_url": "/static/img/language_photos/DemoFlags-01.png"},
+                    {
+                        "id": "548",
+                        "slug": "cantonese",
+                        "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                        "language_code": "zh"
+                    },
                     {
                         "id": "553",
                         "slug": "cantonese-jyutping",
                         "photo_url": "/static/img/language_photos/DemoFlags-01.png",
+                        "language_code": "zh"
                     },
                     {
                         "id": "552",
                         "slug": "ningbo-dialect",
-                        "photo_url": "/static/img/category_photos/DemoFlags-01.png",
+                        "photo_url": "/static/img/category_photos/DemoFlags-01.png"
                     },
-                    {"id": "551", "slug": "taishanese", "photo_url": "/static/img/category_photos/DemoFlags-01.png"},
-                    {"id": "919", "slug": "hakka", "photo_url": "/static/img/language_photos/hakka.png"},
+                    {
+                        "id": "551",
+                        "slug": "taishanese",
+                        "photo_url": "/static/img/category_photos/DemoFlags-01.png"
+                    },
+                    {
+                        "id": "919",
+                        "slug": "hakka",
+                        "photo_url": "/static/img/language_photos/hakka.png"
+                    }
                 ],
+                "language_code": "zh"
             },
             {
                 "id": "613",
@@ -271,33 +469,96 @@ categories_tree = [
                         "id": "665",
                         "slug": "japanese-4",
                         "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png",
+                        "language_code": "jw"
                     },
-                    {"id": "666", "slug": "kanji", "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png"},
+                    {
+                        "id": "666",
+                        "slug": "kanji",
+                        "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png"
+                    },
                     {
                         "id": "668",
                         "slug": "japanese-no-script",
                         "photo_url": "/static/img/language_photos/DemoFlags-09_copy.png",
-                    },
+                        "language_code": "jw"
+                    }
                 ],
+                "language_code": "ja"
             },
             {
                 "id": "582",
                 "slug": "indian",
                 "children": [
-                    {"id": "103", "slug": "bengali", "photo_url": "/static/img/language_photos/DemoFlags-61_copy.png"},
-                    {"id": "201", "slug": "gujarati"},
-                    {"id": "22", "slug": "hindi", "photo_url": "/static/img/language_photos/DemoFlags-28_copy.png"},
-                    {"id": "438", "slug": "telugu"},
-                    {"id": "470", "slug": "urdu", "photo_url": "/static/img/language_photos/urdu.png"},
-                    {"id": "36", "slug": "marathi", "photo_url": "/static/img/language_photos/DemoFlags-41_copy.png"},
-                    {"id": "240", "slug": "kannada"},
-                    {"id": "298", "slug": "malayalam"},
-                    {"id": "363", "slug": "pali"},
-                    {"id": "376", "slug": "punjabi"},
-                    {"id": "393", "slug": "sanskrit", "photo_url": "/static/img/language_photos/sanskrit.png"},
-                    {"id": "434", "slug": "tamang", "photo_url": "/static/img/category_photos/Tamang.png"},
-                    {"id": "436", "slug": "tamil", "photo_url": "/static/img/language_photos/tamil-flag.v1.png"},
-                ],
+                    {
+                        "id": "103",
+                        "slug": "bengali",
+                        "photo_url": "/static/img/language_photos/DemoFlags-61_copy.png",
+                        "language_code": "bn"
+                    },
+                    {
+                        "id": "201",
+                        "slug": "gujarati",
+                        "language_code": "gu"
+                    },
+                    {
+                        "id": "22",
+                        "slug": "hindi",
+                        "photo_url": "/static/img/language_photos/DemoFlags-28_copy.png",
+                        "language_code": "hi"
+                    },
+                    {
+                        "id": "438",
+                        "slug": "telugu",
+                        "language_code": "te"
+                    },
+                    {
+                        "id": "470",
+                        "slug": "urdu",
+                        "photo_url": "/static/img/language_photos/urdu.png",
+                        "language_code": "ur"
+                    },
+                    {
+                        "id": "36",
+                        "slug": "marathi",
+                        "photo_url": "/static/img/language_photos/DemoFlags-41_copy.png",
+                        "language_code": "mr"
+                    },
+                    {
+                        "id": "240",
+                        "slug": "kannada",
+                        "language_code": "kn"
+                    },
+                    {
+                        "id": "298",
+                        "slug": "malayalam",
+                        "language_code": "ml"
+                    },
+                    {
+                        "id": "363",
+                        "slug": "pali"
+                    },
+                    {
+                        "id": "376",
+                        "slug": "punjabi",
+                        "language_code": "pa"
+                    },
+                    {
+                        "id": "393",
+                        "slug": "sanskrit",
+                        "photo_url": "/static/img/language_photos/sanskrit.png"
+                    },
+                    {
+                        "id": "434",
+                        "slug": "tamang",
+                        "photo_url": "/static/img/category_photos/Tamang.png"
+                    },
+                    {
+                        "id": "436",
+                        "slug": "tamil",
+                        "photo_url": "/static/img/language_photos/tamil-flag.v1.png",
+                        "language_code": "ta"
+                    }
+                ]
             },
             {
                 "id": "614",
@@ -307,44 +568,140 @@ categories_tree = [
                         "id": "25",
                         "slug": "indonesian",
                         "photo_url": "/static/img/language_photos/DemoFlags-64_copy.png",
+                        "language_code": "id"
                     },
-                    {"id": "8", "slug": "korean", "photo_url": "/static/img/language_photos/korean-flag.png"},
-                    {"id": "441", "slug": "thai", "photo_url": "/static/img/language_photos/DemoFlags-47_copy.png"},
-                    {"id": "474", "slug": "vietnamese", "photo_url": "/static/img/language_photos/vietnamese.png"},
+                    {
+                        "id": "8",
+                        "slug": "korean",
+                        "photo_url": "/static/img/language_photos/korean-flag.png",
+                        "language_code": "ko"
+                    },
+                    {
+                        "id": "441",
+                        "slug": "thai",
+                        "photo_url": "/static/img/language_photos/DemoFlags-47_copy.png",
+                        "language_code": "th"
+                    },
+                    {
+                        "id": "474",
+                        "slug": "vietnamese",
+                        "photo_url": "/static/img/language_photos/vietnamese.png",
+                        "language_code": "vi"
+                    },
                     {
                         "id": "322",
                         "slug": "mongolian",
                         "photo_url": "/static/img/language_photos/Flags_BenExtras_Mongolian.png",
+                        "language_code": "mn"
                     },
-                    {"id": "42", "slug": "azerbaijani", "photo_url": "/static/img/language_photos/azerbaijini.png"},
-                    {"id": "49", "slug": "hawaiian", "photo_url": "/static/img/category_photos/DemoFlags-72_copy.png"},
-                    {"id": "50", "slug": "kazakh", "photo_url": "/static/img/language_photos/DemoFlags-62_copy.png"},
-                    {"id": "64", "slug": "ainu"},
-                    {"id": "965", "slug": "australian", "photo_url": "/static/img/category_photos/aboriginal.gif"},
-                    {"id": "117", "slug": "burmese", "photo_url": "/static/img/language_photos/burmese.png"},
-                    {"id": "119", "slug": "cebuano", "photo_url": "/static/img/category_photos/Vlag_Fil_Cebu.gif"},
-                    {"id": "954", "slug": "dzongkha-2", "photo_url": "/static/img/category_photos/bhutan.png"},
-                    {"id": "955", "slug": "javanese-2", "photo_url": "/static/img/category_photos/java.jpeg"},
+                    {
+                        "id": "42",
+                        "slug": "azerbaijani",
+                        "photo_url": "/static/img/language_photos/azerbaijini.png",
+                        "language_code": "az"
+                    },
+                    {
+                        "id": "49",
+                        "slug": "hawaiian",
+                        "photo_url": "/static/img/category_photos/DemoFlags-72_copy.png",
+                        "language_code": "haw"
+                    },
+                    {
+                        "id": "50",
+                        "slug": "kazakh",
+                        "photo_url": "/static/img/language_photos/DemoFlags-62_copy.png",
+                        "language_code": "kk"
+                    },
+                    {
+                        "id": "64",
+                        "slug": "ainu"
+                    },
+                    {
+                        "id": "965",
+                        "slug": "australian",
+                        "photo_url": "/static/img/category_photos/aboriginal.gif"
+                    },
+                    {
+                        "id": "117",
+                        "slug": "burmese",
+                        "photo_url": "/static/img/language_photos/burmese.png"
+                    },
+                    {
+                        "id": "119",
+                        "slug": "cebuano",
+                        "photo_url": "/static/img/category_photos/Vlag_Fil_Cebu.gif",
+                        "language_code": "ceb"
+                    },
+                    {
+                        "id": "954",
+                        "slug": "dzongkha-2",
+                        "photo_url": "/static/img/category_photos/bhutan.png"
+                    },
+                    {
+                        "id": "955",
+                        "slug": "javanese-2",
+                        "photo_url": "/static/img/category_photos/java.jpeg",
+                        "language_code": "jw"
+                    },
                     {
                         "id": "245",
                         "slug": "karen-languages",
-                        "photo_url": "/static/img/category_photos/DemoFlags-54_copy.png",
+                        "photo_url": "/static/img/category_photos/DemoFlags-54_copy.png"
                     },
-                    {"id": "122", "slug": "khmer", "photo_url": "/static/img/language_photos/khmer.png"},
-                    {"id": "267", "slug": "kyrgyz", "photo_url": "/static/img/language_photos/kyrgyz.png"},
-                    {"id": "923", "slug": "laz"},
-                    {"id": "915", "slug": "lu-mien"},
-                    {"id": "297", "slug": "malay", "photo_url": "/static/img/language_photos/DemoFlags-60_copy.png"},
-                    {"id": "306", "slug": "maori", "photo_url": "/static/img/language_photos/DemoFlags-55_copy.png"},
-                    {"id": "309", "slug": "marshallese", "photo_url": "/static/img/category_photos/marshallese.png"},
-                    {"id": "336", "slug": "nepali", "photo_url": "/static/img/language_photos/Nepalese.png"},
-                    {"id": "430", "slug": "tagalog", "photo_url": "/static/img/language_photos/Tagalog.png"},
+                    {
+                        "id": "122",
+                        "slug": "khmer",
+                        "photo_url": "/static/img/language_photos/khmer.png",
+                        "language_code": "km"
+                    },
+                    {
+                        "id": "267",
+                        "slug": "kyrgyz",
+                        "photo_url": "/static/img/language_photos/kyrgyz.png",
+                        "language_code": "ky"
+                    },
+                    {
+                        "id": "923",
+                        "slug": "laz"
+                    }, {
+                        "id": "915",
+                        "slug": "lu-mien"
+                    },
+                    {
+                        "id": "297",
+                        "slug": "malay",
+                        "photo_url": "/static/img/language_photos/DemoFlags-60_copy.png",
+                        "language_code": "ms"
+                    },
+                    {
+                        "id": "306",
+                        "slug": "maori",
+                        "photo_url": "/static/img/language_photos/DemoFlags-55_copy.png",
+                        "language_code": "mi"
+                    },
+                    {
+                        "id": "309",
+                        "slug": "marshallese",
+                        "photo_url": "/static/img/category_photos/marshallese.png"
+                    },
+                    {
+                        "id": "336",
+                        "slug": "nepali",
+                        "photo_url": "/static/img/language_photos/Nepalese.png",
+                        "language_code": "ne"
+                    },
+                    {
+                        "id": "430",
+                        "slug": "tagalog",
+                        "photo_url": "/static/img/language_photos/Tagalog.png",
+                        "language_code": "tl"
+                    },
                     {
                         "id": "54",
                         "slug": "tibetan",
-                        "photo_url": "/static/img/category_photos/Flags_BenExtras_Tibetan.png",
-                    },
-                ],
+                        "photo_url": "/static/img/category_photos/Flags_BenExtras_Tibetan.png"
+                    }
+                ]
             },
             {
                 "id": "583",
@@ -355,114 +712,371 @@ categories_tree = [
                         "slug": "arabic",
                         "photo_url": "/static/img/language_photos/arabic.png",
                         "children": [
-                            {"id": "679", "slug": "arabic-2"},
-                            {"id": "677", "slug": "arabic-alphabet"},
-                            {"id": "680", "slug": "classical-quranic-arabic"},
-                            {"id": "681", "slug": "egyptian-arabic"},
-                            {"id": "682", "slug": "gulf-khaliji-arabic"},
-                            {"id": "683", "slug": "iraqi-arabic"},
-                            {"id": "684", "slug": "levantine-arabic"},
-                            {"id": "678", "slug": "modern-standard-arabic-roman-alph"},
-                            {"id": "685", "slug": "north-african-maghrebi-arabic"},
+                            {
+                                "id": "679",
+                                "slug": "arabic-2",
+                                "language_code": "ar"
+                            },
+                            {
+                                "id": "677",
+                                "slug": "arabic-alphabet"
+                            },
+                            {
+                                "id": "680",
+                                "slug": "classical-quranic-arabic"
+                            },
+                            {
+                                "id": "681",
+                                "slug": "egyptian-arabic",
+                                "language_code": "ar"
+                            },
+                            {
+                                "id": "682",
+                                "slug": "gulf-khaliji-arabic"
+                            },
+                            {
+                                "id": "683",
+                                "slug": "iraqi-arabic"
+                            },
+                            {
+                                "id": "684",
+                                "slug": "levantine-arabic"
+                            },
+                            {
+                                "id": "678",
+                                "slug": "modern-standard-arabic-roman-alph"
+                            },
+                            {
+                                "id": "685",
+                                "slug": "north-african-maghrebi-arabic"
+                            }
                         ],
+                        "language_code": "ar"
                     },
-                    {"id": "21", "slug": "hebrew", "photo_url": "/static/img/language_photos/DemoFlags-24_copy.png"},
-                    {"id": "31", "slug": "turkish", "photo_url": "/static/img/language_photos/DemoFlags-13_copy.png"},
-                    {"id": "388", "slug": "aramaic"},
-                    {"id": "264", "slug": "kurdish", "photo_url": "/static/img/language_photos/kurdish-flag1.png"},
-                    {"id": "706", "slug": "persian", "photo_url": "/static/img/language_photos/farsi.png"},
-                    {"id": "488", "slug": "yiddish"},
-                ],
+                    {
+                        "id": "21",
+                        "slug": "hebrew",
+                        "photo_url": "/static/img/language_photos/DemoFlags-24_copy.png",
+                        "language_code": "iw"
+                    },
+                    {
+                        "id": "31",
+                        "slug": "turkish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-13_copy.png",
+                        "language_code": "tr"
+                    },
+                    {
+                        "id": "388",
+                        "slug": "aramaic"
+                    },
+                    {
+                        "id": "264",
+                        "slug": "kurdish",
+                        "photo_url": "/static/img/language_photos/kurdish-flag1.png",
+                        "language_code": "ku"
+                    },
+                    {
+                        "id": "706",
+                        "slug": "persian",
+                        "photo_url": "/static/img/language_photos/farsi.png",
+                        "language_code": "fa"
+                    },
+                    {
+                        "id": "488",
+                        "slug": "yiddish",
+                        "language_code": "yi"
+                    }
+                ]
             },
             {
                 "id": "584",
                 "slug": "slavic",
                 "children": [
-                    {"id": "10", "slug": "russian", "photo_url": "/static/img/language_photos/DemoFlags-20_copy.png"},
-                    {"id": "46", "slug": "bosnian", "photo_url": "/static/img/language_photos/DemoFlags-71_copy.png"},
-                    {"id": "16", "slug": "croatian", "photo_url": "/static/img/language_photos/DemoFlags-30_copy.png"},
-                    {"id": "13", "slug": "czech", "photo_url": "/static/img/language_photos/DemoFlags-19_copy.png"},
-                    {"id": "14", "slug": "polish", "photo_url": "/static/img/language_photos/DemoFlags-51_copy.png"},
-                    {"id": "51", "slug": "serbian", "photo_url": "/static/img/language_photos/DemoFlags-43_copy.png"},
-                    {"id": "12", "slug": "bulgarian", "photo_url": "/static/img/language_photos/DemoFlags-66_copy.png"},
-                    {"id": "29", "slug": "slovak", "photo_url": "/static/img/language_photos/DemoFlags-11_copy.png"},
-                    {"id": "30", "slug": "slovenian", "photo_url": "/static/img/language_photos/DemoFlags-16_copy.png"},
-                    {"id": "43", "slug": "ukrainian", "photo_url": "/static/img/language_photos/DemoFlags-49_copy.png"},
-                    {"id": "45", "slug": "belarusian", "photo_url": "/static/img/language_photos/belarus.png"},
-                    {"id": "958", "slug": "circassian", "photo_url": "/static/img/category_photos/Circassian_.png"},
+                    {
+                        "id": "10",
+                        "slug": "russian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-20_copy.png",
+                        "language_code": "ru"
+                    },
+                    {
+                        "id": "46",
+                        "slug": "bosnian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-71_copy.png",
+                        "language_code": "bs"
+                    },
+                    {
+                        "id": "16",
+                        "slug": "croatian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-30_copy.png",
+                        "language_code": "hr"
+                    },
+                    {
+                        "id": "13",
+                        "slug": "czech",
+                        "photo_url": "/static/img/language_photos/DemoFlags-19_copy.png",
+                        "language_code": "cs"
+                    },
+                    {
+                        "id": "14",
+                        "slug": "polish",
+                        "photo_url": "/static/img/language_photos/DemoFlags-51_copy.png",
+                        "language_code": "pl"
+                    },
+                    {
+                        "id": "51",
+                        "slug": "serbian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-43_copy.png",
+                        "language_code": "sr"
+                    },
+                    {
+                        "id": "12",
+                        "slug": "bulgarian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-66_copy.png",
+                        "language_code": "bg"
+                    },
+                    {
+                        "id": "29",
+                        "slug": "slovak",
+                        "photo_url": "/static/img/language_photos/DemoFlags-11_copy.png",
+                        "language_code": "sk"
+                    },
+                    {
+                        "id": "30",
+                        "slug": "slovenian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-16_copy.png",
+                        "language_code": "sl"
+                    },
+                    {
+                        "id": "43",
+                        "slug": "ukrainian",
+                        "photo_url": "/static/img/language_photos/DemoFlags-49_copy.png",
+                        "language_code": "uk"
+                    },
+                    {
+                        "id": "45",
+                        "slug": "belarusian",
+                        "photo_url": "/static/img/language_photos/belarus.png",
+                        "language_code": "be"
+                    },
+                    {
+                        "id": "958",
+                        "slug": "circassian",
+                        "photo_url": "/static/img/category_photos/Circassian_.png"
+                    },
                     {
                         "id": "291",
                         "slug": "macedonian",
                         "photo_url": "/static/img/language_photos/Flags_BenExtras_Macedonian.png",
+                        "language_code": "mk"
                     },
-                    {"id": "935", "slug": "ossetic", "photo_url": "/static/img/category_photos/ossetic.png"},
-                    {"id": "959", "slug": "other-slavic"},
-                ],
+                    {
+                        "id": "935",
+                        "slug": "ossetic",
+                        "photo_url": "/static/img/category_photos/ossetic.png"
+                    },
+                    {
+                        "id": "959",
+                        "slug": "other-slavic"
+                    }
+                ]
             },
             {
                 "id": "585",
                 "slug": "african",
                 "children": [
-                    {"id": "33", "slug": "coptic", "photo_url": "/static/img/category_photos/DemoFlags-39_copy.png"},
-                    {"id": "41", "slug": "swahili", "photo_url": "/static/img/language_photos/DemoFlags-45_copy.png"},
-                    {"id": "62", "slug": "afrikaans", "photo_url": "/static/img/language_photos/Afrikaans.png"},
-                    {"id": "920", "slug": "akan-twi", "photo_url": "/static/img/category_photos/akan-flag.png"},
-                    {"id": "72", "slug": "amharic"},
-                    {"id": "205", "slug": "hausa"},
-                    {"id": "916", "slug": "kaonde"},
-                    {"id": "254", "slug": "kinyarwanda"},
-                    {"id": "921", "slug": "luganda"},
-                    {"id": "296", "slug": "malagasy", "photo_url": "/static/img/category_photos/madagascar.png"},
-                    {"id": "922", "slug": "mandinka"},
-                    {"id": "934", "slug": "nyanja"},
-                    {"id": "414", "slug": "somali", "photo_url": "/static/img/language_photos/somali.png"},
-                    {"id": "416", "slug": "soninke"},
-                    {"id": "483", "slug": "wolof", "photo_url": "/static/img/category_photos/wolof.png"},
-                    {"id": "496", "slug": "zulu", "photo_url": "/static/img/language_photos/Zulu.png"},
-                ],
+                    {
+                        "id": "33",
+                        "slug": "coptic",
+                        "photo_url": "/static/img/category_photos/DemoFlags-39_copy.png"
+                    },
+                    {
+                        "id": "41",
+                        "slug": "swahili",
+                        "photo_url": "/static/img/language_photos/DemoFlags-45_copy.png",
+                        "language_code": "sw"
+                    },
+                    {
+                        "id": "62",
+                        "slug": "afrikaans",
+                        "photo_url": "/static/img/language_photos/Afrikaans.png",
+                        "language_code": "af"
+                    },
+                    {
+                        "id": "920",
+                        "slug": "akan-twi",
+                        "photo_url": "/static/img/category_photos/akan-flag.png"
+                    },
+                    {
+                        "id": "72",
+                        "slug": "amharic",
+                        "language_code": "am"
+                    },
+                    {
+                        "id": "205",
+                        "slug": "hausa",
+                        "language_code": "ha"
+                    },
+                    {
+                        "id": "916",
+                        "slug": "kaonde"
+                    }, {
+                        "id": "254",
+                        "slug": "kinyarwanda"
+                    },
+                    {
+                        "id": "921",
+                        "slug": "luganda"
+                    },
+                    {
+                        "id": "296",
+                        "slug": "malagasy",
+                        "photo_url": "/static/img/category_photos/madagascar.png",
+                        "language_code": "mg"
+                    },
+                    {
+                        "id": "922",
+                        "slug": "mandinka"
+                    },
+                    {
+                        "id": "934",
+                        "slug": "nyanja",
+                        "language_code": "ny"
+                    },
+                    {
+                        "id": "414",
+                        "slug": "somali",
+                        "photo_url": "/static/img/language_photos/somali.png",
+                        "language_code": "so"
+                    },
+                    {
+                        "id": "416",
+                        "slug": "soninke"
+                    },
+                    {
+                        "id": "483",
+                        "slug": "wolof",
+                        "photo_url": "/static/img/category_photos/wolof.png"
+                    },
+                    {
+                        "id": "496",
+                        "slug": "zulu",
+                        "photo_url": "/static/img/language_photos/Zulu.png",
+                        "language_code": "zu"
+                    }
+                ]
             },
             {
                 "id": "675",
                 "slug": "native-american",
                 "children": [
-                    {"id": "48", "slug": "cherokee", "photo_url": "/static/img/category_photos/DemoFlags-69_copy.png"},
-                    {"id": "69", "slug": "algonquian-languages"},
-                    {"id": "953", "slug": "alutiiq"},
-                    {"id": "132", "slug": "choctaw"},
-                    {"id": "925", "slug": "citizen-potawatomi"},
-                    {"id": "933", "slug": "greenlandic", "photo_url": "/static/img/language_photos/greenland.png"},
-                    {"id": "199", "slug": "guarani"},
-                    {"id": "224", "slug": "inuktitut"},
-                    {"id": "917", "slug": "lakota"},
-                    {"id": "328", "slug": "nahuatl-languages"},
-                    {"id": "961", "slug": "other-native-american-languages"},
-                    {"id": "378", "slug": "quechua", "photo_url": "/static/img/category_photos/quechua.png"},
-                ],
+                    {
+                        "id": "48",
+                        "slug": "cherokee",
+                        "photo_url": "/static/img/category_photos/DemoFlags-69_copy.png"
+                    },
+                    {
+                        "id": "69",
+                        "slug": "algonquian-languages"
+                    },
+                    {
+                        "id": "953",
+                        "slug": "alutiiq"
+                    }, {
+                        "id": "132",
+                        "slug": "choctaw"
+                    },
+                    {
+                        "id": "925",
+                        "slug": "citizen-potawatomi"
+                    },
+                    {
+                        "id": "933",
+                        "slug": "greenlandic",
+                        "photo_url": "/static/img/language_photos/greenland.png"
+                    },
+                    {
+                        "id": "199",
+                        "slug": "guarani"
+                    }, {
+                        "id": "224",
+                        "slug": "inuktitut"
+                    },
+                    {
+                        "id": "917",
+                        "slug": "lakota"
+                    }, {
+                        "id": "328",
+                        "slug": "nahuatl-languages"
+                    },
+                    {
+                        "id": "961",
+                        "slug": "other-native-american-languages"
+                    },
+                    {
+                        "id": "378",
+                        "slug": "quechua",
+                        "photo_url": "/static/img/category_photos/quechua.png"
+                    }
+                ]
             },
             {
                 "id": "615",
                 "slug": "classics",
                 "children": [
-                    {"id": "273", "slug": "latin", "photo_url": "/static/img/language_photos/latin.png"},
-                    {"id": "73", "slug": "ancient-greek", "photo_url": "/static/img/language_photos/Ancient-Greek.png"},
-                ],
+                    {
+                        "id": "273",
+                        "slug": "latin",
+                        "photo_url": "/static/img/language_photos/latin.png",
+                        "language_code": "la"
+                    },
+                    {
+                        "id": "73",
+                        "slug": "ancient-greek",
+                        "photo_url": "/static/img/language_photos/Ancient-Greek.png"
+                    }
+                ]
             },
             {
                 "id": "586",
                 "slug": "constructed-languages",
                 "children": [
-                    {"id": "34", "slug": "esperanto", "photo_url": "/static/img/language_photos/DemoFlags-34_copy.png"},
+                    {
+                        "id": "34",
+                        "slug": "esperanto",
+                        "photo_url": "/static/img/language_photos/DemoFlags-34_copy.png",
+                        "language_code": "eo"
+                    },
                     {
                         "id": "222",
                         "slug": "interlingua-international-auxiliar",
-                        "photo_url": "/static/img/category_photos/interlingua.png",
+                        "photo_url": "/static/img/category_photos/interlingua.png"
                     },
-                    {"id": "37", "slug": "klingon", "photo_url": "/static/img/category_photos/DemoFlags-40_copy.png"},
-                    {"id": "279", "slug": "lojban", "photo_url": "/static/img/category_photos/lojban.png"},
-                    {"id": "722", "slug": "morse-code", "photo_url": "/static/img/category_photos/morse-code.png"},
-                    {"id": "759", "slug": "navi", "photo_url": "/static/img/category_photos/navi.png"},
-                    {"id": "957", "slug": "quenya", "photo_url": "/static/img/category_photos/quenya.png"},
-                ],
+                    {
+                        "id": "37",
+                        "slug": "klingon",
+                        "photo_url": "/static/img/category_photos/DemoFlags-40_copy.png"
+                    },
+                    {
+                        "id": "279",
+                        "slug": "lojban",
+                        "photo_url": "/static/img/category_photos/lojban.png"
+                    },
+                    {
+                        "id": "722",
+                        "slug": "morse-code",
+                        "photo_url": "/static/img/category_photos/morse-code.png"
+                    },
+                    {
+                        "id": "759",
+                        "slug": "navi",
+                        "photo_url": "/static/img/category_photos/navi.png"
+                    },
+                    {
+                        "id": "957",
+                        "slug": "quenya",
+                        "photo_url": "/static/img/category_photos/quenya.png"
+                    }
+                ]
             },
             {
                 "id": "751",
@@ -471,167 +1085,366 @@ categories_tree = [
                     {
                         "id": "940",
                         "slug": "american-sign-language-asl",
-                        "photo_url": "/static/img/category_photos/sign-american.png",
+                        "photo_url": "/static/img/category_photos/sign-american.png"
                     },
-                    {"id": "946", "slug": "argentinian-sign-language"},
-                    {"id": "942", "slug": "australian-sign-language-auslan"},
-                    {"id": "943", "slug": "british-sign-language-bsl"},
+                    {
+                        "id": "946",
+                        "slug": "argentinian-sign-language"
+                    },
+                    {
+                        "id": "942",
+                        "slug": "australian-sign-language-auslan"
+                    },
+                    {
+                        "id": "943",
+                        "slug": "british-sign-language-bsl"
+                    },
                     {
                         "id": "945",
                         "slug": "french-sign-language-lsf",
-                        "photo_url": "/static/img/language_photos/sign-french.png",
+                        "photo_url": "/static/img/language_photos/sign-french.png"
                     },
-                    {"id": "944", "slug": "korean-sign-language"},
-                    {"id": "937", "slug": "swedish-sign-language"},
-                ],
+                    {
+                        "id": "944",
+                        "slug": "korean-sign-language"
+                    },
+                    {
+                        "id": "937",
+                        "slug": "swedish-sign-language"
+                    }
+                ]
             },
             {
                 "id": "587",
                 "slug": "other",
                 "children": [
-                    {"id": "185", "slug": "galician", "photo_url": "/static/img/language_photos/galician-flag.png"},
-                    {"id": "204", "slug": "haitian"},
-                    {"id": "220", "slug": "indo-european-languages"},
+                    {
+                        "id": "185",
+                        "slug": "galician",
+                        "photo_url": "/static/img/language_photos/galician-flag.png",
+                        "language_code": "gl"
+                    },
+                    {
+                        "id": "204",
+                        "slug": "haitian",
+                        "language_code": "ht"
+                    },
+                    {
+                        "id": "220",
+                        "slug": "indo-european-languages"
+                    },
                     {
                         "id": "676",
                         "slug": "other-language",
-                        "photo_url": "/static/img/language_photos/other-languages.png",
-                    },
-                ],
-            },
-        ],
+                        "photo_url": "/static/img/language_photos/other-languages.png"
+                    }
+                ]
+            }
+        ]
     },
     {
         "id": "604",
         "slug": "arts-literature",
         "photo_url": "/static/img/category_photos/icon001.png",
         "children": [
-            {"id": "622", "slug": "architecture"},
-            {"id": "617", "slug": "art", "photo_url": "/static/img/category_photos/art.png"},
-            {"id": "623", "slug": "design"},
-            {"id": "621", "slug": "fashion"},
-            {"id": "620", "slug": "film", "photo_url": "/static/img/category_photos/film.png"},
-            {"id": "618", "slug": "literature"},
-            {"id": "616", "slug": "music", "photo_url": "/static/img/category_photos/music.png"},
-            {"id": "619", "slug": "theatre"},
-            {"id": "769", "slug": "philosophy"},
-        ],
+            {
+                "id": "622",
+                "slug": "architecture"
+            },
+            {
+                "id": "617",
+                "slug": "art",
+                "photo_url": "/static/img/category_photos/art.png"
+            },
+            {
+                "id": "623",
+                "slug": "design"
+            }, {
+                "id": "621",
+                "slug": "fashion"
+            },
+            {
+                "id": "620",
+                "slug": "film",
+                "photo_url": "/static/img/category_photos/film.png"
+            },
+            {
+                "id": "618",
+                "slug": "literature"
+            },
+            {
+                "id": "616",
+                "slug": "music",
+                "photo_url": "/static/img/category_photos/music.png"
+            },
+            {
+                "id": "619",
+                "slug": "theatre"
+            }, {
+                "id": "769",
+                "slug": "philosophy"
+            }
+        ]
     },
     {
         "id": "605",
         "slug": "maths-science",
         "photo_url": "/static/img/category_photos/icon002.png",
         "children": [
-            {"id": "624", "slug": "biology", "photo_url": "/static/img/category_photos/biology.png"},
-            {"id": "625", "slug": "chemistry", "photo_url": "/static/img/category_photos/chemistry.png"},
-            {"id": "630", "slug": "earth-sciences"},
-            {"id": "627", "slug": "economics"},
-            {"id": "629", "slug": "engineering"},
-            {"id": "631", "slug": "health-sciences"},
-            {"id": "628", "slug": "maths", "photo_url": "/static/img/category_photos/maths.png"},
-            {"id": "626", "slug": "physics", "photo_url": "/static/img/category_photos/physics.png"},
-            {"id": "760", "slug": "psychology", "photo_url": "/static/img/category_photos/psychology.png"},
-        ],
+            {
+                "id": "624",
+                "slug": "biology",
+                "photo_url": "/static/img/category_photos/biology.png"
+            },
+            {
+                "id": "625",
+                "slug": "chemistry",
+                "photo_url": "/static/img/category_photos/chemistry.png"
+            },
+            {
+                "id": "630",
+                "slug": "earth-sciences"
+            }, {
+                "id": "627",
+                "slug": "economics"
+            },
+            {
+                "id": "629",
+                "slug": "engineering"
+            }, {
+                "id": "631",
+                "slug": "health-sciences"
+            },
+            {
+                "id": "628",
+                "slug": "maths",
+                "photo_url": "/static/img/category_photos/maths.png"
+            },
+            {
+                "id": "626",
+                "slug": "physics",
+                "photo_url": "/static/img/category_photos/physics.png"
+            },
+            {
+                "id": "760",
+                "slug": "psychology",
+                "photo_url": "/static/img/category_photos/psychology.png"
+            }
+        ]
     },
     {
         "id": "606",
         "slug": "the-natural-world",
         "photo_url": "/static/img/category_photos/icon003.png",
         "children": [
-            {"id": "632", "slug": "animals", "photo_url": "/static/img/category_photos/animals.png"},
-            {"id": "634", "slug": "astronomy"},
-            {"id": "635", "slug": "other-2"},
-            {"id": "633", "slug": "plants-trees-and-fruits"},
-            {"id": "770", "slug": "stars", "photo_url": "/static/img/category_photos/stars.png"},
-        ],
+            {
+                "id": "632",
+                "slug": "animals",
+                "photo_url": "/static/img/category_photos/animals.png"
+            },
+            {
+                "id": "634",
+                "slug": "astronomy"
+            }, {
+                "id": "635",
+                "slug": "other-2"
+            },
+            {
+                "id": "633",
+                "slug": "plants-trees-and-fruits"
+            },
+            {
+                "id": "770",
+                "slug": "stars",
+                "photo_url": "/static/img/category_photos/stars.png"
+            }
+        ]
     },
     {
         "id": "607",
         "slug": "history-geography",
         "photo_url": "/static/img/category_photos/icon004.png",
         "children": [
-            {"id": "637", "slug": "anthropology"},
-            {"id": "638", "slug": "capitals", "photo_url": "/static/img/category_photos/capitals.png"},
-            {"id": "642", "slug": "civics"},
-            {"id": "636", "slug": "history"},
-            {"id": "639", "slug": "maps", "photo_url": "/static/img/category_photos/maps.png"},
-            {"id": "643", "slug": "other-3"},
-            {"id": "640", "slug": "places"},
-            {"id": "641", "slug": "religion"},
-            {"id": "564", "slug": "flags", "photo_url": "/static/img/category_photos/flags.png"},
-            {"id": "686", "slug": "politics"},
-        ],
+            {
+                "id": "637",
+                "slug": "anthropology"
+            },
+            {
+                "id": "638",
+                "slug": "capitals",
+                "photo_url": "/static/img/category_photos/capitals.png"
+            },
+            {
+                "id": "642",
+                "slug": "civics"
+            }, {
+                "id": "636",
+                "slug": "history"
+            },
+            {
+                "id": "639",
+                "slug": "maps",
+                "photo_url": "/static/img/category_photos/maps.png"
+            },
+            {
+                "id": "643",
+                "slug": "other-3"
+            }, {
+                "id": "640",
+                "slug": "places"
+            },
+            {
+                "id": "641",
+                "slug": "religion"
+            },
+            {
+                "id": "564",
+                "slug": "flags",
+                "photo_url": "/static/img/category_photos/flags.png"
+            },
+            {
+                "id": "686",
+                "slug": "politics"
+            }
+        ]
     },
     {
         "id": "608",
         "slug": "memory-training",
         "photo_url": "/static/img/category_photos/icon005.png",
         "children": [
-            {"id": "646", "slug": "memory-palaces", "photo_url": "/static/img/category_photos/memory-palaces.png"},
-            {"id": "644", "slug": "number-systems", "photo_url": "/static/img/category_photos/number-systems.png"},
+            {
+                "id": "646",
+                "slug": "memory-palaces",
+                "photo_url": "/static/img/category_photos/memory-palaces.png"
+            },
+            {
+                "id": "644",
+                "slug": "number-systems",
+                "photo_url": "/static/img/category_photos/number-systems.png"
+            },
             {
                 "id": "645",
                 "slug": "playing-card-systems",
-                "photo_url": "/static/img/category_photos/playing-card-systems.png",
-            },
-        ],
+                "photo_url": "/static/img/category_photos/playing-card-systems.png"
+            }
+        ]
     },
     {
         "id": "609",
         "slug": "professional-and-careers",
         "photo_url": "/static/img/category_photos/icon006.png",
         "children": [
-            {"id": "649", "slug": "business-finance"},
+            {
+                "id": "649",
+                "slug": "business-finance"
+            },
             {
                 "id": "650",
                 "slug": "computers-engineering",
-                "photo_url": "/static/img/category_photos/computers-engineering.png",
+                "photo_url": "/static/img/category_photos/computers-engineering.png"
             },
-            {"id": "648", "slug": "law"},
-            {"id": "647", "slug": "medicine-healthcare"},
-            {"id": "651", "slug": "other-4"},
-        ],
+            {
+                "id": "648",
+                "slug": "law"
+            }, {
+                "id": "647",
+                "slug": "medicine-healthcare"
+            },
+            {
+                "id": "651",
+                "slug": "other-4"
+            }
+        ]
     },
     {
         "id": "610",
         "slug": "standardised-tests",
         "photo_url": "/static/img/category_photos/icon007.png",
         "children": [
-            {"id": "654", "slug": "advanced-placement"},
-            {"id": "652", "slug": "college-admissions"},
-            {"id": "653", "slug": "graduate-school"},
-            {"id": "656", "slug": "other-standardized-tests"},
-        ],
+            {
+                "id": "654",
+                "slug": "advanced-placement"
+            }, {
+                "id": "652",
+                "slug": "college-admissions"
+            },
+            {
+                "id": "653",
+                "slug": "graduate-school"
+            }, {
+                "id": "656",
+                "slug": "other-standardized-tests"
+            }
+        ]
     },
     {
         "id": "611",
         "slug": "trivia",
         "photo_url": "/static/img/category_photos/icon008.png",
         "children": [
-            {"id": "660", "slug": "art-music-literature", "photo_url": "/static/img/category_photos/art.png"},
-            {"id": "659", "slug": "geography"},
-            {"id": "658", "slug": "history-2"},
-            {"id": "661", "slug": "science-and-nature"},
-            {"id": "662", "slug": "sports-and-leisure"},
-            {"id": "766", "slug": "food"},
-            {"id": "765", "slug": "hobo-symbols"},
-            {"id": "763", "slug": "miscellaneous"},
-            {"id": "762", "slug": "people"},
-            {"id": "932", "slug": "sociology"},
-        ],
+            {
+                "id": "660",
+                "slug": "art-music-literature",
+                "photo_url": "/static/img/category_photos/art.png"
+            },
+            {
+                "id": "659",
+                "slug": "geography"
+            }, {
+                "id": "658",
+                "slug": "history-2"
+            },
+            {
+                "id": "661",
+                "slug": "science-and-nature"
+            }, {
+                "id": "662",
+                "slug": "sports-and-leisure"
+            },
+            {
+                "id": "766",
+                "slug": "food"
+            }, {
+                "id": "765",
+                "slug": "hobo-symbols"
+            },
+            {
+                "id": "763",
+                "slug": "miscellaneous"
+            }, {
+                "id": "762",
+                "slug": "people"
+            },
+            {
+                "id": "932",
+                "slug": "sociology"
+            }
+        ]
     },
     {
         "id": "657",
         "slug": "entertainment",
         "photo_url": "/static/img/category_photos/icon009.png",
         "children": [
-            {"id": "761", "slug": "board-games", "photo_url": "/static/img/category_photos/board-games.png"},
-            {"id": "511", "slug": "pokemon", "photo_url": "/static/img/category_photos/pokemon.png"},
-            {"id": "771", "slug": "yoga", "photo_url": "/static/img/category_photos/yoga.png"},
-        ],
-    },
+        {
+                "id": "761",
+                "slug": "board-games",
+                "photo_url": "/static/img/category_photos/board-games.png"
+            },
+            {
+                "id": "511",
+                "slug": "pokemon",
+                "photo_url": "/static/img/category_photos/pokemon.png"
+            },
+            {
+                "id": "771",
+                "slug": "yoga",
+                "photo_url": "/static/img/category_photos/yoga.png"
+            }
+        ]
+    }
 ]
-
 
 def flatten_tree(categories_tree, ids={}, slugs={}, parents=[]):
     for cat in categories_tree:
