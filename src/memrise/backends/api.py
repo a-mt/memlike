@@ -337,10 +337,10 @@ class ApiMemrise(Memrise):
 
         return result
 
-    def level_get(self, pool_id, **kwargs):
+    def pool_get(self, pool_id, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_get(
+        return self.requestor.pool_get(
             pool_id,
             sessionid=kwargs["sessionid"],
             csrftoken=kwargs["csrftoken"],
@@ -365,10 +365,10 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_column_edit(self, pool_id, column_key, label, **kwargs):
+    def pool_column_edit(self, pool_id, column_key, label, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_column_edit(
+        return self.requestor.pool_column_edit(
             pool_id,
             column_key,
             label,
@@ -376,10 +376,10 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_attribute_edit(self, pool_id, column_key, label, **kwargs):
+    def pool_attribute_edit(self, pool_id, column_key, label, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_attribute_edit(
+        return self.requestor.pool_attribute_edit(
             pool_id,
             column_key,
             label,
@@ -387,10 +387,10 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_column_delete(self, pool_id, column_key, column_structure="column", **kwargs):
+    def pool_column_delete(self, pool_id, column_key, column_structure="column", **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_column_delete(
+        return self.requestor.pool_column_delete(
             pool_id,
             column_key,
             column_structure,
@@ -398,10 +398,10 @@ class ApiMemrise(Memrise):
             csrftoken=kwargs["csrftoken"],
         )
 
-    def level_columns_direction_edit(self, level_id, column_a, column_b, **kwargs):
+    def level_direction_edit(self, level_id, column_a, column_b, **kwargs):
         self.set_default_kwargs(kwargs)
 
-        return self.requestor.level_columns_direction_edit(
+        return self.requestor.level_direction_edit(
             level_id,
             column_a,
             column_b,

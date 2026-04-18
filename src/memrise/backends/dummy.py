@@ -708,6 +708,50 @@ class DummyMemrise(Memrise):
             "pool_id": pool_id,
         }
 
+    def pool_get(self, pool_id, **kwargs):
+        {
+            "id": 7781860,
+            "name": "German",
+            "columns": {
+                "1": {
+                    "kind": "text",
+                    "label": "German",
+                    "typing_disabled": false,
+                    "typing_strict": false,
+                    "show_after_tests": false,
+                    "always_show": false,
+                    "keyboard": "\u00e4\u00e9\u00f6\u00fc\u00df",
+                    "tapping_disabled": false,
+                    "classes": []
+                },
+                "2": {
+                    "kind": "text",
+                    "label": "French.",
+                    "typing_disabled": false,
+                    "typing_strict": false,
+                    "show_after_tests": false,
+                    "always_show": false,
+                    "keyboard": "\u00e4\u00e9\u00f6\u00fc\u00df",
+                    "tapping_disabled": false,
+                    "classes": []
+                },
+                "3": {
+                    "kind": "audio",
+                    "label": "Audio",
+                    "typing_disabled": false,
+                    "typing_strict": false,
+                    "show_after_tests": false,
+                    "always_show": false,
+                    "keyboard": "",
+                    "tapping_disabled": false,
+                    "classes": []
+                }
+            },
+            "attributes": {},
+            "can_curate": true,
+            "can_moderate": true
+        }
+
     def level_delete(self, level_id, **kwargs):
         return {
             "success": True,
@@ -718,7 +762,7 @@ class DummyMemrise(Memrise):
             "success": True,
         }
 
-    def level_columns_direction_edit(self, level_id, column_a, column_b, **kwargs):
+    def level_direction_edit(self, level_id, column_a, column_b, **kwargs):
         return {
             "success": True,
         }
@@ -978,17 +1022,17 @@ class DummyMemrise(Memrise):
             }
         }
 
-    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False, **kwargs):
+    def pool_column_edit(self, pool_id, column_key, label, show_after_tests=False, **kwargs):
         return {
             "saved": None,
         }
 
-    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False, **kwargs):
+    def pool_attribute_edit(self, pool_id, column_key, label, show_at_tests=False, **kwargs):
         return {
             "saved": None,
         }
 
-    def level_column_delete(self, pool_id, column_key, **kwargs):
+    def pool_column_delete(self, pool_id, column_key, **kwargs):
         return None
 
 
@@ -1011,9 +1055,9 @@ class DummyEditMixin:
     level_thing_get = DummyMemrise.__dict__["level_thing_get"]
     level_thing_alt_update = DummyMemrise.__dict__["level_thing_alt_update"]
     level_multimedia_update = DummyMemrise.__dict__["level_multimedia_update"]
-    level_columns_direction_edit = DummyMemrise.__dict__["level_columns_direction_edit"]
-    level_column_edit = DummyMemrise.__dict__["level_column_edit"]
-    level_column_delete = DummyMemrise.__dict__["level_column_delete"]
-    level_attribute_edit = DummyMemrise.__dict__["level_attribute_edit"]
+    level_direction_edit = DummyMemrise.__dict__["level_direction_edit"]
+    pool_column_edit = DummyMemrise.__dict__["pool_column_edit"]
+    pool_column_delete = DummyMemrise.__dict__["pool_column_delete"]
+    pool_attribute_edit = DummyMemrise.__dict__["pool_attribute_edit"]
     level_title_edit = DummyMemrise.__dict__["level_title_edit"]
     course_delete = DummyMemrise.__dict__["course_delete"]

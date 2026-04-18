@@ -327,7 +327,7 @@ class Memrise:
         """
         raise NotImplementedError("subclasses of Memrise must provide a level_title_edit() method")
 
-    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False):
+    def pool_column_edit(self, pool_id, column_key, label, show_after_tests=False):
         """
         Rename a column
 
@@ -337,9 +337,9 @@ class Memrise:
         @param boolean show_at_tests
         @return dict - {saved}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_column_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a pool_column_edit() method")
 
-    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
+    def pool_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
         """
         Rename an attribute
 
@@ -349,9 +349,9 @@ class Memrise:
         @param boolean show_at_tests
         @return dict - {saved}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_attribute_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a pool_attribute_edit() method")
 
-    def level_columns_direction_edit(self, level_id, column_a, column_b):
+    def level_direction_edit(self, level_id, column_a, column_b):
         """
         Set which columns are acting as question and answer
 
@@ -360,7 +360,7 @@ class Memrise:
         @param string column_b - 2 Which column is the definition_element
         @return dict - {success}
         """
-        raise NotImplementedError("subclasses of Memrise must provide a level_columns_direction_edit() method")
+        raise NotImplementedError("subclasses of Memrise must provide a level_direction_edit() method")
 
     def level_get_editpage(self, level_id, **kwargs):
         """

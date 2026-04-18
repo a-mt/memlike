@@ -495,7 +495,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_get(self, pool_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
+    def pool_get(self, pool_id, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = "Level get"
 
         url = f"{HOST}/ajax/pool/get/?pool_id={pool_id}&_=" + get_time()
@@ -507,9 +507,9 @@ class ApiRequestor:
             **request_kwargs,
         )
         self.raise_for_status(response)
-        return response.json()
+        return response.json().get("pool", {})
 
-    def level_attribute_edit(
+    def pool_attribute_edit(
         self, pool_id, column_key, label, show_at_tests=False, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         request_msg = "Level edit attribute"
@@ -530,35 +530,44 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_column_edit(
-        self, pool_id, column_key, label, show_after_tests=False, sessionid=None, csrftoken=None, referer=None, **kwargs
+    def pool_column_edit(
+        self, pool_id, column_key, label, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         request_msg = "Level edit column"
 
         url = f"{HOST}/ajax/pool/columns/set/"
-
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
+
+        column = (
+            self.pool_get(pool_id, sessionid, csrftoken, referer, **kwargs)
+                .get("columns", {})
+                .get(column_key, {})
+        )
+        classes = column.get("classes", [])
+        data = {
+            "column_key": column_key,
+            "pool_id": pool_id,
+            "label": label,
+            "keyboard": column.get("keyboard", ""), # german: "äéöüß"
+            "show_bigger": "true" if "bigger" in classes else "false",
+            "never_italicize": "true" if "unitalic" in classes else "false",
+            "typing_disabled": "true" if column.get("typing_disabled", None) else "false",
+            "tapping_disabled": "true" if column.get("tapping_disabled", None) else "false",
+            "typing_strict": "true" if column.get("typing_strict", None) else "false",
+            "always_show": "true" if column.get("always_show", None) else "false",
+            "show_after_tests": "true" if column.get("show_after_tests", None) else "false",
+        }
+        request_kwargs["headers"]["Content-Type"] = "application/x-www-form-urlencoded; charset=UTF-8"
+
         response = requests.post(
             url,
-            data={
-                "column_key": column_key,
-                "pool_id": pool_id,
-                "label": label,
-                "show_after_tests": "true" if show_after_tests else "false",
-                "keyboard": "äéöüß",
-                "show_bigger": "false",
-                "never_italicize": "false",
-                "typing_disabled": "false",
-                "tapping_disabled": "false",
-                "typing_strict": "false",
-                "always_show": "false",
-            },
+            data=data,
             **request_kwargs,
         )
         self.raise_for_status(response)
         return response.json()
 
-    def level_column_add(
+    def pool_column_add(
         self,
         pool_id,
         column_kind,
@@ -587,7 +596,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return None
 
-    def level_column_delete(
+    def pool_column_delete(
         self, pool_id, column_key, column_structure="attribute", sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         request_msg = "Level delete column"
@@ -607,7 +616,7 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def level_columns_direction_edit(
+    def level_direction_edit(
         self, level_id, column_a, column_b, sessionid=None, csrftoken=None, referer=None, **kwargs
     ):
         request_msg = f"Level edit columns [level_id={level_id}]"

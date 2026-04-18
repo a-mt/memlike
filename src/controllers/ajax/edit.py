@@ -144,7 +144,7 @@ class level_add:
         )
 
 
-class level_get:
+class pool_get:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -157,7 +157,7 @@ class level_get:
             },
             data=jsoninput() or web.input(),
         )
-        return proxied_response(lambda: memrise.level_get(data["pool_id"]))
+        return proxied_response(lambda: memrise.pool_get(data["pool_id"]))
 
 
 class level_delete:
@@ -210,7 +210,7 @@ class level_title_edit:
         return proxied_response(lambda: memrise.level_title_edit(data["level_id"], data["title"]))
 
 
-class level_columns_direction_edit:
+class level_direction_edit:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -230,7 +230,7 @@ class level_columns_direction_edit:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_columns_direction_edit(
+            lambda: memrise.level_direction_edit(
                 data["level_id"],
                 data["column_a"],
                 data["column_b"],
@@ -238,7 +238,7 @@ class level_columns_direction_edit:
         )
 
 
-class level_column_edit:
+class pool_column_edit:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -262,14 +262,14 @@ class level_column_edit:
         )
         if data["column_structure"] == "attribute":
             return proxied_response(
-                lambda: memrise.level_attribute_edit(
+                lambda: memrise.pool_attribute_edit(
                     data["pool_id"],
                     data["column_key"],
                     data["label"],
                 )
             )
         return proxied_response(
-            lambda: memrise.level_column_edit(
+            lambda: memrise.pool_column_edit(
                 data["pool_id"],
                 data["column_key"],
                 data["label"],
@@ -277,7 +277,7 @@ class level_column_edit:
         )
 
 
-class level_column_delete:
+class pool_column_delete:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -297,7 +297,7 @@ class level_column_delete:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_column_delete(
+            lambda: memrise.pool_column_delete(
                 data["pool_id"],
                 data["column_key"],
                 column_structure=data["column_structure"],
@@ -305,7 +305,7 @@ class level_column_delete:
         )
 
 
-class level_column_add:
+class pool_column_add:
     def POST(self):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()
@@ -326,7 +326,7 @@ class level_column_add:
             data=web.input(),
         )
         return proxied_response(
-            lambda: memrise.level_column_add(
+            lambda: memrise.pool_column_add(
                 data["pool_id"],
                 data["column_kind"],
                 data["label"],
@@ -336,7 +336,7 @@ class level_column_add:
 
 
 """
-class level_getcell:
+class pool_getcell:
     def GET(self, thing_id):
         if not web.ctx.session.get("loggedin", False):
             raise web.Unauthorized()

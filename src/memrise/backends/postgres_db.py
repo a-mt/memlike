@@ -473,9 +473,9 @@ class PostgresDB(Memrise):
     def level_add(self, course_id, pool_id=None, *args, **kwargs):
     def level_delete(self, level_id, *args, **kwargs):
     def level_title_edit(self, level_id, title, **kwargs):
-    def level_column_edit(self, pool_id, column_key, label, show_after_tests=False):
-    def level_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
-    def level_columns_direction_edit(self, level_id, column_a, column_b):
+    def pool_column_edit(self, pool_id, column_key, label, show_after_tests=False):
+    def pool_attribute_edit(self, pool_id, column_key, label, show_at_tests=False):
+    def level_direction_edit(self, level_id, column_a, column_b):
     def level_get_editpage(self, level_id, **kwargs):
     def level_thing_add(self, level_id, data, **kwargs):
     def level_thing_update(self, thing_id, cell_id, cell_value, **kwargs):
