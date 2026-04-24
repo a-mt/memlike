@@ -1090,21 +1090,6 @@ class Learn extends Component {
   level_data = false;
   level_summary_data = false;
 
-  state = {
-    level_i: 0,
-    level_n: 0,
-    level_type: 1,
-
-    error: false,
-    meta_screen: false,
-    screen_i: 0,
-    screen_n: 0,
-
-    points: 0,
-    hearts: 3,
-    use_course_and_level_index: false,
-  };
-
   //+--------------------------------------------------------
   //| LIFECYCLE
   //+--------------------------------------------------------
@@ -1113,8 +1098,20 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
-    const state = {};
+    const state = {
+      level_i: 0,
+      level_n: 0,
+      level_type: 1,
 
+      error: false,
+      meta_screen: false,
+      screen_i: 0,
+      screen_n: 0,
+
+      points: 0,
+      hearts: 3,
+      use_course_and_level_index: false,
+    };
     if (window.$_GET && window.$_GET.display_debug_screen) {
         this.DISPLAY_DEBUG_SCREEN = true;
     }
@@ -1391,7 +1388,7 @@ class Learn extends Component {
   warnbeforeunload(e) {
     if(GameProgressHandler.is_saving) {
       // pass
-    } else if(this.state.meta_screen == 'summary' || this.state.error) {
+    } else if(this.state.meta_screen == 'summary' || this.state.meta_screen == 'lost' || this.state.error) {
       return;
     }
     var msg = 'Your changes will be lost.';
@@ -1401,15 +1398,6 @@ class Learn extends Component {
       e.returnValue = msg;
     }
     return msg;
-  }
-
-  expectedSubmit() {
-    var expectChoice = this.expectChoice;
-    if (expectChoice === null) {
-      return false;
-    }
-    this.expectChoice = null;
-    return expectChoice;
   }
 
   // Listen to keyboard inputs: next screen, multiple choice answer
@@ -1454,6 +1442,7 @@ class Learn extends Component {
 
     // Presentation
     if(!this.expectChoice) {
+      Timer.stop();
       this.getNext();
 
     // Typing
@@ -1564,12 +1553,19 @@ class Learn extends Component {
   // Answer has been submitted and checked: compute progress, points & give feedback
   // input: {value,score,kind,...rest}
   choice_feedback(input) {
-    Timer.stop();
 
+    if(this.props.session_type == 'speed_review') {
+      Timer.stop(); // in case of submit without choice
+      this.show_correct(input);
+    }
     if(!this.level_data) {
       return;
     }
-    var learnableID = this.level_data.screens[this.state.screen_i].learnableID;
+    var screen = this.level_data.screens[this.state.screen_i];
+    if(!screen) {
+      return;
+    }
+    var learnableID = screen.learnableID;
 
     // Update the streak status and next review data
     // Values from this object are incremented each time this learnable is learned
@@ -1585,12 +1581,14 @@ class Learn extends Component {
     var current_streak = progress.current_streak;
     var isCorrect = input.score == 1;
 
+    var hearts = this.state.hearts;
     var time_spent = 0;
     if (this.props.session_type == 'speed_review') {
       time_spent = Timer.getTime();
 
       if (!isCorrect) {
-        this.state.hearts -= 1;
+        hearts -= 1;
+        $('.hearts-wrapper .heart.full').last().addClass('empty').removeClass('full');
       }
     }
     var points = AwardPoints.getPoints(
@@ -1636,42 +1634,43 @@ class Learn extends Component {
     }
 
     // Display correction
-    if(this.props.session_type == 'speed_review') {
-      this.show_correct(input);
-
-      if(this.state.hearts == 0) {
-        this.state.meta_screen = 'lost';
-        this.state.error  = 1;
-
-        $(document.body).append(`<div class="overlay">
-          <div class="no-heart"></div>
-          <p class="overlay-text">${window.I18N.no_more_hearts} !</p>
-          <div class="btn-group">
-            <a href="${window.MEMLIKE.garden.session_origin_url}">${window.I18N.return}</a>
-            <a href="${window.location.href}">${window.I18N.replay}</a>
-          </div>
-        </div>`);
-
-        return;
-      }
-
-      // We intentionally don't update the state, so that componentDidUpdate isn't called
-      this.state.points += event.points;
-
-      setTimeout(function(){
-        $('.choice-box').removeClass('correct').removeClass('incorrect');
-        this.getNext();
-      }.bind(this), isCorrect ? 500 : 3000);
-
-    } else {
+    if(this.props.session_type != 'speed_review') {
       this.level_summary_data.speed_bonus += event.bonus_points;
 
-      this.setState({
+      return this.setState({
         meta_screen: 'correction',
         correct: input,
         debug_screen: false,
         points: this.state.points + event.points,
       });
+    }
+
+    // Update hearts / overlay / classes
+    var newState = {
+      hearts,
+      points: this.state.points + event.points,
+    }
+    if(hearts == 0) {
+      newState.meta_screen = 'lost';
+
+      // Show the overlay without updating the screen underneath
+      Object.assign(this.state, newState);
+
+      $(document.body).append(`<div class="overlay">
+        <div class="no-heart"></div>
+        <p class="overlay-text">${window.I18N.no_more_hearts} !</p>
+        <div class="btn-group">
+          <a href="${window.MEMLIKE.garden.session_origin_url}">${window.I18N.return}</a>
+          <a href="${window.location.href}">${window.I18N.replay}</a>
+        </div>
+      </div>`);
+
+    } else {
+      setTimeout(function(){
+        $('.choice-box').removeClass('correct').removeClass('incorrect');
+
+        this.getNext(newState);
+      }.bind(this), isCorrect ? 500 : 3000);
     }
   }
 
@@ -1690,14 +1689,17 @@ class Learn extends Component {
   }
 
   // Display next screen
-  getNext() {
+  getNext(newState) {
+    this.expectChoice = false;
+
+    newState = newState || {}
 
     // Next item
     if(this.state.screen_i + 1 < this.state.screen_n) {
-      this.setState({
+      this.setState(Object.assign(newState, {
         screen_i: this.state.screen_i + 1,
         meta_screen: false
-      });
+      }));
 
     // After displaying the summary: display the next level or go back to the course
     } else if(this.state.meta_screen == 'summary' || this.state.level_type == 2){
@@ -1725,10 +1727,10 @@ class Learn extends Component {
       }
       this.session_settings.save_progress && GameProgressHandler.registerSessionEnd(data);
 
-      this.setState({
+      this.setState(Object.assign(newState, {
         screen_i: this.state.screen_n,
         meta_screen: 'summary'
-      }, function(){
+      }), function(){
         window.imgZoom && window.imgZoom.reset();
       });
     }

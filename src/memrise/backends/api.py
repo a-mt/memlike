@@ -119,6 +119,9 @@ class ApiMemrise(Memrise):
     def learning_session_register_end(self, data, referer=None, **kwargs):
         self.set_default_kwargs(kwargs)
 
+        if data["session_type"] == "classic_review":
+            data["session_type"] = "review"
+
         return self.requestor.learning_session_register_end(
             data,
             sessionid=kwargs["sessionid"],

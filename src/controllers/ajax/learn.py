@@ -43,7 +43,7 @@ class learning_session_register_end:
                     default=0,
                 ),
                 "session_type": validator.field(
-                    validator.str_choices_schema(["preview", "learn", "review"]),
+                    validator.str_choices_schema(["preview", "learn", "review", "classic_review", "speed_review"]),
                 ),
                 "session_source_type": validator.field(
                     validator.str_choices_schema(["course", "course_id_and_level_index"]),

@@ -155,7 +155,8 @@ td > .btn-group {
 .dropdown-toggle {
   cursor: pointer;
 }
-.btn-group > :has(+ .btn) {
+.btn-group > :has(+ .btn),
+.btn-group > a:has(+ a) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
