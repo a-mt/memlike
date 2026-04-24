@@ -111,7 +111,10 @@ $:(prender.inc_course_banner(course))
       </div>
 
       <!-- List of items -->
-      $:inc
+      $if nb_things:
+        $:inc
+      $else:
+        <div class="nicebox">$:(I18N.misc['learn_err_empty'])</div>
 
     $else:
       <div class="multimedia-wrapper nicebox inner-small loading-spinner" data-var="multimedia0">

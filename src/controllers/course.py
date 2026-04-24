@@ -125,16 +125,18 @@ class level:
                 level = course["levels"][level_index]
 
             # Request the content of that level
-            try:
-                if level["type"] == 1:
-                    # A list of things
+            if level["type"] == 1:
+                # A list of things
+                try:
                     items = memrise.level(course_id, course_slug, index, "preview")
-                else:
-                    # A multimedia
+                except HTTPError:
+                    items = {"learnables": [], "progress": []}
+            else:
+                # A multimedia
+                try:
                     items = memrise.level_multimedia(course_id, course_slug, index)
-
-            except HTTPError:
-                items = {"learnables": [], "progress": []}
+                except HTTPError:
+                    items = ''
 
         except HTTPError as e:
             if e.response.status_code == 403:

@@ -362,6 +362,10 @@ class ApiRequestor:
             json=data,
             **request_kwargs,
         )
+        if response.status_code == 400:
+            return {"learnables": [], "progress": []}
+
+        # Will have a 400 if the level is empty
         self.raise_for_status(response)
         return response.json()
 
@@ -376,6 +380,9 @@ class ApiRequestor:
             url,
             **request_kwargs,
         )
+        if response.status_code == 400:
+            return ""
+
         self.raise_for_status(response)
         return response.text.encode("utf-8").strip()
 
