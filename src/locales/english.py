@@ -29,6 +29,7 @@ misc = {
     "learn_course": "Learn this course",
     "learn_settings": "Session parameters",
     "course_settings": "Course parameters",
+    "level_default_title": "New level",
     "learn_settings_disable_typing": "Disable keyboard typing exercises",
     "learn_settings_disable_tapping": "Disable words ordering exercises",
     "learn_settings_disable_multimedia": "Disable multimedia exercises",

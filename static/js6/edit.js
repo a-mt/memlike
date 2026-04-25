@@ -674,8 +674,12 @@ class EditLevel extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !window.objectsAreEqual(nextState, this.state);
+  }
+
   toggleContent() {
-    if(!this.state.show && !this.data) {
+    if(!this.state.show) {
       this.getData();
 
     } else {
@@ -855,7 +859,7 @@ class EditLevel extends Component {
       </div>
 
       <div className="edit-level-label">
-        <label>{this.state.name || "New level"}</label>
+        <label>{this.state.name || window.I18N['level_default_title']}</label>
         {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 

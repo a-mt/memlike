@@ -156,12 +156,14 @@ $ t = time()
         export_column_score_percent: "$:(I18N.misc['export_column_score_percent'])",
         export_column_more: "$:(I18N.misc['export_column_more'])",
         export_column_content: "$:(I18N.misc['export_column_content'])",
+        level_default_title: "$:(I18N.misc['level_default_title'])",
      };
      window.I18N.categories = $:json(I18N.categories);
      window.I18N.languages = $:json(I18N.languages);
 
      window.MEMLIKE = window.MEMLIKE || {};
     </script>
+    <script src="/static/js/utils.js"></script>
     <script src="/static/js/app.js"></script>
     $if "js" in tpl:
       $for file in tpl.js.split(', '):

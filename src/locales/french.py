@@ -21,6 +21,7 @@ misc = {
     "level_progress": "Niveau",
     "level_current": "Niveau actuel",
     "level_next": "Prochain niveau",
+    "level_default_title": "Nouveau niveau",
     "following_none": "% ne suis personne",
     "followers_none": "Personne ne suis %",
     "learning": "Apprend",

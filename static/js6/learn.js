@@ -1406,6 +1406,9 @@ class Learn extends Component {
 
     // Press enter
     if(key == 13) {
+      e.preventDefault();
+      e.stopPropagation();
+
       if(e.target.classList.contains('button') || e.target.classList.contains('choice-box')) {
         if(!e.target.classList.contains('disabled')) {
           e.target.click();
