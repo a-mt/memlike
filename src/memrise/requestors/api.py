@@ -537,25 +537,19 @@ class ApiRequestor:
         self.raise_for_status(response)
         return response.json()
 
-    def pool_column_edit(
-        self, pool_id, column_key, label, sessionid=None, csrftoken=None, referer=None, **kwargs
-    ):
+    def pool_column_edit(self, pool_id, column_key, label, sessionid=None, csrftoken=None, referer=None, **kwargs):
         request_msg = "Level edit column"
 
         url = f"{HOST}/ajax/pool/columns/set/"
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
 
-        column = (
-            self.pool_get(pool_id, sessionid, csrftoken, referer, **kwargs)
-                .get("columns", {})
-                .get(column_key, {})
-        )
+        column = self.pool_get(pool_id, sessionid, csrftoken, referer, **kwargs).get("columns", {}).get(column_key, {})
         classes = column.get("classes", [])
         data = {
             "column_key": column_key,
             "pool_id": pool_id,
             "label": label,
-            "keyboard": column.get("keyboard", ""), # german: "äéöüß"
+            "keyboard": column.get("keyboard", ""),  # german: "äéöüß"
             "show_bigger": "true" if "bigger" in classes else "false",
             "never_italicize": "true" if "unitalic" in classes else "false",
             "typing_disabled": "true" if column.get("typing_disabled", None) else "false",

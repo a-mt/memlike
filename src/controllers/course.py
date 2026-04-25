@@ -136,7 +136,7 @@ class level:
                 try:
                     items = memrise.level_multimedia(course_id, course_slug, index)
                 except HTTPError:
-                    items = ''
+                    items = ""
 
         except HTTPError as e:
             if e.response.status_code == 403:
