@@ -8,7 +8,7 @@ window.MEMLIKE.js_app = {
 };
 
 $(document).ready(function(){
-  window.$_GET = getUrlParameter();
+  window.$_GET = window.getUrlParameters();
   Object.freeze(window.I18N);
   Object.freeze(window.$_GET);
 
