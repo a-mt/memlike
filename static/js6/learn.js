@@ -712,7 +712,7 @@ const GameScreenBuilder = {
     if ('reversed_multiple_choice2' in learnableScreens) {
       return true;
     }
-    var screen = learnableScreens.multiple_choice[0];
+    var screen = Object.assign({}, learnableScreens.multiple_choice[0]);
     screen.template = 'reversed_multiple_choice2';
     [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
 
@@ -737,7 +737,7 @@ const GameScreenBuilder = {
     if ('reversed_typing' in learnableScreens) {
       return true;
     }
-    var screen = learnableScreens.typing[0];
+    var screen = Object.assign({}, learnableScreens.typing[0]);
     screen.template = 'reversed_typing';
     [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
     if (screen.answer.kind != 'text') {
@@ -746,7 +746,7 @@ const GameScreenBuilder = {
     learnableScreens['reversed_typing'] = [screen];
 
     screen.correct = [];
-    let value = GameScreenBuilder.flattenValue(screen.answer.value).forEach((value) => {
+    GameScreenBuilder.flattenValue(screen.answer.value).forEach((value) => {
       screen.correct.push(value);
     });
     screen.answer.alternatives.forEach((value) => {
@@ -754,7 +754,8 @@ const GameScreenBuilder = {
     });
 
     // Set tapping letters
-    var keyboard = new Set(sanitizeTyping(screen.answer.value).replace(/\s/g, '').replace(/[a-zA-Z0-9]/g, '').split(''));
+    var letters = sanitizeTyping(screen.answer.value, this.is_strict);
+    var keyboard = new Set(letters.replace(/\s/g, '').replace(/[a-zA-Z0-9]/g, '').split(''));
 
     if (keyboard.size < 5 && category && category.keyboard) {
       var categoryKeyboard = new Set(category.keyboard.split(''));
@@ -1526,7 +1527,7 @@ class Learn extends Component {
 
     // Text input
     for(let i=0; i<this.choices.length; i++) {
-      var choice = this.choices[i].toLowerCase().trim(),
+      var choice = sanitizeTyping(this.choices[i], this.is_strict).toLowerCase().trim(),
           s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
 
       if(s && s > score) {
@@ -1761,7 +1762,9 @@ class Learn extends Component {
   setChoices(choices, type, is_strict) {
     this.expectChoice = type; // numeric | text | tapping
     this.choices      = choices;
-    this.is_strict    = is_strict || 1;
+
+ // values in parentheses and punctuation should match too?
+    this.is_strict    = typeof is_strict == 'undefined' ? 1 : is_strict;
   }
 
   render() {

@@ -107,7 +107,9 @@ ruff check --fix
 
 ```
 pip install pre-commit
-pre-commit install --config .pre-commit-config-2.yaml
+pre-commit install
+pre-commit run --config .pre-commit-config-lint.yaml
 
-pre-commit run build_date --config .pre-commit-config-2.yaml --all-files
+pre-commit run --all-files
+git diff ':!static/js/'
 ```
