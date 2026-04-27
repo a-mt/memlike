@@ -733,7 +733,7 @@ const GameScreenBuilder = {
     return true;
   },
 
-  buildScreen_reverse_typing: function(learnableScreens) {
+  buildScreen_reverse_typing: function(learnableScreens, category) {
     if ('reversed_typing' in learnableScreens) {
       return true;
     }
@@ -753,8 +753,18 @@ const GameScreenBuilder = {
       screen.correct.push(value);
     });
 
-    var tmp = sanitizeTyping(screen.answer.value).replace(' ', '').split('');
-    screen.choices = randomize(Array.from(new Set(tmp)));
+    // Set tapping letters
+    var keyboard = new Set(sanitizeTyping(screen.answer.value).replace(/\s/g, '').replace(/[a-zA-Z0-9]/g, '').split(''));
+
+    if (keyboard.size < 5 && category && category.keyboard) {
+      var categoryKeyboard = new Set(category.keyboard.split(''));
+
+      var newLetters = randomize(Array.from(categoryKeyboard.difference(keyboard)));
+      newLetters.slice(0, 5).forEach((letter) => {
+        keyboard.add(letter);
+      });
+    }
+    screen.choices = randomize(Array.from(keyboard));
     console.log('buildScreen_reverse_typing', screen);
     return true;
   }
@@ -2051,7 +2061,7 @@ class Learn extends Component {
       if(this.session_settings.reverse_prompt_and_answer) {
         if(screens.typing
           && !this.session_settings.disable_typing
-          && GameScreenBuilder.buildScreen_reverse_typing(screens)
+          && GameScreenBuilder.buildScreen_reverse_typing(screens, this.props.course.source)
         ) {
           return this.render_tpl({
             template: 'reversed_typing',

@@ -112,17 +112,16 @@ class Scraper:
 
             # Add source and target languages
             if len(course["breadcrumb"]) >= 3:
-
                 def add_language(course, category, to_key="source"):
                     category_slug = category["slug"]
                     if category_slug not in variables.source_languages:
                         return False
 
-                    caregory = variables.categories_slug.get(category_slug, None)
-                    if caregory is None:
+                    category = variables.categories_slug.get(category_slug, None)
+                    if category is None:
                         return
 
-                    course[to_key] = category
+                    course[to_key] = variables.cleaned_category(**category)
 
                 # Add source language
                 categories = course["breadcrumb"].copy()

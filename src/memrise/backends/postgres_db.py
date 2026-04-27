@@ -233,8 +233,10 @@ class PostgresDB(Memrise):
                 item["target"] = {
                     "id": cat_id,
                     "slug": target["slug"],
-                    "photo_url": target.get("photo_url", ""),
+                    "photo_url": None,
+                    "language_code": None,
                 }
+                item["target"].update(target)
 
             item["is_official"] = 0
             item["progress"] = {
