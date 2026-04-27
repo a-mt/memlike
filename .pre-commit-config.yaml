@@ -1,4 +1,11 @@
 # minimum_pre_commit_version: "4.4.0"
+exclude: |
+    (?x)^(
+        static/img/|
+        static/js/|
+        src/tests/testset/
+    )
+fail_fast: false
 repos:
 -   repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.14.7"
@@ -119,9 +126,3 @@ repos:
 #                xml\.
 #            )
 #        types: [python]
-exclude: |
-    (?x)^(
-        static/img/.*|
-        static/js/.*|
-        src/tests/testset/.*
-    )$

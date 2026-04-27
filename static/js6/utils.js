@@ -9,7 +9,7 @@ window.MEMLIKE.js_utils = {
 
 /* global $, window, document, console, navigator */
 /* global setTimeout, URL, Blob */
-window.GlobalEventEmitter = {
+var GlobalEventEmitter = window.GlobalEventEmitter = {
   _events: {},
   dispatch: function (eventName, data) {
       if (!this._events[eventName]) return;
@@ -26,7 +26,7 @@ window.GlobalEventEmitter = {
 //| Get the value of a parameters of the given url (current location if false)
 //| Doesn't support array parameters
 //+--------------------------------------------------------
-window.getUrlParameters = function(href) {
+var getUrlParameters = window.getUrlParameters = function(href) {
     if(typeof href == 'undefined' || href === false) {
         href = window.location.href;
     }
@@ -44,7 +44,7 @@ window.getUrlParameters = function(href) {
     return vars;
 }
 
-window.getCookies = function() {
+var getCookies = window.getCookies = function() {
   let cookie = {};
   document.cookie.split(';').forEach(function(el) {
     let [k,v] = el.split('=');
@@ -53,7 +53,7 @@ window.getCookies = function() {
   return cookie;
 };
 
-window.objectsAreEqual = function(newObj, oldObj){
+var objectsAreEqual = window.objectsAreEqual = function(newObj, oldObj){
   if (Object.keys(oldObj).length !== Object.keys(newObj).length) {
     return false;
   }
@@ -74,7 +74,7 @@ window.objectsAreEqual = function(newObj, oldObj){
 //+--------------------------------------------------------
 //| Play/pause audio tag
 //+--------------------------------------------------------
-window.audioPlayer = {
+var audioPlayer = window.audioPlayer = {
   isInit: false,
   target: false,
   isPlaying: false,
@@ -178,7 +178,7 @@ window.audioPlayer = {
 //+--------------------------------------------------------
 //| View image full size
 //+--------------------------------------------------------
-window.imgZoom = {
+var imgZoom = window.imgZoom = {
   container: false,
   n: 0,
   i: 0,
@@ -251,7 +251,7 @@ window.imgZoom = {
 //+--------------------------------------------------------
 //| Modal
 //+--------------------------------------------------------
-window.modal = {
+var modal = window.modal = {
   $container: false,
   close_callback: {},
 
@@ -304,7 +304,7 @@ window.modal = {
 //| Render markdown content
 //+--------------------------------------------------------
 
-window.freezeMarkdown = function() {
+var defineMarkdown = window.defineMarkdown = function() {
   if(window.markdown) {
     window.markdown.decode = function(value) {
       var STATIC_URL   = 'https://static.memrise.com/',
@@ -335,10 +335,10 @@ window.freezeMarkdown = function() {
     };
   } else {
     window.markdown = {decode: function(value) { return value; }};
-  };
+  }
 }
 
-window.multimedia = {
+var multimedia = window.multimedia = {
   init: function() {
     $('.multimedia-wrapper').each(function(){
       var varname = this.getAttribute('data-var');
@@ -356,7 +356,7 @@ window.multimedia = {
 //+--------------------------------------------------------
 
 // https://docs.cloud.google.com/translate/docs/languages?hl=de
-window.TTS = {
+var TTS = window.TTS = {
   langs: {
     'af': 'Afrikaans',
     'sq': 'Albanian',
@@ -487,7 +487,7 @@ window.TTS = {
  * @param string fileName
  * @param mimeType
  */
-window.download = function(content, fileName, mimeType) {
+var download = window.download = function(content, fileName, mimeType) {
   var a = document.createElement('a');
   mimeType = mimeType || 'application/octet-stream';
 

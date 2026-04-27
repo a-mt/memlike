@@ -7,6 +7,8 @@ window.MEMLIKE.js_app = {
   build_date: process.env.BUILD_DATE,
 };
 
+/* global $, window, document, console, navigator */
+/* global setTimeout, URL, Blob */
 $(document).ready(function(){
   window.$_GET = window.getUrlParameters();
   Object.freeze(window.I18N);
@@ -15,7 +17,7 @@ $(document).ready(function(){
   if(window.MEMLIKE.page) {
     Object.freeze(window.MEMLIKE.page);
   }
-  freezeMarkdown();
+  window.defineMarkdown();
 
   // Show/hide elements
   $('h2[data-toggle]').on('click', function(e){
@@ -48,9 +50,9 @@ $(document).ready(function(){
 
   // Audio tag toggle play/pause
   if($('#course-container, #learn-container').length) {
-    audioPlayer.init();
-    imgZoom.init();
-    multimedia.init();
+    window.audioPlayer.init();
+    window.imgZoom.init();
+    window.multimedia.init();
   }
 
   // Page /user event

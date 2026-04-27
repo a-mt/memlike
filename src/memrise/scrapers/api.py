@@ -112,6 +112,7 @@ class Scraper:
 
             # Add source and target languages
             if len(course["breadcrumb"]) >= 3:
+
                 def add_language(course, category, to_key="source"):
                     category_slug = category["slug"]
                     if category_slug not in variables.source_languages:

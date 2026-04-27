@@ -260,7 +260,12 @@ categories_tree = [
                         "photo_url": "/static/img/language_photos/DemoFlags-38_copy.png",
                         "language_code": "eu",
                     },
-                    {"id": "114", "slug": "breton", "photo_url": "/static/img/category_photos/Breton-flag.png", "keyboard": "âêîôûùüñ"},
+                    {
+                        "id": "114",
+                        "slug": "breton",
+                        "photo_url": "/static/img/category_photos/Breton-flag.png",
+                        "keyboard": "âêîôûùüñ",
+                    },
                     {
                         "id": "15",
                         "slug": "catalan",
@@ -771,7 +776,12 @@ categories_tree = [
                         "photo_url": "/static/img/language_photos/Afrikaans.png",
                         "language_code": "af",
                     },
-                    {"id": "920", "slug": "akan-twi", "photo_url": "/static/img/category_photos/akan-flag.png", "keyboard": "ɛɔ"},
+                    {
+                        "id": "920",
+                        "slug": "akan-twi",
+                        "photo_url": "/static/img/category_photos/akan-flag.png",
+                        "keyboard": "ɛɔ",
+                    },
                     {"id": "72", "slug": "amharic", "language_code": "am"},
                     {"id": "205", "slug": "hausa", "language_code": "ha"},
                     {"id": "916", "slug": "kaonde"},

@@ -29,27 +29,27 @@ function bindSpreadsheetEvents() {
 
     document.getElementById(`export${val}`).disabled = false;
     document.getElementById(`export${1 - val}`).disabled = true;
-    document.getElementById(`exportAlt`).disabled = (val == 1);
-    document.getElementById(`exportMore`).disabled = (val == 1);
+    document.getElementById('exportAlt').disabled = (val == 1);
+    document.getElementById('exportMore').disabled = (val == 1);
   }
   // Export using in memory data
-  document.getElementById('exportInMemory').addEventListener("click", function(){
+  document.getElementById('exportInMemory').addEventListener('click', function(){
     new ExportInMemory();
   });
 
   // On render/export
-  document.getElementById("spreadsheet_conf").addEventListener("submit", function(e){
+  document.getElementById('spreadsheet_conf').addEventListener('submit', function(e){
     e.preventDefault();
 
     // Get the list of levels selected
     var levelsToExport = [],
-        isMultimedia   = (typeof this.elements.export0 == "undefined" || this.elements.export0.disabled) ? 1 : 0,
+        isMultimedia   = (typeof this.elements.export0 == 'undefined' || this.elements.export0.disabled) ? 1 : 0,
         item           = this.elements[`export${isMultimedia}`],
         exportAlt      = !isMultimedia && this.elements.exportAlt.checked,
         exportMore     = !isMultimedia && this.elements.exportMore.checked;
 
     // Course with no level: retrieve level 1 (ex: /course/233943/livre-1001-phrases-pour-parler-allemand/)
-    if(item.type && item.type == "hidden") {
+    if(item.type && item.type == 'hidden') {
       levelsToExport.push({
           href : linkCourse,
           idx  : 1,
@@ -77,14 +77,14 @@ function bindSpreadsheetEvents() {
 
     // Render or export spreadsheet
     if(isMultimedia) {
-      if(document.activeElement.name == "export"){
+      if(document.activeElement.name == 'export'){
         new ExportMultimedia(linkCourse, idCourse, levelsToExport);
       } else {
         new SpreadSheetMultimedia(linkCourse, idCourse, levelsToExport);
       }
 
     } else {
-      if(document.activeElement.name == "export"){
+      if(document.activeElement.name == 'export'){
         new Export(linkCourse, idCourse, levelsToExport, exportAlt, exportMore);
       } else {
         new SpreadSheet(linkCourse, idCourse, levelsToExport, exportAlt, exportMore);
@@ -121,7 +121,7 @@ class SpreadSheet {
     this.cookies    = window.getCookies();
 
     // Display a loader
-    var container  = document.getElementById("spreadsheet"),
+    var container  = document.getElementById('spreadsheet'),
         loading    = this.createLoader(container);
 
     // Create the spreadsheet
@@ -153,7 +153,7 @@ class SpreadSheet {
         idx,
         asc: 1,
       }
-    };
+    }
     var sortDesc = !this.sort.asc;
 
     var sortValues = function(tr_a, tr_b) {
@@ -182,10 +182,10 @@ class SpreadSheet {
    * @return DOMElement
    */
   createLoader(container) {
-    var loading = document.createElement("div");
+    var loading = document.createElement('div');
 
-    loading.setAttribute("class", "loading-spinner");
-    container.innerHTML = "";
+    loading.setAttribute('class', 'loading-spinner');
+    container.innerHTML = '';
     container.appendChild(loading);
 
     document.getElementById('exportInMemory').style.display = 'none';
@@ -197,7 +197,7 @@ class SpreadSheet {
    * @return DOMElement
    */
   createBody(container) {
-    var table = document.createElement("table");
+    var table = document.createElement('table');
     container.appendChild(table);
 
     table.innerHTML = `<thead><tr>
@@ -220,7 +220,7 @@ class SpreadSheet {
         ${window.I18N['export_column_score']}
         <button class="sort" type="button">⬍</button>
       </th>
-      ${this.exportMore ? `<th class="item-more" data-key="export_column_more">${window.I18N['export_column_more']}</th>` : ``}
+      ${this.exportMore ? `<th class="item-more" data-key="export_column_more">${window.I18N['export_column_more']}</th>` : ''}
       </tr></thead>
       <tbody></tbody>`;
 
@@ -300,23 +300,23 @@ class SpreadSheet {
    */
   createRow(level, j, data, score) {
     var tr   = document.createElement('tr'),
-        html = "";
+        html = '';
 
     html  = `<td class="lvl-idx num"><a href="${level.href}">${level.idx}</a></td>`;
-    html += `<td class="item-idx num" data-value=${level.idx.padStart(4, "0") + '-' + j.toString().padStart(4, "0")}>${j+1}</td>`;
+    html += `<td class="item-idx num" data-value=${level.idx.padStart(4, '0') + '-' + j.toString().padStart(4, '0')}>${j+1}</td>`;
     html += `<td class="item-label">${this.getValue(data.item)}</td>`;
     html += `<td class="item-definition">${this.getValue(data.definition)}</td>`;
     html += this.getScore(score);
 
     if(this.exportMore) {
-      html += `<td class="item-more">`;
+      html += '<td class="item-more">';
       if (data.audio) {
         html += [data.audio].map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
       }
       html += data.visible_info.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
       html += data.hidden_info.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> ${this.getValue(it, false)}</div>`;}).join('');
       html += data.attributes.map(it => {this.addExtraHeader(it.label); return `<div class="more"><span class="highlight">${it.label}</span> <span>${escapeHTML(it.value)}</span></div>`;}).join('');
-      html += `</td>`;
+      html += '</td>';
     }
     tr.innerHTML = html;
     this.body.appendChild(tr);
@@ -342,55 +342,55 @@ class SpreadSheet {
    * @return string
    */
   getValue(item, checkAlt=true) {
-    var txt = "";
+    var txt = '';
 
     switch(item.kind) {
-      case "text" :
+      case 'text' :
         txt = `<span>${escapeHTML(item.value)}</span>`;
         if(checkAlt && this.exportAlt) {
           for(let i=0; i<item.alternatives.length; i++) {
-            txt += `<div class="alt">`;
+            txt += '<div class="alt">';
             txt += `<span>${escapeHTML(item.alternatives[i])}</span>`;
-            txt += `</div>`;
+            txt += '</div>';
           }
         }
         break;
 
-      case "image":
+      case 'image':
         txt = `<img src=${item.value[0]} class="text-image" />`;
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
-            txt += `<div class="alt">`;
+            txt += '<div class="alt">';
             txt += `<img src=${item.value[i]} class="text-image" />`;
-            txt += `</div>`;
+            txt += '</div>';
           }
         }
         break;
 
-      case "audio":
+      case 'audio':
         txt = `<audio src=${item.value[0].normal} controls></audio>`;
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
-            txt += `<div class="alt">`;
+            txt += '<div class="alt">';
             txt += `<audio src=${item.value[i].normal} controls></audio>`;
-            txt += `</div>`;
+            txt += '</div>';
           }
         }
         break;
 
-      case "video":
+      case 'video':
         txt = `<video src=${item.value[0]} controls>Your browser does not support the video tag.</video>`;
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
-            txt += `<div class="alt">`;
+            txt += '<div class="alt">';
             txt += `<video src=${item.value[i]} controls>Your browser does not support the video tag.</video>`;
-            txt += `</div>`;
+            txt += '</div>';
           }
         }
         break;
 
       default:
-        return "";
+        return '';
     }
     return txt;
   }
@@ -411,12 +411,12 @@ class SpreadSheet {
       className   = 'ignored';
     } else {
       successRate = parseInt(score.correct / score.attempts * 100) + '%';
-      className   = (successRate == 100 ? "never-missed"
-                     : (successRate < 20 ? "often-missed"
-                        : (successRate > 80 ? "rarely-missed" : "sometimes-missed")));
+      className   = (successRate == 100 ? 'never-missed'
+                     : (successRate < 20 ? 'often-missed'
+                        : (successRate > 80 ? 'rarely-missed' : 'sometimes-missed')));
     }
-    return `<td class="score left num ${className}" title="${successRate}" data-value="${successRate}">${this.truncateNum(""+score.correct)}</td>
-            <td class="score right num ${className}" title="${successRate}" data-value="${successRate}">${this.truncateNum(""+score.attempts)}</td>`;
+    return `<td class="score left num ${className}" title="${successRate}" data-value="${successRate}">${this.truncateNum(''+score.correct)}</td>
+            <td class="score right num ${className}" title="${successRate}" data-value="${successRate}">${this.truncateNum(''+score.attempts)}</td>`;
   }
 
   /**
@@ -494,7 +494,7 @@ class SpreadSheetMultimedia {
     this.levels    = levels;
 
     // Display a loader
-    var container = document.getElementById("spreadsheet"),
+    var container = document.getElementById('spreadsheet'),
         loading   = this.createLoader(container);
 
     // Create the spreadsheet
@@ -508,10 +508,10 @@ class SpreadSheetMultimedia {
    * @return DOMElement
    */
   createLoader(container) {
-    var loading = document.createElement("div");
+    var loading = document.createElement('div');
 
-    loading.setAttribute("class", "loading-spinner");
-    container.innerHTML = "";
+    loading.setAttribute('class', 'loading-spinner');
+    container.innerHTML = '';
     container.appendChild(loading);
 
     document.getElementById('exportInMemory').style.display = 'none';
@@ -523,7 +523,7 @@ class SpreadSheetMultimedia {
    * @return DOMElement
    */
   createBody(container) {
-    var table = document.createElement("table");
+    var table = document.createElement('table');
     container.appendChild(table);
 
     table.innerHTML = `<thead><tr>
@@ -546,7 +546,7 @@ class SpreadSheetMultimedia {
       let level = this.levels[i];
 
       await fetch(this.getUrl(level.idx), {
-        credentials: "same-origin"
+        credentials: 'same-origin'
       })
       .then((response) => response.text())
       .then((data) => {
@@ -587,7 +587,7 @@ class SpreadSheetMultimedia {
    */
   createRow(level, data) {
     var tr   = document.createElement('tr'),
-        html = "";
+        html = '';
 
     html  = `<td class="lvl-idx num"><a href="${level.href}">${level.idx}</a></td>`;
     html += `<td class="item-label">
@@ -652,8 +652,8 @@ class Export extends SpreadSheet {
    * @return DOMElement
    */
   createLoader(container) {
-    var loading = document.createElement("div");
-    loading.setAttribute("class", "loading-spinner");
+    var loading = document.createElement('div');
+    loading.setAttribute('class', 'loading-spinner');
 
     if(container.children.length) {
       container.insertBefore(loading, container.firstElementChild);
@@ -729,7 +729,7 @@ class Export extends SpreadSheet {
         this.headers[it.label] = k;
       }
 
-      if(typeof it.kind != "undefined") {
+      if(typeof it.kind != 'undefined') {
         arr[k] = this.getValue(it, false);
       } else {
         arr[k] = escapeCSV(it.value);
@@ -747,7 +747,7 @@ class Export extends SpreadSheet {
     var txt;
 
     switch(item.kind) {
-      case "text" :
+      case 'text' :
         txt = item.value;
         if(checkAlt && this.exportAlt) {
           for(let i=0; i<item.alternatives.length; i++) {
@@ -756,7 +756,7 @@ class Export extends SpreadSheet {
         }
         break;
 
-      case "image":
+      case 'image':
         txt = item.value[0];
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
@@ -765,7 +765,7 @@ class Export extends SpreadSheet {
         }
         break;
 
-      case "audio":
+      case 'audio':
         txt = item.value[0].normal;
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
@@ -774,7 +774,7 @@ class Export extends SpreadSheet {
         }
         break;
 
-      case "video":
+      case 'video':
         txt = item.value[0];
         if(checkAlt && this.exportAlt) {
           for(let i=1; i<item.value.length; i++) {
@@ -784,7 +784,7 @@ class Export extends SpreadSheet {
         break;
 
       default:
-        return "";
+        return '';
     }
     return escapeCSV(txt);
   }
@@ -842,8 +842,8 @@ class ExportMultimedia extends SpreadSheetMultimedia {
    * @return DOMElement
    */
   createLoader(container) {
-    var loading = document.createElement("div");
-    loading.setAttribute("class", "loading-spinner");
+    var loading = document.createElement('div');
+    loading.setAttribute('class', 'loading-spinner');
 
     if(container.children.length) {
       container.insertBefore(loading, container.firstElementChild);
@@ -1035,7 +1035,7 @@ class ExportInMemory {
    * @return string
    */
   getValue(node, siblings=false) {
-    if(["IMG", "AUDIO", "VIDEO"].indexOf(node.nodeName) != -1) {
+    if(['IMG', 'AUDIO', 'VIDEO'].indexOf(node.nodeName) != -1) {
       var links = Array.from(node.parentNode.querySelectorAll(node.nodeName))
                        .map(node => node.getAttribute('src'));
       return links.join('\n');
@@ -1057,8 +1057,8 @@ class ExportInMemory {
  * @return txt
  */
 function escapeHTML(txt) {
-  if(typeof txt != "string") {
-    return "";
+  if(typeof txt != 'string') {
+    return '';
   }
   return txt.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -1068,8 +1068,8 @@ function escapeHTML(txt) {
  * Surround with quotes and escape quotes inside text
  */
 function escapeCSV(txt) {
-  if(typeof txt != "string") {
-    return "";
+  if(typeof txt != 'string') {
+    return '';
   }
   return '"' + txt.replace(/"/g, '""') + '"';
 }
