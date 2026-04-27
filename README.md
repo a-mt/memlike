@@ -102,3 +102,12 @@ pip install ruff
 ruff format
 ruff check --fix
 ```
+
+## Pre-commit
+
+```
+pip install pre-commit
+pre-commit install --config .pre-commit-config-2.yaml
+
+pre-commit run build_date --config .pre-commit-config-2.yaml --all-files
+```
