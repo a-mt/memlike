@@ -761,7 +761,7 @@ const GameScreenBuilder = {
       var categoryKeyboard = new Set(category.keyboard.split(''));
 
       var newLetters = randomize(Array.from(categoryKeyboard.difference(keyboard)));
-      newLetters.slice(0, 5).forEach((letter) => {
+      newLetters.slice(0, 5 - keyboard.size).forEach((letter) => {
         keyboard.add(letter);
       });
     }
@@ -2846,13 +2846,18 @@ function sanitizeTyping(text, strict) {
 
   // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
   if(!strict) {
-    text = text.replace(/\(.*?\)/g, '')
-               .replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), ' ') // punctuation, symbol
+    text = text.replace(/\(.*?\)/g, '');
+
+    if (String.prototype.unidecode) {
+      text = text.unidecode();
+    }
+    text = text.replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), ' ') // punctuation, symbol
                .replace(/[-Ù‹Ù›]+/g, ' ')
                .replace(/\s+/g, ' ');
   }
   return text.trim();
 }
+
 
 //+--------------------------------------------------------
 //| HIGHLIGHT TEXT DIFF
