@@ -110,10 +110,12 @@ var audioPlayer = window.audioPlayer = {
   },
 
   // Play the target (this) audio element
+  // force: play the element even if it is already playing
   play: function(e, force) {
-    e.preventDefault();
-    e.stopPropagation();
-
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     let audioBtn = this; // the .audio-player element (button/a)
     let audioElement = this; // the audio element (if it exists)
 
@@ -463,7 +465,7 @@ var TTS = window.TTS = {
     'yo': 'Yoruba',
     'zu': 'Zulu'
   },
-  get_audio(text, lang) {
+  getAudioURL(text, lang) {
     if(!TTS.langs[lang] || text.length >= 200) {
       return;
     }

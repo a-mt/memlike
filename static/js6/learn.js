@@ -21,12 +21,12 @@ $(document).ready(function(){
   Object.freeze(window.MEMLIKE.course);
   Object.freeze(window.MEMLIKE.garden);
 
-  window.MEMLIKE.session_settings = {
-    'disable_multimedia': !!localStorage.getItem('session_settings_disable_multimedia'),
-    'disable_tapping': !!localStorage.getItem('session_settings_disable_tapping'),
-    'disable_typing': !!localStorage.getItem('session_settings_disable_typing'),
-    'save_progress': !!window.MEMLIKE.garden.session_settings_save_progress,
-    'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
+  window.MEMLIKE.sessionSettings = {
+    'disable_multimedia': !!localStorage.getItem('sessionSettings_disable_multimedia'),
+    'disable_tapping': !!localStorage.getItem('sessionSettings_disable_tapping'),
+    'disable_typing': !!localStorage.getItem('sessionSettings_disable_typing'),
+    'save_progress': !!window.MEMLIKE.garden.sessionSettings_save_progress,
+    'reverse_prompt_and_answer': !!window.MEMLIKE.garden.sessionSettings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
   };
   render(<Learn
@@ -121,28 +121,30 @@ class LearnSettingsModal extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {...window.MEMLIKE.session_settings};
+    this.state = {...window.MEMLIKE.sessionSettings};
 
-    this.closeModal = this.closeModal.bind(this);
-    this.updateSettings = this.updateSettings.bind(this);
+    this.onCloseModal = this.onCloseModal.bind(this);
+    this.onUpdateSettings = this.onUpdateSettings.bind(this);
   }
-  closeModal() {
+
+  onCloseModal() {
     window.modal.close();
   }
-  updateSettings() {
-    Object.assign(window.MEMLIKE.session_settings, this.state);
-    localStorage.setItem('session_settings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
-    localStorage.setItem('session_settings_disable_tapping', this.state.disable_tapping ? '1' : '');
-    localStorage.setItem('session_settings_disable_typing', this.state.disable_typing ? '1' : '');
-    localStorage.setItem('session_settings_id', this.state.session_id || '');
 
-    this.closeModal();
+  onUpdateSettings() {
+    Object.assign(window.MEMLIKE.sessionSettings, this.state);
+    localStorage.setItem('sessionSettings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
+    localStorage.setItem('sessionSettings_disable_tapping', this.state.disable_tapping ? '1' : '');
+    localStorage.setItem('sessionSettings_disable_typing', this.state.disable_typing ? '1' : '');
+    localStorage.setItem('sessionSettings_id', this.state.session_id || '');
+
+    this.onCloseModal();
     window.GlobalEventEmitter.dispatch('update-settings', this.state);
   }
 
-  handleChange(id) {
+  handleChange(key) {
     this.setState({
-      [id]: !this.state[id],
+      [key]: !this.state[key],
     });
   }
 
@@ -201,8 +203,8 @@ class LearnSettingsModal extends Component {
         </div>
       </div>
       <div className="btn-group">
-        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
-        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+        <button className="btn" onClick={this.onCloseModal}>{window.I18N['cancel']}</button>
+        <button className="btn green" onClick={this.onUpdateSettings}>{window.I18N['save']}</button>
       </div>
     </div>
   }
@@ -212,9 +214,8 @@ class LearnSettingsBtn extends Component {
   constructor(props) {
     super(props);
 
-    this.timerIsRunning = false;
     this.show = false;
-    this.toggleSettings = this.toggleSettings.bind(this);
+    this.onToggleSettings = this.onToggleSettings.bind(this);
     this.onCloseModal = this.onCloseModal.bind(this);
   }
   onCloseModal() {
@@ -226,17 +227,19 @@ class LearnSettingsBtn extends Component {
     this.show = false;
     Timer && Timer.continue();
   }
-  toggleSettings() {
+  onToggleSettings() {
     this.show = !this.show;
 
     if(!this.show) {
       return;
     }
     Timer && Timer.pause();
+
+    // Render LearnSettingsModal and put it in our modal
     var div = window.modal.getContainer().get(0).querySelector('.modal');
     div.innerHTML = '';
-
     render(<LearnSettingsModal />, div);
+
     window.modal.reopen();
     window.modal.onclose('learn-settings', this.onCloseModal);
   }
@@ -245,7 +248,7 @@ class LearnSettingsBtn extends Component {
       return null;
     }
     return (
-      <button className="settings-btn" type="button" onClick={this.toggleSettings} title={window.I18N.learn_settings}>
+      <button className="settings-btn" type="button" onClick={this.onToggleSettings} title={window.I18N.learn_settings}>
         <span className="ico ico-settings ico-l ico-grey"></span>
       </button>
     );
@@ -484,7 +487,7 @@ const GameDataBuilder = {
    * @param dict data
    * @return dict
    */
-  formatData: function(sessionType, data) {
+  buildData: function(sessionType, data) {
 
     // Build screensTemplateMap (data.screensTemplateMap[learnableID][tpl][0])
     const screensTemplateMap = {};
@@ -535,10 +538,10 @@ const GameDataBuilder = {
  * (inverted prompt/answer)
  */
 const GameScreenBuilder = {
-  definitions: null,
+  cachedDefinitions: null,
 
   reset: function() {
-    GameScreenBuilder.definitions = null;
+    GameScreenBuilder.cachedDefinitions = null;
   },
 
   getDefinitions: function() {
@@ -625,8 +628,8 @@ const GameScreenBuilder = {
   },
 
   getChoices: function(kind, correctChoices) {
-    if (!GameScreenBuilder.definitions) {
-      GameScreenBuilder.definitions = GameScreenBuilder.getDefinitions();
+    if (!GameScreenBuilder.cachedDefinitions) {
+      GameScreenBuilder.cachedDefinitions = GameScreenBuilder.getDefinitions();
     }
     let choices = [];
 
@@ -773,11 +776,11 @@ const GameScreenBuilder = {
 
 const GameProgressHandler = {
   events: [],
-  is_saving: false,
+  isSaving: false,
 
   reset: function() {
     GameProgressHandler.events = [];
-    GameProgressHandler.is_saving = false;
+    GameProgressHandler.isSaving = false;
     $('#learn-settings-btn').removeClass('loading-spinner-before');
   },
 
@@ -971,8 +974,8 @@ const GameProgressHandler = {
    * Create a new progress object from the saved on
    * (send to memrise, will be used to trigger reviews)
    */
-  getProgress: function(learnableID, savedProgress, score) {
-    var progress = {
+  copyProgress: function(learnableID, savedProgress) {
+    return {
         learnable_id  : '' + learnableID,
         starred       : savedProgress.starred || false,
         ignored       : savedProgress.ignored || false,
@@ -989,14 +992,19 @@ const GameProgressHandler = {
         interval      : savedProgress.interval || null,
         growth_level  : savedProgress.growth_level || 0,
     };
+  },
+
+  updateProgress: function(progress, score) {
 
     // Update the progress
     // progress.is_difficult = this.isDifficult(progress);
     progress.growth_level = score == 1 ? GameProgressHandler.getNextGrowthLevel(progress) : progress.growth_level;
 
+    // interval, next_date
     Object.assign(progress, GameProgressHandler.getNextIntervalDate(progress, progress.last_date, score));
+
+    // attempts, correct, current_streak, total_streak
     Object.assign(progress, GameProgressHandler.getNextStreak(progress, score));
-    return progress;
   },
 
   // Send progress to memrise
@@ -1044,7 +1052,7 @@ const GameProgressHandler = {
   },
 
   registerSessionEnd(data) {
-    GameProgressHandler.is_saving = true;
+    GameProgressHandler.isSaving = true;
     $('#learn-settings-btn').addClass('loading-spinner-before');
 
     var events = [...GameProgressHandler.events];
@@ -1076,7 +1084,7 @@ const GameProgressHandler = {
     // Send each request one after the other
     function executeRequestsQueue() {
       if(!requests.length) {
-        GameProgressHandler.is_saving = false;
+        GameProgressHandler.isSaving = false;
         $('#learn-settings-btn').removeClass('loading-spinner-before');
         return;
       }
@@ -1093,13 +1101,17 @@ const GameProgressHandler = {
 //+--------------------------------------------------------
 
 class Learn extends Component {
-  DISPLAY_DEBUG_SCREEN = false;
+  DISPLAY_CHOOSE_SCREEN = false;
 
-  session_settings = {};
-  levels_index = [];
+  // Values that are outside of the rendering logic
+  sessionSettings = {};
 
-  level_data = false;
-  level_summary_data = false;
+  levelsIdList = [];
+  levelsLastId = 0;
+  useLevels = false; //!review entire course
+
+  levelData = false;
+  metaScreenSummaryData = false;
 
   //+--------------------------------------------------------
   //| LIFECYCLE
@@ -1109,37 +1121,39 @@ class Learn extends Component {
   constructor(props) {
     super(props);
 
+    if (window.$_GET && window.$_GET.display_debug_screen) {
+        this.DISPLAY_CHOOSE_SCREEN = true;
+    }
+
     const state = {
-      level_i: 0,
-      level_n: 0,
-      level_type: 1,
+      levelId: 0,
+      levelType: 1,
 
       error: false,
-      meta_screen: false,
+      metaScreen: false,
       screen_i: 0,
       screen_n: 0,
 
       points: 0,
       hearts: 3,
-      use_course_and_level_index: false,
     };
-    if (window.$_GET && window.$_GET.display_debug_screen) {
-        this.DISPLAY_DEBUG_SCREEN = true;
-    }
 
     // We're reviewing the entire course, rather than a specific level?
-    if(typeof this.props.levels_index == 'string') { // all
-      this.levels_index   = this.props.levels_index.split(',').map((i) => parseInt(i));
+    if(typeof this.props.levelsIdList == 'string') { // all
+      this.levelsIdList = this.props.levels_index.split(',').map((i) => parseInt(i));
+      this.levelsLastId = this.levelsIdList[this.levelsIdList.length-1] || 1;
+      this.useLevels = this.props.session_type == 'preview';  // request course | course_id_and_level_index
 
-      state.level_i = this.levels_index[0] || 1;
-      state.level_n = this.levels_index[this.levels_index.length-1] || 1;
-      state.use_course_and_level_index = !(this.props.session_type != 'preview');  // request course | course_id_and_level_index
+      state.levelId = this.levelsIdList[0] || 1;
+
     } else {
-      state.level_i = parseInt(this.props.levels_index);
-      state.level_n = parseInt(this.props.levels_index);
-      state.use_course_and_level_index = true;
+      this.levelsIdList = [parseInt(this.props.levels_index)];
+      this.levelsLastId = this.levelsIdList[0] || 1;
+      this.useLevels = true;
+
+      state.levelId = this.levelsLastId;
     }
-    this.session_settings   = {...window.MEMLIKE.session_settings};
+    this.sessionSettings = {...window.MEMLIKE.sessionSettings};
     this.state = state;
 
     this.setChoices = this.setChoices.bind(this);
@@ -1149,13 +1163,14 @@ class Learn extends Component {
   onSessionSettingsUpdated(settings) {
     console.log('Session settings', settings);
 
-    Object.assign(this.session_settings, settings);
+    Object.assign(this.sessionSettings, settings);
   }
 
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
     window.GlobalEventEmitter.subscribe('update-settings', this.onSessionSettingsUpdated);
 
+    // When an image loads: remove the "loading" class & define its height
     document.body.addEventListener('load', function(e){
       if(e.target.tagName == 'IMG' && e.target.classList.contains('loading')){
         e.target.classList.remove('loading');
@@ -1163,11 +1178,23 @@ class Learn extends Component {
       }
     }, true); // <-- useCapture
 
+    // Retrieve data
+    this.fetchData(this.state.levelId, this.bindMainEvents.bind(this));
+  }
+
+  bindMainEvents() {
+    if(!this.props.preview_thing_id) {
+      window.onbeforeunload = this.warnbeforeunload.bind(this);
+    }
+
+    // Listen to keyboard inputs: next screen, multiple choice
+    $(window).on('keyup', this.keyup.bind(this));
+
     // Submit
     $('main').on('click', '.submit', function(e){
       e.target.classList.add('disabled');
 
-      this.handle_submit(e);
+      this.onSubmit(e);
     }.bind(this));
 
     // Typing
@@ -1193,36 +1220,25 @@ class Learn extends Component {
       }
     });
 
-    // Multiple choice
+    // Multiple choice (handle the click the same way as using an access key)
     $('main').on('click', '.choice-box', function(e){
-      this.multiple_choice(e.currentTarget.getAttribute('accesskey'));
+      this.selectTargetMultipleChoice(e.currentTarget);
     }.bind(this));
 
+    // Hovering on audio: play audio
     $('main').on('mouseover focus', '.choice-box.audio', function(e){
       window.audioPlayer && window.audioPlayer.play.call(this.querySelector('audio'), e, true);
 
     }).on('mouseleave', '.choice-box.audio', function(){
       window.audioPlayer && window.audioPlayer.pause.call(this.querySelector('audio'));
     });
-
-    // Retrieve data
-    this.getData(this.state.level_i, function(data){
-      if(!this.props.preview_thing_id) {
-        window.onbeforeunload = this.warnbeforeunload.bind(this);
-      }
-
-      // Listen to keyboard inputs: next screen, multiple choice
-      $(window).on('keyup', this.keyup.bind(this));
-    }.bind(this));
   }
 
   // Every time screen gets updated
   componentDidUpdate(prevProps, prevState) {
-    if(!this.init) {
-      this.init = true;
-    }
     $('input[autofocus]').focus();
 
+    // Prevent the user from submitting hastily
     var $submit = $('.btn.submit');
     $submit.addClass('disabled');
 
@@ -1234,22 +1250,22 @@ class Learn extends Component {
     window.imgZoom     && window.imgZoom.reset();
     window.audioPlayer && window.audioPlayer.reset();
 
-    // Add text To Speech
+    // Add text To Speech (TODO: clean that)
     let ttsAdded = false;
     if(window.TTS) {
       $('.text[lang].tts').each(function(){
-        var src = window.TTS.get_audio(this.innerText, this.getAttribute('lang'));
+        var url = window.TTS.getAudioURL(this.innerText, this.getAttribute('lang'));
 
-        if(src) {
+        if(url) {
           var $audio = $('audio', this);
           if($audio.length) {
-            $audio.attr('src', src);
+            $audio.attr('src', url);
 
           } else {
             var k = Date.now();
             var elem = document.createElement('span');
             elem.innerHTML = `
-              <audio id="audio-${k}" src=${src}></audio>
+              <audio id="audio-${k}" src=${url}></audio>
               <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.I18N.play_audio}">
                 <i class="ico ico-l ico-audio"></i>
               </button>`;
@@ -1267,11 +1283,11 @@ class Learn extends Component {
       ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
     );
 
-    // Update level title
-    if(this.state.use_course_and_level_index) {
-      if(!prevState.level_i || prevState.level_i != this.state.level_i) {
+    // Update level title (outside of react scope)
+    if(this.useLevels) {
+      if(!prevState.levelId || prevState.levelId != this.state.levelId) {
         var name = '';
-        var idx = this.state.level_i;
+        var idx = this.state.levelId;
 
         if (idx < 1) {
           idx += 1;
@@ -1285,19 +1301,19 @@ class Learn extends Component {
     }
 
     // Start the timer
-    if(this.state.meta_screen != 'correction') {
+    if(this.state.metaScreen != 'correction') {
       if(this.props.session_type == 'speed_review'){
-        Timer.start(this.time_over.bind(this));
+        Timer.start(this.submitSkip.bind(this));
       }
     }
 
     // Debug screen
-    if (this.DISPLAY_DEBUG_SCREEN) {
+    if (this.DISPLAY_CHOOSE_SCREEN) {
       $('#debug-screen').on('click', 'li', function(e){
         if(e.target.classList.contains('disabled')) return;
 
         this.setState({
-          debug_screen: e.target.innerHTML == 'default' ? false : e.target.innerHTML
+          forceScreenTemplate: e.target.innerHTML == 'default' ? false : e.target.innerHTML
         });
       }.bind(this));
     }
@@ -1306,30 +1322,30 @@ class Learn extends Component {
   /**
    * Retrieve the current level data
    */
-  getData(level_i, callback) {
-    const session_type = this.props.session_type;
+  fetchData(levelId, callback) {
+    const sessionType = this.props.session_type;
 
     // Retrieve level type
-    var level_type = 1;
-    if (level_i == 0) {
-      level_i = 1;
+    var levelType = 1;
+    if (levelId == 0) {
+      levelId = 1;
     }
-    if (level_i == 1 && !this.props.course.levels.length) {
+    if (levelId == 1 && !this.props.course.levels.length) {
       // pass
-    } else if (!(level_i in this.props.course.levels)) {
+    } else if (!(levelId in this.props.course.levels)) {
       console.error('Level data cannot be retrieved');
       return this.setState({error: 1});
     } else {
-      level_type = this.props.course.levels[level_i].type;
+      levelType = this.props.course.levels[levelId].type;
     }
 
     var url = '/ajax' + this.props.course.url;
-    if(!this.state.use_course_and_level_index) {
-      url += 'all/' + session_type;
-    } else if(level_type == 2) {
-      url += level_i + '/media';
+    if(!this.useLevels) {
+      url += 'all/' + sessionType;
+    } else if(levelType == 2) {
+      url += levelId + '/media';
     } else {
-      url += level_i + '/' + session_type;
+      url += levelId + '/' + sessionType;
     }
 
     $.ajax({
@@ -1338,11 +1354,11 @@ class Learn extends Component {
       success: function(data){
         callback && callback(data);
 
-        let gameData = GameDataBuilder.formatData(session_type, data);
+        let gameData = GameDataBuilder.buildData(sessionType, data);
         let error = false;
 
         if (!gameData.screens.length) {
-          switch (session_type) {
+          switch (sessionType) {
             case 'learn':
               error = window.I18N.learn_err_empty_learn;
               break;
@@ -1361,19 +1377,18 @@ class Learn extends Component {
           }
         }
 
-        this.level_data = gameData;
-        this.level_summary_data = {
+        this.levelData = gameData;
+        this.metaScreenSummaryData = {
           nb_scheduled_correct: 0,
           nb_scheduled: 0,
-          speed_bonus: 0,
           learnables: {},
         };
 
         this.setState({
-          meta_screen : false,
+          metaScreen : false,
           error,
-          level_i,
-          level_type,
+          levelId,
+          levelType,
           points   : 0,
           screen_i : 0,
           screen_n : (gameData.screens ? gameData.screens.length : 1),
@@ -1397,9 +1412,9 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
-    if(GameProgressHandler.is_saving) {
+    if(GameProgressHandler.isSaving) {
       // pass
-    } else if(this.state.meta_screen == 'summary' || this.state.meta_screen == 'lost' || this.state.error) {
+    } else if(this.state.metaScreen == 'summary' || this.state.metaScreen == 'lost' || this.state.error) {
       return;
     }
     var msg = 'Your changes will be lost.';
@@ -1415,66 +1430,66 @@ class Learn extends Component {
   keyup(e) {
     var key = e.which;
 
-    // Press enter
+    // Press enter (note that if)
     if(key == 13) {
+
+      // On the presentation screen: pressing enter on a button = trigger the button
+      if (!this.expectedChoiceKind) {
+        if (e.target.nodeName == 'BUTTON') {
+          return;
+        }
+        if(e.target.classList.contains('button')) {
+          if(!e.target.classList.contains('disabled')) {
+            e.target.click();
+          }
+          return;
+        }
+      }
       e.preventDefault();
       e.stopPropagation();
 
-      if(e.target.classList.contains('button') || e.target.classList.contains('choice-box')) {
-        if(!e.target.classList.contains('disabled')) {
-          e.target.click();
-        }
-        return;
-      }
-      return this.handle_submit(e);
+      // Submit the form
+      return this.onSubmit(e);
     }
 
-    // Multiplice choice: press a number
-    if(this.expectChoice == 'numeric' && key > 96 && key <= 105) {
-      var char = parseInt(fromKeyCode(key));
+    // Select a component through its acceskey
+    if(this.expectedChoiceKind == 'accesskey' && key > 96 && key <= 105) {
+      var accesskey = fromKeyCode(key);
 
-      if(char > this.choices.length) {
+      var btn = document.getElementById(`choice-${accesskey}`); // .choice-box[accesskey="${char}"]
+      if (!btn) {
         return;
       }
-      if (this.choices[0].attributes.answerType == 'audio') {
-        var btn = document.getElementById(`choice-${char}`);
-
-        if (btn) {
-          [...btn.parentNode.children].forEach((node) => {
-            node == btn ? node.classList.add('active') : node.classList.remove('active')
-          });
-          btn.focus();
-          window.audioPlayer && window.audioPlayer.play.call(btn.querySelector('audio'), e, true);
-        }
-        return;
-      }
-      this.multiple_choice(char);
+      this.selectTargetMultipleChoice(btn);
     }
   }
 
-  handle_submit(e) {
+  onSubmit(e) {
+    Timer.stop();
 
     // Presentation
-    if(!this.expectChoice) {
-      Timer.stop();
+    if(!this.expectedChoiceKind) {
       this.getNext();
 
     // Typing
-    } else if(this.expectChoice == 'text') {
-      this.choice($('.typing input').val() || '');
+    } else if(this.expectedChoiceKind == 'text') {
+      this.submitText($('.typing input').val() || '');
 
     // Tapping
-    } else if(this.expectChoice == 'tapping') {
+    } else if(this.expectedChoiceKind == 'tapping') {
       var chosen = [];
       $('.tapping .input button').each(function(){
         chosen.push(this.innerHTML);
       });
-      this.tapping_choice(chosen);
+      this.submitTapping(chosen);
 
     // Numeric
+    } else if(this.expectedChoiceKind == 'accesskey') {
+      this.submitMultipleChoice($('.choice-box:focus').attr('accesskey') || '');
+
     } else {
-      console.info('Skipping', this.expectChoice);
-      this.skip_choice();
+      console.info('Skipping', this.expectedChoiceKind);
+      this.submitSkip();
     }
   }
 
@@ -1482,33 +1497,7 @@ class Learn extends Component {
   //| GAME COMPUTATIONS
   //+--------------------------------------------------------
 
-  // Multiple choice: User chooses a answer
-  multiple_choice(i) {
-    if(this.state.meta_screen == 'lost') {
-      return;
-    }
-    Timer.stop();
-
-    // Check if we got the right answer
-    var idx    = parseInt(i)-1,
-        choice = idx < this.choices.length ? this.choices[idx].attributes : '';
-
-    // getNormalPoints, getSpeedPoints
-    this.choice_feedback({
-      value : choice.value,
-      score : choice.isValid ? 1 : 0,
-      kind  : choice.answerType,
-      i     : idx
-    });
-  }
-
-  skip_choice() {
-    Timer.stop();
-
-    this.time_over();
-  }
-
-  time_over() {
+  submitSkip() {
     this.choice_feedback({
       value : '',
       score : 0,
@@ -1517,22 +1506,23 @@ class Learn extends Component {
   }
 
   // Text entry: User submit its answer
-  choice(givenAnswer) {
+  submitText(givenAnswer) {
     givenAnswer = givenAnswer.trim();
 
     var sanitizedGivenAnswer = sanitizeTyping(givenAnswer, this.is_strict).toLowerCase();
-
     var score   = 0,
         correctAnswer = '';
 
     // Text input
-    for(let i=0; i<this.choices.length; i++) {
-      var choice = sanitizeTyping(this.choices[i], this.is_strict).toLowerCase().trim(),
-          s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
+    if (givenAnswer) {
+      for(let i=0; i<this.choices.length; i++) {
+        var choice = sanitizeTyping(this.choices[i], this.is_strict).toLowerCase().trim(),
+            s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
 
-      if(s && s > score) {
-        score = s;
-        correctAnswer = choice;
+        if(s && s > score) {
+          score = s;
+          correctAnswer = choice;
+        }
       }
     }
 
@@ -1546,7 +1536,7 @@ class Learn extends Component {
   }
 
   // Tapping: User order words
-  tapping_choice(entry) {
+  submitTapping(entry) {
     var isValid = 0;
     entry = entry.join(' ').trim();
 
@@ -1564,40 +1554,113 @@ class Learn extends Component {
     });
   }
 
-  // Answer has been submitted and checked: compute progress, points & give feedback
-  // input: {value,score,kind,...rest}
-  choice_feedback(input) {
+  // Multiple choice: User chooses a answer
+  submitMultipleChoice(accesskey) {
+    if (!accesskey) {
+      return this.submitSkip();
+    }
 
-    if(this.props.session_type == 'speed_review') {
-      Timer.stop(); // in case of submit without choice
-      this.show_correct(input);
+    // Retrieve the choice associated to the current number
+    var idx = parseInt(accesskey)-1;
+    if (isNaN(idx) || idx >= this.choices.length) {
+      return this.submitSkip();
     }
-    if(!this.level_data) {
-      return;
+    var choice = idx < this.choices.length ? this.choices[idx].attributes : '';
+
+    // Check if we got the right answer
+    this.choice_feedback({
+      value : choice.value,
+      score : choice.isValid ? 1 : 0,
+      kind  : choice.answerType,
+      i     : idx
+    });
+  }
+
+  updateSummary(learnableID, isCorrect) {
+
+    // Count right and wrong answers
+    this.metaScreenSummaryData.nb_scheduled += 1;
+    this.metaScreenSummaryData.nb_scheduled_correct += (isCorrect ? 1 : 0);
+
+    var learnablesSummary = this.metaScreenSummaryData.learnables;
+    if(!learnablesSummary[learnableID]) {
+      learnablesSummary[learnableID] = {
+        count: 0,
+        right: 0,
+        index: Object.keys(learnablesSummary).length,
+      };
     }
-    var screen = this.level_data.screens[this.state.screen_i];
-    if(!screen) {
-      return;
+    learnablesSummary[learnableID].count++;
+    if(isCorrect) {
+      learnablesSummary[learnableID].right++;
     }
-    var learnableID = screen.learnableID;
+  }
+
+  updatePoints(learnableID, input, timeSpent) {
+    var template = this.template;
 
     // Update the streak status and next review data
     // Values from this object are incremented each time this learnable is learned
     // and retrieved from the backend at the beginning of the learning session
-    var progress = GameProgressHandler.getProgress(
+    var progress = GameProgressHandler.copyProgress(
       learnableID,
-      this.level_data.progressMap[learnableID] || {},
+      this.levelData.progressMap[learnableID] || {},
+    );
+    GameProgressHandler.updateProgress(
+      progress,
       input.score,
     );
-    this.level_data.progressMap[learnableID] = progress;
+    this.levelData.progressMap[learnableID] = progress;
 
     // Update the earned points
-    var current_streak = progress.current_streak;
-    var isCorrect = input.score == 1;
+    var points = AwardPoints.getPoints(
+      this.props.session_type,
+      template,
+      timeSpent,
+      input.score,
+      progress.current_streak,
+    );
 
-    var hearts = this.state.hearts;
-    var time_spent = 0;
-    if (this.props.session_type == 'speed_review') {
+    // Values from this object are send to the backend for stats
+    // But don't have an impact for the next learning session
+    this.sessionSettings.save_progress && setTimeout(() => {
+      var event = {
+          learnable_id : learnableID,
+          box_template : template,
+          given_answer : input.value,
+          score        : input.score,
+          time_spent   : timeSpent,
+          points       : points,
+          bonus_points : 0,
+      };
+      Object.assign(event, progress);
+
+      GameProgressHandler.registerEvent(this.props.course.id, learnableID, event);
+    }, 0);
+
+    return points;
+  }
+
+  // Answer has been submitted and checked: compute progress, points & give feedback
+  // input: {value,score,kind,...rest}
+  choice_feedback(input) {
+    var isSpeedReview = this.props.session_type == 'speed_review';
+
+    // Show the correct answer
+    if(isSpeedReview) {
+      this.selectCorrectMultipleChoice(input);
+    }
+    var screen = this.levelData ? this.levelData.screens[this.state.screen_i] : null;
+    if(!screen) {
+      return;
+    }
+    var learnableID = screen.learnableID,
+        isCorrect   = input.score == 1,
+        time_spent  = 0,
+        hearts      = this.state.hearts;
+
+    // Update the hearts
+    if (isSpeedReview) {
       time_spent = Timer.getTime();
 
       if (!isCorrect) {
@@ -1605,67 +1668,30 @@ class Learn extends Component {
         $('.hearts-wrapper .heart.full').last().addClass('empty').removeClass('full');
       }
     }
-    var points = AwardPoints.getPoints(
-      this.props.session_type,
-      this.template,
-      time_spent,
-      input.score,
-      current_streak,
-    );
-
-    // Values from this object are send to the backend for stats
-    // But don't have an impact for the next learning session
-    var event = {
-        learnable_id : learnableID,
-        box_template : this.template,
-        given_answer : input.value,
-        score        : input.score,
-        time_spent   : time_spent,
-        points       : points,
-        bonus_points : 0,
-    };
-    this.session_settings.save_progress && GameProgressHandler.registerEvent(
-      this.props.course.id,
-      learnableID,
-      Object.assign(event, progress),
-    );
 
     // Count right and wrong answers
-    this.level_summary_data.nb_scheduled += 1;
-    this.level_summary_data.nb_scheduled_correct += (isCorrect ? 1 : 0);
+    this.updateSummary(learnableID, isCorrect);
 
-    var learnablesSummary = this.level_summary_data.learnables;
-    if(!learnablesSummary[learnableID]) {
-      learnablesSummary[learnableID] = {
-        count: 0,
-        right: 0,
-        pos: Object.keys(learnablesSummary).length,
-      };
-    }
-    learnablesSummary[learnableID].count++;
-    if(isCorrect) {
-      learnablesSummary[learnableID].right++;
-    }
+    // Count points & save progress
+    var points = this.updatePoints(learnableID, input, time_spent);
 
     // Display correction
-    if(this.props.session_type != 'speed_review') {
-      this.level_summary_data.speed_bonus += event.bonus_points;
-
+    if(!isSpeedReview) {
       return this.setState({
-        meta_screen: 'correction',
+        metaScreen: 'correction',
         correct: input,
-        debug_screen: false,
-        points: this.state.points + event.points,
+        forceScreenTemplate: false,
+        points: this.state.points + points,
       });
     }
 
     // Update hearts / overlay / classes
     var newState = {
       hearts,
-      points: this.state.points + event.points,
+      points: this.state.points + points,
     }
     if(hearts == 0) {
-      newState.meta_screen = 'lost';
+      newState.metaScreen = 'lost';
 
       // Show the overlay without updating the screen underneath
       Object.assign(this.state, newState);
@@ -1688,10 +1714,27 @@ class Learn extends Component {
     }
   }
 
-  show_correct(input) {
+  selectTargetMultipleChoice(target) {
+    console.log(target);
+    target.focus && target.focus();
+
+    //var $element = $(target).addClass('active');
+    //$element.siblings('.choice-box').removeClass('active');
+
+    let $audioElement = target.querySelector('audio');
+    if ($audioElement) {
+      window.audioPlayer && window.audioPlayer.play.call($audioElement, null, true);
+    }
+  }
+
+  selectCorrectMultipleChoice(input) {
+
+    // Update the class of the selected choice (accesskey-1)
     if('i' in input) {
       $('#choice-' + (input.i+1)).addClass(input.score == 1 ? 'correct' : 'incorrect');
     }
+
+    // Update the class of the correct choice
     if(input.score != 1) {
       for(var j=0; j<this.choices.length; j++) {
         if(this.choices[j].attributes.isValid) {
@@ -1704,7 +1747,7 @@ class Learn extends Component {
 
   // Display next screen
   getNext(newState) {
-    this.expectChoice = false;
+    this.expectedChoiceKind = false;
 
     newState = newState || {}
 
@@ -1712,15 +1755,15 @@ class Learn extends Component {
     if(this.state.screen_i + 1 < this.state.screen_n) {
       this.setState(Object.assign(newState, {
         screen_i: this.state.screen_i + 1,
-        meta_screen: false
+        metaScreen: false
       }));
 
     // After displaying the summary: display the next level or go back to the course
-    } else if(this.state.meta_screen == 'summary' || this.state.level_type == 2){
-      if(this.state.use_course_and_level_index && this.state.level_i < this.state.level_n) {
-        if(this.level_data) {
-          this.level_data = false;
-          this.getData(this.levels_index[this.levels_index.indexOf(this.state.level_i) + 1]);
+    } else if(this.state.metaScreen == 'summary' || this.state.levelType == 2){
+      if(this.useLevels && this.state.levelId < this.levelsLastId) {
+        if(this.levelData) {
+          this.levelData = false;
+          this.fetchData(this.levelsIdList[this.levelsIdList.indexOf(this.state.levelId) + 1]);
         }
       } else {
         this.state.error = 1; // prevent warning
@@ -1731,19 +1774,18 @@ class Learn extends Component {
     } else {
       var data = {
         session_points: this.state.points,
-        //session_bonus_points : this.level_summary_data.speed_bonus + computePoints_bonusForAccuracy(this.level_summary_data.nb_scheduled_correct / this.level_summary_data.nb_scheduled * 100, this.level_summary_data.nb_scheduled),
         session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
-        session_source_type: this.state.use_course_and_level_index ? 'course_id_and_level_index' : 'course',
+        session_source_type: this.useLevels ? 'course_id_and_level_index' : 'course',
         session_source_id: this.props.course.id,
       };
-      if (this.state.use_course_and_level_index) {
-        data.session_source_sub_index = this.state.level_i;
+      if (this.useLevels) {
+        data.session_source_sub_index = this.state.levelId;
       }
-      this.session_settings.save_progress && GameProgressHandler.registerSessionEnd(data);
+      this.sessionSettings.save_progress && GameProgressHandler.registerSessionEnd(data);
 
       this.setState(Object.assign(newState, {
         screen_i: this.state.screen_n,
-        meta_screen: 'summary'
+        metaScreen: 'summary'
       }), function(){
         window.imgZoom && window.imgZoom.reset();
       });
@@ -1755,16 +1797,16 @@ class Learn extends Component {
   //+--------------------------------------------------------
 
   resetChoices() {
-    this.expectChoice  = false;
-    this.choices       = false;
+    this.expectedChoiceKind = false;
+    this.choices = false;
   }
 
   setChoices(choices, type, is_strict) {
-    this.expectChoice = type; // numeric | text | tapping
-    this.choices      = choices;
+    this.expectedChoiceKind = type; // accesskey | text | tapping
+    this.choices = choices; // list of components if expectedChoiceKind == accesskey
 
  // values in parentheses and punctuation should match too?
-    this.is_strict    = typeof is_strict == 'undefined' ? 1 : is_strict;
+    this.is_strict = typeof is_strict == 'undefined' ? 1 : is_strict;
   }
 
   render() {
@@ -1781,35 +1823,37 @@ class Learn extends Component {
     }
 
     // Loading data
-    if(!this.state.meta_screen && !this.state.screen_n) {
+    if(!this.state.metaScreen && !this.state.screen_n) {
       return <div className="loading-spinner"></div>;
     }
 
     // Preview thing
     if(this.props.preview_thing_id) {
-      if(this.state.debug_screen) {
+
+      // Utils for devs: render the specific screen for the given thing
+      if(this.state.forceScreenTemplate) {
         return this.screen();
       } else {
         return <div>
-          {this.DISPLAY_DEBUG_SCREEN ? this.addBoxDebugMenu() : null}
+          {this.DISPLAY_CHOOSE_SCREEN ? this.addChooseScreenMenu() : null}
           {this.render_presentation(false)}
         </div>;
       }
     }
 
     // Media level
-    if(this.state.level_type == 2 && this.state.use_course_and_level_index) {
+    if(this.state.levelType == 2 && this.useLevels) {
       return this.markdown();
     }
 
     // Summary
-    if(this.state.meta_screen == 'summary') {
+    if(this.state.metaScreen == 'summary') {
       return <div>{this.addStats()}{this.screen()}</div>;
     }
 
     // Default
     return <div>
-      {this.DISPLAY_DEBUG_SCREEN && this.addBoxDebugMenu()}
+      {this.DISPLAY_CHOOSE_SCREEN && this.addChooseScreenMenu()}
 
       {/* POINTS, HEARTS, PROGRESS BAR */}
       {this.addStats()}
@@ -1849,10 +1893,10 @@ class Learn extends Component {
     </div>;
   }
 
-  addBoxDebugMenu() {
-    var item    = this.level_data.screens[this.state.screen_i],
-        screen  = this.level_data.screensTemplateMap[item.learnableID],
-        current = this.state.debug_screen;
+  addChooseScreenMenu() {
+    var item    = this.levelData.screens[this.state.screen_i],
+        screen  = this.levelData.screensTemplateMap[item.learnableID],
+        current = this.state.forceScreenTemplate;
 
     return <ul id="debug-screen">
       <li className={current ? '' : 'active'}>default</li>
@@ -1902,11 +1946,11 @@ class Learn extends Component {
   screen() {
     this.resetChoices();
 
-    if(!this.level_data) {
+    if(!this.levelData) {
       return null;
     }
-    if(this.state.debug_screen) {
-      switch(this.state.debug_screen) {
+    if(this.state.forceScreenTemplate) {
+      switch(this.state.forceScreenTemplate) {
         case 'multiple_choice'         : return this.render_tpl({ template: 'multiple_choice' });
         case 'typing'                  : return this.render_tpl({ template: 'typing' });
         case 'reversed_multiple_choice': return this.render_tpl({ template: 'reversed_multiple_choice' });
@@ -1919,22 +1963,22 @@ class Learn extends Component {
         case 'presentation'            : return this.render_tpl({ template: 'presentation' });
       }
     }
-    if(this.state.meta_screen == 'summary') {
+    if(this.state.metaScreen == 'summary') {
       return this.summary();
     }
-    if(this.state.meta_screen == 'correction') {
+    if(this.state.metaScreen == 'correction') {
       return this.render_presentation(this.state.correct || true);
     }
 
     // No defined screen: display next learnable
-    const item = this.level_data.screens[this.state.screen_i];
+    const item = this.levelData.screens[this.state.screen_i];
     if(!item) {
-      console.log('No item to display', this.level_data.screens, this.state.screen_i);
+      console.log('No item to display', this.levelData.screens, this.state.screen_i);
       return null;
     }
-    const screens = this.level_data.screensTemplateMap[item.learnableID];
+    const screens = this.levelData.screensTemplateMap[item.learnableID];
     if(!screens) {
-      console.log('No screen to display', this.level_data.screensTemplateMap, item);
+      console.log('No screen to display', this.levelData.screensTemplateMap, item);
       return null;
     }
     console.log('Screen', item, screens);
@@ -1948,19 +1992,19 @@ class Learn extends Component {
             });
 
         case 2:
-          if(screens.reversed_multiple_choice.video && !this.session_settings.disable_multimedia) {
+          if(screens.reversed_multiple_choice.video && !this.sessionSettings.disable_multimedia) {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video',
             });
           }
-          if(screens.audio_multiple_choice && Math.random() > .5 && !this.session_settings.disable_multimedia) {
+          if(screens.audio_multiple_choice && Math.random() > .5 && !this.sessionSettings.disable_multimedia) {
             return this.render_tpl({
               template: 'audio_multiple_choice',
             });
           }
-          if(screens.tapping && !this.session_settings.disable_tapping) {
+          if(screens.tapping && !this.sessionSettings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: 0,
@@ -1972,13 +2016,13 @@ class Learn extends Component {
           });
 
         case 3:
-          if(screens.tapping && !this.session_settings.disable_tapping) {
+          if(screens.tapping && !this.sessionSettings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: .5,
             });
           }
-          if(screens.typing && !this.session_settings.disable_typing) {
+          if(screens.typing && !this.sessionSettings.disable_typing) {
             return this.render_tpl({
               template: 'typing',
             });
@@ -1989,22 +2033,22 @@ class Learn extends Component {
           });
 
         case 4:
-          if(screens.multiple_choice.video && !this.session_settings.disable_multimedia) {
+          if(screens.multiple_choice.video && !this.sessionSettings.disable_multimedia) {
             return this.render_tpl({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video',
             });
           }
-          if(Math.random() > .5 && !this.session_settings.disable_multimedia) {
+          if(Math.random() > .5 && !this.sessionSettings.disable_multimedia) {
             var s = [];
-            if(screens.typing.audio && !this.session_settings.disable_typing) {
+            if(screens.typing.audio && !this.sessionSettings.disable_typing) {
               s.push({
                 template: 'typing',
                 promptWith: 'audio',
               });
             }
-            if(screens.reversed_multiple_choice.audio && !this.session_settings.disable_multimedia) {
+            if(screens.reversed_multiple_choice.audio && !this.sessionSettings.disable_multimedia) {
               s.push({
                 template: 'reversed_multiple_choice',
                 nChoices: 4,
@@ -2021,7 +2065,7 @@ class Learn extends Component {
           });
 
         case 5:
-          if(screens.taping && !this.session_settings.disable_tapping) {
+          if(screens.taping && !this.sessionSettings.disable_tapping) {
             return this.render_tpl({
               template: 'tapping',
               difficulty: .5,
@@ -2033,7 +2077,7 @@ class Learn extends Component {
           });
 
         default:
-          if(screens.typing && !this.session_settings.disable_typing) {
+          if(screens.typing && !this.sessionSettings.disable_typing) {
             return this.render_tpl({
               template: 'typing',
             });
@@ -2046,7 +2090,7 @@ class Learn extends Component {
     }
 
     if(this.props.session_type == 'speed_review') {
-      if(this.session_settings.reverse_prompt_and_answer && screens.reversed_multiple_choice) {
+      if(this.sessionSettings.reverse_prompt_and_answer && screens.reversed_multiple_choice) {
         return this.render_tpl({
           template: 'reversed_multiple_choice',
           nChoices: 4,
@@ -2061,9 +2105,9 @@ class Learn extends Component {
     if (item.template == 'sentinel') {
 
       // Reversing Question on the answer, answer with the question
-      if(this.session_settings.reverse_prompt_and_answer) {
+      if(this.sessionSettings.reverse_prompt_and_answer) {
         if(screens.typing
-          && !this.session_settings.disable_typing
+          && !this.sessionSettings.disable_typing
           && GameScreenBuilder.buildScreen_reverse_typing(screens, this.props.course.source)
         ) {
           return this.render_tpl({
@@ -2076,12 +2120,12 @@ class Learn extends Component {
         });
       }
 
-      if(screens.typing && !this.session_settings.disable_typing) {
+      if(screens.typing && !this.sessionSettings.disable_typing) {
         return this.render_tpl({
           template: 'typing',
         });
       }
-      if(screens.audio_multiple_choice && Math.random() > .5 && !this.session_settings.disable_multimedia) {
+      if(screens.audio_multiple_choice && Math.random() > .5 && !this.sessionSettings.disable_multimedia) {
         return this.render_tpl({
           template: 'audio_multiple_choice',
         });
@@ -2175,8 +2219,8 @@ class Learn extends Component {
           "gap_prompt": null
         }
     */
-    var id = this.props.preview_thing_id || this.level_data.screens[this.state.screen_i].learnableID;
-    return this.level_data.screensTemplateMap[id][tpl][0];
+    var id = this.props.preview_thing_id || this.levelData.screens[this.state.screen_i].learnableID;
+    return this.levelData.screensTemplateMap[id][tpl][0];
   }
 
   render_audio_multiple_choice(setting) {
@@ -2246,24 +2290,24 @@ class Learn extends Component {
     var items = [];
 
     if(this.props.session_type == 'preview') {
-      if(this.level_data) {
-        for(var i=0; i<this.level_data.screens.length; i++) {
-          var id = '' + this.level_data.screens[i].learnableID;
+      if(this.levelData) {
+        for(var i=0; i<this.levelData.screens.length; i++) {
+          var id = '' + this.levelData.screens[i].learnableID;
 
-          items.push(this.level_data.screensTemplateMap[id].presentation[0]);
+          items.push(this.levelData.screensTemplateMap[id].presentation[0]);
         }
       }
     } else {
-      for(var id in this.level_summary_data.learnables) {
-        var item = this.level_summary_data.learnables[id];
+      for(var id in this.metaScreenSummaryData.learnables) {
+        var item = this.metaScreenSummaryData.learnables[id];
 
-        items[item.pos] = {...item, ...this.level_data.screensTemplateMap[id].presentation[0]};
+        items[item.index] = {...item, ...this.levelData.screensTemplateMap[id].presentation[0]};
       }
     }
     return <Summary items={Object.values(items)} session_type={this.props.session_type} />;
   }
   markdown() {
-    var data = window.markdown.decode(eval(this.level_data));
+    var data = window.markdown.decode(eval(this.levelData));
     return <div className="nicebox" dangerouslySetInnerHTML={{__html: data}} />;
   }
 }
@@ -2486,7 +2530,6 @@ var RandomGenerator = {
   },
 };
 
-
 const MultipleChoice = function(props) {
   var item       = props.item,
       itemType   = props.promptWith || getPromptType(item.prompt),
@@ -2543,7 +2586,7 @@ const MultipleChoice = function(props) {
       />
     );
   });
-  props.setChoices(choices, 'numeric');
+  props.setChoices(choices, 'accesskey');
 
   return <div className="nicebox">
 
@@ -2557,13 +2600,11 @@ const MultipleChoice = function(props) {
   </div>;
 };
 
-class ChoiceBox extends Component {
-  render(props) {
-    return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex="0">
-      <span className="choice-index">{props.i}.</span>
-      <Value content={props.value} type={props.answerType} single="1" />
-    </div>;
-  }
+const ChoiceBox = function(props) {
+  return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex="0">
+    <span className="choice-index">{props.i}.</span>
+    <Value content={props.value} type={props.answerType} single="1" />
+  </div>;
 }
 
 const Typing = function(props) {
@@ -2692,6 +2733,7 @@ const AwardPoints = {
           points = AwardPoints.getPoints_review(points, current_streak);
         }
         if(score == 1 && time_spent) {
+          // computePoints_bonusForAccuracy(nb_scheduled_correct / nb_scheduled * 100, nb_scheduled);
           speed_bonus = AwardPoints.getPoints_bonusForSpeed(time_spent, template);
         }
         break;

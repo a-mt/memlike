@@ -2020,11 +2020,17 @@ table.learn:not(.summary) td:last-child {
 
 .choice-box:hover,
 .choice-box:focus,
+.choice-box:focus-within,
 .choice-box.active {
   border-color: #8c4a6c;
   background-color: #aa5f86;
   color: white;
 }
+.choice-box:focus,
+.choice-box:focus-within {
+  outline: 2px solid #15A1EC;
+}
+
 .choice-box.incorrect {
   border-color: #dd2231;
   background-color: #e44e5a;
