@@ -502,7 +502,7 @@ const GameDataBuilder = {
    */
   buildData: function(sessionType, data) {
 
-    // Build screensTemplateMap (data.screensTemplateMap[learnableID][tpl][0])
+    // Build screensTemplateMap (data.screensTemplateMap[learnableID][tpl])
     const screensTemplateMap = {};
     const learnablesMap = {};
 
@@ -649,8 +649,8 @@ const GameScreenBuilder = {
     let choices = [];
 
     // Retrieve the definition of other learnables
-    var definitions = GameScreenBuilder.definitions;
-    console.log('Definitions', definitions, kind, value);
+    var definitions = GameScreenBuilder.cachedDefinitions;
+    console.log('Definitions', definitions, kind);
 
     if (definitions.length <= 15 || kind != 'text') {
       choices = randomize(definitions).filter((element) => correctChoices.indexOf(element.value) == -1);
@@ -730,7 +730,7 @@ const GameScreenBuilder = {
     if ('reversed_multiple_choice2' in learnableScreens) {
       return true;
     }
-    var screen = Object.assign({}, learnableScreens.multiple_choice[0]);
+    var screen = Object.assign({}, learnableScreens.multiple_choice);
     screen.template = 'reversed_multiple_choice2';
     [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
 
@@ -746,8 +746,8 @@ const GameScreenBuilder = {
       screen.answer.kind,
       screen.correct,
     );
-    learnableScreens['reversed_multiple_choice2'] = [screen];
-    console.log('buildScreen_reversed_multiple_choice', screen, learnableScreens.reversed_multiple_choice[0]);
+    learnableScreens['reversed_multiple_choice2'] = screen;
+    console.log('buildScreen_reversed_multiple_choice', screen, learnableScreens.reversed_multiple_choice);
     return true;
   },
 
@@ -755,13 +755,13 @@ const GameScreenBuilder = {
     if ('reversed_typing' in learnableScreens) {
       return true;
     }
-    var screen = Object.assign({}, learnableScreens.typing[0]);
+    var screen = Object.assign({}, learnableScreens.typing);
     screen.template = 'reversed_typing';
     [screen.prompt, screen.answer] = GameScreenBuilder.getInvertedPromptAndAnswer(screen);
     if (screen.answer.kind != 'text') {
       return false;
     }
-    learnableScreens['reversed_typing'] = [screen];
+    learnableScreens['reversed_typing'] = screen;
 
     screen.correct = [];
     GameScreenBuilder.flattenValue(screen.answer.value).forEach((value) => {
@@ -2019,11 +2019,11 @@ class Learn extends Component {
               + (current == 'audio_typing' ? ' active' : '')}>
         audio_typing
       </li>
-      <li className={('reversed_multiple_choice' in screen && screen.reversed_multiple_choice[0].prompt.video ? '' : 'disabled')
+      <li className={('reversed_multiple_choice' in screen && screen.reversed_multiple_choice.prompt.video ? '' : 'disabled')
               + (current == 'reversed_multiple_choice_prompt_video' ? ' active' : '')}>
         reversed_multiple_choice_prompt_video
       </li>
-      <li className={('multiple_choice' in screen && screen.multiple_choice[0].prompt.video ? '' : 'disabled')
+      <li className={('multiple_choice' in screen && screen.multiple_choice.prompt.video ? '' : 'disabled')
               + (current == 'video-pre-presentation' ? ' active' : '')}>
         video-pre-presentation
       </li>
