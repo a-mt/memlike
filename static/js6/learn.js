@@ -15,22 +15,23 @@ window.MEMLIKE.js_learn = {
 /* global $, window, document, console */
 /* global setTimeout, setInterval, clearInterval, localStorage, Set */
 $(document).ready(function(){
-  if(window.MEMLIKE.garden.levels_index == '') {
-    window.MEMLIKE.course.levels[1] = {'name': '', 'type': 1};
-  }
   Object.freeze(window.MEMLIKE.course);
   Object.freeze(window.MEMLIKE.garden);
 
   window.MEMLIKE.sessionSettings = {
-    'disable_multimedia': !!localStorage.getItem('sessionSettings_disable_multimedia'),
+    'disable_multimedia': !!localStorage.getItem('sessionSettings_disable_multimedia'), // disable_multimedia is actually a setting in memrise
     'disable_tapping': !!localStorage.getItem('sessionSettings_disable_tapping'),
     'disable_typing': !!localStorage.getItem('sessionSettings_disable_typing'),
+    'enable_audio_autoplay': localStorage.getItem('sessionSettings_enable_audio_autoplay'),
     'save_progress': !!window.MEMLIKE.garden.sessionSettings_save_progress,
     'reverse_prompt_and_answer': !!window.MEMLIKE.garden.sessionSettings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
   };
+  if (window.MEMLIKE.sessionSettings.enable_audio_autoplay === null) {
+    window.MEMLIKE.sessionSettings.enable_audio_autoplay = true;
+  }
   render(<Learn
-    levels_index={window.MEMLIKE.garden.levels_index}
+    level_index={window.MEMLIKE.garden.level_index}
     session_type={window.MEMLIKE.garden.session_type}
     preview_thing_id={window.MEMLIKE.garden.preview_thing_id}
     session_id={window.MEMLIKE.garden.session_is_anonymous}
@@ -136,6 +137,7 @@ class LearnSettingsModal extends Component {
     localStorage.setItem('sessionSettings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
     localStorage.setItem('sessionSettings_disable_tapping', this.state.disable_tapping ? '1' : '');
     localStorage.setItem('sessionSettings_disable_typing', this.state.disable_typing ? '1' : '');
+    localStorage.setItem('sessionSettings_enable_audio_autoplay', this.state.enable_audio_autoplay ? '1' : '');
     localStorage.setItem('sessionSettings_id', this.state.session_id || '');
 
     this.onCloseModal();
@@ -180,6 +182,16 @@ class LearnSettingsModal extends Component {
             autoComplete="off"
           />
           <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+        </div>
+        <div>
+          <input
+            id="enable_audio_autoplay"
+            type="checkbox"
+            defaultChecked={this.state.enable_audio_autoplay}
+            onChange={this.handleChange.bind(this, 'enable_audio_autoplay')}
+            autoComplete="off"
+          />
+          <label htmlFor="enable_audio_autoplay">{window.I18N['learn_settings_enable_audio_autoplay']}</label>
         </div>
         <div>
           <input
@@ -337,7 +349,6 @@ const Timer = {
 
 const LEARN_UNTIL_GROWTH_LEVEL = 6;
 const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
-const LEARN_WITH_AUTOPLAY_AUDIO = 1;
 const LEARN_BUILD_CHOICES_LENGTH = 12;
 
 const TEST_DIFFICULTY = {
@@ -494,15 +505,17 @@ const GameDataBuilder = {
     const learnablesMap = {};
 
     for (let learnable of data.learnables) {
-      const screens = {};
+      let screens = {};
+      let learnableID = learnable.id.toString();
 
       // A screen = {correct, is_strict, ...} (cf learning_session_preview.json)
       for (let screenID in learnable.screens) {
         let screen = learnable.screens[screenID];
-        screens[screen.template] = [screen];
+
+        screens[screen.template] = Object.assign(screen, {learnableID});
       }
-      screensTemplateMap['' + learnable.id] = screens;
-      learnablesMap['' + learnable.id] = learnable;
+      screensTemplateMap[learnableID] = screens;
+      learnablesMap[learnableID] = learnable;
     }
 
     // Build progressMap {learnableID: {growth_level, current_streak, correct, attempts, is_difficult}}
@@ -791,7 +804,7 @@ const GameProgressHandler = {
    * @param dict learnableProgress
    * @param int growthLevel
    */
-  getNextGrowthLevel: function(learnableProgress, difficulty=TEST_DIFFICULTY.Easy) {
+  setNextScreenGrowthLevel: function(learnableProgress, difficulty=TEST_DIFFICULTY.Easy) {
 
     // FirstOnboardingSessionGrowthLevelStrategy
     if (GameDataBuilder.session_type == 'first_session') {
@@ -861,7 +874,7 @@ const GameProgressHandler = {
    * @param float score
    * @return dict
    */
-  getNextIntervalDate: function(learnableProgress, dateAnswer, score) {
+  setNextScreenIntervalDate: function(learnableProgress, dateAnswer, score) {
 
     // No review data until we learned the item
     if (learnableProgress.growth_level < LEARN_UNTIL_GROWTH_LEVEL) {
@@ -950,7 +963,7 @@ const GameProgressHandler = {
    * @param float score
    * @return dict
    */
-  getNextStreak: function(learnableProgress, score) {
+  setNextScreenStreak: function(learnableProgress, score) {
     /*
       "when": 1771925218,
       "interval": 0.5,
@@ -998,13 +1011,13 @@ const GameProgressHandler = {
 
     // Update the progress
     // progress.is_difficult = this.isDifficult(progress);
-    progress.growth_level = score == 1 ? GameProgressHandler.getNextGrowthLevel(progress) : progress.growth_level;
+    progress.growth_level = score == 1 ? GameProgressHandler.setNextScreenGrowthLevel(progress) : progress.growth_level;
 
     // interval, next_date
-    Object.assign(progress, GameProgressHandler.getNextIntervalDate(progress, progress.last_date, score));
+    Object.assign(progress, GameProgressHandler.setNextScreenIntervalDate(progress, progress.last_date, score));
 
     // attempts, correct, current_streak, total_streak
-    Object.assign(progress, GameProgressHandler.getNextStreak(progress, score));
+    Object.assign(progress, GameProgressHandler.setNextScreenStreak(progress, score));
   },
 
   // Send progress to memrise
@@ -1138,23 +1151,35 @@ class Learn extends Component {
       hearts: 3,
     };
 
-    // We're reviewing the entire course, rather than a specific level?
-    if(typeof this.props.levelsIdList == 'string') { // all
-      this.levelsIdList = this.props.levels_index.split(',').map((i) => parseInt(i));
-      this.levelsLastId = this.levelsIdList[this.levelsIdList.length-1] || 1;
-      this.useLevels = this.props.session_type == 'preview';  // request course | course_id_and_level_index
-
-      state.levelId = this.levelsIdList[0] || 1;
-
-    } else {
-      this.levelsIdList = [parseInt(this.props.levels_index)];
+    // review / learn / preview or any with a level_index
+    if(typeof this.props.level_index == 'number') {
+      this.levelsIdList = [parseInt(this.props.level_index)];
       this.levelsLastId = this.levelsIdList[0] || 1;
       this.useLevels = true;
 
       state.levelId = this.levelsLastId;
+
+    // review without a level_index: review the course
+    } else if (this.props.session_type.endsWith('review')) {
+      this.levelsIdList = [];
+      this.levelsLastId = 0;
+      this.useLevels = false;
+
+      state.levelId = 'all';
+
+    // (all) learn / preview without a level_index: loop through the course's levels
+    } else{
+      this.levelsIdList = Array.prototype.sort.call(Object.keys(props.course.levels), (a, b) => parseInt(a) - parseInt(b));
+      this.levelsLastId = this.levelsIdList[this.levelsIdList.length-1] || 1;
+      this.useLevels = this.props.session_type == 'preview';  // request course | course_id_and_level_index
+
+      state.levelId = this.levelsIdList[0] || 1;
     }
     this.sessionSettings = {...window.MEMLIKE.sessionSettings};
     this.state = state;
+
+    this.isScreenSubmitted = false;
+    this.isKeydownPressed = false;
 
     this.setChoices = this.setChoices.bind(this);
     this.onSessionSettingsUpdated = this.onSessionSettingsUpdated.bind(this);
@@ -1188,12 +1213,11 @@ class Learn extends Component {
     }
 
     // Listen to keyboard inputs: next screen, multiple choice
+    $(window).on('keydown', this.keydown.bind(this));
     $(window).on('keyup', this.keyup.bind(this));
 
     // Submit
     $('main').on('click', '.submit', function(e){
-      e.target.classList.add('disabled');
-
       this.onSubmit(e);
     }.bind(this));
 
@@ -1222,7 +1246,7 @@ class Learn extends Component {
 
     // Multiple choice (handle the click the same way as using an access key)
     $('main').on('click', '.choice-box', function(e){
-      this.selectTargetMultipleChoice(e.currentTarget);
+      this.selectTargetMultipleChoice(e.currentTarget.querySelector('input'));
     }.bind(this));
 
     // Hovering on audio: play audio
@@ -1236,15 +1260,10 @@ class Learn extends Component {
 
   // Every time screen gets updated
   componentDidUpdate(prevProps, prevState) {
-    $('input[autofocus]').focus();
+    this.isScreenSubmitted = false;
+    this.isKeydownPressed = false;
 
-    // Prevent the user from submitting hastily
-    var $submit = $('.btn.submit');
-    $submit.addClass('disabled');
-
-    setTimeout(() => {
-      $submit.removeClass('disabled');
-    }, 500);
+    $('input[autofocus],.submit').first().focus();
 
     // Reset image zoom and audio player
     window.imgZoom     && window.imgZoom.reset();
@@ -1279,9 +1298,12 @@ class Learn extends Component {
 
     // Automatically play an audio track
     // if there aren't any audio elements in the course, try the tts instead (outside .audio elements)
-    $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
-      ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
-    );
+    if (this.sessionSettings.enable_audio_autoplay) {
+      $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
+        ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
+      );
+      $('input[autofocus],.submit').first().focus();
+    }
 
     // Update level title (outside of react scope)
     if(this.useLevels) {
@@ -1323,29 +1345,19 @@ class Learn extends Component {
    * Retrieve the current level data
    */
   fetchData(levelId, callback) {
-    const sessionType = this.props.session_type;
-
-    // Retrieve level type
-    var levelType = 1;
-    if (levelId == 0) {
-      levelId = 1;
-    }
-    if (levelId == 1 && !this.props.course.levels.length) {
-      // pass
-    } else if (!(levelId in this.props.course.levels)) {
-      console.error('Level data cannot be retrieved');
-      return this.setState({error: 1});
-    } else {
-      levelType = this.props.course.levels[levelId].type;
-    }
+    var sessionType = this.props.session_type;
 
     var url = '/ajax' + this.props.course.url;
     if(!this.useLevels) {
       url += 'all/' + sessionType;
-    } else if(levelType == 2) {
-      url += levelId + '/media';
     } else {
-      url += levelId + '/' + sessionType;
+      var levelType = this.props.course.levels[levelId].type;
+
+      if(levelType === 2) {
+        url += levelId + '/media';
+      } else {
+        url += levelId + '/' + sessionType;
+      }
     }
 
     $.ajax({
@@ -1426,18 +1438,29 @@ class Learn extends Component {
     return msg;
   }
 
+  keydown(e) {
+    this.isKeydownPressed = true;
+  }
+
   // Listen to keyboard inputs: next screen, multiple choice answer
   keyup(e) {
+
+    // Losing focus after rendering?
+    if (!this.isKeydownPressed) {
+      return;
+    }
     var key = e.which;
 
-    // Press enter (note that if)
+    // Press enter
     if(key == 13) {
 
+      // Cut short redundancy between button click and enter
+      if (this.isScreenSubmitted) {
+        return;
+      }
+
       // On the presentation screen: pressing enter on a button = trigger the button
-      if (!this.expectedChoiceKind) {
-        if (e.target.nodeName == 'BUTTON') {
-          return;
-        }
+      if (0&&!this.expectedChoiceKind) {
         if(e.target.classList.contains('button')) {
           if(!e.target.classList.contains('disabled')) {
             e.target.click();
@@ -1445,8 +1468,10 @@ class Learn extends Component {
           return;
         }
       }
-      e.preventDefault();
-      e.stopPropagation();
+      if(e.target.type === 'radio' && e.target.checked === false) {
+        e.target.checked = true;
+        return;
+      }
 
       // Submit the form
       return this.onSubmit(e);
@@ -1456,20 +1481,29 @@ class Learn extends Component {
     if(this.expectedChoiceKind == 'accesskey' && key > 96 && key <= 105) {
       var accesskey = fromKeyCode(key);
 
-      var btn = document.getElementById(`choice-${accesskey}`); // .choice-box[accesskey="${char}"]
-      if (!btn) {
+      var input = document.getElementById(`choice-${accesskey}`); // .choice-box[accesskey="${char}"]
+      if (!input) {
         return;
       }
-      this.selectTargetMultipleChoice(btn);
+      this.selectTargetMultipleChoice(input);
     }
   }
 
   onSubmit(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Wait for a new render before listening to submits
+    if (this.isScreenSubmitted) {
+      return;
+    }
+    this.isScreenSubmitted = true;
+
     Timer.stop();
 
     // Presentation
     if(!this.expectedChoiceKind) {
-      this.getNext();
+      this.setNextScreen();
 
     // Typing
     } else if(this.expectedChoiceKind == 'text') {
@@ -1485,7 +1519,7 @@ class Learn extends Component {
 
     // Numeric
     } else if(this.expectedChoiceKind == 'accesskey') {
-      this.submitMultipleChoice($('.choice-box:focus').attr('accesskey') || '');
+      this.submitMultipleChoice($('.choice-box input:checked').attr('accesskey') || '');
 
     } else {
       console.info('Skipping', this.expectedChoiceKind);
@@ -1498,7 +1532,7 @@ class Learn extends Component {
   //+--------------------------------------------------------
 
   submitSkip() {
-    this.choice_feedback({
+    this.accountUserAnswer({
       value : '',
       score : 0,
       kind  : ''
@@ -1511,7 +1545,7 @@ class Learn extends Component {
 
     var sanitizedGivenAnswer = sanitizeTyping(givenAnswer, this.is_strict).toLowerCase();
     var score   = 0,
-        correctAnswer = '';
+        rightAnswer = '';
 
     // Text input
     if (givenAnswer) {
@@ -1521,15 +1555,15 @@ class Learn extends Component {
 
         if(s && s > score) {
           score = s;
-          correctAnswer = choice;
+          rightAnswer = choice;
         }
       }
     }
 
-    this.choice_feedback({
+    this.accountUserAnswer({
       value    : givenAnswer,
       testValue: sanitizedGivenAnswer,
-      refValue : correctAnswer,
+      refValue : rightAnswer,
       score    : score,
       kind     : 'text'
     });
@@ -1547,7 +1581,7 @@ class Learn extends Component {
       }
     }
 
-    this.choice_feedback({
+    this.accountUserAnswer({
       value : entry,
       score : isValid ? 1 : 0,
       kind  : 'text'
@@ -1568,7 +1602,7 @@ class Learn extends Component {
     var choice = idx < this.choices.length ? this.choices[idx].attributes : '';
 
     // Check if we got the right answer
-    this.choice_feedback({
+    this.accountUserAnswer({
       value : choice.value,
       score : choice.isValid ? 1 : 0,
       kind  : choice.answerType,
@@ -1596,7 +1630,7 @@ class Learn extends Component {
     }
   }
 
-  updatePoints(learnableID, input, timeSpent) {
+  updatePoints(learnableID, userAnswer, timeSpent) {
     var template = this.template;
 
     // Update the streak status and next review data
@@ -1608,7 +1642,7 @@ class Learn extends Component {
     );
     GameProgressHandler.updateProgress(
       progress,
-      input.score,
+      userAnswer.score,
     );
     this.levelData.progressMap[learnableID] = progress;
 
@@ -1617,7 +1651,7 @@ class Learn extends Component {
       this.props.session_type,
       template,
       timeSpent,
-      input.score,
+      userAnswer.score,
       progress.current_streak,
     );
 
@@ -1627,8 +1661,8 @@ class Learn extends Component {
       var event = {
           learnable_id : learnableID,
           box_template : template,
-          given_answer : input.value,
-          score        : input.score,
+          given_answer : userAnswer.value,
+          score        : userAnswer.score,
           time_spent   : timeSpent,
           points       : points,
           bonus_points : 0,
@@ -1642,20 +1676,20 @@ class Learn extends Component {
   }
 
   // Answer has been submitted and checked: compute progress, points & give feedback
-  // input: {value,score,kind,...rest}
-  choice_feedback(input) {
+  // userAnswer: {value,score,kind,...rest}
+  accountUserAnswer(userAnswer) {
     var isSpeedReview = this.props.session_type == 'speed_review';
 
     // Show the correct answer
     if(isSpeedReview) {
-      this.selectCorrectMultipleChoice(input);
+      this.selectCorrectMultipleChoice(userAnswer);
     }
     var screen = this.levelData ? this.levelData.screens[this.state.screen_i] : null;
     if(!screen) {
       return;
     }
     var learnableID = screen.learnableID,
-        isCorrect   = input.score == 1,
+        isCorrect   = userAnswer.score == 1,
         time_spent  = 0,
         hearts      = this.state.hearts;
 
@@ -1673,13 +1707,13 @@ class Learn extends Component {
     this.updateSummary(learnableID, isCorrect);
 
     // Count points & save progress
-    var points = this.updatePoints(learnableID, input, time_spent);
+    var points = this.updatePoints(learnableID, userAnswer, time_spent);
 
     // Display correction
     if(!isSpeedReview) {
       return this.setState({
         metaScreen: 'correction',
-        correct: input,
+        userAnswer,
         forceScreenTemplate: false,
         points: this.state.points + points,
       });
@@ -1696,6 +1730,9 @@ class Learn extends Component {
       // Show the overlay without updating the screen underneath
       Object.assign(this.state, newState);
 
+      this.isScreenSubmitted = false;
+      this.isKeydownPressed = false;
+
       $(document.body).append(`<div class="overlay">
         <div class="no-heart"></div>
         <p class="overlay-text">${window.I18N.no_more_hearts} !</p>
@@ -1709,33 +1746,37 @@ class Learn extends Component {
       setTimeout(function(){
         $('.choice-box').removeClass('correct').removeClass('incorrect');
 
-        this.getNext(newState);
+        this.setNextScreen(newState);
       }.bind(this), isCorrect ? 500 : 3000);
     }
   }
 
-  selectTargetMultipleChoice(target) {
-    console.log(target);
-    target.focus && target.focus();
+  selectTargetMultipleChoice(radioElement) {
+    radioElement.focus();
 
-    //var $element = $(target).addClass('active');
-    //$element.siblings('.choice-box').removeClass('active');
+    if (radioElement.checked) {
+      radioElement.checked = false;
+      return;
+    }
+    radioElement.checked = true;
 
-    let $audioElement = target.querySelector('audio');
-    if ($audioElement) {
-      window.audioPlayer && window.audioPlayer.play.call($audioElement, null, true);
+    //$(target).addClass('active').siblings('.choice-box').removeClass('active');
+
+    let audioElement = radioElement.parentNode.querySelector('audio');
+    if (audioElement) {
+      window.audioPlayer && window.audioPlayer.play.call(audioElement, null, true);
     }
   }
 
-  selectCorrectMultipleChoice(input) {
+  selectCorrectMultipleChoice(userAnswer) {
 
     // Update the class of the selected choice (accesskey-1)
-    if('i' in input) {
-      $('#choice-' + (input.i+1)).addClass(input.score == 1 ? 'correct' : 'incorrect');
+    if('i' in userAnswer) {
+      $('#choice-' + (userAnswer.i+1)).addClass(userAnswer.score == 1 ? 'correct' : 'incorrect');
     }
 
     // Update the class of the correct choice
-    if(input.score != 1) {
+    if(userAnswer.score != 1) {
       for(var j=0; j<this.choices.length; j++) {
         if(this.choices[j].attributes.isValid) {
           $('#choice-' + (j+1)).addClass('correct');
@@ -1746,7 +1787,7 @@ class Learn extends Component {
   }
 
   // Display next screen
-  getNext(newState) {
+  setNextScreen(newState) {
     this.expectedChoiceKind = false;
 
     newState = newState || {}
@@ -1781,7 +1822,9 @@ class Learn extends Component {
       if (this.useLevels) {
         data.session_source_sub_index = this.state.levelId;
       }
-      this.sessionSettings.save_progress && GameProgressHandler.registerSessionEnd(data);
+      this.sessionSettings.save_progress && setTimeout(() => {
+        GameProgressHandler.registerSessionEnd(data);
+      }, 0);
 
       this.setState(Object.assign(newState, {
         screen_i: this.state.screen_n,
@@ -1863,7 +1906,7 @@ class Learn extends Component {
         ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
         : this.screen()}
 
-      <span className="btn submit disabled" tabIndex="0">{window.I18N.next}</span>
+      <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
     </div>;
   }
 
@@ -1967,7 +2010,7 @@ class Learn extends Component {
       return this.summary();
     }
     if(this.state.metaScreen == 'correction') {
-      return this.render_presentation(this.state.correct || true);
+      return this.render_presentation(this.state.userAnswer || true);
     }
 
     // No defined screen: display next learnable
@@ -2220,7 +2263,7 @@ class Learn extends Component {
         }
     */
     var id = this.props.preview_thing_id || this.levelData.screens[this.state.screen_i].learnableID;
-    return this.levelData.screensTemplateMap[id][tpl][0];
+    return this.levelData.screensTemplateMap[id][tpl];
   }
 
   render_audio_multiple_choice(setting) {
@@ -2273,13 +2316,14 @@ class Learn extends Component {
 
     return <Presentation
               item={this.get_screen('presentation')}
-              prompt={prompt} />;
+              prompt={prompt}
+            />;
   }
-  render_presentation(correct) {
+  render_presentation(userAnswer) {
     return (
       <Presentation
         item={this.get_screen('presentation')}
-        correct={correct}
+        userAnswer={userAnswer}
         langCodeTarget={this.props.course.target ? this.props.course.target.language_code : null}
         langCodeSource={this.props.course.source ? this.props.course.source.language_code : null}
         disableMultimedia={false}
@@ -2294,14 +2338,14 @@ class Learn extends Component {
         for(var i=0; i<this.levelData.screens.length; i++) {
           var id = '' + this.levelData.screens[i].learnableID;
 
-          items.push(this.levelData.screensTemplateMap[id].presentation[0]);
+          items.push(this.levelData.screensTemplateMap[id].presentation);
         }
       }
     } else {
       for(var id in this.metaScreenSummaryData.learnables) {
         var item = this.metaScreenSummaryData.learnables[id];
 
-        items[item.index] = {...item, ...this.levelData.screensTemplateMap[id].presentation[0]};
+        items[item.index] = {...item, ...this.levelData.screensTemplateMap[id].presentation};
       }
     }
     return <Summary items={Object.values(items)} session_type={this.props.session_type} />;
@@ -2382,16 +2426,16 @@ const Value = function(props) {
 };
 
 const Correction = function(props) {
-  var data = props.data;
+  var userAnswer = props.userAnswer;
 
-  if(data.score == 1) {
+  if(userAnswer.score == 1) {
     return <div className="alert alert-success">{window.I18N.correct_answer}!</div>;
 
-  } else if(data.score == 0) {
+  } else if(userAnswer.score == 0) {
     return <div className="alert alert-danger">
       {window.I18N.wrong_answer}!&nbsp;
-      {data.value
-        ? <span>{window.I18N.your_answer_was}: <strong><Value content={data.value} type={data.kind} single="1" /></strong></span>
+      {userAnswer.value
+        ? <span>{window.I18N.your_answer_was}: <strong><Value content={userAnswer.value} type={userAnswer.kind} single="1" /></strong></span>
         : <span>{window.I18N.your_answer_was_empty}</span>}
     </div>;
 
@@ -2399,12 +2443,12 @@ const Correction = function(props) {
     return <div className="alert alert-warning">
       {window.I18N.near_answer}!&nbsp;
       <span>{window.I18N.your_answer_was}: <strong>
-        {data.kind == 'text'
-          ? <span>{data.testValue} <small
+        {userAnswer.kind == 'text'
+          ? <span>{userAnswer.testValue} <small
               className="correction"
-              dangerouslySetInnerHTML={{__html: '(' + highlightDiff(data.testValue, data.refValue) + ')'}}
+              dangerouslySetInnerHTML={{__html: '(' + highlightDiff(userAnswer.testValue, userAnswer.refValue) + ')'}}
             /></span>
-          : <Value content={data.value} type={data.kind} single="1" />}
+          : <Value content={userAnswer.value} type={userAnswer.kind} single="1" />}
       </strong></span>
     </div>;
   }
@@ -2412,11 +2456,10 @@ const Correction = function(props) {
 
 const Presentation = function(props){
   var item = props.item,
-      correct = props.correct,
+      userAnswer = props.userAnswer,
       k    = Date.now(),
       i    = 0,
-      item_lang = '',
-      autoplay = LEARN_WITH_AUTOPLAY_AUDIO || !correct;
+      item_lang = '';
 
   // Add TSS if we're learning a language
   if (this.props.langCodeTarget && this.props.langCodeSource) {
@@ -2425,10 +2468,10 @@ const Presentation = function(props){
 	return <div>
 
     {/*-- Correction --*/}
-    {correct && <Correction data={correct} />}
+    {userAnswer && <Correction userAnswer={userAnswer} />}
 
     {/*-- Content --*/}
-    <table className={'learn nicebox big thing' + (autoplay ? ' autoplay' : '')}>
+    <table className="learn nicebox big thing autoplay">
 
         {/*-- Item --*/}
         <tr>
@@ -2518,7 +2561,7 @@ var RandomGenerator = {
     return RandomGenerator.it[n.toString()];
   },
 
-  getNextRand: function(n) {
+  setNextScreenRand: function(n) {
     var it = RandomGenerator.getIterator(n);
     var rnd = it.next();
 
@@ -2551,7 +2594,7 @@ const MultipleChoice = function(props) {
   }
 
   // Place the right answer somewhere in it
-  var rnd  = n == 4 ? RandomGenerator.getNextRand(4) : randrange(0, n - 1),
+  var rnd  = n == 4 ? RandomGenerator.setNextScreenRand(4) : randrange(0, n - 1),
      isArr = $.isArray(item.answer.value);
 
   if(isArr) {
@@ -2580,6 +2623,7 @@ const MultipleChoice = function(props) {
       <ChoiceBox
         key={i}
         i={i+1}
+        id={item.learnableID}
         value={value}
         answerType={answerType}
         isValid={rightAnswers.includes(value)}
@@ -2601,7 +2645,17 @@ const MultipleChoice = function(props) {
 };
 
 const ChoiceBox = function(props) {
-  return <div accessKey={props.i} className={'choice-box nicebox ' + props.answerType} id={'choice-' + props.i} tabIndex="0">
+  return <div className={'choice-box nicebox ' + props.answerType}>
+    <input
+      type="radio"
+      name={'learn-' + props.id}
+      id={'choice-' + props.i}
+      tabIndex="0"
+      accessKey={props.i}
+      checked={false}
+      autoComplete={false}
+      className="radio"
+    />
     <span className="choice-index">{props.i}.</span>
     <Value content={props.value} type={props.answerType} single="1" />
   </div>;
@@ -2797,29 +2851,29 @@ const ScoreAnswer = {
    * And score the similarity between the given response and the expected answer
    * (1 = correct, 0 = incorrect, 0<x<1 = more or less similar)
    */
-  computeScore: function(givenAnswer, correctAnswer) {
+  computeScore: function(givenAnswer, rightAnswer) {
     if(!givenAnswer) {
       return 0;
     }
-    var both_are_numeric = $.isNumeric(parseInt(givenAnswer, 10)) && $.isNumeric(parseInt(correctAnswer, 10));
+    var both_are_numeric = $.isNumeric(parseInt(givenAnswer, 10)) && $.isNumeric(parseInt(rightAnswer, 10));
 
     if(both_are_numeric) {
-      return ScoreAnswer.getNumericScore(givenAnswer, correctAnswer);
+      return ScoreAnswer.getNumericScore(givenAnswer, rightAnswer);
     } else {
-      return ScoreAnswer.getStringScore(givenAnswer, correctAnswer);
+      return ScoreAnswer.getStringScore(givenAnswer, rightAnswer);
     }
   },
 
-  getNumericScore: function(givenAnswer, correctAnswer) {
-    return (parseInt(givenAnswer, 10) === parseInt(correctAnswer, 10) ? 1 : 0);
+  getNumericScore: function(givenAnswer, rightAnswer) {
+    return (parseInt(givenAnswer, 10) === parseInt(rightAnswer, 10) ? 1 : 0);
   },
 
-  getStringScore: function(givenAnswer, correctAnswer) {
-    var tolerance = ScoreAnswer.getDistanceTolerance(correctAnswer.length),
-        distance = ScoreAnswer.getStringDistance(givenAnswer, correctAnswer);
+  getStringScore: function(givenAnswer, rightAnswer) {
+    var tolerance = ScoreAnswer.getDistanceTolerance(rightAnswer.length),
+        distance = ScoreAnswer.getStringDistance(givenAnswer, rightAnswer);
     if (distance >= tolerance) return 0;
 
-    var weightFirstLetter = correctAnswer.charAt(0) === givenAnswer.charAt(0) ? 1 : 0,
+    var weightFirstLetter = rightAnswer.charAt(0) === givenAnswer.charAt(0) ? 1 : 0,
         weight = (tolerance - distance) / tolerance,
         s = ScoreAnswer.FIRST_LETTER_WEIGHT * weightFirstLetter + ScoreAnswer.DISTANCE_WEIGHT * weight;
 

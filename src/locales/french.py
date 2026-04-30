@@ -33,6 +33,7 @@ misc = {
     "learn_settings_disable_typing": "Désactiver les exercices de saisie clavier",
     "learn_settings_disable_tapping": "Désactiver les exercices ordonner les mots",
     "learn_settings_disable_multimedia": "Désactiver les exercises multimédias",
+    "learn_settings_enable_audio_autoplay": "Jouer automatiquement le contenu audio",
     "learn_settings_reverse_prompt_and_answer": "Inverser les tests (prompt sur la réponse, test sur la définition)",
     "learn_settings_save_progress": "Envoyer les résultats à Memrise",
     "learn_is_anonymous": "Vous jouez anonymement: votre progrès ne sera pas sauvegardé",

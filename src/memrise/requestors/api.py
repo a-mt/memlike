@@ -27,23 +27,26 @@ class ApiRequestor:
     The result might still need to be scraped to conform to our Memrise interface
     """
 
+    def log_response(self, response):
+        filesuffix = get_time() + ".log"
+        filename = "response." + filesuffix
+
+        with open(filename, "w+") as f:
+            f.write(response.text)
+
+            logger.warn(f"Response with status {response.status_code} written to {filename}")
+
+        filename = "request." + filesuffix
+        with open(filename, "w+") as f:
+            f.write(str(vars(response.request)))
+
     def raise_for_status(self, response, raise_for_redirect=True):
         if response.status_code == 302:
             if response.headers["Location"].startswith("/signin"):
                 raise SessionExpired()
 
         if response.status_code >= 300 and settings.DEBUG:
-            filesuffix = get_time() + ".log"
-            filename = "response." + filesuffix
-
-            with open(filename, "w+") as f:
-                f.write(response.text)
-
-                logger.warn(f"Response with status {response.status_code} written to {filename}")
-
-            filename = "request." + filesuffix
-            with open(filename, "w+") as f:
-                f.write(str(vars(response.request)))
+            self.log_response(response)
 
         # might redirect to canonical URL
         # which isn't supposed to happen if we have the correct slug
@@ -342,18 +345,18 @@ class ApiRequestor:
         data = {
             "session_source_id": course_id,
         }
-        if level_index and level_index != "all":
-            referer += f"&level_index={level_index}"
-            data["session_source_sub_index"] = level_index
-            data["session_source_type"] = "course_id_and_level_index"
 
+        if not level_index or level_index == "all":
+            data["session_source_type"] = "course"
         elif session_type == "preview":
             # Can't preview all things...
             referer += "&level_index=1"
             data["session_source_sub_index"] = "1"
             data["session_source_type"] = "course_id_and_level_index"
         else:
-            data["session_source_type"] = "course"
+            referer += f"&level_index={level_index}"
+            data["session_source_sub_index"] = level_index
+            data["session_source_type"] = "course_id_and_level_index"
 
         request_kwargs = self.get_request_kwargs("POST", request_msg, sessionid, csrftoken, referer)
         response = requests.post(
@@ -363,6 +366,8 @@ class ApiRequestor:
             **request_kwargs,
         )
         if response.status_code == 400:
+            self.log_response(response)
+
             return {"learnables": [], "progress": []}
 
         # Will have a 400 if the level is empty
