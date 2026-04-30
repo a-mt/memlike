@@ -23,8 +23,8 @@ $(document).ready(function(){
     'disable_tapping': !!localStorage.getItem('sessionSettings_disable_tapping'),
     'disable_typing': !!localStorage.getItem('sessionSettings_disable_typing'),
     'enable_audio_autoplay': localStorage.getItem('sessionSettings_enable_audio_autoplay'),
-    'save_progress': !!window.MEMLIKE.garden.sessionSettings_save_progress,
-    'reverse_prompt_and_answer': !!window.MEMLIKE.garden.sessionSettings_reverse_prompt_and_answer,
+    'save_progress': !!window.MEMLIKE.garden.session_settings_save_progress,
+    'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
   };
   if (window.MEMLIKE.sessionSettings.enable_audio_autoplay === null) {
@@ -215,7 +215,7 @@ class LearnSettingsModal extends Component {
         </div>
       </div>
       <div className="btn-group">
-        <button className="btn" onClick={this.onCloseModal}>{window.I18N['cancel']}</button>
+        <button className="btn" onClick={this.onCloseModal} autoFocus={true}>{window.I18N['cancel']}</button>
         <button className="btn green" onClick={this.onUpdateSettings}>{window.I18N['save']}</button>
       </div>
     </div>
@@ -231,8 +231,7 @@ class LearnSettingsBtn extends Component {
     this.onCloseModal = this.onCloseModal.bind(this);
   }
   onCloseModal() {
-    window.modal.onclose('learn-settings', null);
-
+    window.modal.onClose('learn-settings', null);
     if(!this.show) {
       return;
     }
@@ -241,7 +240,6 @@ class LearnSettingsBtn extends Component {
   }
   onToggleSettings() {
     this.show = !this.show;
-
     if(!this.show) {
       return;
     }
@@ -253,7 +251,11 @@ class LearnSettingsBtn extends Component {
     render(<LearnSettingsModal />, div);
 
     window.modal.reopen();
-    window.modal.onclose('learn-settings', this.onCloseModal);
+    window.modal.onClose('learn-settings', this.onCloseModal);
+
+    setTimeout(function(){
+      $('button[autofocus]', div).first().focus();
+    }, 0);
   }
   render() {
     if (this.props.session_type == 'preview') {
@@ -1180,6 +1182,7 @@ class Learn extends Component {
 
     this.isScreenSubmitted = false;
     this.isKeydownPressed = false;
+    this.isKeydownDelegated = false;
 
     this.setChoices = this.setChoices.bind(this);
     this.onSessionSettingsUpdated = this.onSessionSettingsUpdated.bind(this);
@@ -1191,9 +1194,41 @@ class Learn extends Component {
     Object.assign(this.sessionSettings, settings);
   }
 
+  componentWillUnmount() {
+
+    // Remove all callbacks
+    window.modal.onOpen('learn', null);
+    window.modal.onClose('learn', null);
+  }
+
+  autoFocus() {
+    $('input[autofocus],.submit').first().focus();
+  }
+
+  resetScreenKeydown() {
+    this.isScreenSubmitted = false;
+    this.isKeydownPressed = false;
+    this.isKeydownDelegated = false;
+  }
+
+  onOpenModal() {
+    this.isKeydownPressed = false;
+    this.isKeydownDelegated = true; // Ignore all keyup events
+  }
+
+  onCloseModal() {
+    this.isKeydownDelegated = false;
+
+    // Re-triggered our autofocus
+    this.autoFocus();
+  }
+
   // Initialization: retrieve datas via AJAX then bind events
   componentDidMount() {
     window.GlobalEventEmitter.subscribe('update-settings', this.onSessionSettingsUpdated);
+
+    window.modal.onClose('learn', this.onCloseModal.bind(this));
+    window.modal.onOpen('learn', this.onOpenModal.bind(this));
 
     // When an image loads: remove the "loading" class & define its height
     document.body.addEventListener('load', function(e){
@@ -1260,10 +1295,10 @@ class Learn extends Component {
 
   // Every time screen gets updated
   componentDidUpdate(prevProps, prevState) {
-    this.isScreenSubmitted = false;
-    this.isKeydownPressed = false;
+    this.resetScreenKeydown();
 
-    $('input[autofocus],.submit').first().focus();
+    // Triggered autofocus
+    this.autoFocus();
 
     // Reset image zoom and audio player
     window.imgZoom     && window.imgZoom.reset();
@@ -1302,7 +1337,7 @@ class Learn extends Component {
       $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
         ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
       );
-      $('input[autofocus],.submit').first().focus();
+      this.autoFocus();
     }
 
     // Update level title (outside of react scope)
@@ -1439,13 +1474,16 @@ class Learn extends Component {
   }
 
   keydown(e) {
+    if (this.isKeydownDelegated) {
+      return;
+    }
     this.isKeydownPressed = true;
   }
 
   // Listen to keyboard inputs: next screen, multiple choice answer
   keyup(e) {
 
-    // Losing focus after rendering?
+    // Losing focus after rendering / delegating keydown in a modal
     if (!this.isKeydownPressed) {
       return;
     }
@@ -1735,8 +1773,7 @@ class Learn extends Component {
       // Show the overlay without updating the screen underneath
       Object.assign(this.state, newState);
 
-      this.isScreenSubmitted = false;
-      this.isKeydownPressed = false;
+      this.resetScreenKeydown();
 
       $(document.body).append(`<div class="overlay">
         <div class="no-heart"></div>
@@ -1894,25 +1931,31 @@ class Learn extends Component {
       return this.markdown();
     }
 
-    // Summary
-    if(this.state.metaScreen == 'summary') {
-      return <div>{this.addStats()}{this.screen()}</div>;
+    // Remove chrono / debug screen
+    if(this.state.metaScreen) {
+      return (
+        <div>
+          {this.addStats()}
+          {this.screen()}
+          <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
+        </div>
+      );
     }
+    return (
+      <div>
+        {this.DISPLAY_CHOOSE_SCREEN && this.addChooseScreenMenu()}
 
-    // Default
-    return <div>
-      {this.DISPLAY_CHOOSE_SCREEN && this.addChooseScreenMenu()}
+        {/* POINTS, HEARTS, PROGRESS BAR */}
+        {this.addStats()}
 
-      {/* POINTS, HEARTS, PROGRESS BAR */}
-      {this.addStats()}
+        {/* SCREEN */}
+        {this.props.session_type == 'speed_review'
+          ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
+          : this.screen()}
 
-      {/* SCREEN */}
-      {this.props.session_type == 'speed_review'
-        ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
-        : this.screen()}
-
-      <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
-    </div>;
+        <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
+      </div>
+    );
   }
 
   addStats() {

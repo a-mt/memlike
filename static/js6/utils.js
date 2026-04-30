@@ -255,51 +255,72 @@ var imgZoom = window.imgZoom = {
 //+--------------------------------------------------------
 var modal = window.modal = {
   $container: false,
+  open_callback: {},
   close_callback: {},
 
-  createContainer: function() {
+  // Create the modal & itsbackdrop
+  createContainer: function () {
     var div = $('<div id="modal" style="display: none">').appendTo(document.body);
 
     // Background
-    $('<div class="backdrop">')
-      .appendTo(div)
-      .on('click', modal.close);
+    $('<div class="backdrop">').appendTo(div).on('click', modal.close);
 
     // Modal
     $('<div class="modal">').appendTo(div);
     modal.$container = div;
   },
-  getContainer: function() {
-    if(!modal.$container) {
+
+  // Get the modal or create it
+  getContainer: function () {
+    if (!modal.$container) {
       modal.createContainer();
     }
     return modal.$container;
   },
-  open: function(html) {
-    if(!modal.$container) {
+
+  // Set the content && open the modal
+  open: function (html) {
+    if (!modal.$container) {
       modal.createContainer();
     }
     $('.modal', modal.$container).html(html);
     modal.reopen();
   },
-  reopen() {
-    modal.$container.show();
-  },
-  onclose: function(k, callback){
-    if(!callback) {
-      delete modal.close_callback[k];
 
-    } else if(typeof callback == 'function') {
+  // Open the modal && trigger all defined open-callbacks
+  reopen() {
+    modal.$container && modal.$container.show();
+
+    for (var k in modal.open_callback) {
+      modal.open_callback[k].call(modal, k);
+    }
+  },
+
+  // Close the modal && trigger all defined close-callbacks
+  close: function () {
+    modal.$container && modal.$container.hide();
+
+    for (var k in modal.close_callback) {
+      modal.close_callback[k].call(modal, k);
+    }
+  },
+
+  // Add/remove a named (k) callback, to call whenever a modal is opened
+  onOpen: function (k, callback) {
+    if (!callback) {
+      delete modal.open_callback[k];
+    } else if (typeof callback == 'function') {
+      modal.open_callback[k] = callback;
+    }
+  },
+  // Add/remove a named (k) callback, to call whenever a modal is opened
+  onClose: function (k, callback) {
+    if (!callback) {
+      delete modal.close_callback[k];
+    } else if (typeof callback == 'function') {
       modal.close_callback[k] = callback;
     }
   },
-  close: function() {
-    modal.$container && modal.$container.hide();
-
-    for(var k in modal.close_callback) {
-      modal.close_callback[k].call(modal, k);
-    }
-  }
 };
 
 //+--------------------------------------------------------

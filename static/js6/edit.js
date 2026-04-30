@@ -459,7 +459,7 @@ class EditCourseActions extends Component {
   }
 
   onCloseModal() {
-    window.modal.onclose('course-settings', null);
+    window.modal.onClose('course-settings', null);
 
     if(!this.showSettings) {
       return;
@@ -477,7 +477,7 @@ class EditCourseActions extends Component {
 
     render(<CourseSettingsModal course={this.props.course} />, div);
     window.modal.reopen();
-    window.modal.onclose('course-settings', this.onCloseModal);
+    window.modal.onClose('course-settings', this.onCloseModal);
   }
 
   render() {
@@ -778,7 +778,7 @@ class EditLevel extends Component {
   }
 
   onCloseEditTitle() {
-    window.modal.onclose('level-title', null);
+    window.modal.onClose('level-title', null);
 
     if(!this.showEditTtitle) {
       return;
@@ -800,7 +800,7 @@ class EditLevel extends Component {
 
     render(<LevelSettingsModal level={this.props.level} updateTitle={this.updateTitle} />, div);
     window.modal.reopen();
-    window.modal.onclose('level-title', this.onCloseEditTitle);
+    window.modal.onClose('level-title', this.onCloseEditTitle);
   }
 
   render() {
@@ -1791,12 +1791,12 @@ function bindEditEvents(tpl) {
     window.modal.open(html);
 
     // Close modal = cancel (clear out data)
-    window.modal.onclose('import', function(){
+    window.modal.onClose('import', function(){
       rows    = null;
       headers = null;
       $adding = null;
 
-      this.onclose('import', null);
+      this.onClose('import', null);
     });
 
     var run_import = false;
@@ -1807,7 +1807,7 @@ function bindEditEvents(tpl) {
       }
       run_import = true;
 
-      window.modal.onclose('import', null);
+      window.modal.onClose('import', null);
       window.modal.close();
 
       while (rows.length) {
