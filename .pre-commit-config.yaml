@@ -6,4 +6,4 @@ repos:
         entry: bash -c 'now=\"$(date -Im)\"; for file in "${@}"; do sed -i "s/process.env.BUILD_DATE/$now/" "$file"; done'
         language: system
         pass_filenames: true
-        files: ^static/js/
+        files: ^static/js/build/

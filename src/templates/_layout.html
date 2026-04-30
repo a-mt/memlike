@@ -164,8 +164,8 @@ $ t = time()
 
      window.MEMLIKE = window.MEMLIKE || {};
     </script>
-    <script src="/static/js/utils.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script src="/static/js/build/utils.js"></script>
+    <script src="/static/js/build/app.js"></script>
     $if "js" in tpl:
       $for file in tpl.js.split(', '):
         <script src="$(file)?t=$(t)"></script>

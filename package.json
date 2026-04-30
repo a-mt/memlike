@@ -4,8 +4,8 @@
   "description": "Build JS",
   "main": "index.js",
   "scripts": {
-    "build": "babel static/js6 -d static/js --minified -s",
-    "build-dev": "babel static/js6 -d static/js -w"
+    "build": "babel static/js6 -d static/js/build --minified -s",
+    "build-dev": "babel static/js6 -d static/js/build -w"
   },
   "author": "",
   "license": "ISC",

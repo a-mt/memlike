@@ -1,7 +1,7 @@
 $def with (course, selectboxes)
 $var currentPage: courses
 $var title: $(course['title']) - $(I18N.misc['spreadsheet'])
-$var js: /static/js/markdown.min.js, /static/js/spreadsheet.js
+$var js: /static/js/markdown.min.js, /static/js/build/spreadsheet.js
 
 $:(prender.inc_course_banner(course))
 
