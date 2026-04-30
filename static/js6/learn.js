@@ -1454,6 +1454,11 @@ class Learn extends Component {
     // Press enter
     if(key == 13) {
 
+      // No focused element
+      if (e.target === document.body) {
+        return;
+      }
+
       // Cut short redundancy between button click and enter
       if (this.isScreenSubmitted) {
         return;
