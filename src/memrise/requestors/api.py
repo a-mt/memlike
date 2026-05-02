@@ -348,7 +348,7 @@ class ApiRequestor:
 
         if not level_index or level_index == "all":
             data["session_source_type"] = "course"
-        elif session_type == "preview":
+        elif session_type == "preview" and not level_index:
             # Can't preview all things...
             referer += "&level_index=1"
             data["session_source_sub_index"] = "1"

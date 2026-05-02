@@ -2021,6 +2021,7 @@ table.learn:not(.summary) td:last-child {
 .choice-box input {
   opacity: 0;
   width: 0;
+  margin: 0;
 }
 .choice-box:has(input:checked) {
   border-color: #8c4a6c;
