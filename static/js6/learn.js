@@ -535,9 +535,7 @@ const GameDataBuilder = {
 
     GameDataBuilder.sessionType = sessionType;
     GameDataBuilder.learnablesMap = learnablesMap;
-
     GameScreenBuilder.reset();
-    GameProgressHandler.reset();
 
     return {
       screens,
@@ -792,12 +790,6 @@ const GameScreenBuilder = {
 const GameProgressHandler = {
   events: [],
   isSaving: false,
-
-  reset: function() {
-    GameProgressHandler.events = [];
-    GameProgressHandler.isSaving = false;
-    $('#learn-settings-btn').removeClass('loading-spinner-before');
-  },
 
   /**
    * Compute the next growh level for the given progress,
@@ -1067,12 +1059,14 @@ const GameProgressHandler = {
   },
 
   registerSessionEnd(data) {
-    GameProgressHandler.isSaving = true;
-    $('#learn-settings-btn').addClass('loading-spinner-before');
-
     var events = [...GameProgressHandler.events];
     var requests = [];
     console.log('Session end', data, events);
+
+    // Reset internal state
+    GameProgressHandler.events = [];
+    GameProgressHandler.isSaving = true;
+    $('#learn-settings-btn').addClass('loading-spinner-before');
 
     // Send events in batches of 50
     while(events.length) {
@@ -1097,17 +1091,18 @@ const GameProgressHandler = {
     });
 
     // Send each request one after the other
-    function executeRequestsQueue() {
-      if(!requests.length) {
-        GameProgressHandler.isSaving = false;
-        $('#learn-settings-btn').removeClass('loading-spinner-before');
-        return;
-      }
-      var request = requests.shift();
-      request.success = executeRequestsQueue;
-      $.ajax(request);
+    this.executeRequestsList(requests.reverse());
+  },
+
+  executeRequestsList(requests) {
+    if(!requests.length) {
+      $('#learn-settings-btn').removeClass('loading-spinner-before');
+
+      return GameProgressHandler.isSaving = false;
     }
-    executeRequestsQueue();
+    var request = requests.pop();
+    request.done = this.executeRequestsList.bind(this, requests);
+    $.ajax(request);
   }
 };
 
@@ -1125,8 +1120,18 @@ class Learn extends Component {
   levelsLastId = 0;
   useLevels = false; //!review entire course
 
-  levelData = false;
-  metaScreenSummaryData = false;
+  // Screen utils
+  learnData = false;
+  template = null;
+  learnScreen_summary = false;
+
+  // Event utils
+  isScreenSubmitted = false;
+  isKeydownPressed = false;
+  isKeydownDelegated = false;
+
+  expectedChoiceKind = false;
+  choices = false;
 
   //+--------------------------------------------------------
   //| LIFECYCLE
@@ -1141,16 +1146,19 @@ class Learn extends Component {
     }
 
     const state = {
+      isLoading: true,
       levelId: 0,
       levelType: 1,
 
       error: false,
       metaScreen: false,
-      screen_i: 0,
-      screen_n: 0,
+      learnScreen_i: 0,
+      learnScreen_n: 0,
+      learnScreen_enforcedTemplate: null,
 
       points: 0,
       hearts: 3,
+      userAnswer: null,
     };
 
     // review / learn / preview or any with a level_index
@@ -1370,7 +1378,7 @@ class Learn extends Component {
         if(e.target.classList.contains('disabled')) return;
 
         this.setState({
-          forceScreenTemplate: e.target.innerHTML == 'default' ? false : e.target.innerHTML
+          learnScreen_enforcedTemplate: e.target.innerHTML == 'default' ? false : e.target.innerHTML
         });
       }.bind(this));
     }
@@ -1381,12 +1389,13 @@ class Learn extends Component {
    */
   fetchData(levelId, callback) {
     var sessionType = this.props.session_type;
-
+    var levelType = 1;
     var url = '/ajax' + this.props.course.url;
+
     if(!this.useLevels) {
       url += 'all/' + sessionType;
     } else {
-      var levelType = this.props.course.levels[levelId].type;
+      levelType = this.props.course.levels[levelId].type;
 
       if(levelType === 2) {
         url += levelId + '/media';
@@ -1401,44 +1410,55 @@ class Learn extends Component {
       success: function(data){
         callback && callback(data);
 
-        let gameData = GameDataBuilder.buildData(sessionType, data);
         let error = false;
+        let metaScreen = false;
+        let learnScreen_n = 0;
 
-        if (!gameData.screens.length) {
-          switch (sessionType) {
-            case 'learn':
-              error = window.I18N.learn_err_empty_learn;
-              break;
-
-            case 'preview':
-              error = window.I18N.learn_err_empty_preview;
-              break;
-
-            case 'review':
-              error = window.I18N.learn_err_empty_review;
-              break;
-
-            default:
-              error = window.I18N.learn_err_empty;
-              break;
-          }
-        }
-
-        this.levelData = gameData;
-        this.metaScreenSummaryData = {
+        this.learnScreen_summary = {
           nb_scheduled_correct: 0,
           nb_scheduled: 0,
           learnables: {},
         };
 
+        if (levelType === 2) {
+          metaScreen = 'markdown';
+
+          this.learnData = {
+            markdown: data,
+          };
+        } else {
+          let gameData = GameDataBuilder.buildData(sessionType, data);
+          if (!gameData.screens.length) {
+            switch (sessionType) {
+              case 'learn':
+                error = window.I18N.learn_err_empty_learn;
+                break;
+
+              case 'preview':
+                error = window.I18N.learn_err_empty_preview;
+                break;
+
+              case 'review':
+                error = window.I18N.learn_err_empty_review;
+                break;
+
+              default:
+                error = window.I18N.learn_err_empty;
+                break;
+            }
+          }
+          learnScreen_n = gameData.screens.length;
+          this.learnData = gameData;
+        }
         this.setState({
-          metaScreen : false,
-          error,
+          isLoading: false,
           levelId,
           levelType,
-          points   : 0,
-          screen_i : 0,
-          screen_n : (gameData.screens ? gameData.screens.length : 1),
+
+          error,
+          metaScreen,
+          learnScreen_i: 0,
+          learnScreen_n,
         });
       }.bind(this),
 
@@ -1656,10 +1676,10 @@ class Learn extends Component {
   updateSummary(learnableID, isCorrect) {
 
     // Count right and wrong answers
-    this.metaScreenSummaryData.nb_scheduled += 1;
-    this.metaScreenSummaryData.nb_scheduled_correct += (isCorrect ? 1 : 0);
+    this.learnScreen_summary.nb_scheduled += 1;
+    this.learnScreen_summary.nb_scheduled_correct += (isCorrect ? 1 : 0);
 
-    var learnablesSummary = this.metaScreenSummaryData.learnables;
+    var learnablesSummary = this.learnScreen_summary.learnables;
     if(!learnablesSummary[learnableID]) {
       learnablesSummary[learnableID] = {
         count: 0,
@@ -1681,13 +1701,13 @@ class Learn extends Component {
     // and retrieved from the backend at the beginning of the learning session
     var progress = GameProgressHandler.copyProgress(
       learnableID,
-      this.levelData.progressMap[learnableID] || {},
+      this.learnData.progressMap[learnableID] || {},
     );
     GameProgressHandler.updateProgress(
       progress,
       userAnswer.score,
     );
-    this.levelData.progressMap[learnableID] = progress;
+    this.learnData.progressMap[learnableID] = progress;
 
     // Update the earned points
     var points = AwardPoints.getPoints(
@@ -1727,7 +1747,7 @@ class Learn extends Component {
     if(isSpeedReview) {
       this.selectCorrectMultipleChoice(userAnswer);
     }
-    var screen = this.levelData ? this.levelData.screens[this.state.screen_i] : null;
+    var screen = this.learnData ? this.learnData.screens[this.state.learnScreen_i] : null;
     if(!screen) {
       return;
     }
@@ -1757,7 +1777,7 @@ class Learn extends Component {
       return this.setState({
         metaScreen: 'correction',
         userAnswer,
-        forceScreenTemplate: false,
+        learnScreen_enforcedTemplate: false,
         points: this.state.points + points,
       });
     }
@@ -1834,47 +1854,83 @@ class Learn extends Component {
 
     newState = newState || {}
 
-    // Next item
-    if(this.state.screen_i + 1 < this.state.screen_n) {
-      this.setState(Object.assign(newState, {
-        screen_i: this.state.screen_i + 1,
-        metaScreen: false
-      }));
-
-    // After displaying the summary: display the next level or go back to the course
-    } else if(this.state.metaScreen == 'summary' || this.state.levelType == 2){
-      if(this.useLevels && this.state.levelId < this.levelsLastId) {
-        if(this.levelData) {
-          this.levelData = false;
-          this.fetchData(this.levelsIdList[this.levelsIdList.indexOf(this.state.levelId) + 1]);
-        }
-      } else {
-        this.state.error = 1; // prevent warning
-        window.location.href = window.MEMLIKE.garden.session_origin_url;
-      }
-
-    // Summary
-    } else {
-      var data = {
-        session_points: this.state.points,
-        session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
-        session_source_type: this.useLevels ? 'course_id_and_level_index' : 'course',
-        session_source_id: this.props.course.id,
-      };
-      if (this.useLevels) {
-        data.session_source_sub_index = this.state.levelId;
-      }
-      this.sessionSettings.save_progress && setTimeout(() => {
-        GameProgressHandler.registerSessionEnd(data);
-      }, 0);
-
-      this.setState(Object.assign(newState, {
-        screen_i: this.state.screen_n,
-        metaScreen: 'summary'
-      }), function(){
-        window.imgZoom && window.imgZoom.reset();
-      });
+    // We're not expecting a submit there
+    if (this.state.error || this.state.isLoading) {
+      return;
     }
+
+    if (this.state.levelType == 1) {
+
+      // Next screen
+      if(this.state.learnScreen_i + 1 < this.state.learnScreen_n) {
+        return this.setState(Object.assign(newState, {
+          learnScreen_i: this.state.learnScreen_i + 1,
+          metaScreen: false,
+          userAnswer: null,
+        }));
+      }
+
+      // Reached the last screen: recap the list of learned things (= summary)
+      if (!this.state.metaScreen || this.state.metaScreen == 'correction') {
+
+        // Save session points
+        var data = {
+          session_points: this.state.points,
+          session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
+          session_source_type: this.useLevels ? 'course_id_and_level_index' : 'course',
+          session_source_id: this.props.course.id,
+        };
+        if (this.useLevels) {
+          data.session_source_sub_index = this.state.levelId;
+        }
+        this.sessionSettings.save_progress && setTimeout(() => {
+          GameProgressHandler.registerSessionEnd(data);
+        }, 0);
+
+        // Display the summary
+        return this.setState(Object.assign(newState, {
+          learnScreen_i: this.state.learnScreen_n,
+          metaScreen: 'summary',
+          userAnswer: null,
+        }));
+      }
+    }
+
+    // If we're looping through the levels: display the next level
+    if(this.useLevels && this.state.levelId < this.levelsLastId) {
+      let levelId = this.levelsIdList[this.levelsIdList.indexOf(this.state.levelId) + 1];
+
+      // Reinit our internal variables (even though fetchData is supposed to build them)
+      this.resetScreenKeydown();
+      this.resetChoices();
+
+      this.learnData = false;
+      this.learnScreen_summary = false;
+      this.template = null;
+
+      // Reinit our state: display the loader
+      this.setState({
+        isLoading: true,
+        levelId,
+        levelType: 1,
+
+        error: false,
+        metaScreen: false,
+        learnScreen_i: 0,
+        learnScreen_n: 0,
+        learnScreen_enforcedTemplate: null,
+
+        points: 0,
+        hearts: 3,
+        userAnswer: null,
+      });
+
+      // Fetch the level data
+      return this.fetchData(levelId);
+    }
+
+    // We reached the last level to display: go back to the course
+    window.location.href = window.MEMLIKE.garden.session_origin_url;
   }
 
   //+--------------------------------------------------------
@@ -1896,6 +1952,12 @@ class Learn extends Component {
 
   render() {
 
+    // Loading data
+    if(this.state.isLoading) {
+      return <div className="loading-spinner"></div>;
+    }
+
+
     // Something went wrong
     if(this.state.error) {
       if(this.state.error == 403) {
@@ -1907,59 +1969,56 @@ class Learn extends Component {
       }
     }
 
-    // Loading data
-    if(!this.state.metaScreen && !this.state.screen_n) {
-      return <div className="loading-spinner"></div>;
+    // Media level (state.levelType == 2)
+    if (this.state.metaScreen == 'markdown') {
+      return this.renderMarkdownScreen();
     }
 
     // Preview thing
     if(this.props.preview_thing_id) {
 
       // Utils for devs: render the specific screen for the given thing
-      if(this.state.forceScreenTemplate) {
-        return this.screen();
+      if(this.state.learnScreen_enforcedTemplate) {
+        return this.renderLearnScreen();
       } else {
         return <div>
-          {this.DISPLAY_CHOOSE_SCREEN ? this.addChooseScreenMenu() : null}
-          {this.render_presentation(false)}
+          {this.DISPLAY_CHOOSE_SCREEN ? this.renderChooseLearnScreen() : null}
+          {this.renderLearnScreen_presentation(false)}
         </div>;
       }
     }
 
-    // Media level
-    if(this.state.levelType == 2 && this.useLevels) {
-      return this.markdown();
-    }
-
-    // Remove chrono / debug screen
+    // ie Summary, correction, lost
+    // Cut short and display learnScreen without chrono / debug screen
     if(this.state.metaScreen) {
       return (
         <div>
-          {this.addStats()}
-          {this.screen()}
+          {this.renderLearnProgressBar()}
+          {this.renderLearnScreen()}
           <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
         </div>
       );
     }
+
     return (
       <div>
-        {this.DISPLAY_CHOOSE_SCREEN && this.addChooseScreenMenu()}
+        {this.DISPLAY_CHOOSE_SCREEN && this.renderChooseLearnScreen()}
 
         {/* POINTS, HEARTS, PROGRESS BAR */}
-        {this.addStats()}
+        {this.renderLearnProgressBar()}
 
         {/* SCREEN */}
         {this.props.session_type == 'speed_review'
-          ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.screen()}</div>
-          : this.screen()}
+          ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.renderLearnScreen()}</div>
+          : this.renderLearnScreen()}
 
         <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
       </div>
     );
   }
 
-  addStats() {
-    var percent = (this.state.screen_n ? Math.ceil(this.state.screen_i / this.state.screen_n * 100) : 100);
+  renderLearnProgressBar() {
+    var percent = (this.state.learnScreen_n ? Math.ceil(this.state.learnScreen_i / this.state.learnScreen_n * 100) : 100);
 
     return <div className="progress-stats">
       {this.props.session_type == 'speed_review' &&
@@ -1972,22 +2031,22 @@ class Learn extends Component {
       <div
         className="progress-bar"
         role="progressbar"
-        aria-valuenow={this.state.screen_i}
+        aria-valuenow={this.state.learnScreen_i}
         aria-valuemin="0"
-        aria-valuemax={this.state.screen_i}
+        aria-valuemax={this.state.learnScreen_i}
       >
-        <div className="counter">{this.state.screen_i} / {this.state.screen_n}</div>
+        <div className="counter">{this.state.learnScreen_i} / {this.state.learnScreen_n}</div>
         <div className="progress-bar-active" style={{'clip-path': 'polygon(0 0, '+percent+'% 0, '+percent+'% 100%, 0 100%)'}}>
-          <div className="counter">{this.state.screen_i} / {this.state.screen_n}</div>
+          <div className="counter">{this.state.learnScreen_i} / {this.state.learnScreen_n}</div>
         </div>
       </div>
     </div>;
   }
 
-  addChooseScreenMenu() {
-    var item    = this.levelData.screens[this.state.screen_i],
-        screen  = this.levelData.screensTemplateMap[item.learnableID],
-        current = this.state.forceScreenTemplate;
+  renderChooseLearnScreen() {
+    var item    = this.learnData.screens[this.state.learnScreen_i],
+        screen  = this.learnData.screensTemplateMap[item.learnableID],
+        current = this.state.learnScreen_enforcedTemplate;
 
     return <ul id="debug-screen">
       <li className={current ? '' : 'active'}>default</li>
@@ -2034,42 +2093,42 @@ class Learn extends Component {
     </ul>;
   }
 
-  screen() {
+  renderLearnScreen() {
     this.resetChoices();
 
-    if(!this.levelData) {
+    if(!this.learnData) {
       return null;
     }
-    if(this.state.forceScreenTemplate) {
-      switch(this.state.forceScreenTemplate) {
-        case 'multiple_choice'         : return this.render_tpl({ template: 'multiple_choice' });
-        case 'typing'                  : return this.render_tpl({ template: 'typing' });
-        case 'reversed_multiple_choice': return this.render_tpl({ template: 'reversed_multiple_choice' });
-        case 'audio_multiple_choice'   : return this.render_tpl({ template: 'audio_multiple_choice' });
-        case 'tapping'                 : return this.render_tpl({ template: 'tapping' });
-        case 'copytyping'              : return this.render_tpl({ template: 'copytyping' });
-        case 'audio_typing'            : return this.render_tpl({ template: 'typing', promptWith: 'audio' });
-        case 'reversed_multiple_choice_prompt_video': return this.render_tpl({ template: 'reversed_multiple_choice', promptWith: 'video' });
-        case 'video-pre-presentation'  : return this.render_tpl({ template: 'multiple_choice', promptWith: 'video' });
-        case 'presentation'            : return this.render_tpl({ template: 'presentation' });
+    if(this.state.learnScreen_enforcedTemplate) {
+      switch(this.state.learnScreen_enforcedTemplate) {
+        case 'multiple_choice'         : return this.renderLearnScreen_any({ template: 'multiple_choice' });
+        case 'typing'                  : return this.renderLearnScreen_any({ template: 'typing' });
+        case 'reversed_multiple_choice': return this.renderLearnScreen_any({ template: 'reversed_multiple_choice' });
+        case 'audio_multiple_choice'   : return this.renderLearnScreen_any({ template: 'audio_multiple_choice' });
+        case 'tapping'                 : return this.renderLearnScreen_any({ template: 'tapping' });
+        case 'copytyping'              : return this.renderLearnScreen_any({ template: 'copytyping' });
+        case 'audio_typing'            : return this.renderLearnScreen_any({ template: 'typing', promptWith: 'audio' });
+        case 'reversed_multiple_choice_prompt_video': return this.renderLearnScreen_any({ template: 'reversed_multiple_choice', promptWith: 'video' });
+        case 'video-pre-presentation'  : return this.renderLearnScreen_any({ template: 'multiple_choice', promptWith: 'video' });
+        case 'presentation'            : return this.renderLearnScreen_any({ template: 'presentation' });
       }
     }
     if(this.state.metaScreen == 'summary') {
-      return this.summary();
+      return this.renderLearnScreen_summary();
     }
     if(this.state.metaScreen == 'correction') {
-      return this.render_presentation(this.state.userAnswer || true);
+      return this.renderLearnScreen_presentation(this.state.userAnswer || true);
     }
 
     // No defined screen: display next learnable
-    const item = this.levelData.screens[this.state.screen_i];
+    const item = this.learnData.screens[this.state.learnScreen_i];
     if(!item) {
-      console.log('No item to display', this.levelData.screens, this.state.screen_i);
+      console.log('No item to display', this.learnData.screens, this.state.learnScreen_i);
       return null;
     }
-    const screens = this.levelData.screensTemplateMap[item.learnableID];
+    const screens = this.learnData.screensTemplateMap[item.learnableID];
     if(!screens) {
-      console.log('No screen to display', this.levelData.screensTemplateMap, item);
+      console.log('No screen to display', this.learnData.screensTemplateMap, item);
       return null;
     }
     console.log('Screen', item, screens);
@@ -2077,55 +2136,55 @@ class Learn extends Component {
     if(item.learningGrowthLevel) {
       switch(item.learningGrowthLevel) {
         case 1:
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'multiple_choice',
               nChoices: 4,
             });
 
         case 2:
           if(screens.reversed_multiple_choice.video && !this.sessionSettings.disable_multimedia) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video',
             });
           }
           if(screens.audio_multiple_choice && Math.random() > .5 && !this.sessionSettings.disable_multimedia) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'audio_multiple_choice',
             });
           }
           if(screens.tapping && !this.sessionSettings.disable_tapping) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'tapping',
               difficulty: 0,
             });
           }
-          return this.render_tpl({
+          return this.renderLearnScreen_any({
             template: 'reversed_multiple_choice',
             nChoices: 4,
           });
 
         case 3:
           if(screens.tapping && !this.sessionSettings.disable_tapping) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'tapping',
               difficulty: .5,
             });
           }
           if(screens.typing && !this.sessionSettings.disable_typing) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'typing',
             });
           }
-          return this.render_tpl({
+          return this.renderLearnScreen_any({
             template: 'multiple_choice',
             nChoices: 9,
           });
 
         case 4:
           if(screens.multiple_choice.video && !this.sessionSettings.disable_multimedia) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'reversed_multiple_choice',
               nChoices: 4,
               promptWith: 'video',
@@ -2147,29 +2206,29 @@ class Learn extends Component {
               });
             }
             if(s.length > 0) {
-              return this.render_tpl(s.random());
+              return this.renderLearnScreen_any(s.random());
             }
           }
-          return this.render_tpl({
+          return this.renderLearnScreen_any({
             template: 'reversed_multiple_choice',
             nChoices: [4, 6].random(),
           });
 
         case 5:
           if(screens.taping && !this.sessionSettings.disable_tapping) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'tapping',
               difficulty: .5,
             });
           }
-          return this.render_tpl({
+          return this.renderLearnScreen_any({
             template: 'multiple_choice',
             nChoices: [6, 9].random(),
           });
 
         default:
           if(screens.typing && !this.sessionSettings.disable_typing) {
-            return this.render_tpl({
+            return this.renderLearnScreen_any({
               template: 'typing',
             });
           }
@@ -2182,12 +2241,12 @@ class Learn extends Component {
 
     if(this.props.session_type == 'speed_review') {
       if(this.sessionSettings.reverse_prompt_and_answer && screens.reversed_multiple_choice) {
-        return this.render_tpl({
+        return this.renderLearnScreen_any({
           template: 'reversed_multiple_choice',
           nChoices: 4,
         });
       }
-      return this.render_tpl({
+      return this.renderLearnScreen_any({
         template: 'multiple_choice',
         nChoices: 4,
       });
@@ -2201,54 +2260,54 @@ class Learn extends Component {
           && !this.sessionSettings.disable_typing
           && GameScreenBuilder.buildScreen_reverse_typing(screens, this.props.course.source)
         ) {
-          return this.render_tpl({
+          return this.renderLearnScreen_any({
             template: 'reversed_typing',
           });
         }
-        return this.render_tpl({
+        return this.renderLearnScreen_any({
             template: (GameScreenBuilder.buildScreen_reversed_multiple_choice(screens), 'reversed_multiple_choice2'),
             nChoices: 9,
         });
       }
 
       if(screens.typing && !this.sessionSettings.disable_typing) {
-        return this.render_tpl({
+        return this.renderLearnScreen_any({
           template: 'typing',
         });
       }
       if(screens.audio_multiple_choice && Math.random() > .5 && !this.sessionSettings.disable_multimedia) {
-        return this.render_tpl({
+        return this.renderLearnScreen_any({
           template: 'audio_multiple_choice',
         });
       }
-      return this.render_tpl({
+      return this.renderLearnScreen_any({
           template: 'multiple_choice',
           nChoices: 9,
       });
     }
 
-    return this.render_tpl({ template: item.template });
+    return this.renderLearnScreen_any({ template: item.template });
   }
 
-  render_tpl(setting) {
+  renderLearnScreen_any(setting) {
     this.template = setting.template;
 
     switch(setting.template) {
-      case 'multiple_choice': return this.render_multiple_choice(setting);
-      case 'reversed_typing': return this.render_reversed_typing(setting);
-      case 'typing': return this.render_typing(setting);
-      case 'reversed_multiple_choice': return this.render_reversed_multiple_choice(setting);
-      case 'reversed_multiple_choice2': return this.render_reversed_multiple_choice2(setting);
-      case 'audio_multiple_choice': return this.render_audio_multiple_choice(setting);
-      case 'tapping': return this.render_tapping(setting);
-      case 'copytyping': return this.render_copytyping(setting);
+      case 'multiple_choice': return this.renderLearnScreen_multiple_choice(setting);
+      case 'reversed_typing': return this.renderLearnScreen_reversed_typing(setting);
+      case 'typing': return this.renderLearnScreen_typing(setting);
+      case 'reversed_multiple_choice': return this.renderLearnScreen_reversed_multiple_choice(setting);
+      case 'reversed_multiple_choice2': return this.renderLearnScreen_reversed_multiple_choice2(setting);
+      case 'audio_multiple_choice': return this.renderLearnScreen_audio_multiple_choice(setting);
+      case 'tapping': return this.renderLearnScreen_tapping(setting);
+      case 'copytyping': return this.renderLearnScreen_copytyping(setting);
       case 'presentation':
-        return this.render_presentation();
+        return this.renderLearnScreen_presentation();
       default:
         console.error(setting.template + " doesn't exist");
     }
   }
-  get_screen(tpl) {
+  getLearnScreen(tpl) {
     /*
     Returns the current screen data
     Exemple:
@@ -2310,67 +2369,68 @@ class Learn extends Component {
           "gap_prompt": null
         }
     */
-    var id = this.props.preview_thing_id || this.levelData.screens[this.state.screen_i].learnableID;
-    return this.levelData.screensTemplateMap[id][tpl];
+    var learnableID = this.props.preview_thing_id || this.learnData.screens[this.state.learnScreen_i].learnableID;
+
+    return this.learnData.screensTemplateMap[learnableID][tpl];
   }
 
-  render_audio_multiple_choice(setting) {
+  renderLearnScreen_audio_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen('audio_multiple_choice')}
+              item={this.getLearnScreen('audio_multiple_choice')}
               nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
-  render_reversed_multiple_choice(setting) {
+  renderLearnScreen_reversed_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen('reversed_multiple_choice')}
+              item={this.getLearnScreen('reversed_multiple_choice')}
               nChoices={setting.nChoices || 4}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
-  render_reversed_multiple_choice2(setting) {
+  renderLearnScreen_reversed_multiple_choice2(setting) {
     return <MultipleChoice
-              item={this.get_screen('reversed_multiple_choice2')}
+              item={this.getLearnScreen('reversed_multiple_choice2')}
               nChoices={setting.nChoices || (this.props.session_type == 'speed_review' ? 4 : 9)}
               setChoices={this.setChoices} />;
   }
-  render_multiple_choice(setting) {
+  renderLearnScreen_multiple_choice(setting) {
     return <MultipleChoice
-              item={this.get_screen('multiple_choice')}
+              item={this.getLearnScreen('multiple_choice')}
               nChoices={setting.nChoices || (this.props.session_type == 'speed_review' ? 4 : 9)}
               promptWith={setting.promptWith}
               setChoices={this.setChoices} />;
   }
-  render_reversed_typing(setting) {
+  renderLearnScreen_reversed_typing(setting) {
     return <Typing
-              item={this.get_screen('reversed_typing')}
+              item={this.getLearnScreen('reversed_typing')}
               setChoices={this.setChoices} />;
   }
-  render_typing(setting) {
+  renderLearnScreen_typing(setting) {
     return <Typing
-              item={this.get_screen('typing')}
+              item={this.getLearnScreen('typing')}
               setChoices={this.setChoices}
               promptWith={setting.promptWith} />;
   }
-  render_tapping(setting) {
+  renderLearnScreen_tapping(setting) {
     return <Tapping
-              item={this.get_screen('tapping')}
+              item={this.getLearnScreen('tapping')}
               difficulty={setting.difficulty || 1}
               setChoices={this.setChoices} />;
   }
-  render_copytyping(){
-    var prompt = this.get_screen('typing');
+  renderLearnScreen_copytyping(){
+    var prompt = this.getLearnScreen('typing');
     this.setChoices(prompt.correct, 'text', prompt.is_strict);
 
     return <Presentation
-              item={this.get_screen('presentation')}
+              item={this.getLearnScreen('presentation')}
               prompt={prompt}
             />;
   }
-  render_presentation(userAnswer) {
+  renderLearnScreen_presentation(userAnswer) {
     return (
       <Presentation
-        item={this.get_screen('presentation')}
+        item={this.getLearnScreen('presentation')}
         userAnswer={userAnswer}
         langCodeTarget={this.props.course.target ? this.props.course.target.language_code : null}
         langCodeSource={this.props.course.source ? this.props.course.source.language_code : null}
@@ -2378,28 +2438,29 @@ class Learn extends Component {
       />
     );
   }
-  summary() {
+  renderLearnScreen_summary() {
     var items = [];
 
     if(this.props.session_type == 'preview') {
-      if(this.levelData) {
-        for(var i=0; i<this.levelData.screens.length; i++) {
-          var id = '' + this.levelData.screens[i].learnableID;
+      if(this.learnData) {
+        for(var i=0; i<this.learnData.screens.length; i++) {
+          var id = '' + this.learnData.screens[i].learnableID;
 
-          items.push(this.levelData.screensTemplateMap[id].presentation);
+          items.push(this.learnData.screensTemplateMap[id].presentation);
         }
       }
     } else {
-      for(var id in this.metaScreenSummaryData.learnables) {
-        var item = this.metaScreenSummaryData.learnables[id];
+      for(var id in this.learnScreen_summary.learnables) {
+        var item = this.learnScreen_summary.learnables[id];
 
-        items[item.index] = {...item, ...this.levelData.screensTemplateMap[id].presentation};
+        items[item.index] = {...item, ...this.learnData.screensTemplateMap[id].presentation};
       }
     }
     return <Summary items={Object.values(items)} session_type={this.props.session_type} />;
   }
-  markdown() {
-    var data = window.markdown.decode(eval(this.levelData));
+  renderMarkdownScreen() {
+    var txt = this.learnData.markdown;
+    var data = txt ? window.markdown.decode(eval(txt)) : '';
     return <div className="nicebox" dangerouslySetInnerHTML={{__html: data}} />;
   }
 }
@@ -3102,10 +3163,10 @@ const highlightDiff = (function(){
 
   class Diff {
     count = 0
-    p = 2  // p -> precision factor
+    precision = 2  // p -> precision factor
 
-    constructor(p) {
-      this.p = p || 2;
+    constructor(precision) {
+      this.precision = precision || 2;
     }
     addCount(txt) {
       this.count += txt.length;
@@ -3113,7 +3174,7 @@ const highlightDiff = (function(){
     }
 
     highlight(txt1, txt2){
-      var cd       = getChanges(txt1,txt2,'',this.p),
+      var cd       = getChanges(txt1,txt2,'',this.precision),
           nextTxt2 = txt2.slice(cd.mtc.length + cd.ins.length + cd.sbs.length), // remaining part of "txt2"
           nextTxt1 = txt1.slice(cd.mtc.length + cd.del.length + cd.sbs.length), // remaining part of "txt1"
           result   = '';                                                        // the glorious result
@@ -3155,8 +3216,8 @@ const highlightDiff = (function(){
     }
   }
 
-  function diff(txt1, txt2, p) {
-    return new Diff(p).highlightTokens(txt1, txt2);
+  function diff(txt1, txt2, precision) {
+    return new Diff(precision).highlightTokens(txt1, txt2);
   }
   return diff;
 })();
