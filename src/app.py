@@ -99,8 +99,14 @@ else:
 # Session processor
 if settings.IS_TEST:
     store = session.MemoryStore()
+
+elif settings.SESSION_BACKEND == "session.CookieDataStore":
+    store = session.CookieDataStore("session_data")
+
+elif settings.SESSION_BACKEND == "session.DBStore":
+    store = session.DBStore(web.database(), "sessions")
+
 else:
-    # if settings.DATABASE_URL: store = session.DBStore(web.database(), 'sessions')
     store = session.DiskStore("/tmp/sessions")
 
 session = session.Session(app=None, store=store, initializer=settings.DEFAULT_SESSION)
@@ -159,7 +165,6 @@ def flash_load():
         web.ctx.flash = {}
 
     web.config.template["flash"] = web.storage(web.ctx.flash)
-
 
 app.add_processor(web.loadhook(flash_load))
 

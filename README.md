@@ -14,7 +14,7 @@ Custom interface for Memrise
 
       docker-compose up -d
 
-### From scratch with Heroku
+### From scratch with postgresql on Heroku
 
 * Install python headers and memcache
 
@@ -40,6 +40,7 @@ Custom interface for Memrise
 
 * Create a database
 
+      heroku config:set SESSION_BACKEND="session.CookieDataStore"
       heroku addons:create heroku-postgresql:hobby-dev
       cat init.sql | heroku pg:psql
 

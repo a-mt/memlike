@@ -51,6 +51,7 @@ services:
       DEBUG_SQL: 1
       AUTORELOAD: 1
       PYTHONUNBUFFERED: 1
+      SESSION_BACKEND: session.CookieDataStore
     platform: linux/amd64
     volumes:
       - .:/srv
