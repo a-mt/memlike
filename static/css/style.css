@@ -1765,7 +1765,7 @@ code.header {
   left: 50%;
   transform: translateX(-50%);
   top: 0;
-  margin: 20px;
+  margin: 20px 0;
   min-width: 200px;
   max-height: calc(100% - 40px);
   padding: 10px;
@@ -1799,6 +1799,12 @@ code.header {
 .modal-close-link:last-child {
   margin-top: 20px;
 }
+@media (max-width: 560px) {
+  .modal {
+    width: calc(100% - 20px);
+  }
+}
+
 @media (min-width: 721px) {
   .modal {
     min-width: 500px;
