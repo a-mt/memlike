@@ -1091,18 +1091,19 @@ const GameProgressHandler = {
     });
 
     // Send each request one after the other
-    this.executeRequestsList(requests.reverse());
+    this.executeRequestsList(requests);
   },
 
   executeRequestsList(requests) {
     if(!requests.length) {
       $('#learn-settings-btn').removeClass('loading-spinner-before');
-
-      return GameProgressHandler.isSaving = false;
+      GameProgressHandler.isSaving = false;
+      return;
     }
     var request = requests.pop();
-    request.done = this.executeRequestsList.bind(this, requests);
-    $.ajax(request);
+    var nextExecute = this.executeRequestsList.bind(this, [...requests]);
+
+    $.ajax(request).done(nextExecute);
   }
 };
 
@@ -1210,7 +1211,9 @@ class Learn extends Component {
   }
 
   autoFocus() {
-    $('input[autofocus],.submit').first().focus();
+    setTimeout(function(){
+      $('input[autofocus],.submit').first().focus();
+    }, 0);
   }
 
   resetScreenKeydown() {
@@ -1479,6 +1482,9 @@ class Learn extends Component {
 
   // Trigger warning when user closes tab
   warnbeforeunload(e) {
+    this.isScreenSubmitted = false;
+    console.log('warnbeforeunload', e);
+
     if(GameProgressHandler.isSaving) {
       // pass
     } else if(this.state.metaScreen == 'summary' || this.state.metaScreen == 'lost' || this.state.error) {
@@ -1951,6 +1957,7 @@ class Learn extends Component {
   }
 
   render() {
+    this.isKeydownPressed = false;
 
     // Loading data
     if(this.state.isLoading) {
@@ -2708,9 +2715,9 @@ const MultipleChoice = function(props) {
 
   if(isArr) {
     var choice = item.answer.value.random();
-    choicesRnd[rnd] = choice.normal || choice;
+    choicesRnd[rnd] = choice.normal || choice.trim();
   } else {
-    choicesRnd[rnd] = item.answer.value;
+    choicesRnd[rnd] = item.answer.value.trim();
   }
 
   // Get the list of answers that are acceptable
@@ -2718,13 +2725,13 @@ const MultipleChoice = function(props) {
   if(isArr) {
     for(var i=0; i<item.answer.value.length; i++) {
       choice = item.answer.value[i];
-      rightAnswers.push(choice.normal || choice);
+      rightAnswers.push(choice.normal || choice.trim());
     }
   } else {
-    choicesRnd[rnd] = item.answer.value;
-    rightAnswers.push(item.answer.value);
+    choicesRnd[rnd] = item.answer.value.trim();
+    rightAnswers.push(item.answer.value.trim());
   }
-  rightAnswers.push(...item.answer.alternatives);
+  rightAnswers.push(item.answer.alternatives.map((value) => value.trim()));
 
   // Display our screens
   var choices = choicesRnd.map((value, i) => {
