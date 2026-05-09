@@ -189,11 +189,11 @@ class CookieDataStore(Store):
         return cookie_value
 
     def __setitem__(self, sessionid, data):
-        assert type(data) is dict
 
         def callback(self, sessionid, data):
             logger.debug(f"Session set.callback {sessionid}")
-            if data:
+
+            if data and type(data) is dict:
                 data["atime"] = datetime.datetime.now()
                 data["k"] = sessionid
                 encoded_value = self.encode(data)

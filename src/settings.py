@@ -6,6 +6,7 @@ IS_TEST = getenv("WEBPY_ENV", "") == "test" or getenv("PYTEST_VERSION", None) is
 AUTORELOAD = bool(getenv("AUTORELOAD", None))
 DEBUG = bool(getenv("DEBUG", False))
 
+USE_HTTPS = bool(getenv("USE_HTTPS", ""))
 MEMRISE_BACKEND = "memrise.backends.CachedApiMemrise"
 SESSION_BACKEND = getenv("SESSION_BACKEND", "")
 MEMCACHE_KEY_PREFIX = ""
@@ -66,7 +67,7 @@ web.config.session_parameters = web.utils.storage(
         "secret_key": "fLjUfxqXtfNoIldA0A0K",
         "expired_message": "Session expired",
         "httponly": True,
-        "secure": False,
+        "secure": USE_HTTPS,
     }
 )
 
@@ -233,7 +234,7 @@ conf = {
             "level": logging.WARNING,
         },
         "autoreload": {
-            "level": logging.DEBUG,
+            "level": logging.WARNING,
         },
         "debug.template": {
             "level": logging.WARNING,

@@ -40,9 +40,22 @@ Custom interface for Memrise
 
 * Create a database
 
-      heroku config:set SESSION_BACKEND="session.CookieDataStore"
       heroku addons:create heroku-postgresql:hobby-dev
       cat init.sql | heroku pg:psql
+
+* Launch the app
+
+      heroku config:set SESSION_BACKEND="session.CookieDataStore"
+      heroku config:set USE_HTTPS="1"
+
+      heroku login
+      heroku apps:create YOUR_APP_NAME --region eu
+
+      git push heroku master
+      heroku ps:scale web=1 --app YOUR_APP_NAME
+      heroku logs --tail --app YOUR_APP_NAME
+      heroku buildpacks:set heroku/python -a YOUR_APP_NAME
+      heroku buildpacks:add https://github.com/heroku/heroku-buildpack-nginx.git -a YOUR_APP_NAME
 
 ## Edit JS6 assets
 
