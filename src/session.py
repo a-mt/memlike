@@ -98,6 +98,7 @@ class CookieDataStore(Store):
     def __init__(self, cookie_name="session_data"):
         self.cookie_name = cookie_name
         self.last_allowed_time = None
+        self._cached_data = {}
 
         self._config = web.storage(web.config.session_parameters)
 
@@ -125,7 +126,13 @@ class CookieDataStore(Store):
         session_dict = pickle.loads(session_data)
         return session_dict
 
-    def getdata(self):
+    def getdata(self, sessionid):
+        if sessionid not in self._cached_data:
+            self._cached_data[sessionid] = self.readdata()
+
+        return self._cached_data[sessionid]
+
+    def readdata(self):
         try:
             pickled_data = web.cookies().get(self.cookie_name, "")
             if not pickled_data:
@@ -141,13 +148,19 @@ class CookieDataStore(Store):
             return None
 
     def __contains__(self, sessionid):
-        data = self.getdata()
+        data = self.getdata(sessionid)
+
         return data is not None and data.get("k", "") == sessionid
+
+    @property
+    def atime(self):
+        return int(datetime.datetime.now().timestamp())
 
     def __getitem__(self, sessionid):
         logger.debug(f"Session get {sessionid}")
         try:
-            data = self.getdata()
+            atime = self.atime
+            data = self.getdata(sessionid)
 
             # Check if the cookie data is valid
             if data is None:
@@ -156,11 +169,17 @@ class CookieDataStore(Store):
             if data.get("k", "") != sessionid:
                 raise IndexError
 
-            if self.last_allowed_time is not None and data["atime"] < self.last_allowed_time:
-                raise IndexError
+            # check if timeout is reached: session hasn't been used for more than x seconds
+            if self.last_allowed_time is not None:
+                if int(data["atime"]) < self.last_allowed_time:
+                    raise IndexError
 
-            data["atime"] = datetime.datetime.now()
+            # refresh our session_data cookie every 10m if nothing otherwise changed
+            if atime - int(data["atime"]) > 600:
+                data["atime"] = atime
+
         except IndexError:
+            self._cached_data.pop(sessionid, None)
             raise KeyError(sessionid)
         else:
             return data
@@ -188,13 +207,39 @@ class CookieDataStore(Store):
 
         return cookie_value
 
+    def dictAreEqual(self, dict_a, dict_b):
+        if type(dict_a) is not dict:
+            return False
+
+        if type(dict_b) is not dict:
+            return False
+
+        new_ref = {**dict_a}
+        new_ref.update(dict_b)
+
+        if len(new_ref.keys()) != len(dict_a.keys()):
+            return False
+
+        for k, v in new_ref.items():
+            if new_ref[k] != dict_a[k]:
+                return False
+
+        return True
+
     def __setitem__(self, sessionid, data):
+        diff = self.dictAreEqual(self._cached_data.get(sessionid, None), data)
+
+        logger.debug(f"Session set {sessionid} ({diff})")
+
+        # Nothing changed
+        if not diff or not data.get("loggedin", False):
+            return
 
         def callback(self, sessionid, data):
             logger.debug(f"Session set.callback {sessionid}")
 
             if data and type(data) is dict:
-                data["atime"] = datetime.datetime.now()
+                data["atime"] = self.atime
                 data["k"] = sessionid
                 encoded_value = self.encode(data)
             else:
@@ -203,14 +248,15 @@ class CookieDataStore(Store):
             cookie_value = self.setcookie(encoded_value)
             return cookie_value
 
-        logger.debug(f"Session set {sessionid}")
-
         # Will be used when the server calls for response.headers
         if web.ctx.get("session_cookie_data", None) is None:
             session_cookie_data = CookieDataValue("")
 
             if not web.ctx.get("headers", None):
                 web.ctx.headers = []
+
+            if not isinstance(web.ctx.headers, HeadersList):
+                web.ctx.headers = HeadersList(web.ctx.headers)
 
             web.ctx.headers.append(("Set-Cookie", session_cookie_data))
             web.ctx.session_cookie_data = session_cookie_data
@@ -225,24 +271,33 @@ class CookieDataStore(Store):
         logger.debug("Session deleted")
 
     def cleanup(self, timeout):
-        timeout = datetime.timedelta(
-            timeout / (24.0 * 60 * 60)
-        )  # timedelta takes numdays as arg
-        self.last_allowed_time = datetime.datetime.now() - timeout
+        self.last_allowed_time = int(datetime.datetime.now().timestamp()) - timeout
+
+
+
+class HeadersList(list):
+    """
+    When we loop through the headers (ie WSGI, unicorn, etc):
+    cast each header values to strings
+    """
+    def __iter__(self):
+        for k, v in super().__iter__():
+            yield k, str(v)
 
 
 class CookieDataValue(str):
     def set_callback(self, fct):
         self.callback = fct
+        self.value = None
 
-    def encode(self, encoding, **kwargs):
-        fct = self.callback
-        value = fct()
+    def __str__(self):
+        if self.value is None:
+            fct = self.callback
+            value = fct()
 
-        if isinstance(value, bytes):
-            return value
+            self.value = str(value)
 
-        return value.encode(encoding, **kwargs)
+        return self.value
 
 
 class Session(Session):

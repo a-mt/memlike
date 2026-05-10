@@ -47,20 +47,22 @@ services:
       POSTGRES_USER: memuser
       POSTGRES_PASSWORD: mempass
       POSTGRES_DB: memdb
-      DEBUG: 1
-      DEBUG_SQL: 1
-      AUTORELOAD: 1
+      DEBUG: ""
+      DEBUG_SQL: ""
+      AUTORELOAD: ""
       PYTHONUNBUFFERED: 1
       SESSION_BACKEND: session.CookieDataStore
+      USE_NGINX: 1
     platform: linux/amd64
     volumes:
       - .:/srv
       - api_logs:/var/logs
       - api_sessions:/tmp/sessions
+      - ./nginx.conf.local:/etc/nginx/nginx.conf
     healthcheck:
       disable: true
     command: >
-      python -u src/app-entrypoint.py
+      gunicorn -w 4 -p /tmp/app-initialized --log-file - --chdir src -b 0.0.0.0:8081 wsgiapp:wsgiapp
 
 volumes:
   api_logs:
