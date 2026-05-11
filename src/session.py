@@ -144,13 +144,13 @@ class CookieDataStore(Store):
 
             return data
         except Exception as e:
-            print(e)
+            logger.error(e)
             return None
 
     def __contains__(self, sessionid):
         data = self.getdata(sessionid)
 
-        return data is not None and data.get("k", "") == sessionid
+        return data is not None and data.get("session_id", "") == sessionid
 
     @property
     def atime(self):
@@ -159,24 +159,27 @@ class CookieDataStore(Store):
     def __getitem__(self, sessionid):
         logger.debug(f"Session get {sessionid}")
         try:
-            atime = self.atime
+            now = self.atime
             data = self.getdata(sessionid)
 
             # Check if the cookie data is valid
             if data is None:
                 raise IndexError
 
-            if data.get("k", "") != sessionid:
+            if data.get("session_id", "") != sessionid:
                 raise IndexError
 
             # check if timeout is reached: session hasn't been used for more than x seconds
-            if self.last_allowed_time is not None:
-                if int(data["atime"]) < self.last_allowed_time:
-                    raise IndexError
+            atime = data["atime"]
+            if isinstance(atime, datetime.datetime):
+                atime = int(atime.timestamp())
+
+            if self.last_allowed_time is not None and atime < self.last_allowed_time:
+                raise IndexError
 
             # refresh our session_data cookie every 10m if nothing otherwise changed
-            if atime - int(data["atime"]) > 600:
-                data["atime"] = atime
+            if now - atime > 600:
+                data["atime"] = now
 
         except IndexError:
             self._cached_data.pop(sessionid, None)
@@ -207,7 +210,7 @@ class CookieDataStore(Store):
 
         return cookie_value
 
-    def dictAreEqual(self, dict_a, dict_b):
+    def dict_are_equal(self, dict_a, dict_b):
         if type(dict_a) is not dict:
             return False
 
@@ -227,12 +230,12 @@ class CookieDataStore(Store):
         return True
 
     def __setitem__(self, sessionid, data):
-        diff = self.dictAreEqual(self._cached_data.get(sessionid, None), data)
+        are_equal = self.dict_are_equal(self._cached_data.get(sessionid, None), data)
 
-        logger.debug(f"Session set {sessionid} ({diff})")
+        logger.debug(f"Session set {sessionid} ({are_equal})")
 
         # Nothing changed
-        if not diff or not data.get("loggedin", False):
+        if are_equal or not data.get("loggedin", False):
             return
 
         def callback(self, sessionid, data):
@@ -240,10 +243,14 @@ class CookieDataStore(Store):
 
             if data and type(data) is dict:
                 data["atime"] = self.atime
-                data["k"] = sessionid
+                data["session_id"] = sessionid
                 encoded_value = self.encode(data)
+
+                self._cached_data[sessionid] = data
             else:
                 encoded_value = ""
+
+                self._cached_data[sessionid] = None
 
             cookie_value = self.setcookie(encoded_value)
             return cookie_value
@@ -252,6 +259,7 @@ class CookieDataStore(Store):
         if web.ctx.get("session_cookie_data", None) is None:
             session_cookie_data = CookieDataValue("")
 
+            """
             if not web.ctx.get("headers", None):
                 web.ctx.headers = []
 
@@ -259,6 +267,7 @@ class CookieDataStore(Store):
                 web.ctx.headers = HeadersList(web.ctx.headers)
 
             web.ctx.headers.append(("Set-Cookie", session_cookie_data))
+            """
             web.ctx.session_cookie_data = session_cookie_data
         else:
             session_cookie_data = web.ctx.session_cookie_data
@@ -267,7 +276,7 @@ class CookieDataStore(Store):
         session_cookie_data.set_callback(fct)
 
     def __delitem__(self, sessionid):
-        self[sessionid] = None
+        self._cached_data[sessionid] = None
         logger.debug("Session deleted")
 
     def cleanup(self, timeout):
@@ -301,9 +310,19 @@ class CookieDataValue(str):
 
 
 class Session(Session):
+    __slots__ = Session.__slots__ + [
+        "_killed",
+    ]
+
     def _reset(self):
         self._data = web.utils.storage({})
+        self._killed = False
         self.ip = web.ctx.ip
+
+    def _generate_session_id(self):
+        logger.debug("Generate session ID")
+
+        return super()._generate_session_id()
 
     def _load(self):
         # Reset _data
@@ -335,12 +354,22 @@ class Session(Session):
             if self._initializer:
                 if isinstance(self._initializer, dict):
                     self._data.update(deepcopy(self._initializer))
+                    self._data["session_id"] = self.session_id
 
                 elif hasattr(self._initializer, "__call__"):
                     self._initializer()
 
         # Update the associated IP
         self.ip = web.ctx.ip
+
+    def _save(self):
+        super()._save()
+
+        if self.get("_killed"):
+            return
+
+        if web.ctx.get("session_cookie_data", None) is not None:
+            web.header("Set-Cookie", str(web.ctx.session_cookie_data))
 
     def expired(self):
         """
