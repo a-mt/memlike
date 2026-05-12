@@ -36,6 +36,8 @@ misc = {
     "learn_settings_enable_audio_autoplay": "Jouer automatiquement le contenu audio",
     "learn_settings_reverse_prompt_and_answer": "Inverser les tests (prompt sur la réponse, test sur la définition)",
     "learn_settings_save_progress": "Envoyer les résultats à Memrise",
+    "learn_settings_strict_punctuation": "Ponctuation stricte",
+    "learn_settings_strict_case": "Casse stricte",
     "learn_is_anonymous": "Vous jouez anonymement: votre progrès ne sera pas sauvegardé",
     "learn": "Apprendre",
     "preview": "Visualiser",

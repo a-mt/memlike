@@ -23,6 +23,8 @@ $(document).ready(function(){
     'disable_tapping': !!localStorage.getItem('sessionSettings_disable_tapping'),
     'disable_typing': !!localStorage.getItem('sessionSettings_disable_typing'),
     'enable_audio_autoplay': localStorage.getItem('sessionSettings_enable_audio_autoplay'),
+    'strict_punctuation': !!localStorage.getItem('sessionSettings_strict_punctuation'),
+    'strict_case': !!localStorage.getItem('sessionSettings_strict_case'),
     'save_progress': !!window.MEMLIKE.garden.session_settings_save_progress,
     'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
@@ -138,6 +140,8 @@ class LearnSettingsModal extends Component {
     localStorage.setItem('sessionSettings_disable_tapping', this.state.disable_tapping ? '1' : '');
     localStorage.setItem('sessionSettings_disable_typing', this.state.disable_typing ? '1' : '');
     localStorage.setItem('sessionSettings_enable_audio_autoplay', this.state.enable_audio_autoplay ? '1' : '');
+    localStorage.setItem('sessionSettings_strict_punctuation', this.state.strict_punctuation ? '1' : '');
+    localStorage.setItem('sessionSettings_strict_case', this.state.strict_case ? '1' : '');
     localStorage.setItem('sessionSettings_id', this.state.session_id || '');
 
     this.onCloseModal();
@@ -153,66 +157,92 @@ class LearnSettingsModal extends Component {
   render() {
     return <div className="vcenter settings learn-settings">
       <div className="form">
-        <div>
-          <input
-            id="disable_typing"
-            type="checkbox"
-            defaultChecked={this.state.disable_typing}
-            onChange={this.handleChange.bind(this, 'disable_typing')}
-            autoComplete="off"
-          />
-          <label htmlFor="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
-        </div>
-        <div>
-          <input
-            id="disable_tapping"
-            type="checkbox"
-            defaultChecked={this.state.disable_tapping}
-            onChange={this.handleChange.bind(this, 'disable_tapping')}
-            autoComplete="off"
-          />
-          <label htmlFor="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
-        </div>
-        <div>
-          <input
-            id="disable_multimedia"
-            type="checkbox"
-            defaultChecked={this.state.disable_multimedia}
-            onChange={this.handleChange.bind(this, 'disable_multimedia')}
-            autoComplete="off"
-          />
-          <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
-        </div>
-        <div>
-          <input
-            id="enable_audio_autoplay"
-            type="checkbox"
-            defaultChecked={this.state.enable_audio_autoplay}
-            onChange={this.handleChange.bind(this, 'enable_audio_autoplay')}
-            autoComplete="off"
-          />
-          <label htmlFor="enable_audio_autoplay">{window.I18N['learn_settings_enable_audio_autoplay']}</label>
-        </div>
-        <div>
-          <input
-            id="save_progress"
-            type="checkbox"
-            defaultChecked={this.state.save_progress}
-            onChange={this.handleChange.bind(this, 'save_progress')}
-            autoComplete="off"
-          />
-          <label htmlFor="save_progress">{window.I18N['learn_settings_save_progress']}</label>
-        </div>
-        <div>
-          <input
-            id="reverse_prompt_and_answer"
-            type="checkbox"
-            defaultChecked={this.state.reverse_prompt_and_answer}
-            onChange={this.handleChange.bind(this, 'reverse_prompt_and_answer')}
-            autoComplete="off"
-          />
-          <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
-        </div>
+        <fieldset>
+          <div>
+            <input
+              id="disable_typing"
+              type="checkbox"
+              defaultChecked={this.state.disable_typing}
+              onChange={this.handleChange.bind(this, 'disable_typing')}
+              autoComplete="off"
+            />
+            <label htmlFor="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
+          </div>
+          <div>
+            <input
+              id="disable_tapping"
+              type="checkbox"
+              defaultChecked={this.state.disable_tapping}
+              onChange={this.handleChange.bind(this, 'disable_tapping')}
+              autoComplete="off"
+            />
+            <label htmlFor="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
+          </div>
+          <div>
+            <input
+              id="disable_multimedia"
+              type="checkbox"
+              defaultChecked={this.state.disable_multimedia}
+              onChange={this.handleChange.bind(this, 'disable_multimedia')}
+              autoComplete="off"
+            />
+            <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+          </div>
+          <div>
+            <input
+              id="enable_audio_autoplay"
+              type="checkbox"
+              defaultChecked={this.state.enable_audio_autoplay}
+              onChange={this.handleChange.bind(this, 'enable_audio_autoplay')}
+              autoComplete="off"
+            />
+            <label htmlFor="enable_audio_autoplay">{window.I18N['learn_settings_enable_audio_autoplay']}</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div>
+            <input
+              id="reverse_prompt_and_answer"
+              type="checkbox"
+              defaultChecked={this.state.reverse_prompt_and_answer}
+              onChange={this.handleChange.bind(this, 'reverse_prompt_and_answer')}
+              autoComplete="off"
+            />
+            <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
+          </div>
+          <div>
+            <input
+              id="strict_punctuation"
+              type="checkbox"
+              defaultChecked={this.state.strict_punctuation}
+              onChange={this.handleChange.bind(this, 'strict_punctuation')}
+              autoComplete="off"
+            />
+            <label htmlFor="strict_punctuation">{window.I18N['learn_settings_strict_punctuation']}</label>
+          </div>
+          <div>
+            <input
+              id="strict_case"
+              type="checkbox"
+              defaultChecked={this.state.strict_case}
+              onChange={this.handleChange.bind(this, 'strict_case')}
+              autoComplete="off"
+            />
+            <label htmlFor="strict_case">{window.I18N['learn_settings_strict_case']}</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <div>
+            <input
+              id="save_progress"
+              type="checkbox"
+              defaultChecked={this.state.save_progress}
+              onChange={this.handleChange.bind(this, 'save_progress')}
+              autoComplete="off"
+            />
+            <label htmlFor="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+          </div>
+        </fieldset>
       </div>
       <div className="btn-group">
         <button className="btn" onClick={this.onCloseModal} autoFocus={true}>{window.I18N['cancel']}</button>
@@ -1612,15 +1642,27 @@ class Learn extends Component {
   submitText(givenAnswer) {
     givenAnswer = givenAnswer.trim();
 
-    var sanitizedGivenAnswer = sanitizeTyping(givenAnswer, this.is_strict).toLowerCase();
-    var score   = 0,
-        rightAnswer = '';
-
     // Text input
+    var sanitizedGivenAnswer = sanitizeTyping(givenAnswer, this.is_strict);
+    var score   = 0,
+        rightAnswer = '',
+        s;
+
+    // If not is_strict, memrise adds lowercase version to .correct answers
+    var check_case = !this.is_strict && window.MEMLIKE.sessionSettings.strict_case;
+    var stack = {};
+
     if (givenAnswer) {
       for(let i=0; i<this.choices.length; i++) {
-        var choice = sanitizeTyping(this.choices[i], this.is_strict).toLowerCase().trim(),
-            s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
+        var choice = this.choices[i];
+
+        if (check_case && stack[choice.toLowerCase()]) {
+          continue;
+        }
+        stack[choice.toLowerCase()] = 1;
+
+        choice = sanitizeTyping(choice, this.is_strict),
+        s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
 
         if(s && s > score) {
           score = s;
@@ -3052,24 +3094,30 @@ const RegexUnicode = {
 };
 
 function sanitizeTyping(text, strict) {
-  text = text.trim()
-             .replace(/\s+/g, ' ')
-             .replace(new RegExp(RegexUnicode.C, 'g'), ''); // control chars
+  var strict_punctuation = window.MEMLIKE.sessionSettings.strict_punctuation;
+  var strict_case = window.MEMLIKE.sessionSettings.strict_case;
+
+  text = text.trim().replace(/\s+/g, ' ');
+  if(!strict) {
+    text = text.replace(/\(.*?\)/g, '');
+  }
+  text = text.replace(new RegExp(RegexUnicode.C, 'g'), ''); // control chars
 
   // https://cdnjs.cloudflare.com/ajax/libs/xregexp/3.1.1/xregexp-all.js
   if(!strict) {
-    text = text.replace(/\(.*?\)/g, '');
-
-    if (String.prototype.unidecode) {
+    if (!strict_punctuation && String.prototype.unidecode) {
       text = text.unidecode();
+      text = text.replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), ' '); // punctuation, symbol
     }
-    text = text.replace(new RegExp('[' + RegexUnicode.P + RegexUnicode.S + ']', 'g'), ' ') // punctuation, symbol
-               .replace(/[-Ù‹Ù›]+/g, ' ')
+    text = text.replace(/[-Ù‹Ù›]+/g, ' ')
                .replace(/\s+/g, ' ');
+
+    if(!strict_case) {
+      text = text.toLowerCase();
+    }
   }
   return text.trim();
 }
-
 
 //+--------------------------------------------------------
 //| HIGHLIGHT TEXT DIFF
