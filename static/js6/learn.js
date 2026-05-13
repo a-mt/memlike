@@ -887,7 +887,7 @@ const GameProgressHandler = {
         // pass
     }
     // Return the rung no greather than the given interval
-    return Math.max(i - 1 | 0, 0);
+    return Math.max(i - 1, 0);
   },
 
   /**
@@ -920,7 +920,7 @@ const GameProgressHandler = {
       }
     }
 
-    var rungIndex = GameProgressHandler.getRungIndex(learnableProgress.interval | 0),
+    var rungIndex = GameProgressHandler.getRungIndex(learnableProgress.interval),
         tolerance = REVIEW_INTERVAL_LADDER[rungIndex].tolerance,
         reviewDate = new Date(learnableProgress.next_date.getTime() - 24 * tolerance * 3600 * 1000),
         isReviewDatePast = (new Date()).getTime() >= reviewDate.getTime();
@@ -1882,14 +1882,14 @@ class Learn extends Component {
 
     // Update the class of the selected choice (accesskey-1)
     if('i' in userAnswer) {
-      $('#choice-' + (userAnswer.i+1)).addClass(userAnswer.score == 1 ? 'correct' : 'incorrect');
+      $('#choice-' + (userAnswer.i+1)).parent().addClass(userAnswer.score == 1 ? 'correct' : 'incorrect');
     }
 
     // Update the class of the correct choice
     if(userAnswer.score != 1) {
       for(var j=0; j<this.choices.length; j++) {
         if(this.choices[j].attributes.isValid) {
-          $('#choice-' + (j+1)).addClass('correct');
+          $('#choice-' + (j+1)).parent().addClass('correct');
           break;
         }
       }
