@@ -197,7 +197,7 @@ var item=event;Object.assign(item,{course_id:parseInt(courseID),learning_element
 GameProgressHandler.events=[];GameProgressHandler.isSaving=true;$('#learn-settings-btn').addClass('loading-spinner-before');// Send events in batches of 50
 while(events.length){var batch=events.splice(0,50);requests.push({url:'/ajax/register_progress',method:'POST',data:JSON.stringify({events:batch}),contentType:'application/json'})}// Send session end
 requests.push({url:'/ajax/register_end',method:'POST',data:JSON.stringify(data),contentType:'application/json'});// Send each request one after the other
-this.executeRequestsList(requests)},executeRequestsList(requests){if(!requests.length){$('#learn-settings-btn').removeClass('loading-spinner-before');GameProgressHandler.isSaving=false;return}var request=requests.pop();var nextExecute=this.executeRequestsList.bind(this,[...requests]);$.ajax(request).done(nextExecute)}};//+--------------------------------------------------------
+this.executeRequestsList(requests)},executeRequestsList(requests){if(!requests.length){$('#learn-settings-btn').removeClass('loading-spinner-before');GameProgressHandler.isSaving=false;return}var request=requests.pop();$.ajax(_extends({},request,{complete:function(){this.executeRequestsList([...requests])}.bind(this)}))}};//+--------------------------------------------------------
 //| Render game
 //+--------------------------------------------------------
 class Learn extends Component{//+--------------------------------------------------------

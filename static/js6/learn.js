@@ -1131,9 +1131,12 @@ const GameProgressHandler = {
       return;
     }
     var request = requests.pop();
-    var nextExecute = this.executeRequestsList.bind(this, [...requests]);
-
-    $.ajax(request).done(nextExecute);
+    $.ajax({
+      ...request,
+      complete: function(){
+        this.executeRequestsList([...requests]);
+      }.bind(this),
+    });
   }
 };
 
