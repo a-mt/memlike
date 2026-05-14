@@ -947,6 +947,10 @@ const GameProgressHandler = {
       } else {
         rungIndex += 1;
       }
+      if (rungIndex >= REVIEW_INTERVAL_LADDER.length) {
+        rungIndex = REVIEW_INTERVAL_LADDER.length - 1;
+      }
+
     } else { // nearly correct
       rungIndex = learnableProgress.current_streak > 0 ? rungIndex : Math.max(rungIndex - 1, 0);
     }
