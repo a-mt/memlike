@@ -48,6 +48,7 @@ services:
       POSTGRES_PASSWORD: mempass
       POSTGRES_DB: memdb
       DEBUG: 1
+      DEBUG_SESSION: 1
       DEBUG_SQL: 1
       AUTORELOAD: 1
       PYTHONUNBUFFERED: 1

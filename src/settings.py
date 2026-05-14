@@ -231,7 +231,7 @@ conf = {
     },
     "loggers": {
         "session": {
-            "level": logging.WARNING,
+            "level": logging.DEBUG if getenv("DEBUG_SESSION", "") else logging.WARNING,
         },
         "autoreload": {
             "level": logging.WARNING,

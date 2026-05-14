@@ -43,6 +43,8 @@ class ApiRequestor:
     def raise_for_status(self, response, raise_for_redirect=True):
         if response.status_code == 302:
             if response.headers["Location"].startswith("/signin"):
+                logger.warning("Response redirects to /signin")
+
                 raise SessionExpired()
 
         if response.status_code >= 300 and settings.DEBUG:

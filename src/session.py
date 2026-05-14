@@ -98,7 +98,7 @@ class CookieDataStore(Store):
     def __init__(self, cookie_name="session_data"):
         self.cookie_name = cookie_name
         self.last_allowed_time = None
-        self._cached_data = {}
+        self._cached_data = {}  # careful with this: isn't pooled across workers (4 in production)
 
         self._config = web.storage(web.config.session_parameters)
 
@@ -127,7 +127,8 @@ class CookieDataStore(Store):
         return session_dict
 
     def getdata(self, sessionid):
-        if sessionid not in self._cached_data:
+        if self._cached_data.get(sessionid, None) is None:
+            logger.debug("Read from cookies")
             self._cached_data[sessionid] = self.readdata()
 
         return self._cached_data[sessionid]
@@ -157,41 +158,44 @@ class CookieDataStore(Store):
         return int(datetime.datetime.now().timestamp())
 
     def __getitem__(self, sessionid):
-        logger.debug(f"Session get {sessionid}")
+        logger.debug(f"Session get {sessionid} ({self.last_allowed_time})")
         try:
             now = self.atime
             data = self.getdata(sessionid)
+            logger.debug(data)
 
             # Check if the cookie data is valid
             if data is None:
                 raise IndexError
 
             if data.get("session_id", "") != sessionid:
-                raise IndexError
+                raise IndexError("Session data is invalid")
 
             # check if timeout is reached: session hasn't been used for more than x seconds
-            atime = data["atime"]
+            atime = data.get("atime", "")
             if isinstance(atime, datetime.datetime):
                 atime = int(atime.timestamp())
 
             if self.last_allowed_time is not None and atime < self.last_allowed_time:
-                raise IndexError
+                raise IndexError("Session timed out (idle for too long)")
 
             # refresh our session_data cookie every 10m if nothing otherwise changed
             if now - atime > 600:
                 data["atime"] = now
 
-        except IndexError:
+        except IndexError as e:
+            logger.debug(f"No valid session ({sessionid})", exc_info=e)
+
             self._cached_data.pop(sessionid, None)
             raise KeyError(sessionid)
         else:
             return data
 
-    def setcookie(self, value):
+    def setcookie(self, value, expires=""):
         morsel = Morsel()
         morsel.set(str(self.cookie_name), str(value), quote(value))
 
-        morsel["expires"] = ""
+        morsel["expires"] = expires
         morsel["path"] = self._config.cookie_path or web.ctx.homepath + "/"
 
         if domain := self._config.cookie_domain:
@@ -224,6 +228,9 @@ class CookieDataStore(Store):
             return False
 
         for k, v in new_ref.items():
+            if type(new_ref[k]) is dict:
+                return self.dict_are_equal(new_ref[k], dict_a[k])
+
             if new_ref[k] != dict_a[k]:
                 return False
 
@@ -232,42 +239,35 @@ class CookieDataStore(Store):
     def __setitem__(self, sessionid, data):
         are_equal = self.dict_are_equal(self._cached_data.get(sessionid, None), data)
 
-        logger.debug(f"Session set {sessionid} ({are_equal})")
+        logger.debug(f"Session set {sessionid} ({"skip" if are_equal else "save needed"})")
+        logger.debug(data)
 
         # Nothing changed
-        if are_equal or not data.get("loggedin", False):
+        if are_equal:
             return
 
         def callback(self, sessionid, data):
-            logger.debug(f"Session set.callback {sessionid}")
+            setvalue = data and type(data) is dict
 
-            if data and type(data) is dict:
+            logger.debug(f"Session set.callback {sessionid} ({"save" if setvalue else "remove"})")
+
+            if setvalue:
                 data["atime"] = self.atime
                 data["session_id"] = sessionid
                 encoded_value = self.encode(data)
 
                 self._cached_data[sessionid] = data
+                cookie_value = self.setcookie(encoded_value)
             else:
-                encoded_value = ""
+                self._cached_data.pop(sessionid, None)
+                cookie_value = self.setcookie("", expires=-1)
 
-                self._cached_data[sessionid] = None
-
-            cookie_value = self.setcookie(encoded_value)
             return cookie_value
 
         # Will be used when the server calls for response.headers
         if web.ctx.get("session_cookie_data", None) is None:
             session_cookie_data = CookieDataValue("")
 
-            """
-            if not web.ctx.get("headers", None):
-                web.ctx.headers = []
-
-            if not isinstance(web.ctx.headers, HeadersList):
-                web.ctx.headers = HeadersList(web.ctx.headers)
-
-            web.ctx.headers.append(("Set-Cookie", session_cookie_data))
-            """
             web.ctx.session_cookie_data = session_cookie_data
         else:
             session_cookie_data = web.ctx.session_cookie_data
@@ -276,8 +276,9 @@ class CookieDataStore(Store):
         session_cookie_data.set_callback(fct)
 
     def __delitem__(self, sessionid):
+        logger.debug("Delete session")
+
         self._cached_data[sessionid] = None
-        logger.debug("Session deleted")
 
     def cleanup(self, timeout):
         self.last_allowed_time = int(datetime.datetime.now().timestamp()) - timeout
@@ -312,12 +313,13 @@ class CookieDataValue(str):
 class Session(Session):
     __slots__ = Session.__slots__ + [
         "_killed",
+        "_ip",
     ]
 
     def _reset(self):
-        self._data = web.utils.storage({})
+        self._data   = web.utils.storage({})
+        self.ip      = web.ctx.get("ip", "")
         self._killed = False
-        self.ip = web.ctx.ip
 
     def _generate_session_id(self):
         logger.debug("Generate session ID")
@@ -335,10 +337,11 @@ class Session(Session):
         # Retrieve session data from store
         if self.session_id:
             try:
-                data = self.store[self.session_id]
+                data = deepcopy(self.store[self.session_id])
                 self._data.update(data)
-            except KeyError:
+            except KeyError as e:
                 # session_id doesn't exist in store
+                logger.debug(f"Cannot load session {self.session_id}", exc_info=e)
                 self.expired()
 
         # Ensure the session is associated to the same IP
@@ -359,14 +362,18 @@ class Session(Session):
                 elif hasattr(self._initializer, "__call__"):
                     self._initializer()
 
-        # Update the associated IP
-        self.ip = web.ctx.ip
 
     def _save(self):
-        super()._save()
 
-        if self.get("_killed"):
+        # Kill session: remove the session cookie and that's it
+        if self.get("_killed") or self.session_id != self._data["session_id"]:
+            if web.cookies().get(self._config.cookie_name):
+                self._setcookie(self.session_id, expires=-1)
             return
+
+        # Set the session_id and save data in database
+        self._setcookie(self.session_id)
+        self.store[self.session_id] = dict(self._data)
 
         if web.ctx.get("session_cookie_data", None) is not None:
             web.header("Set-Cookie", str(web.ctx.session_cookie_data))
@@ -375,7 +382,8 @@ class Session(Session):
         """
         Delete the old session
         """
-        logger.debug("Session expired")
+        logger.debug(f"Session expired")
+        logger.debug(self._data)
         try:
             super().kill()
         except KeyError:

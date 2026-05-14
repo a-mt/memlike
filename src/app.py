@@ -26,6 +26,7 @@ logger = logging.getLogger(__name__)
 
 class logout:
     def GET(self):
+        web.ctx.session["session_id"] = "-"
         web.ctx.session["loggedin"] = False
         web.ctx.session["learning"] = {}
         raise web.seeother("/")
@@ -137,10 +138,29 @@ def session_load():
     web.config.template["session"] = session._data
 
 
+def ip_load():
+    """
+    Override the default IP logic, to use forwarded headers instead
+    """
+    def get_ip():
+        forwarded_ip = web.ctx.environ.get("HTTP_X_FORWARDED_FOR", "").split(", ")[0]
+        if forwarded_ip:
+            return forwarded_ip
+
+        forwarded_ip = web.ctx.environ.get("REMOTE_ADDR", "").split(", ")[0]
+        if forwarded_ip:
+            return forwarded_ip
+
+        return web.ctx.ip
+
+    web.ctx.ip = get_ip()
+
+
 if settings.IS_TEST:
     web.test = web.storage({"session": session})
 
 # Processors are run at each request
+app.add_processor(web.loadhook(ip_load))
 app.add_processor(session._processor)
 app.add_processor(web.loadhook(session_load))
 
