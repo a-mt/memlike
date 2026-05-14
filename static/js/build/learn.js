@@ -1,6 +1,6 @@
 /** @jsx h */'use strict';var _extends=Object.assign||function(target){for(var i=1;i<arguments.length;i++){var source=arguments[i];for(var key in source){if(Object.prototype.hasOwnProperty.call(source,key)){target[key]=source[key]}}}return target};const{h,Component,render}=window.preact;// Incorrectly configured build doesn't replace in-place process.env:
 // ensure the js still works
-var process=process||{};process.env=process.env||{};window.MEMLIKE=window.MEMLIKE||{};window.MEMLIKE.js_learn={build_date:"2026-05-14T11:46-04:00"};/* global $, window, document, console *//* global setTimeout, setInterval, clearInterval, localStorage, Set */$(document).ready(function(){Object.freeze(window.MEMLIKE.course);Object.freeze(window.MEMLIKE.garden);window.MEMLIKE.sessionSettings={'disable_multimedia':!!localStorage.getItem('sessionSettings_disable_multimedia'),// disable_multimedia is actually a setting in memrise
+var process=process||{};process.env=process.env||{};window.MEMLIKE=window.MEMLIKE||{};window.MEMLIKE.js_learn={build_date:process.env.BUILD_DATE};/* global $, window, document, console *//* global setTimeout, setInterval, clearInterval, localStorage, Set */$(document).ready(function(){Object.freeze(window.MEMLIKE.course);Object.freeze(window.MEMLIKE.garden);window.MEMLIKE.sessionSettings={'disable_multimedia':!!localStorage.getItem('sessionSettings_disable_multimedia'),// disable_multimedia is actually a setting in memrise
 'disable_tapping':!!localStorage.getItem('sessionSettings_disable_tapping'),'disable_typing':!!localStorage.getItem('sessionSettings_disable_typing'),'enable_audio_autoplay':localStorage.getItem('sessionSettings_enable_audio_autoplay'),'strict_punctuation':!!localStorage.getItem('sessionSettings_strict_punctuation'),'strict_case':!!localStorage.getItem('sessionSettings_strict_case'),'save_progress':!!window.MEMLIKE.garden.session_settings_save_progress,'reverse_prompt_and_answer':!!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,'session_id':window.MEMLIKE.garden.session_id};if(window.MEMLIKE.sessionSettings.enable_audio_autoplay===null){window.MEMLIKE.sessionSettings.enable_audio_autoplay=true}render(h(Learn,{level_index:window.MEMLIKE.garden.level_index,session_type:window.MEMLIKE.garden.session_type,preview_thing_id:window.MEMLIKE.garden.preview_thing_id,session_id:window.MEMLIKE.garden.session_id,course:window.MEMLIKE.course}),document.getElementById('learn-container'));render(h(LearnSettingsBtn,{session_type:window.MEMLIKE.garden.session_type}),document.getElementById('learn-settings-btn'))});//+--------------------------------------------------------
 //| Helper functions
 //+--------------------------------------------------------
@@ -144,14 +144,14 @@ return learnableProgress.attempts===learnableProgress.correct&&learnableProgress
    * @return Date
    */getDateIncrementedByInterval:function(date,interval){const deltaFrom=0,deltaTo=.007;if(!interval){interval=deltaTo}if(!date){date=new Date}interval+=randrange(deltaFrom,deltaTo);return new Date(date.getTime()+24*interval*3600*1000)},/**
    * Retrieve the index corresponding
-   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
+   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy to deal with rounded decimals)
    *
    * @param float interval
    * @return int index
    */getRungIndex:function(interval){// Get the last rung greater than the given interval
-for(var i=REVIEW_INTERVAL_LADDER.length;i>0&&REVIEW_INTERVAL_LADDER[--i|0].interval>interval;){}// pass
+for(var i=REVIEW_INTERVAL_LADDER.length;i>0&&REVIEW_INTERVAL_LADDER[--i].interval>interval;){}// pass
 // Return the rung no greather than the given interval
-return Math.max(i-1,0)},/**
+return Math.max(i,0)},/**
    * Compute the interval and next_date for the given progress
    *
    * @param dict progress

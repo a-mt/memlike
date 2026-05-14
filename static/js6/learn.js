@@ -875,7 +875,7 @@ const GameProgressHandler = {
 
   /**
    * Retrieve the index corresponding
-   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy)
+   * to the given interval in the REVIEW_INTERVAL_LADDER (fuzzy to deal with rounded decimals)
    *
    * @param float interval
    * @return int index
@@ -883,11 +883,11 @@ const GameProgressHandler = {
   getRungIndex: function(interval) {
 
     // Get the last rung greater than the given interval
-    for (var i = REVIEW_INTERVAL_LADDER.length; i > 0 && REVIEW_INTERVAL_LADDER[--i | 0].interval > interval;) {
+    for (var i = REVIEW_INTERVAL_LADDER.length; i > 0 && REVIEW_INTERVAL_LADDER[--i].interval > interval;) {
         // pass
     }
     // Return the rung no greather than the given interval
-    return Math.max(i - 1, 0);
+    return Math.max(i, 0);
   },
 
   /**
