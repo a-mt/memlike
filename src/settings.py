@@ -231,7 +231,7 @@ conf = {
     },
     "loggers": {
         "session": {
-            "level": logging.DEBUG,
+            "level": logging.WARNING,
         },
         "autoreload": {
             "level": logging.WARNING,

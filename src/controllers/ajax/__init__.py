@@ -1,5 +1,7 @@
 import json
+import settings
 import web
+from utils.webapi import json_response
 
 from .courses import (
     courses,
@@ -116,6 +118,7 @@ urls = (
     r"/reset_progress_level", reset_progress_level,
 
     r"/session", "debug_session",
+    r"/context", "debug_context",
     "", "index",
 )
 # fmt: on
@@ -123,7 +126,6 @@ urls = (
 
 class index:
     def GET(self):
-        web.header("Content-Type", "application/json")
 
         # fmt: off
         patterns = {
@@ -152,14 +154,26 @@ class index:
 
         autodetect_urls(app, prefix="/ajax", res=patterns)
 
-        return json.dumps({k: patterns[k] for k in sorted(patterns.keys())})
+        return json_response({k: patterns[k] for k in sorted(patterns.keys())})
 
 
 class debug_session:
     def GET(self):
         session = dict(web.ctx.session)
-        web.header("Content-Type", "application/json")
-        return json.dumps(session)
+
+        return json_response(session)
+
+
+class debug_context:
+    def GET(self):
+        if settings.DEBUG:
+            ctx = dict(web.ctx)
+            ctx.pop("session", None)
+        else:
+            ctx = {"DEBUG": False}
+
+        return json_response(ctx)
+
 
 
 app = web.application(urls, locals(), autoreload=False)
