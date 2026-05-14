@@ -386,6 +386,7 @@ body {
 header {
   background-color: #7757A8;
   position: fixed;
+  overflow: hidden;
   top: 0;
   height: 62px;
   width: 100%;
@@ -414,7 +415,13 @@ body {
 }
 
 header .header-nav {
+  display: flex;
   margin: 12px 0;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.header-nav section {
+  display: flex;
 }
 .header-nav-item.plain:hover {
   background: rgba(0,0,0,0.05);
@@ -435,7 +442,12 @@ header .header-nav {
 
 .header-nav .login,
 .header-nav .lang {
+  display: flex;
   float: right;
+
+  a {
+    flex-shrink: 0;
+  }
 }
 .actions-right {
   float: right;

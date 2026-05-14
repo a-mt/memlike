@@ -27,25 +27,31 @@ $ t = time()
     $if "header" not in tpl:
       <header>
         <div class="inner">
-          <ul class="header-nav inner">
-            $for item in MENU:
-              $if item['slug'] == "login" and session.get('loggedin', None) and "username" in session.loggedin:
-                <li class="header-nav-item plain $(item['slug'])">
-                  <div class="header-nav-user">
-                    <div>$(session.loggedin['username'])</div>
-                    <div>$(session.ip) ($(session.session_id[:2])..$(session.session_id[-2:]))</div>
+
+          <div class="header-nav inner">
+            <section>
+              $for item in MENU:
+                $if item['slug'] == "login" and session.get('loggedin', None) and "username" in session.loggedin:
+                  </section>
+                  <section>
+                  <div class="header-nav-item plain $(item['slug'])">
+                    <div class="header-nav-user">
+                      <div>$(session.loggedin['username'])</div>
+                      <div>$(session.ip) ($(session.session_id[:2])..$(session.session_id[-2:]))</div>
+                    </div>
+                    <a href="/user/$(session.loggedin['username'])">
+                      <img src="/static/img/empty-avatar-1.png" class="profile-avatar">
+                    </a>
                   </div>
-                  <a href="/user/$(session.loggedin['username'])">
-                    <img src="/static/img/empty-avatar-1.png" class="profile-avatar">
-                  </a>
-                </li>
-              $else:
-                <li class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
-                  <a href="$(item['url'])" class="nav-item-btn">
-                    <span class="nav-item-btn-text">$(I18N.menu["dashboard"] if item["slug"] == "index" and session.get('loggedin', None) else I18N.menu[item['slug']])</span>
-                  </a>
-                </li>
-          </ul>
+                $else:
+                  <div class="header-nav-item plain $(item['slug']) $('is-active' if item['slug'] == currentPage else None)">
+                    <a href="$(item['url'])" class="nav-item-btn">
+                      <span class="nav-item-btn-text">$(I18N.menu["dashboard"] if item["slug"] == "index" and session.get('loggedin', None) else I18N.menu[item['slug']])</span>
+                    </a>
+                  </div>
+            </section>
+          </div>
+
         </div>
       </header>
       <div id="body">$:tpl</div>
