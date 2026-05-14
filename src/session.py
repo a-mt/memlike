@@ -98,7 +98,6 @@ class CookieDataStore(Store):
     def __init__(self, cookie_name="session_data"):
         self.cookie_name = cookie_name
         self.last_allowed_time = None
-        self._cached_data = {}  # careful with this: isn't pooled across workers (4 in production)
 
         self._config = web.storage(web.config.session_parameters)
 
@@ -127,11 +126,8 @@ class CookieDataStore(Store):
         return session_dict
 
     def getdata(self, sessionid):
-        if self._cached_data.get(sessionid, None) is None:
-            logger.debug("Read from cookies")
-            self._cached_data[sessionid] = self.readdata()
-
-        return self._cached_data[sessionid]
+        logger.debug("Read from cookies")
+        return self.readdata()
 
     def readdata(self):
         try:
@@ -182,11 +178,10 @@ class CookieDataStore(Store):
             # refresh our session_data cookie every 10m if nothing otherwise changed
             if now - atime > 600:
                 data["atime"] = now
+                data["save_needed"] = True
 
         except IndexError as e:
             logger.debug(f"No valid session ({sessionid})", exc_info=e)
-
-            self._cached_data.pop(sessionid, None)
             raise KeyError(sessionid)
         else:
             return data
@@ -214,37 +209,9 @@ class CookieDataStore(Store):
 
         return cookie_value
 
-    def dict_are_equal(self, dict_a, dict_b):
-        if type(dict_a) is not dict:
-            return False
-
-        if type(dict_b) is not dict:
-            return False
-
-        new_ref = {**dict_a}
-        new_ref.update(dict_b)
-
-        if len(new_ref.keys()) != len(dict_a.keys()):
-            return False
-
-        for k, v in new_ref.items():
-            if type(new_ref[k]) is dict:
-                return self.dict_are_equal(new_ref[k], dict_a[k])
-
-            if new_ref[k] != dict_a[k]:
-                return False
-
-        return True
-
     def __setitem__(self, sessionid, data):
-        are_equal = self.dict_are_equal(self._cached_data.get(sessionid, None), data)
-
-        logger.debug(f"Session set {sessionid} ({"skip" if are_equal else "save needed"})")
+        logger.debug(f"Session set {sessionid}")
         logger.debug(data)
-
-        # Nothing changed
-        if are_equal:
-            return
 
         def callback(self, sessionid, data):
             setvalue = data and type(data) is dict
@@ -254,12 +221,11 @@ class CookieDataStore(Store):
             if setvalue:
                 data["atime"] = self.atime
                 data["session_id"] = sessionid
-                encoded_value = self.encode(data)
+                data.pop("save_needed", None)
 
-                self._cached_data[sessionid] = data
+                encoded_value = self.encode(data)
                 cookie_value = self.setcookie(encoded_value)
             else:
-                self._cached_data.pop(sessionid, None)
                 cookie_value = self.setcookie("", expires=-1)
 
             return cookie_value
@@ -276,9 +242,7 @@ class CookieDataStore(Store):
         session_cookie_data.set_callback(fct)
 
     def __delitem__(self, sessionid):
-        logger.debug("Delete session")
-
-        self._cached_data[sessionid] = None
+        logger.debug("Delete session (skip)")
 
     def cleanup(self, timeout):
         self.last_allowed_time = int(datetime.datetime.now().timestamp()) - timeout
@@ -316,10 +280,39 @@ class Session(Session):
         "_ip",
     ]
 
+    def should_skip_save(self, dict_a, dict_b):
+        """
+        Skip save if nothing has changed from the database
+        """
+        if type(dict_a) is not dict:
+            return False
+
+        if type(dict_b) is not dict:
+            return False
+
+        if dict_a.get("save_needed", False):
+            return True
+
+        new_ref = {**dict_a}
+        new_ref.update(dict_b)
+
+        if len(new_ref.keys()) != len(dict_a.keys()):
+            return False
+
+        for k, v in new_ref.items():
+            if type(new_ref[k]) is dict:
+                return self.should_skip_save(new_ref[k], dict_a[k])
+
+            if new_ref[k] != dict_a[k]:
+                return False
+
+        return True
+
     def _reset(self):
         self._data   = web.utils.storage({})
         self.ip      = web.ctx.get("ip", "")
         self._killed = False
+        self._saved_data = {}
 
     def _generate_session_id(self):
         logger.debug("Generate session ID")
@@ -337,8 +330,10 @@ class Session(Session):
         # Retrieve session data from store
         if self.session_id:
             try:
-                data = deepcopy(self.store[self.session_id])
+                self._saved_data = self.store[self.session_id]
+                data = deepcopy(self._saved_data)
                 self._data.update(data)
+
             except KeyError as e:
                 # session_id doesn't exist in store
                 logger.debug(f"Cannot load session {self.session_id}", exc_info=e)
@@ -362,19 +357,24 @@ class Session(Session):
                 elif hasattr(self._initializer, "__call__"):
                     self._initializer()
 
-
     def _save(self):
+        data = dict(self._data)
 
         # Kill session: remove the session cookie and that's it
-        if self.get("_killed") or self.session_id != self._data["session_id"]:
+        # (let the cleanup remove old sessions from the database)
+        if self.get("_killed") or self.session_id != data.get("session_id", ""):
             if web.cookies().get(self._config.cookie_name):
                 self._setcookie(self.session_id, expires=-1)
             return
 
-        # Set the session_id and save data in database
+        # Set the session_id
         self._setcookie(self.session_id)
-        self.store[self.session_id] = dict(self._data)
 
+        # Save data in database
+        if not self.should_skip_save(self._saved_data, data):
+            self.store[self.session_id] = data
+
+        # Save data in cookies
         if web.ctx.get("session_cookie_data", None) is not None:
             web.header("Set-Cookie", str(web.ctx.session_cookie_data))
 
