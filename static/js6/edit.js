@@ -390,7 +390,7 @@ class CourseSettingsModal extends Component {
               <div className="picture">
                 {this.state.details.photo && <img src={this.state.details.photo} alt="" />}
               </div>
-              <label className="btn" htmlFor="upload-course">
+              <label className="btn btn--upload-picture" htmlFor="upload-course">
                 <input type="file" id="upload-course" onChange={this.uploadImage} />
                 {window.I18N.course_picture_upload}
               </label>

@@ -31,6 +31,10 @@ $ t = time()
             $for item in MENU:
               $if item['slug'] == "login" and session.get('loggedin', None) and "username" in session.loggedin:
                 <li class="header-nav-item plain $(item['slug'])">
+                  <div class="header-nav-user">
+                    <div>$(session.loggedin['username'])</div>
+                    <div>$(session.ip) ($(session.session_id[:2])..$(session.session_id[-2:]))</div>
+                  </div>
                   <a href="/user/$(session.loggedin['username'])">
                     <img src="/static/img/empty-avatar-1.png" class="profile-avatar">
                   </a>

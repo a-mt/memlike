@@ -27,6 +27,7 @@ pre.debug {
   padding: 5px;
   margin: 15px;
   background: white;
+  color: black;
 }
 .link {
   color: #15A1EC;
@@ -50,6 +51,13 @@ figure, figcaption {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+.header-nav-user {
+  float: left;
+  font-size: .9em;
+  line-height: 1.2em;
+  margin: 0 5px;
+  text-align: right;
 }
 .header-nav .header-nav-item {
   border-radius: 4px;
@@ -206,6 +214,7 @@ select {
   padding: 8px 10px;
   font-size: 14px;
   line-height: 1.42857;
+  max-width: calc(100% - 20px);
 }
 .filter-source .dropdown-menu {
   height: 450px;
@@ -243,6 +252,7 @@ textarea {
 }
 textarea {
   height: auto;
+  max-width: calc(100% - 20px);
 }
 input:invalid {
   border: 1px solid #ff756b;
@@ -1566,6 +1576,10 @@ code.header {
   overflow: hidden;
   margin: 0 auto 20px auto;
 }
+.btn--upload-picture {
+  display: block;
+}
+
 #upload-course {
   display: none;
 }
@@ -1786,6 +1800,7 @@ code.header {
   margin: auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .modal-close-link {
   background: none;
@@ -2857,6 +2872,13 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
 /*-------------------------------------------------------
  * FORM
  *-------------------------------------------------------*/
+
+.form .btn-group {
+  margin-top: 20px;
+}
+.form .btn-group:last-child {
+  margin-bottom: 0;
+}
 
 .form-controls {
   margin-top: 20px;

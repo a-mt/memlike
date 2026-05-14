@@ -36,7 +36,7 @@ $(document).ready(function(){
     level_index={window.MEMLIKE.garden.level_index}
     session_type={window.MEMLIKE.garden.session_type}
     preview_thing_id={window.MEMLIKE.garden.preview_thing_id}
-    session_id={window.MEMLIKE.garden.session_is_anonymous}
+    session_id={window.MEMLIKE.garden.session_id}
     course={window.MEMLIKE.course}
   />, document.getElementById('learn-container'));
 
@@ -1442,6 +1442,9 @@ class Learn extends Component {
 
     $.ajax({
       url: url,
+      xhrFields: {
+        withCredentials: true,
+      },
       data: { session: this.props.session_id },
       success: function(data){
         callback && callback(data);
