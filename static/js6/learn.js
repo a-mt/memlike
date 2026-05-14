@@ -25,6 +25,7 @@ $(document).ready(function(){
     'enable_audio_autoplay': localStorage.getItem('sessionSettings_enable_audio_autoplay'),
     'strict_punctuation': !!localStorage.getItem('sessionSettings_strict_punctuation'),
     'strict_case': !!localStorage.getItem('sessionSettings_strict_case'),
+    'growth_strategy': '1',
     'save_progress': !!window.MEMLIKE.garden.session_settings_save_progress,
     'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
@@ -142,15 +143,22 @@ class LearnSettingsModal extends Component {
     localStorage.setItem('sessionSettings_enable_audio_autoplay', this.state.enable_audio_autoplay ? '1' : '');
     localStorage.setItem('sessionSettings_strict_punctuation', this.state.strict_punctuation ? '1' : '');
     localStorage.setItem('sessionSettings_strict_case', this.state.strict_case ? '1' : '');
+    localStorage.setItem('sessionSettings_growth_strategy', this.state.growth_strategy ? '1' : '');
     localStorage.setItem('sessionSettings_id', this.state.session_id || '');
 
     this.onCloseModal();
     window.GlobalEventEmitter.dispatch('update-settings', this.state);
   }
 
-  handleChange(key) {
+  handleToggleChange(key) {
     this.setState({
       [key]: !this.state[key],
+    });
+  }
+
+  handleValueChange(key, e) {
+    this.setState({
+      [key]: e.target.value,
     });
   }
 
@@ -163,7 +171,7 @@ class LearnSettingsModal extends Component {
               id="disable_typing"
               type="checkbox"
               defaultChecked={this.state.disable_typing}
-              onChange={this.handleChange.bind(this, 'disable_typing')}
+              onChange={this.handleToggleChange.bind(this, 'disable_typing')}
               autoComplete="off"
             />
             <label htmlFor="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
@@ -173,7 +181,7 @@ class LearnSettingsModal extends Component {
               id="disable_tapping"
               type="checkbox"
               defaultChecked={this.state.disable_tapping}
-              onChange={this.handleChange.bind(this, 'disable_tapping')}
+              onChange={this.handleToggleChange.bind(this, 'disable_tapping')}
               autoComplete="off"
             />
             <label htmlFor="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
@@ -183,7 +191,7 @@ class LearnSettingsModal extends Component {
               id="disable_multimedia"
               type="checkbox"
               defaultChecked={this.state.disable_multimedia}
-              onChange={this.handleChange.bind(this, 'disable_multimedia')}
+              onChange={this.handleToggleChange.bind(this, 'disable_multimedia')}
               autoComplete="off"
             />
             <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
@@ -193,7 +201,7 @@ class LearnSettingsModal extends Component {
               id="enable_audio_autoplay"
               type="checkbox"
               defaultChecked={this.state.enable_audio_autoplay}
-              onChange={this.handleChange.bind(this, 'enable_audio_autoplay')}
+              onChange={this.handleToggleChange.bind(this, 'enable_audio_autoplay')}
               autoComplete="off"
             />
             <label htmlFor="enable_audio_autoplay">{window.I18N['learn_settings_enable_audio_autoplay']}</label>
@@ -202,33 +210,48 @@ class LearnSettingsModal extends Component {
         <fieldset>
           <div>
             <input
-              id="reverse_prompt_and_answer"
+              id="strict_case"
               type="checkbox"
-              defaultChecked={this.state.reverse_prompt_and_answer}
-              onChange={this.handleChange.bind(this, 'reverse_prompt_and_answer')}
+              defaultChecked={this.state.strict_case}
+              onChange={this.handleToggleChange.bind(this, 'strict_case')}
               autoComplete="off"
             />
-            <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
+            <label htmlFor="strict_case">{window.I18N['learn_settings_strict_case']}</label>
           </div>
           <div>
             <input
               id="strict_punctuation"
               type="checkbox"
               defaultChecked={this.state.strict_punctuation}
-              onChange={this.handleChange.bind(this, 'strict_punctuation')}
+              onChange={this.handleToggleChange.bind(this, 'strict_punctuation')}
               autoComplete="off"
             />
             <label htmlFor="strict_punctuation">{window.I18N['learn_settings_strict_punctuation']}</label>
           </div>
+        </fieldset>
+        <fieldset>
           <div>
             <input
-              id="strict_case"
+              id="reverse_prompt_and_answer"
               type="checkbox"
-              defaultChecked={this.state.strict_case}
-              onChange={this.handleChange.bind(this, 'strict_case')}
+              defaultChecked={this.state.reverse_prompt_and_answer}
+              onChange={this.handleToggleChange.bind(this, 'reverse_prompt_and_answer')}
               autoComplete="off"
             />
-            <label htmlFor="strict_case">{window.I18N['learn_settings_strict_case']}</label>
+            <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
+          </div>
+          <div style="margin-top: 5px">
+            <label htmlFor="growth_strategy" title={window.I18N['learn_settings_growth_strategy_info']}>
+              {window.I18N['learn_settings_growth_strategy']} ⓘ &nbsp;
+            </label>
+            <select
+              id="growth_strategy"
+              onChange={this.handleValueChange.bind(this, 'growth_strategy')}
+              autoComplete="off"
+            >
+              <option value="1" selected={this.state.growth_strategy === '1'}>Standard</option>
+              <option value="2" selected={this.state.growth_strategy === '2'}>SuperBoost</option>
+            </select>
           </div>
         </fieldset>
         <fieldset>
@@ -237,7 +260,7 @@ class LearnSettingsModal extends Component {
               id="save_progress"
               type="checkbox"
               defaultChecked={this.state.save_progress}
-              onChange={this.handleChange.bind(this, 'save_progress')}
+              onChange={this.handleToggleChange.bind(this, 'save_progress')}
               autoComplete="off"
             />
             <label htmlFor="save_progress">{window.I18N['learn_settings_save_progress']}</label>
@@ -382,6 +405,10 @@ const Timer = {
 const LEARN_UNTIL_GROWTH_LEVEL = 6;
 const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
 const LEARN_BUILD_CHOICES_LENGTH = 12;
+
+const GROWTH_STRATEGY = {
+  'SuperBoost': '2',
+};
 
 const TEST_DIFFICULTY = {
   'Unknown': 0,
@@ -835,20 +862,22 @@ const GameProgressHandler = {
       return 2 === learnableProgress.growth_level ? LEARN_UNTIL_GROWTH_LEVEL : learnableProgress.growth_level + 1;
     }
 
-    // StandardGrowthLevelStrategy
-    if (true) {
-      return learnableProgress.growth_level + 1;
+    // SuperchargeGrowthLevelStrategy
+    if (window.MEMLIKE.sessionSettings.growth_strategy === GROWTH_STRATEGY['SuperBoost']) {
+
+      // Validate 3 correct screens in a row to bump up to 6 (= item is learned)
+      return (
+        learnableProgress.attempts === learnableProgress.correct
+        && learnableProgress.growth_level < LEARN_UNTIL_GROWTH_LEVEL
+        && (
+            difficulty == TEST_DIFFICULTY.Easy && learnableProgress.growth_level >= 2
+         || difficulty == TEST_DIFFICULTY.Moderate && learnableProgress.growth_level >= 3
+        )
+      ) ? LEARN_UNTIL_GROWTH_LEVEL : learnableProgress.growth_level + 1;
     }
 
-    // SuperchargeGrowthLevelStrategy
-    return (
-      learnableProgress.attempts === learnableProgress.correct
-      && learnableProgress.growth_level < LEARN_UNTIL_GROWTH_LEVEL
-      && (
-          difficulty == TEST_DIFFICULTY.Easy && learnableProgress.growth_level >= 2
-       || difficulty == TEST_DIFFICULTY.Moderate && learnableProgress.growth_level >= 3
-      )
-    ) ? LEARN_UNTIL_GROWTH_LEVEL : learnableProgress.growth_level + 1;
+    // StandardGrowthLevelStrategy
+    return learnableProgress.growth_level + 1;
   },
 
   /**

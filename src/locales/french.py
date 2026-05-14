@@ -38,6 +38,8 @@ misc = {
     "learn_settings_save_progress": "Envoyer les résultats à Memrise",
     "learn_settings_strict_punctuation": "Ponctuation stricte",
     "learn_settings_strict_case": "Casse stricte",
+    "learn_settings_growth_strategy": "Stratégie d'apprentissage",
+    "learn_settings_growth_strategy_info": "Sélectionner SuperBoost pour passer rapidement les mots que vous connaissez déjà ‟à réviser”",
     "learn_is_anonymous": "Vous jouez anonymement: votre progrès ne sera pas sauvegardé",
     "learn": "Apprendre",
     "preview": "Visualiser",
