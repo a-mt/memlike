@@ -1484,7 +1484,7 @@ class Learn extends Component {
     if(!this.useLevels) {
       url += 'all/' + sessionType;
     } else {
-      levelType = this.props.course.levels[levelId].type;
+      levelType = levelId in this.props.course.levels ? this.props.course.levels[levelId].type : 1;
 
       if(levelType === 2) {
         url += levelId + '/media';
