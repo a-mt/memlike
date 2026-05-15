@@ -309,8 +309,8 @@ class Session(Session):
         return True
 
     def _reset(self):
-        self._data   = web.utils.storage({})
-        self.ip      = web.ctx.get("ip", "")
+        self.ip = web.ctx.get("ip", "")
+        self._data.clear()
         self._killed = False
         self._saved_data = {}
 
@@ -356,6 +356,8 @@ class Session(Session):
 
                 elif hasattr(self._initializer, "__call__"):
                     self._initializer()
+
+        self.ip = web.ctx.get("ip", "")
 
     def _save(self):
         data = dict(self._data)

@@ -63,7 +63,7 @@ web.config.session_parameters = web.utils.storage(
         "samesite": None,
         "timeout": 86400,  # 24 * 60 * 60, # 24 hours in seconds
         "ignore_expiry": True,
-        "ignore_change_ip": False,
+        "ignore_change_ip": True,
         "secret_key": "fLjUfxqXtfNoIldA0A0K",
         "expired_message": "Session expired",
         "httponly": True,
