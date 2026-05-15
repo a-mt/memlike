@@ -176,7 +176,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'disable_typing')}
               autoComplete="off"
             />
-            <label htmlFor="disable_typing">{window.I18N['learn_settings_disable_typing']}</label>
+            <label htmlFor="disable_typing">{window.I18N.misc['learn_settings_disable_typing']}</label>
           </div>
           <div>
             <input
@@ -186,7 +186,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'disable_tapping')}
               autoComplete="off"
             />
-            <label htmlFor="disable_tapping">{window.I18N['learn_settings_disable_tapping']}</label>
+            <label htmlFor="disable_tapping">{window.I18N.misc['learn_settings_disable_tapping']}</label>
           </div>
           <div>
             <input
@@ -196,7 +196,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'disable_multimedia')}
               autoComplete="off"
             />
-            <label htmlFor="disable_multimedia">{window.I18N['learn_settings_disable_multimedia']}</label>
+            <label htmlFor="disable_multimedia">{window.I18N.misc['learn_settings_disable_multimedia']}</label>
           </div>
           <div>
             <input
@@ -206,7 +206,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'enable_audio_autoplay')}
               autoComplete="off"
             />
-            <label htmlFor="enable_audio_autoplay">{window.I18N['learn_settings_enable_audio_autoplay']}</label>
+            <label htmlFor="enable_audio_autoplay">{window.I18N.misc['learn_settings_enable_audio_autoplay']}</label>
           </div>
         </fieldset>
         <fieldset>
@@ -218,7 +218,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'strict_case')}
               autoComplete="off"
             />
-            <label htmlFor="strict_case">{window.I18N['learn_settings_strict_case']}</label>
+            <label htmlFor="strict_case">{window.I18N.misc['learn_settings_strict_case']}</label>
           </div>
           <div>
             <input
@@ -228,7 +228,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'strict_punctuation')}
               autoComplete="off"
             />
-            <label htmlFor="strict_punctuation">{window.I18N['learn_settings_strict_punctuation']}</label>
+            <label htmlFor="strict_punctuation">{window.I18N.misc['learn_settings_strict_punctuation']}</label>
           </div>
           <div>
             <input
@@ -238,7 +238,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'growth_strategy')}
               autoComplete="off"
             />
-            <label htmlFor="growth_strategy">{window.I18N['learn_settings_growth_strategy']}</label>
+            <label htmlFor="growth_strategy">{window.I18N.misc['learn_settings_growth_strategy']}</label>
           </div>
         </fieldset>
         <fieldset>
@@ -250,7 +250,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'reverse_prompt_and_answer')}
               autoComplete="off"
             />
-            <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
+            <label htmlFor="reverse_prompt_and_answer">{window.I18N.misc['learn_settings_reverse_prompt_and_answer']}</label>
           </div>
           <div>
             <input
@@ -260,7 +260,7 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'build_strategy')}
               autoComplete="off"
             />
-            <label htmlFor="build_strategy">{window.I18N['learn_settings_build_strategy']}</label>
+            <label htmlFor="build_strategy">{window.I18N.misc['learn_settings_build_strategy']}</label>
           </div>
         </fieldset>
         <fieldset>
@@ -272,13 +272,13 @@ class LearnSettingsModal extends Component {
               onChange={this.handleToggleChange.bind(this, 'save_progress')}
               autoComplete="off"
             />
-            <label htmlFor="save_progress">{window.I18N['learn_settings_save_progress']}</label>
+            <label htmlFor="save_progress">{window.I18N.misc['learn_settings_save_progress']}</label>
           </div>
         </fieldset>
       </div>
       <div className="btn-group">
-        <button className="btn" onClick={this.onCloseModal} autoFocus={true}>{window.I18N['cancel']}</button>
-        <button className="btn green" onClick={this.onUpdateSettings}>{window.I18N['save']}</button>
+        <button className="btn" onClick={this.onCloseModal} autoFocus={true}>{window.I18N.misc['cancel']}</button>
+        <button className="btn green" onClick={this.onUpdateSettings}>{window.I18N.misc['save']}</button>
       </div>
     </div>
   }
@@ -324,7 +324,7 @@ class LearnSettingsBtn extends Component {
       return null;
     }
     return (
-      <button className="settings-btn" type="button" onClick={this.onToggleSettings} title={window.I18N.learn_settings}>
+      <button className="settings-btn" type="button" onClick={this.onToggleSettings} title={window.I18N.misc.learn_settings}>
         <span className="ico ico-settings ico-l ico-grey"></span>
       </button>
     );
@@ -1417,7 +1417,7 @@ class Learn extends Component {
             var elem = document.createElement('span');
             elem.innerHTML = `
               <audio id="audio-${k}" src=${url}></audio>
-              <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.I18N.play_audio}">
+              <button type="button" data-id="audio-${k}" class="audio-player" aria-label="${window.I18N.misc.play_audio}">
                 <i class="ico ico-l ico-audio"></i>
               </button>`;
 
@@ -1484,6 +1484,7 @@ class Learn extends Component {
     if(!this.useLevels) {
       url += 'all/' + sessionType;
     } else {
+      // Preview course without levels (levels["1"] doesn't exist)
       levelType = levelId in this.props.course.levels ? this.props.course.levels[levelId].type : 1;
 
       if(levelType === 2) {
@@ -1524,19 +1525,19 @@ class Learn extends Component {
           if (!gameData.screens.length) {
             switch (sessionType) {
               case 'learn':
-                error = window.I18N.learn_err_empty_learn;
+                error = window.I18N.misc.learn_err_empty_learn;
                 break;
 
               case 'preview':
-                error = window.I18N.learn_err_empty_preview;
+                error = window.I18N.misc.learn_err_empty_preview;
                 break;
 
               case 'review':
-                error = window.I18N.learn_err_empty_review;
+                error = window.I18N.misc.learn_err_empty_review;
                 break;
 
               default:
-                error = window.I18N.learn_err_empty;
+                error = window.I18N.misc.learn_err_empty;
                 break;
             }
           }
@@ -1909,10 +1910,10 @@ class Learn extends Component {
 
       $(document.body).append(`<div class="overlay">
         <div class="no-heart"></div>
-        <p class="overlay-text">${window.I18N.no_more_hearts} !</p>
+        <p class="overlay-text">${window.I18N.misc.no_more_hearts} !</p>
         <div class="btn-group">
-          <a href="${window.MEMLIKE.garden.session_origin_url}">${window.I18N.return}</a>
-          <a href="${window.location.href}">${window.I18N.replay}</a>
+          <a href="${window.MEMLIKE.garden.session_origin_url}">${window.I18N.misc.return}</a>
+          <a href="${window.location.href}">${window.I18N.misc.replay}</a>
         </div>
       </div>`);
 
@@ -2079,11 +2080,11 @@ class Learn extends Component {
     // Something went wrong
     if(this.state.error) {
       if(this.state.error == 403) {
-        return <p>{window.I18N.error_403} <a href="/login" className="link">{window.I18N.login}</a></p>;
+        return <p>{window.I18N.misc.error_403} <a href="/login" className="link">{window.I18N.misc.login}</a></p>;
       } else if (typeof this.state.error == 'string') {
         return <p>{this.state.error}</p>;
       } else {
-        return <p>{window.I18N.error}</p>;
+        return <p>{window.I18N.misc.error}</p>;
       }
     }
 
@@ -2113,7 +2114,7 @@ class Learn extends Component {
         <div>
           {this.renderLearnProgressBar()}
           {this.renderLearnScreen()}
-          <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
+          <button type="button" className="btn submit" tabIndex="0">{window.I18N.misc.next}</button>
         </div>
       );
     }
@@ -2130,7 +2131,7 @@ class Learn extends Component {
           ? <div className="speed_review"><div id="speed_review-timer" key={Date.now()}></div>{this.renderLearnScreen()}</div>
           : this.renderLearnScreen()}
 
-        <button type="button" className="btn submit" tabIndex="0">{window.I18N.next}</button>
+        <button type="button" className="btn submit" tabIndex="0">{window.I18N.misc.next}</button>
       </div>
     );
   }
@@ -2604,7 +2605,7 @@ const Value = function(props) {
       case 'audio': return (
         <span key={k}>
           <audio id={'audio-' + k} src={content}></audio>
-          <button type="button" data-id={'audio-' + k} className="audio-player" aria-label={window.I18N.play_audio}>
+          <button type="button" data-id={'audio-' + k} className="audio-player" aria-label={window.I18N.misc.play_audio}>
             <i className="ico ico-l ico-audio"></i>
           </button>
         </span>
@@ -2632,7 +2633,7 @@ const Value = function(props) {
           <div className="media-list">{content.map(media => (
             <span key={k + i++}>
               <audio id={'audio-' + (k + i)} src={media.normal}></audio>
-              <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.I18N.play_audio}>
+              <button type="button" data-id={'audio-' + (k + i)} className="audio-player" aria-label={window.I18N.misc.play_audio}>
                 <i className="ico ico-l ico-audio"></i>
               </button>
             </span>
@@ -2656,20 +2657,20 @@ const Correction = function(props) {
   var userAnswer = props.userAnswer;
 
   if(userAnswer.score == 1) {
-    return <div className="alert alert-success">{window.I18N.correct_answer}!</div>;
+    return <div className="alert alert-success">{window.I18N.misc.correct_answer}!</div>;
 
   } else if(userAnswer.score == 0) {
     return <div className="alert alert-danger">
-      {window.I18N.wrong_answer}!&nbsp;
+      {window.I18N.misc.wrong_answer}!&nbsp;
       {userAnswer.value
-        ? <span>{window.I18N.your_answer_was}: <strong><Value content={userAnswer.value} type={userAnswer.kind} single="1" /></strong></span>
-        : <span>{window.I18N.your_answer_was_empty}</span>}
+        ? <span>{window.I18N.misc.your_answer_was}: <strong><Value content={userAnswer.value} type={userAnswer.kind} single="1" /></strong></span>
+        : <span>{window.I18N.misc.your_answer_was_empty}</span>}
     </div>;
 
   } else {
     return <div className="alert alert-warning">
-      {window.I18N.near_answer}!&nbsp;
-      <span>{window.I18N.your_answer_was}: <strong>
+      {window.I18N.misc.near_answer}!&nbsp;
+      <span>{window.I18N.misc.your_answer_was}: <strong>
         {userAnswer.kind == 'text'
           ? <span>{userAnswer.testValue} <small
               className="correction"

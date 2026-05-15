@@ -84,7 +84,7 @@ class CourseSettingsModal extends Component {
         this.setState({
           isLoading: false,
         });
-        alert(window.I18N['error']);
+        alert(window.I18N.misc['error']);
       }.bind(this),
     });
   }
@@ -137,7 +137,7 @@ class CourseSettingsModal extends Component {
         console.error(xhr);
 
         if (xhr.status != 400 || !xhr.responseJSON) {
-          alert(window.I18N['error']);
+          alert(window.I18N.misc['error']);
           return;
         }
         var errors = {};
@@ -168,7 +168,7 @@ class CourseSettingsModal extends Component {
       });
     }
     if (this.confirmDelCourse != this.props.course.title) {
-      alert(window.I18N.warn_del_course);
+      alert(window.I18N.misc.warn_del_course);
       return;
     }
     var $btn = $(e.target);
@@ -190,7 +190,7 @@ class CourseSettingsModal extends Component {
       error: function(xhr) {
         $btn.removeAttr('disabled').removeClass('loading-spinner-before loading-spinner-m');
 
-        alert(window.I18N['error']);
+        alert(window.I18N.misc['error']);
 
         console.error(xhr);
       },
@@ -224,7 +224,7 @@ class CourseSettingsModal extends Component {
           alert(data.message);
         }
         if(!data.success || !data.image_url) {
-          alert(window.I18N['error'])
+          alert(window.I18N.misc['error'])
         }
         this.setState({
           details: {...this.state.details, photo: data.image_url},
@@ -232,7 +232,7 @@ class CourseSettingsModal extends Component {
       }.bind(this),
       error: function(xhr){
         console.error(xhr);
-        alert(window.I18N['error']);
+        alert(window.I18N.misc['error']);
       },
       complete: function() {
         $btn.removeAttr('disabled').removeClass('loading-spinner-after loading-spinner-m');
@@ -245,7 +245,7 @@ class CourseSettingsModal extends Component {
 
     for(let i=0; i<list.length; i++) {
       let item = list[i];
-      let name = window.I18N.categories[item.id].replace('&amp;', '&');
+      let name = window.I18N.misc.categories[item.id].replace('&amp;', '&');
 
       children.push(
         <option value={item.id} selected={item.id == selected}>
@@ -264,7 +264,7 @@ class CourseSettingsModal extends Component {
   render() {
     return <div className="vcenter settings course-settings">
       <h3>
-        {window.I18N['course_settings']}
+        {window.I18N.misc['course_settings']}
       </h3>
       <div className="form">
         {this.state.isLoading ? (
@@ -273,11 +273,11 @@ class CourseSettingsModal extends Component {
           </div>
         ) : (
           <div>
-            {this.state.success && <div className="alert alert-success">{window.I18N['save_success']}</div>}
-            {this.state.errors && <div className="alert alert-danger">{window.I18N['error_400']}</div>}
+            {this.state.success && <div className="alert alert-success">{window.I18N.misc['save_success']}</div>}
+            {this.state.errors && <div className="alert alert-danger">{window.I18N.misc['error_400']}</div>}
             <form className="nicebox clearfix form" onSubmit={this.submit}>
               <div className="form-controls">
-                <label htmlFor="name">{window.I18N['course_name']}</label>
+                <label htmlFor="name">{window.I18N.misc['course_name']}</label>
                 <input
                   id="name"
                   name="name"
@@ -288,21 +288,21 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.name && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               {/* what to learn */}
               <div className="form-controls">
-                <label htmlFor="target">{window.I18N['course_category']}</label>
+                <label htmlFor="target">{window.I18N.misc['course_category']}</label>
                 <select id="target" name="target" required onChange={this.handleChange.bind(this, 'target')}>
                   {this.tree(window.MEMLIKE.categories_tree, this.state.details.target, '')}
                 </select>
               </div>
               {this.state.errors && this.state.errors.source && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               {/* for people that speak */}
               <div className="form-controls">
-                <label htmlFor="source">{window.I18N['course_language']}</label>
+                <label htmlFor="source">{window.I18N.misc['course_language']}</label>
                 <select id="source" name="source" required onChange={this.handleChange.bind(this, 'source')}>
                   {window.MEMLIKE.localized_languages.map((item) => (
                     <option
@@ -316,10 +316,10 @@ class CourseSettingsModal extends Component {
                 </select>
               </div>
               {this.state.errors && this.state.errors.source && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label htmlFor="tags">{window.I18N['course_tags']}</label>
+                <label htmlFor="tags">{window.I18N.misc['course_tags']}</label>
                 <input
                   id="tags"
                   name="tags"
@@ -329,10 +329,10 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.tags && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label htmlFor="description">{window.I18N['course_description']}</label>
+                <label htmlFor="description">{window.I18N.misc['course_description']}</label>
                 <textarea
                   id="description"
                   name="description"
@@ -343,10 +343,10 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.description && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               <div className="form-controls">
-                <label htmlFor="short_description">{window.I18N['course_short_description']}</label>
+                <label htmlFor="short_description">{window.I18N.misc['course_short_description']}</label>
                 <input
                   id="short_description"
                   name="short_description"
@@ -356,7 +356,7 @@ class CourseSettingsModal extends Component {
                 />
               </div>
               {this.state.errors && this.state.errors.short_description && (
-                <div className="alert alert-danger">{window.I18N['invalid_value']}</div>
+                <div className="alert alert-danger">{window.I18N.misc['invalid_value']}</div>
               )}
               <input
                 name="audio_mode"
@@ -379,40 +379,40 @@ class CourseSettingsModal extends Component {
                   type="submit"
                   disabled={this.state.isSubmitting}
                 >
-                  {window.I18N['save']}
+                  {window.I18N.misc['save']}
                 </button>
               </div>
             </form>
 
             {/* IMAGE */}
             <div className="nicebox">
-              <h4>{window.I18N.course_picture}</h4>
+              <h4>{window.I18N.misc.course_picture}</h4>
               <div className="picture">
                 {this.state.details.photo && <img src={this.state.details.photo} alt="" />}
               </div>
               <label className="btn btn--upload-picture" htmlFor="upload-course">
                 <input type="file" id="upload-course" onChange={this.uploadImage} />
-                {window.I18N.course_picture_upload}
+                {window.I18N.misc.course_picture_upload}
               </label>
             </div>
           </div>
         )}
         <div className="danger-zone alert alert-danger">
           <div>
-            <h4>{window.I18N.delete_course}</h4>
+            <h4>{window.I18N.misc.delete_course}</h4>
             {this.state.confirmDelete && <div>
-              <p>{window.I18N.confirm_del_course}</p>
+              <p>{window.I18N.misc.confirm_del_course}</p>
               <input type="text" onChange={this.confirmDelete} autoComplete="off" />
             </div>}
           </div>
           <button className="btn danger" type="button" onClick={this.deleteCourse}>
-            {window.I18N.delete}
+            {window.I18N.misc.delete}
           </button>
         </div>
       </div>
 
       <div className="btn-group">
-        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
+        <button className="btn" onClick={this.closeModal}>{window.I18N.misc['cancel']}</button>
       </div>
     </div>
   }
@@ -490,15 +490,15 @@ class EditCourseActions extends Component {
             className="settings-btn"
             type="button"
             onClick={this.toggleSettings}
-            title={window.I18N['course_settings']}
+            title={window.I18N.misc['course_settings']}
           >
             <span className="ico ico-settings ico-l ico-grey"></span>
           </button>
           <button type="button" className="btn" onClick={() => this.addLevel('multimedia')}>
-            {window.I18N.add_level_multimedia}
+            {window.I18N.misc.add_level_multimedia}
           </button>
           <button type="button" className="btn green" onClick={() => this.addLevel('things')}>
-            {window.I18N.add_level_things}
+            {window.I18N.misc.add_level_things}
           </button>
         </div>
       </div>
@@ -631,7 +631,7 @@ class LevelSettingsModal extends Component {
     return <div className="vcenter settings learn-settings">
       <div className="form">
         <div>
-          <label htmlFor="title">{window.I18N['edit_level_title']}:&emsp;</label>
+          <label htmlFor="title">{window.I18N.misc['edit_level_title']}:&emsp;</label>
           <input
             id="title"
             type="text"
@@ -642,8 +642,8 @@ class LevelSettingsModal extends Component {
         </div>
       </div>
       <div className="btn-group">
-        <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
-        <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+        <button className="btn" onClick={this.closeModal}>{window.I18N.misc['cancel']}</button>
+        <button className="btn green" onClick={this.updateSettings}>{window.I18N.misc['save']}</button>
       </div>
     </div>
   }
@@ -729,7 +729,7 @@ class EditLevel extends Component {
   }
 
   onGetDataError() {
-    alert(window.I18N['error']);
+    alert(window.I18N.misc['error']);
   }
 
   getData() {
@@ -746,7 +746,7 @@ class EditLevel extends Component {
   }
 
   deleteLevel(e) {
-    if(!confirm(window.I18N.confirm_del_level)) {
+    if(!confirm(window.I18N.misc.confirm_del_level)) {
       return;
     }
     var $btn = $(e.target);
@@ -821,34 +821,34 @@ class EditLevel extends Component {
           <div className="edit-level-actions-group">
             <div className="btn-group">
 
-              <button className="edit-title btn action" title={window.I18N.edit_level_title} onClick={this.toggleEditTitle}>
+              <button className="edit-title btn action" title={window.I18N.misc.edit_level_title} onClick={this.toggleEditTitle}>
                 <i className="ico ico-grey ico-edit"></i>
               </button>
 
-              <button className="delete-level btn action" title={window.I18N.delete} onClick={this.deleteLevel}>
+              <button className="delete-level btn action" title={window.I18N.misc.delete} onClick={this.deleteLevel}>
                 <i className="ico ico-grey ico-trash"></i>
               </button>
             </div>
 
             <div className="btn-group">
               <button className="generate-audio btn action" title="">
-                {window.I18N.generate_audio}
+                {window.I18N.misc.generate_audio}
               </button>
             </div>
 
             <div className="btn-group">
-              <label className="export-level btn action" title={window.I18N.export}>
-                {window.I18N.export}
+              <label className="export-level btn action" title={window.I18N.misc.export}>
+                {window.I18N.misc.export}
               </label>
-              <label className="import-level btn action" title={window.I18N.import} htmlFor={'import_' + level.id}>
+              <label className="import-level btn action" title={window.I18N.misc.import} htmlFor={'import_' + level.id}>
                 <input type="file" id={'import_' + level.id} />
-                {window.I18N.import}
+                {window.I18N.misc.import}
               </label>
             </div>
 
             <div className="btn-group">
-              <a className="btn action" href={this.props.url} title={window.I18N.goto}>
-                {window.I18N.goto}
+              <a className="btn action" href={this.props.url} title={window.I18N.misc.goto}>
+                {window.I18N.misc.goto}
               </a>
             </div>
           </div>
@@ -859,7 +859,7 @@ class EditLevel extends Component {
       </div>
 
       <div className="edit-level-label">
-        <label>{this.state.name || window.I18N['level_default_title']}</label>
+        <label>{this.state.name || window.I18N.misc['level_default_title']}</label>
         {!level.pool_id && <span>&nbsp;(multimedia)</span>}
       </div>
 
@@ -921,7 +921,7 @@ class ColumnSettingsModal extends Component {
   }
 
   deleteColumn(e) {
-    if (!confirm(window.I18N.confirm_del_column)) {
+    if (!confirm(window.I18N.misc.confirm_del_column)) {
       return;
     }
     var $btn = $(e.target);
@@ -942,7 +942,7 @@ class ColumnSettingsModal extends Component {
       error: function(xhr) {
         $btn.removeAttr('disabled').removeClass('loading-spinner-before loading-spinner-m');
 
-        alert(window.I18N['error']);
+        alert(window.I18N.misc['error']);
 
         console.error(xhr);
       },
@@ -956,7 +956,7 @@ class ColumnSettingsModal extends Component {
     return <div className="vcenter settings learn-settings">
       <div className="form">
         <div>
-          <label htmlFor="label">{window.I18N['edit_level_title']}:&emsp;</label>
+          <label htmlFor="label">{window.I18N.misc['edit_level_title']}:&emsp;</label>
           <input
             id="label"
             type="text"
@@ -968,11 +968,11 @@ class ColumnSettingsModal extends Component {
       </div>
       <div className="actions">
         <div className="btn-group">
-          <button className="btn danger" title={window.I18N.delete_course} onClick={this.deleteColumn}>
+          <button className="btn danger" title={window.I18N.misc.delete_course} onClick={this.deleteColumn}>
             <i className="ico ico-white ico-trash"></i>
           </button>
-          <button className="btn" onClick={this.closeModal}>{window.I18N['cancel']}</button>
-          <button className="btn green" onClick={this.updateSettings}>{window.I18N['save']}</button>
+          <button className="btn" onClick={this.closeModal}>{window.I18N.misc['cancel']}</button>
+          <button className="btn green" onClick={this.updateSettings}>{window.I18N.misc['save']}</button>
         </div>
       </div>
     </div>
@@ -1103,7 +1103,7 @@ function bindEditEvents(tpl) {
         callback && callback('success', levelId, $newTr);
       },
       error: function(xhr){
-        alert(window.I18N['error']);
+        alert(window.I18N.misc['error']);
 
         console.error(xhr);
         $tr.removeClass('disabled');
@@ -1274,7 +1274,7 @@ function bindEditEvents(tpl) {
   // On click "delete": delete row
   function click_deleteRow(e){
     e.preventDefault();
-    if(confirm(window.I18N.confirm_del_row)) {
+    if(confirm(window.I18N.misc.confirm_del_row)) {
       removeRow($(e.target).closest('tr'));
     }
   }
@@ -1399,7 +1399,7 @@ function bindEditEvents(tpl) {
     e.preventDefault();
     e.stopPropagation();
 
-    if(!confirm(window.I18N.confirm_del_file)) {
+    if(!confirm(window.I18N.misc.confirm_del_file)) {
       return;
     }
     removeFile($(e.target));
@@ -1578,7 +1578,7 @@ function bindEditEvents(tpl) {
     }
     var file = e.target.files[0];
     if(file.type != 'text/csv') {
-      alert(window.I18N.import_err_ext);
+      alert(window.I18N.misc.import_err_ext);
       return;
     }
 
@@ -1724,11 +1724,11 @@ function bindEditEvents(tpl) {
 
   function importPreview(rows, headers, $adding) {
     if(!headers) {
-      alert(window.I18N.import_err_empty);
+      alert(window.I18N.misc.import_err_empty);
       return;
     }
     var html = '<div class="import_preview">';
-    html += '<button class="btn active run_import top">' + window.I18N.import + '</button>';
+    html += '<button class="btn active run_import top">' + window.I18N.misc.import + '</button>';
     html += '<table>';
 
     // Display headers
@@ -1786,7 +1786,7 @@ function bindEditEvents(tpl) {
       html += '</tr>';
     }
     html += '</tbody></table>';
-    html += '<button class="btn active run_import bottom">' + window.I18N.import + '</button>';
+    html += '<button class="btn active run_import bottom">' + window.I18N.misc.import + '</button>';
     html += '</div>';
     window.modal.open(html);
 

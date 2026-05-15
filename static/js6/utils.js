@@ -222,7 +222,7 @@ var imgZoom = window.imgZoom = {
     if(!imgZoom.container) {
       imgZoom.createContainer();
     }
-    var html = `<button type="button" class="modal-close-link">${window.I18N.close}</button>`;
+    var html = `<button type="button" class="modal-close-link">${window.I18N.misc.close}</button>`;
 
     // Img & legend
     var legend = $(this).closest('.thing').find('.text').text();

@@ -1,4 +1,4 @@
-function _asyncToGenerator(fn){return function(){var gen=fn.apply(this,arguments);return new Promise(function(resolve,reject){function step(key,arg){try{var info=gen[key](arg);var value=info.value}catch(error){reject(error);return}if(info.done){resolve(value)}else{return Promise.resolve(value).then(function(value){step('next',value)},function(err){step('throw',err)})}}return step('next')})}}var process=process||{};process.env=process.env||{};window.MEMLIKE=window.MEMLIKE||{};window.MEMLIKE.js_spreadsheet={build_date:process.env.BUILD_DATE};/* global $, window, document, console *//* global fetch */$(document).ready(function(){bindSpreadsheetEvents()});function bindSpreadsheetEvents(){var linkCourse=window.MEMLIKE.course.url,idCourse=window.MEMLIKE.course.id;// Choose to export either multimedia or classic levels
+function _asyncToGenerator(fn){return function(){var gen=fn.apply(this,arguments);return new Promise(function(resolve,reject){function step(key,arg){try{var info=gen[key](arg);var value=info.value}catch(error){reject(error);return}if(info.done){resolve(value)}else{return Promise.resolve(value).then(function(value){step('next',value)},function(err){step('throw',err)})}}return step('next')})}}var process=process||{};process.env=process.env||{};window.MEMLIKE=window.MEMLIKE||{};window.MEMLIKE.js_spreadsheet={build_date:"2026-05-15T03:07-04:00"};/* global $, window, document, console *//* global fetch */$(document).ready(function(){bindSpreadsheetEvents()});function bindSpreadsheetEvents(){var linkCourse=window.MEMLIKE.course.url,idCourse=window.MEMLIKE.course.id;// Choose to export either multimedia or classic levels
 var exportElem=document.getElementById('chooseExport0');exportElem&&exportElem.addEventListener('click',chooseExport);exportElem=document.getElementById('chooseExport1');exportElem&&exportElem.addEventListener('click',chooseExport);function chooseExport(){var val=this.value;document.getElementById(`export${val}`).disabled=false;document.getElementById(`export${1-val}`).disabled=true;document.getElementById('exportAlt').disabled=val==1;document.getElementById('exportMore').disabled=val==1}// Export using in memory data
 document.getElementById('exportInMemory').addEventListener('click',function(){new ExportInMemory});// On render/export
 document.getElementById('spreadsheet_conf').addEventListener('submit',function(e){e.preventDefault();// Get the list of levels selected
@@ -30,32 +30,32 @@ this.extraHeaders={};this.createBody(container);this.createContent(loading);this
    * @return DOMElement
    */createBody(container){var table=document.createElement('table');container.appendChild(table);table.innerHTML=`<thead><tr>
       <th class="lvl-idx num" data-key="export_column_level">
-        ${window.I18N['export_column_level']}
+        ${window.I18N.misc['export_column_level']}
       </th>
       <th class="item-idx num" data-value="1" data-key="export_column_index">
-        ${window.I18N['export_column_index']}
+        ${window.I18N.misc['export_column_index']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="item-label" data-key="export_column_label">
-        ${window.I18N['export_column_label']}
+        ${window.I18N.misc['export_column_label']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="item-definition" data-key="export_column_definition">
-        ${window.I18N['export_column_definition']}
+        ${window.I18N.misc['export_column_definition']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="score num" colspan="2" data-sort="numeric" data-value="1" data-key="export_column_score">
-        ${window.I18N['export_column_score']}
+        ${window.I18N.misc['export_column_score']}
         <button class="sort" type="button">⬍</button>
       </th>
-      ${this.exportMore?`<th class="item-more" data-key="export_column_more">${window.I18N['export_column_more']}</th>`:''}
+      ${this.exportMore?`<th class="item-more" data-key="export_column_more">${window.I18N.misc['export_column_more']}</th>`:''}
       </tr></thead>
       <tbody></tbody>`;this.body=table.lastElementChild}getUrl(idLevel){return`/ajax${this.urlCourse}${idLevel}/preview`}/**
    * Populate the body
    */createContent(loading){var _this=this;return _asyncToGenerator(function*(){var n=_this.levels.length-1,hasErr=false;for(let i=0;i<=n;i++){let level=_this.levels[i];let options={method:'GET',credentials:'include',headers:{'Content-Type':'application/json','X-CSRFToken':_this.cookies['csrftoken']||''}};yield fetch(_this.getUrl(level.idx),options).then(function(response){// Returns 400 if column b isn't defined
 return response.ok?response.json():null}).then(function(data){if(data){var rows=data.learnables,scores=data.progress;// current user scores
 for(let j=0;j<rows.length;j++){var item=rows[j];_this.createRow(level,j,item.screens[1],// includes attributes as well
-scores&&scores[j])}}if(i==n&&loading){loading.parentNode.removeChild(loading);loading=null}}).catch(function(e){hasErr=true;console.error(e);loading.setAttribute('class','alert alert-danger');loading.innerHTML=window.I18N['error']});if(hasErr){break}}_this.end(hasErr)})()}/**
+scores&&scores[j])}}if(i==n&&loading){loading.parentNode.removeChild(loading);loading=null}}).catch(function(e){hasErr=true;console.error(e);loading.setAttribute('class','alert alert-danger');loading.innerHTML=window.I18N.misc['error']});if(hasErr){break}}_this.end(hasErr)})()}/**
    * Create a new row
    * @param object level  - Data about current level
    * @param integer j     - Current row number
@@ -112,12 +112,12 @@ this.createBody(container);this.createContent(loading)}/**
    * Create a table
    * @return DOMElement
    */createBody(container){var table=document.createElement('table');container.appendChild(table);table.innerHTML=`<thead><tr>
-      <th class="lvl-idx num">${window.I18N['export_column_level']}</th>
-      <th class="item-definition">${window.I18N['export_column_content']}</th>
+      <th class="lvl-idx num">${window.I18N.misc['export_column_level']}</th>
+      <th class="item-definition">${window.I18N.misc['export_column_content']}</th>
       </tr></thead>
       <tbody></tbody>`;this.body=table.lastElementChild}/**
    * Populate the body
-   */createContent(loading){var _this2=this;return _asyncToGenerator(function*(){var n=_this2.levels.length-1,hasErr=false;for(let i=0;i<=n;i++){let level=_this2.levels[i];yield fetch(_this2.getUrl(level.idx),{credentials:'same-origin'}).then(function(response){return response.text()}).then(function(data){_this2.createRow(level,data);if(i==n){loading.parentNode.removeChild(loading);loading=null}}).catch(function(e){hasErr=true;console.error(e);loading.setAttribute('class','alert alert-danger');loading.innerHTML=window.I18N['error']});if(hasErr){break}}_this2.end(hasErr)})()}/**
+   */createContent(loading){var _this2=this;return _asyncToGenerator(function*(){var n=_this2.levels.length-1,hasErr=false;for(let i=0;i<=n;i++){let level=_this2.levels[i];yield fetch(_this2.getUrl(level.idx),{credentials:'same-origin'}).then(function(response){return response.text()}).then(function(data){_this2.createRow(level,data);if(i==n){loading.parentNode.removeChild(loading);loading=null}}).catch(function(e){hasErr=true;console.error(e);loading.setAttribute('class','alert alert-danger');loading.innerHTML=window.I18N.misc['error']});if(hasErr){break}}_this2.end(hasErr)})()}/**
    * Returns the URL to retrieve the words of a level
    * @param string|integer idLevel
    * @return string
@@ -178,7 +178,7 @@ for(let i=0;i<arr.length;i++){this.body+=',';this.body+=arr[i]||''}}this.body+='
    * Retrieve all headers
    * Includes visible_info / hidden_info / attributes if that option was checked
    * @return string
-   */getHeaders(){var headers=[window.I18N['export_column_level'],window.I18N['export_column_index'],window.I18N['export_column_label'],window.I18N['export_column_definition'],window.I18N['export_column_score_correct'],window.I18N['export_column_score_attempts'],window.I18N['export_column_score_percent']].join(',');if(!this.exportMore){return headers}var extra=[];for(var label in this.headers){extra[this.headers[label]]=escapeCSV(label)}return headers+(extra.length?','+extra.join(','):'')}}//+--------------------------------------------------------
+   */getHeaders(){var headers=[window.I18N.misc['export_column_level'],window.I18N.misc['export_column_index'],window.I18N.misc['export_column_label'],window.I18N.misc['export_column_definition'],window.I18N.misc['export_column_score_correct'],window.I18N.misc['export_column_score_attempts'],window.I18N.misc['export_column_score_percent']].join(',');if(!this.exportMore){return headers}var extra=[];for(var label in this.headers){extra[this.headers[label]]=escapeCSV(label)}return headers+(extra.length?','+extra.join(','):'')}}//+--------------------------------------------------------
 //|
 //| EXPORT CSV - MULTIMEDIA
 //|
@@ -190,7 +190,7 @@ class ExportMultimedia extends SpreadSheetMultimedia{/**
    */createLoader(container){var loading=document.createElement('div');loading.setAttribute('class','loading-spinner');if(container.children.length){container.insertBefore(loading,container.firstElementChild)}else{container.appendChild(loading)}return loading}/**
    * Init the content of the CSV
    * @return DOMElement
-   */createBody(container){this.body=[window.I18N['export_column_level'],window.I18N['export_column_label'],window.I18N['export_column_content']].join(',')+'\n'}/**
+   */createBody(container){this.body=[window.I18N.misc['export_column_level'],window.I18N.misc['export_column_label'],window.I18N.misc['export_column_content']].join(',')+'\n'}/**
    * Create a new row
    * @param object data
    */createRow(level,data){this.body+=level.idx+',';this.body+=escapeCSV(level.title)+',';this.body+=escapeCSV(data)+'\n'}/**
@@ -207,7 +207,7 @@ class ExportInMemory{/**
    * @param array headers
    * @param array extraHeaders
    * @return string
-   */getHeaders(_headers,extraHeaders){var headers=[..._headers];var k=headers.indexOf('export_column_score');if(k!=-1){headers.splice(k,1,...['export_column_score_correct','export_column_score_attempts','export_column_score_percent'])}k=headers.indexOf('export_column_more');if(k!=-1){headers.splice(k,1,...extraHeaders)}k=headers.indexOf('export_column_content');if(k!=-1){headers.splice(k,1,...['export_column_label','export_column_content'])}return headers.map(label=>escapeCSV(window.I18N[label])).join(',')}/**
+   */getHeaders(_headers,extraHeaders){var headers=[..._headers];var k=headers.indexOf('export_column_score');if(k!=-1){headers.splice(k,1,...['export_column_score_correct','export_column_score_attempts','export_column_score_percent'])}k=headers.indexOf('export_column_more');if(k!=-1){headers.splice(k,1,...extraHeaders)}k=headers.indexOf('export_column_content');if(k!=-1){headers.splice(k,1,...['export_column_label','export_column_content'])}return headers.map(label=>escapeCSV(window.I18N.misc[label])).join(',')}/**
    * Retrieve the JSON-decoded list of extra headers
    * Or an empty list
    *

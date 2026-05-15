@@ -202,25 +202,25 @@ class SpreadSheet {
 
     table.innerHTML = `<thead><tr>
       <th class="lvl-idx num" data-key="export_column_level">
-        ${window.I18N['export_column_level']}
+        ${window.I18N.misc['export_column_level']}
       </th>
       <th class="item-idx num" data-value="1" data-key="export_column_index">
-        ${window.I18N['export_column_index']}
+        ${window.I18N.misc['export_column_index']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="item-label" data-key="export_column_label">
-        ${window.I18N['export_column_label']}
+        ${window.I18N.misc['export_column_label']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="item-definition" data-key="export_column_definition">
-        ${window.I18N['export_column_definition']}
+        ${window.I18N.misc['export_column_definition']}
         <button class="sort" type="button">⬍</button>
       </th>
       <th class="score num" colspan="2" data-sort="numeric" data-value="1" data-key="export_column_score">
-        ${window.I18N['export_column_score']}
+        ${window.I18N.misc['export_column_score']}
         <button class="sort" type="button">⬍</button>
       </th>
-      ${this.exportMore ? `<th class="item-more" data-key="export_column_more">${window.I18N['export_column_more']}</th>` : ''}
+      ${this.exportMore ? `<th class="item-more" data-key="export_column_more">${window.I18N.misc['export_column_more']}</th>` : ''}
       </tr></thead>
       <tbody></tbody>`;
 
@@ -280,7 +280,7 @@ class SpreadSheet {
         console.error(e);
 
         loading.setAttribute('class', 'alert alert-danger');
-        loading.innerHTML = window.I18N['error'];
+        loading.innerHTML = window.I18N.misc['error'];
       });
 
       if(hasErr) {
@@ -527,8 +527,8 @@ class SpreadSheetMultimedia {
     container.appendChild(table);
 
     table.innerHTML = `<thead><tr>
-      <th class="lvl-idx num">${window.I18N['export_column_level']}</th>
-      <th class="item-definition">${window.I18N['export_column_content']}</th>
+      <th class="lvl-idx num">${window.I18N.misc['export_column_level']}</th>
+      <th class="item-definition">${window.I18N.misc['export_column_content']}</th>
       </tr></thead>
       <tbody></tbody>`;
 
@@ -562,7 +562,7 @@ class SpreadSheetMultimedia {
         console.error(e);
 
         loading.setAttribute('class', 'alert alert-danger');
-        loading.innerHTML = window.I18N['error'];
+        loading.innerHTML = window.I18N.misc['error'];
       });
 
       if(hasErr) {
@@ -807,13 +807,13 @@ class Export extends SpreadSheet {
    */
   getHeaders() {
     var headers = [
-      window.I18N['export_column_level'],
-      window.I18N['export_column_index'],
-      window.I18N['export_column_label'],
-      window.I18N['export_column_definition'],
-      window.I18N['export_column_score_correct'],
-      window.I18N['export_column_score_attempts'],
-      window.I18N['export_column_score_percent'],
+      window.I18N.misc['export_column_level'],
+      window.I18N.misc['export_column_index'],
+      window.I18N.misc['export_column_label'],
+      window.I18N.misc['export_column_definition'],
+      window.I18N.misc['export_column_score_correct'],
+      window.I18N.misc['export_column_score_attempts'],
+      window.I18N.misc['export_column_score_percent'],
     ].join(',');
 
     if(!this.exportMore) {
@@ -859,9 +859,9 @@ class ExportMultimedia extends SpreadSheetMultimedia {
    */
   createBody(container) {
     this.body = [
-      window.I18N['export_column_level'],
-      window.I18N['export_column_label'],
-      window.I18N['export_column_content'],
+      window.I18N.misc['export_column_level'],
+      window.I18N.misc['export_column_label'],
+      window.I18N.misc['export_column_content'],
     ].join(',') + '\n';
   }
 
@@ -939,7 +939,7 @@ class ExportInMemory {
         'export_column_content',
       ]);
     }
-    return headers.map(label => escapeCSV(window.I18N[label])).join(',');
+    return headers.map(label => escapeCSV(window.I18N.misc[label])).join(',');
   }
 
   /**
