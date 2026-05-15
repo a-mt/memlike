@@ -1,4 +1,4 @@
-$def with(course, session_type, level_index, thing_id, save_progress, reverse_prompt_and_answer)
+$def with(course, session_type, level_index, thing_id, save_progress, reverse_prompt_and_answer, build_strategy)
 $var title: $(I18N.misc[session_type]) ~ $(course['title'])
 $var js: /static/js/markdown.min.js, /static/js/preact.min.js, /static/js/unidecode.v0.04.9.min.js, /static/js/build/learn.js
 $var header: 1
@@ -28,6 +28,7 @@ $ url = course['url'] + str(level_index) if level_index else course['url']
     session_is_anonymous: $(1 if session["loggedin"] else 0),
     session_settings_save_progress: $(int(save_progress) if session["loggedin"] else 0),
     session_settings_reverse_prompt_and_answer: $(int(reverse_prompt_and_answer)),
+    session_settings_build_strategy: "$(build_strategy)",
     preview_thing_id: $(thing_id if thing_id else 0),
     level_index: $:(level_index if level_index else '""'),
   };

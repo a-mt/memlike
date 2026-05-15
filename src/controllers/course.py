@@ -54,6 +54,11 @@ class learn_fromform:
                     default=False,
                     on_error="default",
                 ),
+                "build_strategy": validator.field(
+                    validator.str_choices_schema(["", "0", "1"]),
+                    default="",
+                    on_error="default",
+                ),
             },
             data=web.input(),
         )
@@ -71,6 +76,7 @@ class learn_fromform:
             False,
             _GET.save_progress,
             _GET.reverse_prompt_and_answer,
+            _GET.build_strategy,
         )
 
 
@@ -84,7 +90,7 @@ class learn:
 
         course = memrise.course(course_id, course_slug=course_slug)
 
-        return web.config.template.render.learn(course, session_type, level_index, False, 1, 0)
+        return web.config.template.render.learn(course, session_type, level_index, False, 1, 0, 1)
 
 
 class thing:
@@ -92,7 +98,7 @@ class thing:
         course_slug = path.split("/", 2)[0]
         course = memrise.course(course_id, course_slug=course_slug)
 
-        return web.config.template.render.learn(course, "preview", level_index, thing_id, 0, 0)
+        return web.config.template.render.learn(course, "preview", level_index, thing_id, 0, 0, 1)
 
 
 class level:

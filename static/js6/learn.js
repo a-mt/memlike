@@ -25,7 +25,8 @@ $(document).ready(function(){
     'enable_audio_autoplay': localStorage.getItem('sessionSettings_enable_audio_autoplay'),
     'strict_punctuation': !!localStorage.getItem('sessionSettings_strict_punctuation'),
     'strict_case': !!localStorage.getItem('sessionSettings_strict_case'),
-    'growth_strategy': '1',
+    'growth_strategy': '',
+    'build_strategy': '' + (window.MEMLIKE.garden.session_settings_build_strategy || ''),
     'save_progress': !!window.MEMLIKE.garden.session_settings_save_progress,
     'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
@@ -143,6 +144,7 @@ class LearnSettingsModal extends Component {
     localStorage.setItem('sessionSettings_enable_audio_autoplay', this.state.enable_audio_autoplay ? '1' : '');
     localStorage.setItem('sessionSettings_strict_punctuation', this.state.strict_punctuation ? '1' : '');
     localStorage.setItem('sessionSettings_strict_case', this.state.strict_case ? '1' : '');
+    localStorage.setItem('sessionSettings_build_strategy', this.state.build_strategy ? '1' : '');
     localStorage.setItem('sessionSettings_growth_strategy', this.state.growth_strategy ? '1' : '');
     localStorage.setItem('sessionSettings_id', this.state.session_id || '');
 
@@ -228,6 +230,16 @@ class LearnSettingsModal extends Component {
             />
             <label htmlFor="strict_punctuation">{window.I18N['learn_settings_strict_punctuation']}</label>
           </div>
+          <div>
+            <input
+              id="growth_strategy"
+              type="checkbox"
+              defaultChecked={this.state.growth_strategy}
+              onChange={this.handleToggleChange.bind(this, 'growth_strategy')}
+              autoComplete="off"
+            />
+            <label htmlFor="growth_strategy">{window.I18N['learn_settings_growth_strategy']}</label>
+          </div>
         </fieldset>
         <fieldset>
           <div>
@@ -240,18 +252,15 @@ class LearnSettingsModal extends Component {
             />
             <label htmlFor="reverse_prompt_and_answer">{window.I18N['learn_settings_reverse_prompt_and_answer']}</label>
           </div>
-          <div style="margin-top: 5px">
-            <label htmlFor="growth_strategy" title={window.I18N['learn_settings_growth_strategy_info']}>
-              {window.I18N['learn_settings_growth_strategy']} ⓘ &nbsp;
-            </label>
-            <select
-              id="growth_strategy"
-              onChange={this.handleValueChange.bind(this, 'growth_strategy')}
+          <div>
+            <input
+              id="build_strategy"
+              type="checkbox"
+              defaultChecked={this.state.build_strategy}
+              onChange={this.handleToggleChange.bind(this, 'build_strategy')}
               autoComplete="off"
-            >
-              <option value="1" selected={this.state.growth_strategy === '1'}>Standard</option>
-              <option value="2" selected={this.state.growth_strategy === '2'}>SuperBoost</option>
-            </select>
+            />
+            <label htmlFor="build_strategy">{window.I18N['learn_settings_build_strategy']}</label>
           </div>
         </fieldset>
         <fieldset>
@@ -407,9 +416,13 @@ const LEARN_LASTDATE_TIMEOUT_SECONDS = 172800; // 2 * 24 * 3600 = 2 days ago
 const LEARN_BUILD_CHOICES_LENGTH = 12;
 
 const GROWTH_STRATEGY = {
-  'SuperBoost': '2',
+  'Standard': '0',
+  'SuperBoost': '1',
 };
-
+const BUILD_STRATEGY = {
+  'Standard': '0',
+  'Deferred': '1',
+};
 const TEST_DIFFICULTY = {
   'Unknown': 0,
   'Easy': 1,
@@ -451,7 +464,30 @@ const GameDataBuilder = {
     }
   },
 
-  getScreenList: function(sessionType, learnables, progressMap) {
+  addScreen: function(screens, learnableID, learningLevel, min=0) {
+    // Get a random index to insert the test
+    // 2 steps after the presentation of the learnable
+    // or anywhere after the first test
+    let idx = screens.findLastIndex((screen) => screen.learnableID == learnableID);
+    let max = screens.length;
+    let isPresentation = false;
+
+    if (idx != -1) {
+      min = idx;
+      isPresentation = idx in screens && screens[idx].template == 'presentation';
+    }
+    let insertAtIndex = isPresentation ? Math.min(min + 2, max) : randrange(min, max);
+
+    // Insert the test at the chosen random index
+    screens.splice(insertAtIndex, 0, {
+      learnableID,
+      template: 'sentinel',
+      learningGrowthLevel: learningLevel, // target growth level
+    });
+  },
+
+  getScreenList: function(sessionType, learnables, progressMap, buildStrategy) {
+    var isDeferredBuildStrategy = buildStrategy === BUILD_STRATEGY['Deferred'];
     var screens = [];
 
     switch(sessionType) {
@@ -474,7 +510,9 @@ const GameDataBuilder = {
           const growthLevel = learnableProgress ? learnableProgress.growth_level : 0;
 
           const learningLevel = (growthLevel | 0) + 1;
-          const targetLevel = Math.min((growthLevel | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL);
+          const targetLevel = (
+            isDeferredBuildStrategy ? LEARN_UNTIL_GROWTH_LEVEL : Math.min((growthLevel | 0) + 3, LEARN_UNTIL_GROWTH_LEVEL)
+          );
 
           if (learningLevel > targetLevel) {
             console.warn('The following learnable has already been learned:', learnable);
@@ -492,26 +530,8 @@ const GameDataBuilder = {
             let item = testsToAdd[i];
             let {learnableID, learningLevel, targetLevel} = item;
 
-            // Get a random index to insert the test
-            // 2 steps after the presentation of the learnable
-            // or anywhere after the first test
-            let idx = screens.findLastIndex((screen) => screen.learnableID == learnableID);
-            let min = 0;
-            let max = screens.length;
-            let isPresentation = false;
-
-            if (idx != -1) {
-              min = idx;
-              isPresentation = idx in screens && screens[idx].template == 'presentation';
-            }
-            let insertAtIndex = isPresentation ? Math.min(min + 2, max) : randrange(min, max);
-
-            // Insert the test at the chosen random index
-            screens.splice(insertAtIndex, 0, {
-              learnableID,
-              template: 'sentinel',
-              learningGrowthLevel: learningLevel, // target growth level
-            });
+            // Insert a screen
+            GameDataBuilder.addScreen(screens, learnableID, learningLevel);
 
             // Do we still have to repeat the test to learn it
             learningLevel += 1;
@@ -557,7 +577,7 @@ const GameDataBuilder = {
    * @param dict data
    * @return dict
    */
-  buildData: function(sessionType, data) {
+  buildData: function(sessionType, data, buildStrategy) {
 
     // Build screensTemplateMap (data.screensTemplateMap[learnableID][tpl])
     const screensTemplateMap = {};
@@ -587,7 +607,7 @@ const GameDataBuilder = {
       });
     }
 
-    const screens = GameDataBuilder.getScreenList(sessionType, data.learnables, progressMap);
+    const screens = GameDataBuilder.getScreenList(sessionType, data.learnables, progressMap, buildStrategy);
     console.log('Screens:', screens);
 
     GameDataBuilder.sessionType = sessionType;
@@ -1499,7 +1519,8 @@ class Learn extends Component {
             markdown: data,
           };
         } else {
-          let gameData = GameDataBuilder.buildData(sessionType, data);
+          let gameData = GameDataBuilder.buildData(sessionType, data, window.MEMLIKE.sessionSettings.build_strategy);
+
           if (!gameData.screens.length) {
             switch (sessionType) {
               case 'learn':
@@ -1597,15 +1618,6 @@ class Learn extends Component {
         return;
       }
 
-      // On the presentation screen: pressing enter on a button = trigger the button
-      if (0&&!this.expectedChoiceKind) {
-        if(e.target.classList.contains('button')) {
-          if(!e.target.classList.contains('disabled')) {
-            e.target.click();
-          }
-          return;
-        }
-      }
       if(e.target.type === 'radio' && e.target.checked === false) {
         e.target.checked = true;
         return;
@@ -1861,12 +1873,26 @@ class Learn extends Component {
 
     // Display correction
     if(!isSpeedReview) {
-      return this.setState({
+      var newState = {
         metaScreen: 'correction',
         userAnswer,
         learnScreen_enforcedTemplate: false,
         points: this.state.points + points,
-      });
+      };
+
+      // Is this screen isn't correct: repeat it until it is
+      var isDeferredBuildStrategy = window.MEMLIKE.sessionSettings.build_strategy === BUILD_STRATEGY['Deferred'];
+      if (!isCorrect && isDeferredBuildStrategy) {
+
+        GameDataBuilder.addScreen(
+          this.learnData.screens,
+          screen.learnableID,
+          screen.learningGrowthLevel,
+          this.state.learnScreen_i + 1,
+        );
+        newState.learnScreen_n = this.state.learnScreen_n + 1;
+      }
+      return this.setState(newState);
     }
 
     // Update hearts / overlay / classes
@@ -1879,7 +1905,6 @@ class Learn extends Component {
 
       // Show the overlay without updating the screen underneath
       Object.assign(this.state, newState);
-
       this.resetScreenKeydown();
 
       $(document.body).append(`<div class="overlay">
@@ -1891,6 +1916,7 @@ class Learn extends Component {
         </div>
       </div>`);
 
+      this.registerSessionEnd();
     } else {
       setTimeout(function(){
         $('.choice-box').removeClass('correct').removeClass('incorrect');
@@ -1935,6 +1961,23 @@ class Learn extends Component {
     }
   }
 
+  registerSessionEnd() {
+
+    // Save session points
+    var data = {
+      session_points: this.state.points,
+      session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
+      session_source_type: this.useLevels ? 'course_id_and_level_index' : 'course',
+      session_source_id: this.props.course.id,
+    };
+    if (this.useLevels) {
+      data.session_source_sub_index = this.state.levelId;
+    }
+    this.sessionSettings.save_progress && setTimeout(() => {
+      GameProgressHandler.registerSessionEnd(data);
+    }, 0);
+  }
+
   // Display next screen
   setNextScreen(newState) {
     this.expectedChoiceKind = false;
@@ -1959,20 +2002,7 @@ class Learn extends Component {
 
       // Reached the last screen: recap the list of learned things (= summary)
       if (!this.state.metaScreen || this.state.metaScreen == 'correction') {
-
-        // Save session points
-        var data = {
-          session_points: this.state.points,
-          session_type: this.props.session_type == 'classic_review' ? 'review' : this.props.session_type,
-          session_source_type: this.useLevels ? 'course_id_and_level_index' : 'course',
-          session_source_id: this.props.course.id,
-        };
-        if (this.useLevels) {
-          data.session_source_sub_index = this.state.levelId;
-        }
-        this.sessionSettings.save_progress && setTimeout(() => {
-          GameProgressHandler.registerSessionEnd(data);
-        }, 0);
+        this.registerSessionEnd();
 
         // Display the summary
         return this.setState(Object.assign(newState, {

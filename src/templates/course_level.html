@@ -175,6 +175,10 @@ $if level['type'] != 2:
             <input type="checkbox" name="reverse_prompt_and_answer" value="1" id="reverse_prompt_and_answer">
             <label for="reverse_prompt_and_answer">$:(I18N.misc['learn_settings_reverse_prompt_and_answer'].replace('(', '<br>('))</label>
           </div>
+          <div>
+            <input type="checkbox" name="build_strategy" value="1" id="build_strategy">
+            <label for="build_strategy">$:(I18N.misc['learn_settings_build_strategy'].replace('(', '<br>('))</label>
+          </div>
           $if learned > 0:
             $ level_id = items.get('session_source_info', {}).get('level_id', None)
 

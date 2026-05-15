@@ -154,6 +154,6 @@ class ApplicationRenderTest(SimpleTestCase):
 
     def test_learn(self):
         course = self.memrise.course(COURSE_ID, COURSE_SLUG)
-        html = web.config.template.render.learn(course, "preview", "1", False, 1, 1)
+        html = web.config.template.render.learn(course, "preview", "1", False, 1, 1, 1)
 
         self.assertIsNotNone(html)
