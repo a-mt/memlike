@@ -399,14 +399,14 @@ class CourseSettingsModal extends Component {
         )}
         <div className="danger-zone alert alert-danger">
           <div>
-            <h4>{window.I18N.delete_course_title}</h4>
+            <h4>{window.I18N.delete_course}</h4>
             {this.state.confirmDelete && <div>
               <p>{window.I18N.confirm_del_course}</p>
               <input type="text" onChange={this.confirmDelete} autoComplete="off" />
             </div>}
           </div>
           <button className="btn danger" type="button" onClick={this.deleteCourse}>
-            {window.I18N.delete_course}
+            {window.I18N.delete}
           </button>
         </div>
       </div>
@@ -825,7 +825,7 @@ class EditLevel extends Component {
                 <i className="ico ico-grey ico-edit"></i>
               </button>
 
-              <button className="delete-level btn action" title={window.I18N.delete_level} onClick={this.deleteLevel}>
+              <button className="delete-level btn action" title={window.I18N.delete} onClick={this.deleteLevel}>
                 <i className="ico ico-grey ico-trash"></i>
               </button>
             </div>
@@ -837,18 +837,18 @@ class EditLevel extends Component {
             </div>
 
             <div className="btn-group">
-              <label className="export-level btn action" title={window.I18N.export_level}>
-                {window.I18N.export_level}
+              <label className="export-level btn action" title={window.I18N.export}>
+                {window.I18N.export}
               </label>
-              <label className="import-level btn action" title={window.I18N.import_level} htmlFor={'import_' + level.id}>
+              <label className="import-level btn action" title={window.I18N.import} htmlFor={'import_' + level.id}>
                 <input type="file" id={'import_' + level.id} />
-                {window.I18N.import_level}
+                {window.I18N.import}
               </label>
             </div>
 
             <div className="btn-group">
-              <a className="btn action" href={this.props.url} title={window.I18N.goto_level}>
-                {window.I18N.goto_level}
+              <a className="btn action" href={this.props.url} title={window.I18N.goto}>
+                {window.I18N.goto}
               </a>
             </div>
           </div>
@@ -1728,7 +1728,7 @@ function bindEditEvents(tpl) {
       return;
     }
     var html = '<div class="import_preview">';
-    html += '<button class="btn active run_import top">' + window.I18N.import_level + '</button>';
+    html += '<button class="btn active run_import top">' + window.I18N.import + '</button>';
     html += '<table>';
 
     // Display headers
@@ -1786,7 +1786,7 @@ function bindEditEvents(tpl) {
       html += '</tr>';
     }
     html += '</tbody></table>';
-    html += '<button class="btn active run_import bottom">' + window.I18N.import_level + '</button>';
+    html += '<button class="btn active run_import bottom">' + window.I18N.import + '</button>';
     html += '</div>';
     window.modal.open(html);
 

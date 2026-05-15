@@ -513,6 +513,7 @@ header .header-nav {
     flex-grow: 1;
     margin-left: 0;
     margin-right: 0;
+    height: auto;
   }
 }
 .page-title h1 {

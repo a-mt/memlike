@@ -2079,7 +2079,7 @@ class Learn extends Component {
     // Something went wrong
     if(this.state.error) {
       if(this.state.error == 403) {
-        return <p>{window.I18N._403} <a href="/login" className="link">{window.I18N.login}</a></p>;
+        return <p>{window.I18N.error_403} <a href="/login" className="link">{window.I18N.login}</a></p>;
       } else if (typeof this.state.error == 'string') {
         return <p>{this.state.error}</p>;
       } else {

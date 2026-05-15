@@ -451,7 +451,7 @@ var Dashboard = {
         return;
       }
       if(xhr.status == 403) {
-        Dashboard.container.html('<div style="width: 100%">' + window.I18N._403 + ' <a class="link" href="/login">' + window.I18N.login + '</a></div>');
+        Dashboard.container.html('<div style="width: 100%">' + window.I18N.error_403 + ' <a class="link" href="/login">' + window.I18N.login + '</a></div>');
       } else {
         Dashboard.container.html('<div style="width: 100%">' + window.I18N.error + '</div>');
         console.log('Error: ', xhr);
