@@ -31,6 +31,24 @@ $(document).ready(function(){
     'reverse_prompt_and_answer': !!window.MEMLIKE.garden.session_settings_reverse_prompt_and_answer,
     'session_id': window.MEMLIKE.garden.session_id,
   };
+  window.MEMLIKE.saveSessionSettings = function() {
+    localStorage.setItem('sessionSettings_disable_multimedia', window.MEMLIKE.sessionSettings.disable_multimedia ? '1' : '');
+    localStorage.setItem('sessionSettings_disable_tapping', window.MEMLIKE.sessionSettings.disable_tapping ? '1' : '');
+    localStorage.setItem('sessionSettings_disable_typing', window.MEMLIKE.sessionSettings.disable_typing ? '1' : '');
+    localStorage.setItem('sessionSettings_enable_audio_autoplay', window.MEMLIKE.sessionSettings.enable_audio_autoplay ? '1' : '');
+    localStorage.setItem('sessionSettings_strict_punctuation', window.MEMLIKE.sessionSettings.strict_punctuation ? '1' : '');
+    localStorage.setItem('sessionSettings_strict_case', window.MEMLIKE.sessionSettings.strict_case ? '1' : '');
+    localStorage.setItem('sessionSettings_build_strategy', window.MEMLIKE.sessionSettings.build_strategy ? '1' : '');
+    localStorage.setItem('sessionSettings_growth_strategy', window.MEMLIKE.sessionSettings.growth_strategy ? '1' : '');
+    localStorage.setItem('sessionSettings_id', window.MEMLIKE.sessionSettings.session_id || '');
+
+    window.cookieStore && window.cookieStore.set({
+      name: 'sessionSettings_build_strategy',
+      value: window.MEMLIKE.sessionSettings.build_strategy ? '1' : '',
+      expires: Date.now() + 365 * 24 * 60 * 60 * 1000,
+    });
+  }
+
   if (window.MEMLIKE.sessionSettings.enable_audio_autoplay === null) {
     window.MEMLIKE.sessionSettings.enable_audio_autoplay = true;
   }
@@ -138,15 +156,8 @@ class LearnSettingsModal extends Component {
 
   onUpdateSettings() {
     Object.assign(window.MEMLIKE.sessionSettings, this.state);
-    localStorage.setItem('sessionSettings_disable_multimedia', this.state.disable_multimedia ? '1' : '');
-    localStorage.setItem('sessionSettings_disable_tapping', this.state.disable_tapping ? '1' : '');
-    localStorage.setItem('sessionSettings_disable_typing', this.state.disable_typing ? '1' : '');
-    localStorage.setItem('sessionSettings_enable_audio_autoplay', this.state.enable_audio_autoplay ? '1' : '');
-    localStorage.setItem('sessionSettings_strict_punctuation', this.state.strict_punctuation ? '1' : '');
-    localStorage.setItem('sessionSettings_strict_case', this.state.strict_case ? '1' : '');
-    localStorage.setItem('sessionSettings_build_strategy', this.state.build_strategy ? '1' : '');
-    localStorage.setItem('sessionSettings_growth_strategy', this.state.growth_strategy ? '1' : '');
-    localStorage.setItem('sessionSettings_id', this.state.session_id || '');
+
+    window.MEMLIKE.saveSessionSettings && window.MEMLIKE.saveSessionSettings();
 
     this.onCloseModal();
     window.GlobalEventEmitter.dispatch('update-settings', this.state);

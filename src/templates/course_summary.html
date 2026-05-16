@@ -173,7 +173,8 @@ $#  </div>
           <label for="reverse_prompt_and_answer">$:(I18N.misc['learn_settings_reverse_prompt_and_answer'].replace('(', '<br>('))</label>
         </div>
         <div>
-          <input type="checkbox" name="build_strategy" value="1" id="build_strategy">
+          $ isSelected = "checked" if get_cookie("sessionSettings_build_strategy", "") == "1" else ""
+          <input type="checkbox" name="build_strategy" value="1" id="build_strategy" $isSelected autocomplete="off">
           <label for="build_strategy">$:(I18N.misc['learn_settings_build_strategy'].replace('(', '<br>('))</label>
         </div>
       </div>

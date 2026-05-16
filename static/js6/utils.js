@@ -160,10 +160,12 @@ var audioPlayer = window.audioPlayer = {
         audioPlayer.target.pause();
         audioPlayer.target.classList.remove('active');
       }
-      audioElement.play();
-      audioElement.button.classList.add('active');
-      audioPlayer.target    = audioElement;
-      audioPlayer.isPlaying = true;
+      setTimeout(function(){
+        audioElement.play();
+        audioElement.button.classList.add('active');
+        audioPlayer.target    = audioElement;
+        audioPlayer.isPlaying = true;
+      }, 0);
     }
   },
 

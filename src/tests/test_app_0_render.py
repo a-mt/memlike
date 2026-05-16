@@ -61,6 +61,7 @@ class ApplicationRenderTest(SimpleTestCase):
                 "index": 1,
             },
             items,
+            "",
         )
         self.assertIsNotNone(html)
 
@@ -79,6 +80,7 @@ class ApplicationRenderTest(SimpleTestCase):
                 "index": level_index,
             },
             items,
+            "",
         )
         self.assertIsNotNone(html)
 
@@ -97,6 +99,7 @@ class ApplicationRenderTest(SimpleTestCase):
                 "index": level_index,
             },
             items,
+            "",
         )
         self.assertIsNotNone(html)
 

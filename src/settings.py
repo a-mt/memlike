@@ -106,6 +106,9 @@ if web.config.get("template", None) is None:
         )
         # fmt: on
 
+    def get_cookie(cookie_name, default=''):
+        return web.cookies().get(cookie_name, default)
+
     # Methods accessible globally in templates
     template = web.storage({})
     template["render"] = web.template.render(ROOTDIR + "/templates/", base="_layout", globals=template)
@@ -125,6 +128,7 @@ if web.config.get("template", None) is None:
     template["json"] = lambda x: json.dumps(x, sort_keys=True, indent=4, separators=(",", ": "))
     template["number_format"] = lambda x: "{:,}".format(x)
     template["floatval"] = lambda x: float(re.sub(r"[^\d]", "", x))
+    template["get_cookie"] = get_cookie
 
     # Variables accessible globally in templates
     template["LOCALES"] = LOCALES
