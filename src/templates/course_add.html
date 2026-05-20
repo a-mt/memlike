@@ -64,8 +64,8 @@ $ errors = flash.get('err', {})
       $if 'language' in errors:
         <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
 
-      <div className="form-controls">
-        <label htmlFor="tags">$(I18N.misc['course_tags'])</label>
+      <div class="form-controls">
+        <label for="tags">$(I18N.misc['course_tags'])</label>
         <input
           id="tags"
           name="tags"
@@ -76,21 +76,21 @@ $ errors = flash.get('err', {})
       $if 'tags' in errors:
         <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
 
-      <div className="form-controls">
-        <label htmlFor="description">$(I18N.misc['course_description'])</label>
+      <div class="form-controls">
+        <label for="description">$(I18N.misc['course_description'])</label>
         <textarea
           id="description"
           name="description"
           rows="5"
           cols="50"
           value="$(data.get('description', ''))"
-        />
+        ></textarea>
       </div>
       $if 'description' in errors:
         <div class="alert alert-danger">$(I18N.misc['invalid_value'])</div>
 
-      <div className="form-controls">
-        <label htmlFor="short_description">$(I18N.misc['course_short_description'])</label>
+      <div class="form-controls">
+        <label for="short_description">$(I18N.misc['course_short_description'])</label>
         <input
           id="short_description"
           name="short_description"

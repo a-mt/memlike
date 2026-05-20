@@ -2618,6 +2618,10 @@ tr.disabled {
   opacity: 0.5;
 }
 
+.modal .alt {
+  display: inline-block;
+  margin: 0 auto;
+}
 .alt input,
 .alt button {
   float: left;
@@ -2946,11 +2950,19 @@ thead .ContributionCalendar-label span[aria-hidden] { /*month*/
   padding: 2px 5px;
   vertical-align: top;
 }
-#spreadsheet .num {
+#spreadsheet .num,
+#spreadsheet .score {
   background: rgba(0,0,0,0.03);
   text-align: right;
+  overflow: hidden;
   width: 75px;
 }
+@media (max-width: 650px) {
+  #spreadsheet .num {
+    width: 25px;
+  }
+}
+
 #spreadsheet th {
   white-space: nowrap;
 }
