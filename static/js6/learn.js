@@ -1441,11 +1441,13 @@ class Learn extends Component {
 
     // Automatically play an audio track
     // if there aren't any audio elements in the course, try the tts instead (outside .audio elements)
-    if (this.sessionSettings.enable_audio_autoplay) {
-      $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
-        ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
-      );
-      this.autoFocus();
+    if (this.sessionSettings.enable_audio_autoplay && this.template != 'audio_multiple_choice') {
+      setTimeout(function() {
+        $('.autoplay .audio .audio-player').random().focus().trigger('click').length || (
+          ttsAdded && $('.autoplay .audio-player').random().focus().trigger('click')
+        );
+        this.autoFocus();
+      }, 0);
     }
 
     // Update level title (outside of react scope)
@@ -1713,17 +1715,35 @@ class Learn extends Component {
 
     // If not is_strict, memrise adds lowercase version to .correct answers
     var check_case = !this.is_strict && window.MEMLIKE.sessionSettings.strict_case;
-    var stack = {};
+    var check_punctuation = !this.is_strict && window.MEMLIKE.sessionSettings.strict_punctuation && String.prototype.unidecode;
+
+    var stack_case = {};
+    var stack_punctuation = {};
 
     if (givenAnswer) {
       for(let i=0; i<this.choices.length; i++) {
         var choice = this.choices[i];
 
-        if (check_case && stack[choice.toLowerCase()]) {
-          continue;
-        }
-        stack[choice.toLowerCase()] = 1;
+        // Ignore alternative answers that don't match our settings
+        if (check_case) {
+          let alt = choice.toLowerCase();
 
+          // Lowercased version: ignore if we already have a non-lowercase version
+          if (alt == choice && stack_case[alt]) {
+            continue;
+          }
+          stack_case[alt] = 1;
+        }
+
+        if (check_punctuation) {
+          let alt = choice.unidecode();
+          if (stack_punctuation[alt]) {
+            continue;
+          }
+          stack_punctuation[alt] = 1;
+        }
+
+        // Check if we have a match / almost match
         choice = sanitizeTyping(choice, this.is_strict),
         s      = ScoreAnswer.computeScore(sanitizedGivenAnswer, choice);
 
@@ -2907,6 +2927,15 @@ const Typing = function(props) {
 
   props.setChoices(item.correct, 'text', item.is_strict);
 
+  var letters = item.choices;
+
+  if (!this.is_strict && window.MEMLIKE.sessionSettings.strict_case) {
+    var answer = sanitizeTyping(item.correct[0]);
+    var add_letters = answer.replace(/[ a-zA-Z0-9]/g, '').split('');
+
+    letters = randomize([...new Set(letters.concat(add_letters))]);
+  }
+
   return <div className="nicebox">
     <div className="big choice autoplay">
       <Value content={item.prompt[itemType].value} type={itemType} />
@@ -2919,7 +2948,7 @@ const Typing = function(props) {
     <div className="typing-container">
       <div className="typing" key={Date.now()}>
         <input type="text" autoComplete="off" spellCheck="false" value="" tabIndex="1" autoFocus="autofocus" />
-        <ul className="keyboard">{item.choices.map((letter, i) =>
+        <ul className="keyboard">{letters.map((letter, i) =>
           <li key={letter} className="button" tabIndex="0">{letter}</li>
         )}</ul>
       </div>

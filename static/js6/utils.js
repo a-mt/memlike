@@ -139,10 +139,12 @@ var audioPlayer = window.audioPlayer = {
     // Toggle play/pause
     if(audioPlayer.target === audioElement) {
       if(force) {
-        if(!audioPlayer.isPlaying) {
-          audioElement.play();
-          audioPlayer.isPlaying = true;
+        if(audioPlayer.isPlaying) {
+          audioElement.pause();
         }
+        audioElement.currentTime = 0;
+        audioElement.play();
+        audioPlayer.isPlaying = true;
         return;
       }
       if(audioPlayer.isPlaying) {
@@ -161,6 +163,7 @@ var audioPlayer = window.audioPlayer = {
         audioPlayer.target.classList.remove('active');
       }
       setTimeout(function(){
+        audioElement.currentTime = 0;
         audioElement.play();
         audioElement.button.classList.add('active');
         audioPlayer.target    = audioElement;
