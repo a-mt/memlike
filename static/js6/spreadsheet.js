@@ -45,14 +45,14 @@ function bindSpreadsheetEvents() {
     var levelsToExport = [],
         isMultimedia   = (typeof this.elements.export0 == 'undefined' || this.elements.export0.disabled) ? 1 : 0,
         item           = this.elements[`export${isMultimedia}`],
-        exportAlt      = !isMultimedia && this.elements.exportAlt.checked,
-        exportMore     = !isMultimedia && this.elements.exportMore.checked;
+        exportAlt      = !isMultimedia && this.elements.exportAlt && this.elements.exportAlt.checked,
+        exportMore     = !isMultimedia && this.elements.exportMore && this.elements.exportMore.checked;
 
     // Course with no level: retrieve level 1 (ex: /course/233943/livre-1001-phrases-pour-parler-allemand/)
     if(item.type && item.type == 'hidden') {
       levelsToExport.push({
           href : linkCourse,
-          idx  : 1,
+          idx  : '1',
           title: '',
           media: false,
         });

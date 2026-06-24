@@ -39,6 +39,20 @@ $:(prender.inc_course_banner(course))
       $if not selectboxes["0"] and not selectboxes["1"]:
         <input type="hidden" id="export0" value="1">
 
+      $def options():
+        <td class="form-inline" valign="top">
+          <div>
+            <input class="form-input" type="checkbox"
+                   id="exportAlt" name="exportAlt" value="1">
+            <label class="form-label" for="exportAlt">$:(I18N.misc['export_opt_alternatives'])</label>
+
+            <br>
+            <input class="form-input" type="checkbox"
+                   id="exportMore" name="exportMore" value="1">
+            <label class="form-label" for="exportMore">$:(I18N.misc['export_opt_more'])</label>
+          </div>
+        </td>
+
       <table>
       $if selectboxes["0"] or selectboxes["1"]:
         $if selectboxes["0"] and selectboxes["1"]:
@@ -67,18 +81,12 @@ $:(prender.inc_course_banner(course))
            <td class="form-inline form-ab">
              <select id="export1" multiple $isDisabled>$:(selectboxes["1"])</select>
            </td>
-          <td class="form-inline" valign="top">
-            <div>
-              <input class="form-input" type="checkbox"
-                     id="exportAlt" name="exportAlt" value="1">
-              <label class="form-label" for="exportAlt">$:(I18N.misc['export_opt_alternatives'])</label>
 
-              <br>
-              <input class="form-input" type="checkbox"
-                     id="exportMore" name="exportMore" value="1">
-              <label class="form-label" for="exportMore">$:(I18N.misc['export_opt_more'])</label>
-            </div>
-          </td>
+          $:options()
+        </tr>
+      $else:
+        <tr class="form-group">
+          $:options()
         </tr>
       </table>
 
