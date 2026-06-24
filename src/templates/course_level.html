@@ -2,6 +2,7 @@ $def with (course, level, items)
 $var currentPage: courses
 $var js: /static/js/markdown.min.js
 $var title: $(course['title']) $("" if level['index'] == 0 else " - " + str(level['index']))
+<!-- /course/N: Lists things or display multimedia content of a given level -->
 
 $:(prender.inc_course_banner(course))
 
@@ -27,6 +28,12 @@ $:(prender.inc_course_banner(course))
       <a href="$(course['url'])leaderboard" class="pill">
         <i class="ico ico-trophy"></i>
         $(I18N.misc['leaderboard'])
+      </a>
+
+      <!-- Link to spreadsheet -->
+      <a href="$(course['url'])spreadsheet" class="pill">
+        <i class="ico ico-list"></i>
+        $(I18N.misc['spreadsheet'])
       </a>
 
     <!-- Links to garden learn / preview -->

@@ -3,6 +3,7 @@ $var title: $(I18N.misc[session_type]) ~ $(course['title'])
 $var js: /static/js/markdown.min.js, /static/js/preact.min.js, /static/js/unidecode.v0.04.9.min.js, /static/js/build/learn.js
 $var header: 1
 $var footer: 1
+<!-- /course/.../garden: Learn a course or level -->
 
 $ url = course['url'] + str(level_index) if level_index else course['url']
 

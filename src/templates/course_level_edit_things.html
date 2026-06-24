@@ -1,0 +1,162 @@
+$def with (level)
+<!-- WIP -->
+
+<div
+  id="l_$(level['id'])"
+  class="level"
+  data-level-id="$(level['id'])"
+>
+
+  <!-- Title / actions banner -->
+  <div class="level-header clearfix">
+    <div class="level-actions">
+      <div class="btn-group">
+        <a class="show-hide btn btn-small" data-role="level-toggle">Einblenden/Ausblenden</a>
+        <a class="btn btn-small" data-role="level-preview" href="/community/course/6698294/german-vocab/7/">Vorschau</a>
+        <a class="btn btn-small" data-role="level-duplicate">Duplizieren</a>
+        <a class="btn btn-small" data-role="level-delete">L\u00f6schen</a>
+      </div>
+    </div>
+    <div class="level-handle">$(level['idx'])</div>
+    <h3 class="level-name" title="Doppelklick um den Namen dieses Levels zu \u00e4ndern">
+      $(level['title'])
+    </h3>
+    $if level['pool_id']:
+      <a href="#" class="level-pool">(German)</a>
+  </div>
+
+  <!-- Level options inner banner -->
+  <div class="level-options">
+    <div class="options-col clearfix">
+      <a href="#" class="toggle-edit btn btn-icos-active">
+        <i class="ico ico-edit"></i>
+        Multimedia bearbeiten
+      </a>
+    </div>
+  </div>
+
+  <!-- Textarea -->
+  <div class="level-multimedia">
+    <div class="multimedia-view hide">
+      <code>None</code>
+    </div>
+    <div class="multimedia-edit">
+      <textarea name="new_val">
+        $(level['markdown'])
+      </textarea>
+      <button class="noMrg btn btn-primary" data-role="level-multimedia-save">
+        Speichern
+      </button>
+    </div>
+  </div>
+
+  <div class="level-options">
+    <div class="options-col clearfix">
+
+      <div class="editing-controls">
+        <div class="btn-group pull-right">
+          <button class="dropdown-toggle btn btn-small btn-icos-active" data-toggle="dropdown">
+            Fortgeschritten
+            <i class="ico ico-s ico-arr-down"></i>
+          </button>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a href="#" data-role="level-bulk-add">
+                <i class="ico ico-plus"></i>
+                Viele W\u00f6rter auf einmal hinzuf\u00fcgen
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <strong class="level-columns" data-column-a="1" data-column-b="2">
+        Abfragen: <span class="column-a-label">German</span>,
+        Anzeigen: <span class="column-b-label">English</span>.
+        <i class="ico ico-l ico-edit ico-active-states"></i>
+      </strong>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table
+      class="level-things table"
+      data-level-id="16180581"
+      data-pool-id="7758772"
+    >
+      <!-- Headers -->
+      <thead class="columns">
+        <tr>
+          <th></th>
+          $for column in columns:
+            $ role = "pool-attribute-header" if column['is_attribute'] else "pool-column-header"
+            <th class="column text" data-key="$(column['column_key'])" data-role="$(role)
+              <span class="txt">$(column['label'])</span>&nbsp;
+              <i class="ico ico-edit ico-blue"></i>
+            </th>
+        </tr>
+      </thead>
+
+      <!-- Things -->
+      <tbody class="things">
+        $for item in learnables:
+
+        <tr class="thing" data-thing-id="$(item['id'])">
+          <td>
+            <div class="thing__actions">
+              <i class="ico ico-light-blue ico-re-order sortable-handle" title="Wort verschieben"></i>
+              <i class="ico ico-close" data-role="remove" title="Wort entfernen"></i>
+            </div>
+          </td>
+          $for column in columns:
+            $ role = "attribute" if column['is_attribute'] else "column"
+
+            <td class="cell $(column['kind']) column" data-key="$(column['column_key'])" data-cell-type="$(role)">
+
+            $if column['kind'] == 'audio' or column['kind'] == 'video':
+
+              <div class="btn-group">
+                <div class="btn btn-mini files-add">
+                  Hochladen <input type="file" name="f" class="add_thing_file" />
+                </div>
+                <div class="btn btn-mini open-recorder">Aufnehmen</div>
+
+                <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown" data-role="load-media" style="overflow:hidden;">
+                  1 Datei
+                  <i class="ico ico-s ico-arr-down"></i>
+                </button>
+
+                $if column['kind'] == 'audio':
+                  <div class="dropdown-menu videos">
+                    <div class="dropdown-row" data-file-id="1">
+                      <i class="ico ico-trash ico-active-states pull-right" title="Audiodatei l\u00f6schen"></i>
+                      <a class="audio-player audio-player-hover url" href="#" data-url="https://static.memrise.com/uploads/things/audio/467903288_251025_0740_52.mp3"></a>
+                    </div>
+                  </div>
+
+                $elif column['kind'] == 'video':
+                  <div class="dropdown-menu videos">
+                    <div class="dropdown-row" data-file-id="1">
+                      <i class="ico ico-trash ico-active-states pull-right" title="Videodatei l\u00f6schen"></i>
+                      <a class="video-player video-player-hover url" href="#" data-url="https://static.memrise.com/uploads/things/audio/467903288_251025_0740_52.mp3"></a>
+                    </div>
+                  </div>
+              </div>
+
+            $else:
+              <div class="wrapper">
+                $ if not column['is_attribute']:
+                  <button class="edit-alts btn btn-small btn-icos-active">
+                    Alts
+                    <i class="ico ico-s ico-edit"></i>
+                  </button>
+                <div class="text">$(column['value'])</div>
+              </div>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

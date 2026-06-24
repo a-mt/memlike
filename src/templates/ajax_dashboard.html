@@ -1,4 +1,5 @@
 $def with (courses, offset)
+<!-- /ajax/dashboard: Lists the courses the user is learning  -->
 
 $for i, course in enumerate(courses):
   $ idCat = str(course['target']['id']) if 'target' in course else None

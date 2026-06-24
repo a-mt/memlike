@@ -1,0 +1,51 @@
+$def with (level)
+<!-- WIP -->
+
+<div
+  id="l_$(level['id'])"
+  class="level"
+  data-level-id="$(level['id'])"
+>
+
+  <!-- Title / actions banner -->
+  <div class="level-header clearfix">
+    <div class="level-actions">
+      <div class="btn-group">
+        <a class="show-hide btn btn-small" data-role="level-toggle">Einblenden/Ausblenden</a>
+        <a class="btn btn-small" data-role="level-preview" href="/community/course/6698294/german-vocab/7/">Vorschau</a>
+        <a class="btn btn-small" data-role="level-duplicate">Duplizieren</a>
+        <a class="btn btn-small" data-role="level-delete">L\u00f6schen</a>
+      </div>
+    </div>
+    <div class="level-handle">$(level['idx'])</div>
+    <h3 class="level-name" title="Doppelklick um den Namen dieses Levels zu \u00e4ndern">
+      $(level['title'])
+    </h3>
+  </div>
+
+  <!-- Level options inner banner -->
+  <div class="level-options">
+    <div class="options-col clearfix">
+
+      <a href="#" class="toggle-edit btn btn-icos-active">
+        <i class="ico ico-edit"></i>
+        Multimedia bearbeiten
+      </a>
+    </div>
+  </div>
+
+  <!-- Textarea -->
+  <div class="level-multimedia">
+    <div class="multimedia-view hide">
+      <code>None</code>
+    </div>
+    <div class="multimedia-edit">
+      <textarea name="new_val">
+        $(level['markdown'])
+      </textarea>
+      <button class="noMrg btn btn-primary" data-role="level-multimedia-save">
+        Speichern
+      </button>
+    </div>
+  </div>
+</div>

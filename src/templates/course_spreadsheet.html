@@ -2,6 +2,7 @@ $def with (course, selectboxes)
 $var currentPage: courses
 $var title: $(course['title']) - $(I18N.misc['spreadsheet'])
 $var js: /static/js/markdown.min.js, /static/js/build/spreadsheet.js
+<!-- /course/spreadsheet: List all things of a given course and a user's progress / export as CSV -->
 
 $:(prender.inc_course_banner(course))
 
