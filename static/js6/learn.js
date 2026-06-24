@@ -69,6 +69,21 @@ $(document).ready(function(){
 //| Helper functions
 //+--------------------------------------------------------
 
+function preloadImage(src) {
+  // Preload an image
+  // await preloadImage('https://picsum.photos/100/100')
+
+  // Preload a bunch of images in parallel 
+  // await Promise.all(images.map(x => preloadImage(x.src)))
+
+  return new Promise(function(resolve, reject) {
+    const image = new Image()
+    image.onload = resolve;
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
 /**
  * Returns a random element from the current array
  */
@@ -1213,6 +1228,7 @@ class Learn extends Component {
 
   // Values that are outside of the rendering logic
   sessionSettings = {};
+  preloadedImages = {};
 
   levelsIdList = [];
   levelsLastId = 0;
@@ -1285,6 +1301,7 @@ class Learn extends Component {
     }
     this.sessionSettings = {...window.MEMLIKE.sessionSettings};
     this.state = state;
+    this.preloadedImages = {};
 
     this.isScreenSubmitted = false;
     this.isKeydownPressed = false;
@@ -1403,10 +1420,12 @@ class Learn extends Component {
 
   // Every time screen gets updated
   componentDidUpdate(prevProps, prevState) {
-    window.scroll({
-      top: 0,
-      behavior: "smooth",
-    });
+    setTimeout(function(){
+      window.scroll({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }, 100);
 
     this.resetScreenKeydown();
 
@@ -2097,12 +2116,25 @@ class Learn extends Component {
     this.choices = false;
   }
 
-  setChoices(choices, type, is_strict) {
+  setChoices(choices, type, is_strict, answer_type) {
     this.expectedChoiceKind = type; // accesskey | text | tapping
     this.choices = choices; // list of components if expectedChoiceKind == accesskey
 
  // values in parentheses and punctuation should match too?
     this.is_strict = typeof is_strict == 'undefined' ? 1 : is_strict;
+
+    if (answer_type === 'image') {
+      choices.forEach((choice) => {
+        if (this.preloadedImages[choice]) {
+          return;
+        }
+        this.preloadedImages[choice] = 1;
+
+        preloadImage(choice).then(() => {
+          this.preloadedImages[choice] = 2;
+        });
+      });
+    }
   }
 
   render() {
@@ -2895,7 +2927,7 @@ const MultipleChoice = function(props) {
       />
     );
   });
-  props.setChoices(choices, 'accesskey');
+  props.setChoices(choices, 'accesskey', 0, answerType);
 
   return <div className="nicebox">
 
