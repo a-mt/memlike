@@ -1403,6 +1403,11 @@ class Learn extends Component {
 
   // Every time screen gets updated
   componentDidUpdate(prevProps, prevState) {
+    window.scroll({
+      top: 0,
+      behavior: "smooth",
+    });
+
     this.resetScreenKeydown();
 
     // Triggered autofocus

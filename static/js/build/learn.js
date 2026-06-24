@@ -228,7 +228,7 @@ $('main').on('click','.typing .button',function(e){this.parentNode.previousEleme
 $('main').on('click','.tapping .button',function(){var parent=this.parentNode;if(parent.className=='keyboard'){parent.previousElementSibling.innerHTML+='<button class="button" data-id="'+this.getAttribute('id')+'">'+this.innerHTML+'</button>';this.classList.add('disabled')}else{var id=this.getAttribute('data-id');document.getElementById(id).classList.remove('disabled');parent.removeChild(this)}});// Multiple choice (handle the click the same way as using an access key)
 $('main').on('click','.choice-box',function(e){this.selectTargetMultipleChoice(e.currentTarget.querySelector('input'))}.bind(this));// Hovering on audio: play audio
 $('main').on('mouseover focus','.choice-box.audio',function(e){window.audioPlayer&&window.audioPlayer.play.call(this.querySelector('audio'),e,true)}).on('mouseleave','.choice-box.audio',function(){window.audioPlayer&&window.audioPlayer.pause.call(this.querySelector('audio'))})}// Every time screen gets updated
-componentDidUpdate(prevProps,prevState){this.resetScreenKeydown();// Triggered autofocus
+componentDidUpdate(prevProps,prevState){window.scroll({top:0,behavior:'smooth'});this.resetScreenKeydown();// Triggered autofocus
 this.autoFocus();// Reset image zoom and audio player
 window.imgZoom&&window.imgZoom.reset();window.audioPlayer&&window.audioPlayer.reset();// Add text To Speech (TODO: clean that)
 let ttsAdded=false;if(window.TTS){$('.text[lang].tts').each(function(){var url=window.TTS.getAudioURL(this.innerText,this.getAttribute('lang'));if(url){var $audio=$('audio',this);if($audio.length){$audio.attr('src',url)}else{var k=Date.now();var elem=document.createElement('span');elem.innerHTML=`
