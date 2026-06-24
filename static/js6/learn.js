@@ -475,11 +475,11 @@ const GameDataBuilder = {
     }
   },
 
-  addScreen: function(screens, learnableID, learningLevel, min=0) {
+  addScreen: function(screens, learnableID, learningLevel, min=0, isLearn=0) {
     // Get a random index to insert the test
     // 2 steps after the presentation of the learnable
     // or anywhere after the first test
-    let idx = screens.findLastIndex((screen) => screen.learnableID == learnableID);
+    let idx = isLearn ? screens.findLastIndex((screen) => screen.learnableID == learnableID) : -1;
     let max = screens.length;
     let isPresentation = false;
 
@@ -542,7 +542,7 @@ const GameDataBuilder = {
             let {learnableID, learningLevel, targetLevel} = item;
 
             // Insert a screen
-            GameDataBuilder.addScreen(screens, learnableID, learningLevel);
+            GameDataBuilder.addScreen(screens, learnableID, learningLevel, 0, 1);
 
             // Do we still have to repeat the test to learn it
             learningLevel += 1;
@@ -1921,6 +1921,7 @@ class Learn extends Component {
           screen.learnableID,
           screen.learningGrowthLevel,
           this.state.learnScreen_i + 1,
+          this.props.session_type == 'learn',
         );
         newState.learnScreen_n = this.state.learnScreen_n + 1;
       }
