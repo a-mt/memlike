@@ -1741,30 +1741,23 @@ class Learn extends Component {
     var check_case = !this.is_strict && window.MEMLIKE.sessionSettings.strict_case;
     var check_punctuation = !this.is_strict && window.MEMLIKE.sessionSettings.strict_punctuation && String.prototype.unidecode;
 
-    var stack_case = {};
-    var stack_punctuation = {};
-
     if (givenAnswer) {
       for(let i=0; i<this.choices.length; i++) {
         var choice = this.choices[i];
 
-        // Ignore alternative answers that don't match our settings
+        // Ignore choices that have been lowercased
         if (check_case) {
           let alt = choice.toLowerCase();
-
-          // Lowercased version: ignore if we already have a non-lowercase version
-          if (alt == choice && stack_case[alt]) {
+          if (alt != choice) {
             continue;
           }
-          stack_case[alt] = 1;
         }
 
         if (check_punctuation) {
           let alt = choice.unidecode();
-          if (stack_punctuation[alt]) {
+          if (alt != choice) {
             continue;
           }
-          stack_punctuation[alt] = 1;
         }
 
         // Check if we have a match / almost match
@@ -1774,6 +1767,9 @@ class Learn extends Component {
         if(s && s > score) {
           score = s;
           rightAnswer = choice;
+          if (s == 1) {
+             break;
+          }
         }
       }
     }
@@ -3245,7 +3241,8 @@ function sanitizeTyping(text, strict) {
   var strict_punctuation = window.MEMLIKE.sessionSettings.strict_punctuation;
   var strict_case = window.MEMLIKE.sessionSettings.strict_case;
 
-  text = text.trim().replace(/\s+/g, ' ');
+  // Replace any non-ascii alternatives with the ascii counterpart (for spaces and apostrophes)
+  text = text.trim().replace(/\s+/g, ' ').replace(/’/g, "'");
   if(!strict) {
     text = text.replace(/\(.*?\)/g, '');
   }
